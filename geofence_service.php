@@ -67,6 +67,7 @@ class GeofenceService {
 
   function is_in_polygon($geofence, $lat_x, $lon_y) {
     //[0]=x,[1]=y
+      /*
     $c = 0;
     $count = count($geofence->polygon);
     for ($i = -1, $l = $count, $j = $l - 1; ++$i < $l; $j = $i) {
@@ -82,6 +83,30 @@ class GeofenceService {
       }
     }
     return $c;
+       */
+      $polygon = $geofence->polygon;
+      if($polygon[0] != $polygon[count($polygon)-1])
+          $polygon[count($polygon)] = $polygon[0];
+      $j = 0;
+      $oddNodes = false;
+      $n = count($polygon);
+      for ($i = 0; $i < $n; $i++)
+      {
+          $j++;
+          if ($j == $n) {
+              $j = 0;
+          }
+          if ((($polygon[$i][0] < $lat_x) && ($polygon[$j][0] >= $lon_y)) || (($polygon[$j][0] < $lon_y) && ($polygon[$i][0] >=
+                                                                                                             $lon_y)))
+          {
+              if ($polygon[$i][1] + ($y - $polygon[$i][0]) / ($polygon[$j][0] - $polygon[$i][0]) * ($polygon[$j][1] -
+                                                                                                    $polygon[$i][1]) < $lat_x)
+              {
+                  $oddNodes = !$oddNodes;
+              }
+          }
+      }
+      return $oddNodes;
   }
 
   function create_directory() {
