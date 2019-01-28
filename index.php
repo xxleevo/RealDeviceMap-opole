@@ -11,7 +11,8 @@ $geofence_srvc = new GeofenceService();
 $page = $_SERVER['PHP_SELF'];
 $sec = "60";
 
-echo "
+$filters = "
+<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css' integrity='sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS' crossorigin='anonymous'>
 <div class='panel panel-default'>
 <div class='form-group row'>
 	<div class='col-md-4'> 
@@ -29,9 +30,9 @@ echo "
 				$count = count($geofence_srvc->geofences);
 				for ($i = 0; $i < $count; $i++) {
 					$geofence = $geofence_srvc->geofences[$i];
-					echo "<option value='".$geofence->name."'>".$geofence->name."</option>";
+					$filters .= "<option value='".$geofence->name."'>".$geofence->name."</option>";
 				}
-				echo "
+				$filters .= "
 			</select>
 		</div>
 	</div>
@@ -105,7 +106,8 @@ SELECT
 	name,
 	team_id,
 	ex_raid_eligible
-FROM rdmdb.gym
+FROM 
+	rdmdb.gym
 WHERE
 	raid_pokemon_id IS NOT NULL && 
 	name IS NOT NULL && 
@@ -116,7 +118,7 @@ ORDER BY
 
 	$result = $pdo->query($sql);
 	if($result->rowCount() > 0){
-		echo "<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css' integrity='sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS' crossorigin='anonymous'>";
+		echo $filters;
 		echo "<table class='table table-".$table_style." ".($table_striped ? 'table-striped' : null)."' border='1' id='gym-table';>";
 		echo "<thead class='thead-".$table_header_style."'>";
 			echo "<tr>";
@@ -139,7 +141,7 @@ ORDER BY
 			$fast_move = $quick_moves[$row['raid_pokemon_move_1']];
 			$charge_move = $charge_moves[$row['raid_pokemon_move_2']];
 			$moveset = ($fast_move == $unknown_value && $charge_move == $unknown_value ? $unknown_value : $fast_move . "/" . $charge_move);
-			echo "<tr id='content'>";
+			echo "<tr>";
 				echo "<td scope='row'>" . $row['starts'] . "</td>";
 				echo "<td>" . $row['ends'] . "</td>";
 				echo "<td>" . $row['raid_level'] . "</td>";
@@ -158,7 +160,7 @@ ORDER BY
 		// Free result set
 		unset($result);
 	} else{
-		echo "No records matching your query were found.";
+		echo "<p>No records matching your query were found.</p>";
 	}
 } catch(PDOException $e){
     die("ERROR: Could not able to execute $sql. " . $e->getMessage());
