@@ -4,7 +4,7 @@ include 'movesets.php';
 include 'geofence_service.php';
 
 // RealDeviceMap Database
-$dbhost = "127.0.0.1";        // Dtabase host name or IP address
+$dbhost = "127.0.0.1";        // Database host name or IP address
 $dbPort = 3306;               // Database port. (default: 3306)
 $dbuser = "user";             // Database username.
 $dbpass = "password";         // Database user password.
@@ -18,6 +18,7 @@ $table_striped = true;        // true/false
 // StaticMap Lite/Google Maps Url 
 $staticImage = "http://staticmaplite-url-here/staticmap.php?center=%s,%s&markers=%s,%s,red-pushpin&zoom=14&size=300x175&maptype=mapnik"; //https://github.com/dfacts/staticmaplite
 
+$unknown_value = "Unknown";
 
 $googleMapsLink = "https://maps.google.com/maps?q=%s,%s";
 $appleMapsLink = "https://maps.apple.com/maps?daddr=%s,%s";
@@ -49,7 +50,9 @@ SELECT
 	raid_pokemon_id, 
 	raid_pokemon_move_1,
 	raid_pokemon_move_2,
-	name
+	name,
+	team_id,
+	ex_raid_eligible
 FROM rdmdb.gym
 WHERE
 	raid_pokemon_id IS NOT NULL && 
@@ -71,23 +74,28 @@ ORDER BY
 				echo "<th>Raid Boss</th>";
 				echo "<th>Moveset</th>";
 				echo "<th>City</th>";
+				echo "<th>Team</th>";
+				echo "<th>Ex-Eligible</th>";
 				echo "<th>Gym</th>";
 			echo "</tr>";
 		echo "</thead>";
 		while($row = $result->fetch()){	
 			$geofence = $geofence_srvc->get_geofence($row['lat'], $row['lon']);
-			$city = ($geofence == null ? "Unknown" : $geofence->name);
+			$city = ($geofence == null ? $unknown_value : $geofence->name);
 			$map_link = sprintf($googleMapsLink, $row["lat"], $row["lon"]);
 			$pokemon = $pokedex[$row['raid_pokemon_id']];
 			$fast_move = $quick_moves[$row['raid_pokemon_move_1']];
 			$charge_move = $charge_moves[$row['raid_pokemon_move_2']];
+			$moveset = ($fast_move == $unknown_value && $charge_move == $unknown_value ? $unknown_value : $fast_move . "/" . $charge_move);
 			echo "<tr>";
 				echo "<td scope='row'>" . $row['starts'] . "</td>";
 				echo "<td>" . $row['ends'] . "</td>";
 				echo "<td>" . $row['raid_level'] . "</td>";
 				echo "<td>" . $pokemon . "</td>";
-				echo "<td>" . $fast_move . "/" . $charge_move . "</td>";
+				echo "<td>" . $moveset . "</td>";
 				echo "<td>" . $city . "</td>";
+				echo "<td>" . get_team($row['team_id']) . "</td>";
+				echo "<td>" . ($row['ex_raid_eligible'] ? "Yes" : "No") . "</td>";
 				echo "<td><a href='" . $map_link . "' target='_blank'>" . $row['name'] . "</a></td>";
 				//echo "<img src='" . sprintf($staticImage, $row["lat"], $row["lon"], $row["lat"], $row["lon"]) . "' height='128' width='256' /></td>";
 			echo "</tr>";
@@ -106,6 +114,19 @@ ORDER BY
 }
 // Close connection
 unset($pdo);
+
+function get_team($team_id) {
+	switch ($team_id) {
+		case "1":
+			return "Mystic";
+		case "2":
+			return "Valor";
+		case "3":
+			return "Instinct";
+		default:
+			return "Neutral";
+	}
+}
 
 ?>
 <html>
