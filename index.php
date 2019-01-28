@@ -1,4 +1,5 @@
 <?php
+include './vendor/autoload.php';
 include './config.php';
 include './pokedex.php';
 include './movesets.php';
@@ -8,8 +9,6 @@ $googleMapsLink = "https://maps.google.com/maps?q=%s,%s";
 $appleMapsLink = "https://maps.apple.com/maps?daddr=%s,%s";
 
 $geofence_srvc = new GeofenceService();
-$page = $_SERVER['PHP_SELF'];
-$sec = "60";
 
 $filters = "
 <link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css' integrity='sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS' crossorigin='anonymous'>
@@ -114,7 +113,7 @@ WHERE
 ORDER BY 
     raid_end_timestamp;
 ";
-//raid_end_timestamp >= UNIX_TIMESTAMP()
+
   $result = $pdo->query($sql);
   if($result->rowCount() > 0){
     echo $filters;
@@ -141,7 +140,7 @@ ORDER BY
       $charge_move = $charge_moves[$row['raid_pokemon_move_2']];
       $moveset = (($fast_move == $unknown_value && $charge_move == $unknown_value) ? $unknown_value : $fast_move . "/" . $charge_move);
       echo "<tr>";
-        echo "<td scope='row'><a title='Remove' data-toggle='tooltip'>X&nbsp;</a>" . $row['starts'] . "</td>";
+        echo "<td scope='row'><a title='Remove' data-toggle='tooltip' class='delete'>X&nbsp;</a>" . $row['starts'] . "</td>";
         echo "<td>" . $row['ends'] . "</td>";
         echo "<td>" . $row['raid_level'] . "</td>";
         echo "<td>" . $pokemon . "</td>";
@@ -180,7 +179,7 @@ if ($google_analytics_id != "") {
 <!-- End Google Analytics -->'";
 }
 
-if (google_adsense_id != "") {
+if ($google_adsense_id != "") {
   echo "
 <script async src='//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'></script>
 <script>
@@ -206,9 +205,6 @@ function get_team($team_id) {
 
 ?>
 <html>
-  <head>
-    <meta http-equiv="refresh" content="<?php echo $sec?>;URL='<?php echo $page?>'">
-  </head>
 <script>
 $(document).on("click", ".delete", function(){
 	$(this).parents("tr").remove();

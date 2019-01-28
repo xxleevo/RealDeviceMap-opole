@@ -1,4 +1,7 @@
 <?php
+use Location\Coordinate;
+use Location\Polygon;
+
 class Geofence {
   public $name;
   public $polygon;
@@ -41,7 +44,7 @@ class GeofenceService {
   }
 
   function build_polygon($lines) {
-    $polygon = [];
+    $polygon = new Polygon();
     $count = count($lines);
     for ($i = 0; $i < $count; $i++) {
       $line = $lines[$i];
@@ -51,14 +54,14 @@ class GeofenceService {
       $parts = explode(',', $line);
       $lat = $parts[0];
       $lon = $parts[1];
-      array_push($polygon, [$lat, $lon]);
+      $polygon->addPoint(new Coordinate((float)$lat,(float)$lon));
     }
     return $polygon;
   }
 
   public function get_geofence($lat, $lon) {
     for ($i = 0; $i < count($this->geofences); $i++) {
-      if ($this->is_in_polygon($this->geofences[$i], $lat, $lon)) {
+      if ($this->is_in_polygon($this->geofences[$i], (float)$lat, (float)$lon)) {
         return $this->geofences[$i];
       }
     }
@@ -66,47 +69,8 @@ class GeofenceService {
   }
 
   function is_in_polygon($geofence, $lat_x, $lon_y) {
-    //[0]=x,[1]=y
-      /*
-    $c = 0;
-    $count = count($geofence->polygon);
-    for ($i = -1, $l = $count, $j = $l - 1; ++$i < $l; $j = $i) {
-      try {
-        if ($geofence->polygon == null)
-          continue;
-
-        $c = (($geofence->polygon[$i][0] <= $lat_x && $lat_x < $geofence->polygon[$j][0] || ($geofence->polygon[$j][0] <= $lat_x && $lat_x < $geofence->polygon[$i][0])) &&
-            ($lon_y < ($geofence->polygon[$j][1] - $lon_y) * ($lat_x - $geofence->polygon[$i][0]) / $geofence->polygon[$j][0] - $geofence->polygon[$i][0]) + $geofence->polygon[$i][1]) &&
-            ($c = !$c);
-      } catch (Exception $e) {
-        echo $e->getMessage();
-      }
-    }
-    return $c;
-       */
-      $polygon = $geofence->polygon;
-      if($polygon[0] != $polygon[count($polygon)-1])
-          $polygon[count($polygon)] = $polygon[0];
-      $j = 0;
-      $oddNodes = false;
-      $n = count($polygon);
-      for ($i = 0; $i < $n; $i++)
-      {
-          $j++;
-          if ($j == $n) {
-              $j = 0;
-          }
-          if ((($polygon[$i][0] < $lat_x) && ($polygon[$j][0] >= $lon_y)) || (($polygon[$j][0] < $lon_y) && ($polygon[$i][0] >=
-                                                                                                             $lon_y)))
-          {
-              if ($polygon[$i][1] + ($y - $polygon[$i][0]) / ($polygon[$j][0] - $polygon[$i][0]) * ($polygon[$j][1] -
-                                                                                                    $polygon[$i][1]) < $lat_x)
-              {
-                  $oddNodes = !$oddNodes;
-              }
-          }
-      }
-      return $oddNodes;
+    $point = new Coordinate($lat_x, $lon_y);
+    return $geofence->polygon->contains($point);
   }
 
   function create_directory() {
