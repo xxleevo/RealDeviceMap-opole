@@ -1,24 +1,8 @@
 <?php
+include 'config.php';
 include 'pokedex.php';
 include 'movesets.php';
 include 'geofence_service.php';
-
-// RealDeviceMap Database
-$dbhost = "127.0.0.1";        // Database host name or IP address
-$dbPort = 3306;               // Database port. (default: 3306)
-$dbuser = "user";             // Database username.
-$dbpass = "password";         // Database user password.
-$dbname = "rdmdb";            // Database name.
-
-// Table Style
-$table_style = "light";       // light/dark
-$table_header_style = "dark"; // light/dark
-$table_striped = true;        // true/false
-
-// StaticMap Lite/Google Maps Url 
-$staticImage = "http://staticmaplite-url-here/staticmap.php?center=%s,%s&markers=%s,%s,red-pushpin&zoom=14&size=300x175&maptype=mapnik"; //https://github.com/dfacts/staticmaplite
-
-$unknown_value = "Unknown";
 
 $googleMapsLink = "https://maps.google.com/maps?q=%s,%s";
 $appleMapsLink = "https://maps.apple.com/maps?daddr=%s,%s";
@@ -26,24 +10,74 @@ $appleMapsLink = "https://maps.apple.com/maps?daddr=%s,%s";
 $geofence_srvc = new GeofenceService();
 $page = $_SERVER['PHP_SELF'];
 $sec = "60";
-//style='display:inline-block' 
+
 echo "
-<p>
-<span>
-	Search:&nbsp;
-	<input type='text' id='search-input' class='form-control input-lg' onkeyup='search()' placeholder='Search for names..' title='Type in a name'>
-<select id='filter-city' class='form-control' onchange='filter_cities()'>
-    <option disabled selected>Select</option>
-	<option value='all'>All</option>
-    <option value='Rancho'>Rancho</option>
-    <option value='Upland'>Upland</option>
-	<option value='Ontario'>Ontario</option>
-	<option value='Pomona'>Pomona</option>
-	<option value='Claremont'>Claremont</option>
-    <option value='Montclair'>Montclair</option>
-</select>
-</span>
-</p>";
+<div class='panel panel-default'>
+<div class='form-group row'>
+	<div class='col-md-4'> 
+		<div class='input-group'>
+			Search Pokemon:&nbsp;
+			<input type='text' id='search-input' class='form-control input-lg' style='display:initial !important;' onkeyup='filter_raids()' placeholder='Search by name..' title='Type in a name'>
+		</div>
+	</div>
+	<div class='col-md-4'> 
+		<div class='input-group'>
+			Search by city:&nbsp;
+			<select id='filter-city' class='form-control' style='display:initial !important;' onchange='filter_raids()'>
+				<option disabled selected>Select</option>
+				<option value='all'>All</option>";
+				$count = count($geofence_srvc->geofences);
+				for ($i = 0; $i < $count; $i++) {
+					$geofence = $geofence_srvc->geofences[$i];
+					echo "<option value='".$geofence->name."'>".$geofence->name."</option>";
+				}
+				echo "
+			</select>
+		</div>
+	</div>
+</div>
+<div class='form-group row'>
+	<div class='col-md-2'> 
+		<div class='input-group'>
+			Search by level:&nbsp;
+			<select id='filter-level' class='form-control' style='display:initial !important;' onchange='filter_raids()'>
+				<option disabled selected>Select</option>
+				<option value='all'>All</option>
+				<option value='1'>1</option>
+				<option value='2'>2</option>
+				<option value='3'>3</option>
+				<option value='4'>4</option>
+				<option value='5'>5</option>
+			</select>
+		</div>
+	</div>
+	<div class='col-md-2'> 
+		<div class='input-group'>
+			Search by team:&nbsp;
+			<select id='filter-team' class='form-control' style='display:initial !important;' onchange='filter_raids()'>
+				<option disabled selected>Select</option>
+				<option value='all'>All</option>
+				<option value='Neutral'>Neutral</option>
+				<option value='Mystic'>Mystic</option>
+				<option value='Valor'>Valor</option>
+				<option value='Instinct'>Instinct</option>
+			</select>
+		</div>
+	</div>
+	<div class='col-md-2'> 
+		<div class='input-group'>
+			Search by Ex-Eligibility:&nbsp;
+			<select id='filter-ex' class='form-control' style='display:initial !important;' onchange='filter_raids()'>
+				<option disabled selected>Select</option>
+				<option value='all'>All</option>
+				<option value='yes'>Yes</option>
+				<option value='no'>No</option>
+			</select>
+		</div>
+	</div>
+</div>
+</div>
+";
 
 // Establish connection to database
 try{
@@ -91,7 +125,7 @@ ORDER BY
 				echo "<th>Raid Level</th>";
 				echo "<th>Raid Boss</th>";
 				echo "<th>Moveset</th>";
-				echo "<th>City</th>";
+				echo "<th headers='city'>City</th>";
 				echo "<th>Team</th>";
 				echo "<th>Ex-Eligible</th>";
 				echo "<th>Gym</th>";
@@ -152,36 +186,61 @@ function get_team($team_id) {
 		<meta http-equiv="refresh" content="<?php echo $sec?>;URL='<?php echo $page?>'">
     </head>
 <script>
-function search() {
-  var input = document.getElementById("search-input");
-  var filter = input.value.toUpperCase();
+function filter_raids() {
+  var search_filter = document.getElementById("search-input").value.toUpperCase();
+  var city_filter = document.getElementById("filter-city").value.toUpperCase();
+  var level_filter = document.getElementById("filter-level").value.toUpperCase();
+  var team_filter = document.getElementById("filter-team").value.toUpperCase();
+  var ex_filter = document.getElementById("filter-ex").value.toUpperCase();
+  
+  console.log("Pokemon:", search_filter, "City:", city_filter, "Level:", level_filter, "Team:", team_filter, "Ex:", ex_filter);
+  
+  if (city_filter.toLowerCase().indexOf("all") === 0 ||
+	  city_filter.toLowerCase().indexOf("select") === 0) {
+	city_filter = "";
+	console.log("City filter cleared");
+  }
+  
+  if (level_filter.toLowerCase().indexOf("all") === 0 ||
+	  level_filter.toLowerCase().indexOf("select") === 0) {
+	  level_filter = "";
+	  console.log("Level filter cleared");
+  }
+  
+  if (team_filter.toLowerCase().indexOf("all") === 0 ||
+	  team_filter.toLowerCase().indexOf("select") === 0) {
+	  team_filter = "";
+	  console.log("Team filter cleared");
+  }
+  
+  if (ex_filter.toLowerCase().indexOf("all") === 0 ||
+	  ex_filter.toLowerCase().indexOf("select") === 0) {
+	  ex_filter = "";
+	  console.log("Ex filter cleared");
+  }
+ 
   var table = document.getElementById("gym-table");
   var tr = table.getElementsByTagName("tr");
   for (var i = 0; i < tr.length; i++) {
 	  if (i == 0)
 		  continue;
-    value = tr[i].innerText.toUpperCase();
-    if (value.toUpperCase().indexOf(filter) > -1) {
+	
+	var levelValue = table.rows[i].cells[2].innerHTML;
+	var pkmnValue = table.rows[i].cells[3].innerHTML.toUpperCase();
+    var cityValue = table.rows[i].cells[5].innerHTML.toUpperCase();
+	var teamValue = table.rows[i].cells[6].innerHTML.toUpperCase();
+	var exValue = table.rows[i].cells[7].innerHTML.toUpperCase();
+	
+    if (pkmnValue.indexOf(search_filter) > -1 &&
+		cityValue.indexOf(city_filter) > -1 &&
+		levelValue.indexOf(level_filter) > -1 &&
+		teamValue.indexOf(team_filter) > -1 &&
+		exValue.indexOf(ex_filter) > -1) {
 	  tr[i].style.display = "";
     } else {
 	  tr[i].style.display = "none";
     }     
   }
-}
-function filter_cities()
-{  
-	var rex = new RegExp($('#filter-city').val());
-	if(rex =="/all/"){clearFilter()}else{
-		$('.content').hide();
-		$('.content').filter(function() {
-		return rex.test($(this).text());
-		}).show();
-	}
-}
-function clear_filter()
-{
-	$('.filter-city').val('');
-	$('.content').show();
 }
 </script>
 </html>
