@@ -1,4 +1,4 @@
-<?
+<?php
 class Geofence {
 	public $name;
 	public $polygon;
