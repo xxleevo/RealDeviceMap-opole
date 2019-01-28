@@ -26,12 +26,22 @@ $appleMapsLink = "https://maps.apple.com/maps?daddr=%s,%s";
 $geofence_srvc = new GeofenceService();
 $page = $_SERVER['PHP_SELF'];
 $sec = "60";
-
+//style='display:inline-block' 
 echo "
 <p>
 <span>
 	Search:&nbsp;
 	<input type='text' id='search-input' class='form-control input-lg' onkeyup='search()' placeholder='Search for names..' title='Type in a name'>
+<select id='filter-city' class='form-control' onchange='filter_cities()'>
+    <option disabled selected>Select</option>
+	<option value='all'>All</option>
+    <option value='Rancho'>Rancho</option>
+    <option value='Upland'>Upland</option>
+	<option value='Ontario'>Ontario</option>
+	<option value='Pomona'>Pomona</option>
+	<option value='Claremont'>Claremont</option>
+    <option value='Montclair'>Montclair</option>
+</select>
 </span>
 </p>";
 
@@ -95,7 +105,7 @@ ORDER BY
 			$fast_move = $quick_moves[$row['raid_pokemon_move_1']];
 			$charge_move = $charge_moves[$row['raid_pokemon_move_2']];
 			$moveset = ($fast_move == $unknown_value && $charge_move == $unknown_value ? $unknown_value : $fast_move . "/" . $charge_move);
-			echo "<tr>";
+			echo "<tr id='content'>";
 				echo "<td scope='row'>" . $row['starts'] . "</td>";
 				echo "<td>" . $row['ends'] . "</td>";
 				echo "<td>" . $row['raid_level'] . "</td>";
@@ -157,6 +167,21 @@ function search() {
 	  tr[i].style.display = "none";
     }     
   }
+}
+function filter_cities()
+{  
+	var rex = new RegExp($('#filter-city').val());
+	if(rex =="/all/"){clearFilter()}else{
+		$('.content').hide();
+		$('.content').filter(function() {
+		return rex.test($(this).text());
+		}).show();
+	}
+}
+function clear_filter()
+{
+	$('.filter-city').val('');
+	$('.content').show();
 }
 </script>
 </html>
