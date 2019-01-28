@@ -109,12 +109,12 @@ FROM
     rdmdb.gym
 WHERE
     raid_pokemon_id IS NOT NULL && 
-    name IS NOT NULL && 
+    name IS NOT NULL &&
     raid_end_timestamp >= UNIX_TIMESTAMP()
 ORDER BY 
     raid_end_timestamp;
 ";
-
+//raid_end_timestamp >= UNIX_TIMESTAMP()
   $result = $pdo->query($sql);
   if($result->rowCount() > 0){
     echo $filters;
@@ -141,7 +141,7 @@ ORDER BY
       $charge_move = $charge_moves[$row['raid_pokemon_move_2']];
       $moveset = (($fast_move == $unknown_value && $charge_move == $unknown_value) ? $unknown_value : $fast_move . "/" . $charge_move);
       echo "<tr>";
-        echo "<td scope='row'>" . $row['starts'] . "</td>";
+        echo "<td scope='row'><a title='Remove' data-toggle='tooltip'>X&nbsp;</a>" . $row['starts'] . "</td>";
         echo "<td>" . $row['ends'] . "</td>";
         echo "<td>" . $row['raid_level'] . "</td>";
         echo "<td>" . $pokemon . "</td>";
@@ -160,7 +160,7 @@ ORDER BY
   // Free result set
   unset($result);
   } else{
-    echo "<p>No records matching your query were found.</p>";
+    echo "<p>No raids available.</p>";
   }
 } catch(PDOException $e){
   die("ERROR: Could not able to execute $sql. " . $e->getMessage());
@@ -210,6 +210,11 @@ function get_team($team_id) {
     <meta http-equiv="refresh" content="<?php echo $sec?>;URL='<?php echo $page?>'">
   </head>
 <script>
+$(document).on("click", ".delete", function(){
+	$(this).parents("tr").remove();
+	$(".add-new").removeAttr("disabled");
+});
+
 function filter_raids() {
   var search_filter = document.getElementById("search-input").value.toUpperCase();
   var city_filter = document.getElementById("filter-city").value.toUpperCase();
