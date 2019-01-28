@@ -10,8 +10,9 @@ $appleMapsLink = "https://maps.apple.com/maps?daddr=%s,%s";
 $geofence_srvc = new GeofenceService();
 $page = $_SERVER['PHP_SELF'];
 $sec = "60";
-
+//style='display:inline-block' 
 echo "
+<<<<<<< HEAD:index.php
 <div class='panel panel-default'>
 <div class='form-group row'>
 	<div class='col-md-4'> 
@@ -78,6 +79,24 @@ echo "
 </div>
 </div>
 ";
+=======
+<p>
+<span>
+	Search:&nbsp;
+	<input type='text' id='search-input' class='form-control input-lg' onkeyup='search()' placeholder='Search for names..' title='Type in a name'>
+<select id='filter-city' class='form-control' onchange='filter_cities()'>
+    <option disabled selected>Select</option>
+	<option value='all'>All</option>
+    <option value='Rancho'>Rancho</option>
+    <option value='Upland'>Upland</option>
+	<option value='Ontario'>Ontario</option>
+	<option value='Pomona'>Pomona</option>
+	<option value='Claremont'>Claremont</option>
+    <option value='Montclair'>Montclair</option>
+</select>
+</span>
+</p>";
+>>>>>>> edec1ab83a89b8d7f893354b68e1de08aaa3d9ee:raid.php
 
 // Establish connection to database
 try{
@@ -241,6 +260,21 @@ function filter_raids() {
 	  tr[i].style.display = "none";
     }     
   }
+}
+function filter_cities()
+{  
+	var rex = new RegExp($('#filter-city').val());
+	if(rex =="/all/"){clearFilter()}else{
+		$('.content').hide();
+		$('.content').filter(function() {
+		return rex.test($(this).text());
+		}).show();
+	}
+}
+function clear_filter()
+{
+	$('.filter-city').val('');
+	$('.content').show();
 }
 </script>
 </html>
