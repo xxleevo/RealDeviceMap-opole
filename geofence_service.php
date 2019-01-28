@@ -4,7 +4,7 @@ class Geofence {
 	public $polygon;
 }
 class GeofenceService {
-	private $geofences = [];
+	public $geofences = [];
 	private $dir = "./geofences/";
 	
 	function __construct() {
