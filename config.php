@@ -16,4 +16,10 @@ $staticImage = "http://staticmaplite-url-here/staticmap.php?center=%s,%s&markers
 
 //Default unknown value
 $unknown_value = "Unknown";
+
+//Google Analytics ID
+$google_analytics_id = ""; //e.g. UA-XXXXX-Y
+
+//Google AdSense ID
+$google_adsense_id = ""; //e.g. ca-pub-XXXXXXXX
 ?>

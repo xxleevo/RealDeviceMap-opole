@@ -167,6 +167,29 @@ ORDER BY
 // Close connection
 unset($pdo);
 
+if ($google_analytics_id != "") {
+	echo "
+<!-- Google Analytics -->
+<script>
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', '" . $google_analytics_id . "', 'auto');
+	ga('send', 'pageview');
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+<!-- End Google Analytics -->'";
+}
+
+if (google_adsense_id != "") {
+	echo "
+<script async src='//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+	google_ad_client: '" . $google_adsense_id . "',
+	enable_page_level_ads: true
+  });
+</script>";
+}
+
 function get_team($team_id) {
 	switch ($team_id) {
 		case "1":
