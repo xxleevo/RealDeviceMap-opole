@@ -27,6 +27,14 @@ $geofence_srvc = new GeofenceService();
 $page = $_SERVER['PHP_SELF'];
 $sec = "60";
 
+echo "
+<p>
+<span>
+	Search:&nbsp;
+	<input type='text' id='search-input' class='form-control input-lg' onkeyup='search()' placeholder='Search for names..' title='Type in a name'>
+</span>
+</p>";
+
 // Establish connection to database
 try{
     $pdo = new PDO("mysql:host=$dbhost;dbname=$dbname;port=$dbPort", $dbuser, $dbpass);
@@ -65,7 +73,7 @@ ORDER BY
 	$result = $pdo->query($sql);
 	if($result->rowCount() > 0){
 		echo "<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css' integrity='sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS' crossorigin='anonymous'>";
-		echo "<table class='table table-".$table_style." ".($table_striped ? 'table-striped' : null)."' border='1';>";
+		echo "<table class='table table-".$table_style." ".($table_striped ? 'table-striped' : null)."' border='1' id='gym-table';>";
 		echo "<thead class='thead-".$table_header_style."'>";
 			echo "<tr>";
 				echo "<th>Raid Starts</th>";
@@ -131,6 +139,24 @@ function get_team($team_id) {
 ?>
 <html>
     <head>
-    <meta http-equiv="refresh" content="<?php echo $sec?>;URL='<?php echo $page?>'">
+		<meta http-equiv="refresh" content="<?php echo $sec?>;URL='<?php echo $page?>'">
     </head>
+<script>
+function search() {
+  var input = document.getElementById("search-input");
+  var filter = input.value.toUpperCase();
+  var table = document.getElementById("gym-table");
+  var tr = table.getElementsByTagName("tr");
+  for (var i = 0; i < tr.length; i++) {
+	  if (i == 0)
+		  continue;
+    value = tr[i].innerText.toUpperCase();
+    if (value.toUpperCase().indexOf(filter) > -1) {
+	  tr[i].style.display = "";
+    } else {
+	  tr[i].style.display = "none";
+    }     
+  }
+}
+</script>
 </html>
