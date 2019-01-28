@@ -1,8 +1,8 @@
 <?php
-include 'config.php';
-include 'pokedex.php';
-include 'movesets.php';
-include 'geofence_service.php';
+include './config.php';
+include './pokedex.php';
+include './movesets.php';
+include './geofence_service.php';
 
 $googleMapsLink = "https://maps.google.com/maps?q=%s,%s";
 $appleMapsLink = "https://maps.apple.com/maps?daddr=%s,%s";
