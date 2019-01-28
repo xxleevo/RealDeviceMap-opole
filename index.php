@@ -149,7 +149,6 @@ ORDER BY
 				echo "<td>" . get_team($row['team_id']) . "</td>";
 				echo "<td>" . ($row['ex_raid_eligible'] ? "Yes" : "No") . "</td>";
 				echo "<td><a href='" . $map_link . "' target='_blank'>" . $row['name'] . "</a></td>";
-				//echo "<img src='" . sprintf($staticImage, $row["lat"], $row["lon"], $row["lat"], $row["lon"]) . "' height='128' width='256' /></td>";
 			echo "</tr>";
 		}
 		echo "</table>";
