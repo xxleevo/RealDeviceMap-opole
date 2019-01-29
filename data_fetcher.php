@@ -84,7 +84,7 @@ ORDER BY
   // Free result set
   unset($result);
   } else{
-    echo "<p>No raids available.</p>";
+    echo "<p>No raids available, come back tomorrow after 5am.</p>";
   }
 } catch(PDOException $e){
   die("ERROR: Could not able to execute $sql. " . $e->getMessage());
