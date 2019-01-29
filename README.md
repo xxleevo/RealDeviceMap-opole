@@ -5,7 +5,7 @@ Billboard to show active raids sorted by which raids will end first with raid bo
 ```  
 git clone https://github.com/versx/RealDeviceMap-RaidBillBoard raids (change `raids` to your liking)  
 Install Composer (https://getcomposer.org/)  
-mkdir geofences (in your cloned RAIDS folder i.e. /var/www/site/raids)  
+mkdir geofences (in your cloned `raids` folder i.e. /var/www/site/raids)  
 ```
 
 # Geofences  
