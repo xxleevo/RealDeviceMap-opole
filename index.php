@@ -116,7 +116,8 @@ if ($google_adsense_id != "") {
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 
 <script type="text/javascript">
-var refresher = setInterval(filter_raids, 5000);
+var refresh_rate = <?php echo $table_refresh_s ?>;
+var refresher = setInterval(filter_raids, refresh_rate * 1000);
 setTimeout(function() {
   clearInterval(refresher);
 }, 1800000);
@@ -168,8 +169,6 @@ function filter_raids() {
     if (i == 0)
       continue;
   
-  console.log("Rows:", table.rows[i]);
-	
     var level_value = table.rows[i].cells[2].innerHTML;
     var pkmn_value = table.rows[i].cells[3].innerHTML.toUpperCase();
     var city_value = table.rows[i].cells[5].innerHTML.toUpperCase();

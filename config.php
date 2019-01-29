@@ -19,4 +19,7 @@ $google_analytics_id = ""; //e.g. UA-XXXXX-Y
 
 //Google AdSense ID
 $google_adsense_id = ""; //e.g. ca-pub-XXXXXXXX
+
+//Table refresh interval in seconds
+$table_refresh_s = 60;
 ?>
