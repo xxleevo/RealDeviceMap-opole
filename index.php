@@ -82,9 +82,6 @@ echo "<div id='table-refresh'>";
 include_once("data_fetcher.php");
 echo "</div>";
 
-// Close connection
-unset($pdo);
-
 if ($google_analytics_id != "") {
   echo "
 <!-- Google Analytics -->
