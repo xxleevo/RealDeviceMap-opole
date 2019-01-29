@@ -12,7 +12,7 @@ try {
   $pdo = new PDO("mysql:host=$dbhost;dbname=$dbname;port=$dbPort", $dbuser, $dbpass);
   // Set the PDO error mode to exception
   $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch(PDOException $e){
+} catch(PDOException $e) {
   die("ERROR: Could not connect. " . $e->getMessage());
 }
 // Query Database and Build Raid Billboard
@@ -43,7 +43,7 @@ ORDER BY
 ";
 
   $result = $pdo->query($sql);
-  if($result->rowCount() > 0){
+  if ($result->rowCount() > 0) {
     echo $filters;
     echo "<table class='table table-".$table_style." ".($table_striped ? 'table-striped' : null)."' border='1' id='gym-table';>";
     echo "<thead class='thead-".$table_header_style."'>";
@@ -59,7 +59,7 @@ ORDER BY
         echo "<th>Gym</th>";
     echo "</tr>";
     echo "</thead>";
-    while($row = $result->fetch()){	
+    while ($row = $result->fetch()) {	
       $geofence = $geofence_srvc->get_geofence($row['lat'], $row['lon']);
       $city = ($geofence == null ? $unknown_value : $geofence->name);
       $map_link = sprintf($googleMapsLink, $row["lat"], $row["lon"]);

@@ -3,9 +3,19 @@ Billboard to show active raids sorted by which raids will end first with raid bo
 
 # Install  
 ```  
-git clone https://github.com/versx/RealDeviceMap-RaidBillBoard RAIDS  
-Install Composer (https://getcomposer.org/)
-mkdir geofences (in your cloned RAIDS folder i.e. /var/www/site/RAIDS)  
+git clone https://github.com/versx/RealDeviceMap-RaidBillBoard raids (change `raids` to your liking)  
+Install Composer (https://getcomposer.org/)  
+mkdir geofences (in your cloned RAIDS folder i.e. /var/www/site/raids)  
+```
+
+# Geofences  
+Create or copy your existing geofences to the `geofences` folder. The following is the expected format:   
+```
+[City Name]  
+0,0  
+1,1  
+2,2  
+3,3  
 ```
 
 # config.php  
