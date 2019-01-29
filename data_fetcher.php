@@ -94,14 +94,10 @@ unset($pdo);
 
 function get_team($team_id) {
   switch ($team_id) {
-    case "1":
-      return "Mystic";
-    case "2":
-      return "Valor";
-    case "3":
-      return "Instinct";
-    default:
-      return "Neutral";
+    case "1": return "Mystic";
+    case "2": return "Valor";
+    case "3": return "Instinct";
+    default:  return "Neutral";
   }
 }
 ?>

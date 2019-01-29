@@ -120,8 +120,8 @@ setTimeout(function() {
 }, 1800000);
 
 $(document).on("click", ".delete", function(){
-	$(this).parents("tr").remove();
-	$(".add-new").removeAttr("disabled");
+  $(this).parents("tr").remove();
+  $(".add-new").removeAttr("disabled");
 });
 
 function filter_raids() {
