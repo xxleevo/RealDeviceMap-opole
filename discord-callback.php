@@ -20,7 +20,6 @@ try {
 
     if (!empty($discord_bot_token)) {
       $discord = new DiscordClient(['token' => $discord_bot_token]); // Token is required
-      file_put_contents('user.log', "Guild:".$discord_guild_id.", User:".$user->id);
       $member = $discord->guild->getGuildMember(['guild.id' => $discord_guild_id, 'user.id' => (int)$user->id]);
       $roles = $member->roles;
 
@@ -29,9 +28,8 @@ try {
         die("You must have a special role to access this page.");
       }
 
-	    $data = print_r($user, true);
       if ($log_discord_users) { //Debug
-        file_put_contents('./discord_users.txt', $data, FILE_APPEND);
+        file_put_contents('./discord_users.txt', print_r($user, true), FILE_APPEND);
 	    }
 
       $_SESSION['user'] = $user->{'username'};
