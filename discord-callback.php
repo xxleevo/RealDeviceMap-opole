@@ -13,9 +13,9 @@ try {
     $guilds = json_decode($auth->get("/api/v6/users/@me/guilds"));
     $session_lifetime = 60;
 		
-	  $in_trusted = in_trusted_guild($discord_guild_id, $guilds);
-	  if (!$in_trusted) {
-	    die("You must join Discord server $discord_invite_link");
+    $in_trusted = in_trusted_guild($discord_guild_id, $guilds);
+    if (!$in_trusted) {
+      die("You must join Discord server $discord_invite_link");
     }
 
     if (!empty($discord_bot_token)) {
@@ -30,7 +30,7 @@ try {
 
       if ($log_discord_users) { //Debug
         file_put_contents('./discord_users.txt', print_r($user, true), FILE_APPEND);
-	    }
+      }
 
       $_SESSION['user'] = $user->{'username'};
 
