@@ -1,5 +1,7 @@
 {
     "require": {
-        "mjaschen/phpgeo": "^2.0"
+        "mjaschen/phpgeo": "^2.0",
+        "easybiblabs/oauth2-client-php": "^4.1",
+        "restcord/restcord": "^0.3.1"
     }
 }

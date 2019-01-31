@@ -1,9 +1,20 @@
 <?php
+session_start();
+
 include './vendor/autoload.php';
 include './config.php';
 include './pokedex.php';
 include './movesets.php';
 include './geofence_service.php';
+
+if ($discord_login && !isset($_SESSION['user'])) {
+  header("Location: ./discord-login.php");
+  die();
+}
+
+if (isset($_SESSION['user'])) {
+   echo "<h1>Welcome ".$_SESSION['user']."</h1>";
+}
 
 $googleMapsLink = "https://maps.google.com/maps?q=%s,%s";
 $appleMapsLink = "https://maps.apple.com/maps?daddr=%s,%s";
