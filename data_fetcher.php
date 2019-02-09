@@ -33,7 +33,7 @@ SELECT
     team_id,
     ex_raid_eligible
 FROM 
-    rdmdb.gym
+    " . $dbname . ".gym
 WHERE
     raid_pokemon_id IS NOT NULL && 
     name IS NOT NULL &&
