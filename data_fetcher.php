@@ -37,7 +37,7 @@ FROM
 WHERE
     raid_pokemon_id IS NOT NULL && 
     name IS NOT NULL &&
-    raid_end_timestamp >= UNIX_TIMESTAMP()
+    raid_end_timestamp < UNIX_TIMESTAMP()
 ORDER BY 
     raid_end_timestamp;
 ";
@@ -48,15 +48,15 @@ ORDER BY
     echo "<table class='table table-".$table_style." ".($table_striped ? 'table-striped' : null)."' border='1' id='gym-table';>";
     echo "<thead class='thead-".$table_header_style."'>";
     echo "<tr>";
-        echo "<th>Raid Starts</th>";
-        echo "<th>Raid Ends</th>";
-        echo "<th>Raid Level</th>";
-        echo "<th>Raid Boss</th>";
-        echo "<th>Moveset</th>";
-        echo "<th>City</th>";
-        echo "<th>Team</th>";
-        echo "<th>Ex-Eligible</th>";
-        echo "<th>Gym</th>";
+        echo "<th onclick='sort_table(0)'>Raid Starts</th>";
+        echo "<th onclick='sort_table(1)'>Raid Ends</th>";
+        echo "<th onclick='sort_table(2)'>Raid Level</th>";
+        echo "<th onclick='sort_table(3)'>Raid Boss</th>";
+        echo "<th onclick='sort_table(4)'>Moveset</th>";
+        echo "<th onclick='sort_table(5)'>City</th>";
+        echo "<th onclick='sort_table(6)'>Team</th>";
+        echo "<th onclick='sort_table(7)'>Ex-Eligible</th>";
+        echo "<th onclick='sort_table(8)'>Gym</th>";
     echo "</tr>";
     echo "</thead>";
     while ($row = $result->fetch()) {	
