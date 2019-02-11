@@ -12,43 +12,55 @@ try {
     $user = json_decode($auth->get("/api/v6/users/@me"));
     $guilds = json_decode($auth->get("/api/v6/users/@me/guilds"));
     $session_lifetime = 60;
-		
-    $in_trusted = in_trusted_guild($discord_guild_id, $guilds);
+
+    $in_trusted = in_trusted_guild($discord_guild_ids, $guilds);
     if (!$in_trusted) {
       die("You must join Discord server $discord_invite_link");
     }
 
+    $valid = false;
     if (!empty($discord_bot_token)) {
       $discord = new DiscordClient(['token' => $discord_bot_token]); // Token is required
-      $member = $discord->guild->getGuildMember(['guild.id' => $discord_guild_id, 'user.id' => (int)$user->id]);
-      $roles = $member->roles;
+      $count = count($discord_guild_ids);
+      for ($i = 0; $i < $count; $i++) {
+        $member = $discord->guild->getGuildMember(['guild.id' => $discord_guild_ids[$i], 'user.id' => (int)$user->id]);
+        if ($member === null)
+          continue;
 
-      $has_trusted_role = has_trusted_role($discord_role_ids, $roles);
+        $has_trusted_role = has_trusted_role($discord_role_ids, $member->roles);
+        if (!$has_trusted_role)
+          continue;
+
+        if ($log_discord_users) { //Debug
+          file_put_contents('./discord_users.txt', print_r($user, true), FILE_APPEND);
+        }
+
+        $_SESSION['user'] = $user->{'username'};
+
+        setcookie("LoginCookie", session_id(), time()+$session_lifetime);
+        $valid = true;
+        break;
+      }
+	  
       if (!$has_trusted_role) {
-        die("You must have a special role to access this page.");
+        die("You do not have the required permissions to access this page.");
       }
-
-      if ($log_discord_users) { //Debug
-        file_put_contents('./discord_users.txt', print_r($user, true), FILE_APPEND);
-      }
-
-      $_SESSION['user'] = $user->{'username'};
-
-      setcookie("LoginCookie", session_id(), time()+$session_lifetime);
     }
   }
-  header("Location: .");
+  if ($valid) {
+	header("Location: .");
+  }
 } catch (Exception $e) {
   file_put_contents('error.log', $e->getMessage(), FILE_APPEND);
   header("Location: ./discord-login.php");
 }
 
-function in_trusted_guild($trusted_guild_id, $guilds) {
-  if ($trusted_guild_id == 0) {
+function in_trusted_guild($trusted_guild_ids, $guilds) {
+  if (count($trusted_guild_ids) == 0) {
     return true;
   }
   foreach ($guilds as $key=>$value) {
-    if ($value->id == $trusted_guild_id) {
+    if (in_array($value->id, $trusted_guild_ids)) {
   	  return true;
     }
   }

@@ -29,7 +29,7 @@ $discord_bot_client_id = 0; //Discord bot client ID
 $discord_bot_client_secret = ""; //Discord bot client secret
 $discord_bot_redirect_uri = "https://website/discord-callback.php"; //Callback uri
 $discord_invite_link = ""; //Optional Discord invite link to preset the user if not in the guild
-$discord_guild_id = 0; //Guild ID the user should be in
+$discord_guild_ids = []; //Guild ID the user should be in
 $discord_role_ids = []; //Role IDs the user should have
 $discord_bot_token = ""; //Discord bot token
 
