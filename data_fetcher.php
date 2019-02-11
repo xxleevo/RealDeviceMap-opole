@@ -5,6 +5,9 @@ require_once './pokedex.php';
 require_once './movesets.php';
 require_once './geofence_service.php';
 
+if ($discord_login && !isset($_SESSION['user']))
+	die("No access");
+
 $geofence_srvc = new GeofenceService();
 
 // Establish connection to database
