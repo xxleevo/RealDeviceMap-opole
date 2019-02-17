@@ -12,6 +12,14 @@ if ($discord_login && !isset($_SESSION['user'])) {
 $googleMapsLink = "https://maps.google.com/maps?q=%s,%s";
 $appleMapsLink = "https://maps.apple.com/maps?daddr=%s,%s";
 
+echo "<html>
+<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css' integrity='sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS' crossorigin='anonymous'>
+<link rel='stylesheet' href='./static/css/font-awesome.min.css'>
+<script type='text/javascript' src='https://code.jquery.com/jquery-3.3.1.slim.min.js' integrity='sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo' crossorigin='anonymous'></script>
+<script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js' integrity='sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut' crossorigin='anonymous'></script>
+<script type='text/javascript' src='https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js' integrity='sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k' crossorigin='anonymous'></script>
+<script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>";
+
 include('./templates/header.html');
 
 echo "<div class='container'>";
@@ -23,7 +31,6 @@ if (isset($_SESSION['user'])) {
 $request_method = $_SERVER["REQUEST_METHOD"];
 switch($request_method) {
   case "GET":
-    // Retrive Products
     if(!empty($_GET["page"])) {
       $page = $_GET["page"];
       switch ($page) {
@@ -31,13 +38,13 @@ switch($request_method) {
           echo "Pokemon";
           break;
         case "raids":
-          include('./raids.php');
+          include('./pages/raids.php');
           break;
         case "gyms":
-          echo "Gyms";
+          include('./pages/gyms.php');
           break;
         case "quests":
-          echo "Quests";
+          include('./pages/quests.php');
           break;
         case "pokestops":
           echo "Pokestops";
@@ -47,7 +54,7 @@ switch($request_method) {
           break;          
       }
     } else {
-      //showDashboard();
+      include('./pages/dashboard.php');
     }
     break;
   default:
@@ -56,81 +63,6 @@ switch($request_method) {
     break;
 }
 
-/*
-$geofence_srvc = new GeofenceService();
-
-$filters = "
-<div class='panel panel-default'>
-<div class='form-group row'>
-  <div class='col-md-4'> 
-    <div class='input-group'>
-    Search Pokemon:&nbsp;
-    <input type='text' id='search-input' class='form-control input-lg' style='display:initial !important;' onkeyup='filter_raids()' placeholder='Search by name..' title='Type in a name'>
-  </div>
-</div>
-<div class='col-md-4'> 
-  <div class='input-group'>
-    Search by city:&nbsp;
-    <select id='filter-city' class='form-control' style='display:initial !important;' onchange='filter_raids()'>
-      <option disabled selected>Select</option>
-      <option value='all'>All</option>";
-      $count = count($geofence_srvc->geofences);
-      for ($i = 0; $i < $count; $i++) {
-        $geofence = $geofence_srvc->geofences[$i];
-        $filters .= "<option value='".$geofence->name."'>".$geofence->name."</option>";
-      }
-      $filters .= "
-      </select>
-    </div>
-  </div>
-</div>
-<div class='form-group row'>
-  <div class='col-md-2'> 
-    <div class='input-group'>
-    Search by level:&nbsp;
-    <select id='filter-level' class='form-control' style='display:initial !important;' onchange='filter_raids()'>
-        <option disabled selected>Select</option>
-        <option value='all'>All</option>
-        <option value='1'>1</option>
-        <option value='2'>2</option>
-        <option value='3'>3</option>
-        <option value='4'>4</option>
-        <option value='5'>5</option>
-      </select>
-    </div>
-  </div>
-  <div class='col-md-2'> 
-    <div class='input-group'>
-      Search by team:&nbsp;
-      <select id='filter-team' class='form-control' style='display:initial !important;' onchange='filter_raids()'>
-        <option disabled selected>Select</option>
-        <option value='all'>All</option>
-        <option value='Neutral'>Neutral</option>
-        <option value='Mystic'>Mystic</option>
-        <option value='Valor'>Valor</option>
-        <option value='Instinct'>Instinct</option>
-      </select>
-    </div>
-  </div>
-  <div class='col-md-2'> 
-    <div class='input-group'>
-      Search by Ex-Eligibility:&nbsp;
-      <select id='filter-ex' class='form-control' style='display:initial !important;' onchange='filter_raids()'>
-        <option disabled selected>Select</option>
-        <option value='all'>All</option>
-        <option value='yes'>Yes</option>
-        <option value='no'>No</option>
-      </select>
-    </div>
-  </div>
-</div>
-</div>
-";
-
-echo "<div id='table-refresh'>";
-include_once("data_fetcher.php");
-echo "</div>";
-*/
 echo "</div>";
 
 if ($google_analytics_id != "") {
@@ -142,7 +74,7 @@ if ($google_analytics_id != "") {
   ga('send', 'pageview');
 </script>
 <script async src='https://www.google-analytics.com/analytics.js'></script>
-<!-- End Google Analytics -->'";
+<!-- End Google Analytics -->";
 }
 
 if ($google_adsense_id != "") {
@@ -156,12 +88,6 @@ if ($google_adsense_id != "") {
 </script>";
 }
 ?>
-<html>
-<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css' integrity='sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS' crossorigin='anonymous'>
-<script type="text/javascript" src='https://code.jquery.com/jquery-3.3.1.slim.min.js' integrity='sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo' crossorigin='anonymous'></script>
-<script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js' integrity='sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut' crossorigin='anonymous'></script>
-<script type="text/javascript" src='https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js' integrity='sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k' crossorigin='anonymous'></script>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 
 <script type="text/javascript">
 var refresh_rate = <?php echo $table_refresh_s ?>;

@@ -1,0 +1,9 @@
+- TimeZone
+- Secure pages
+- Finish quest rewards
+- Dashboard page
+- Pokemon page
+- Pokestops page
+- Statistics page
+- Cleanup code
+- Cleanup folder structure

@@ -22,27 +22,27 @@ try {
 try {
   $sql = "
 SELECT 
-    time_format(from_unixtime(raid_battle_timestamp), '%h:%i:%s %p')
-        AS starts, 
-    time_format(from_unixtime(raid_end_timestamp),'%h:%i:%s %p')
-        AS ends, 
-    lat, 
-    lon,
-    raid_level,
-    raid_pokemon_id, 
-    raid_pokemon_move_1,
-    raid_pokemon_move_2,
-    name,
-    team_id,
-    ex_raid_eligible
+  time_format(from_unixtime(raid_battle_timestamp), '%h:%i:%s %p')
+    AS starts, 
+  time_format(from_unixtime(raid_end_timestamp),'%h:%i:%s %p')
+    AS ends, 
+  lat, 
+  lon,
+  raid_level,
+  raid_pokemon_id, 
+  raid_pokemon_move_1,
+  raid_pokemon_move_2,
+  name,
+  team_id,
+  ex_raid_eligible
 FROM 
-    " . $dbname . ".gym
+  " . $dbname . ".gym
 WHERE
-    raid_pokemon_id IS NOT NULL && 
-    name IS NOT NULL &&
-    raid_end_timestamp >= UNIX_TIMESTAMP()
+  raid_pokemon_id IS NOT NULL && 
+  name IS NOT NULL &&
+  raid_end_timestamp >= UNIX_TIMESTAMP()
 ORDER BY 
-    raid_end_timestamp;
+  raid_end_timestamp;
 ";
 
   $result = $pdo->query($sql);
