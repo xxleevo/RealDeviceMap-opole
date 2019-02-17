@@ -3,22 +3,60 @@ session_start();
 
 include './vendor/autoload.php';
 include './config.php';
-include './pokedex.php';
-include './movesets.php';
-include './geofence_service.php';
 
 if ($discord_login && !isset($_SESSION['user'])) {
   header("Location: ./discord-login.php");
   die();
 }
 
-if (isset($_SESSION['user'])) {
-   echo "<h1>Welcome ".$_SESSION['user']."</h1>";
-}
-
 $googleMapsLink = "https://maps.google.com/maps?q=%s,%s";
 $appleMapsLink = "https://maps.apple.com/maps?daddr=%s,%s";
 
+include('./templates/header.html');
+
+echo "<div class='container'>";
+
+if (isset($_SESSION['user'])) {
+  echo "<h1>Welcome ".$_SESSION['user']."</h1>";
+}
+
+$request_method = $_SERVER["REQUEST_METHOD"];
+switch($request_method) {
+  case "GET":
+    // Retrive Products
+    if(!empty($_GET["page"])) {
+      $page = $_GET["page"];
+      switch ($page) {
+        case "pokemon":
+          echo "Pokemon";
+          break;
+        case "raids":
+          include('./raids.php');
+          break;
+        case "gyms":
+          echo "Gyms";
+          break;
+        case "quests":
+          echo "Quests";
+          break;
+        case "pokestops":
+          echo "Pokestops";
+          break;
+        case "stats":
+          echo "Stats";
+          break;          
+      }
+    } else {
+      //showDashboard();
+    }
+    break;
+  default:
+    // Invalid Request Method
+    header("HTTP/1.0 405 Method Not Allowed");
+    break;
+}
+
+/*
 $geofence_srvc = new GeofenceService();
 
 $filters = "
@@ -91,6 +129,8 @@ $filters = "
 
 echo "<div id='table-refresh'>";
 include_once("data_fetcher.php");
+echo "</div>";
+*/
 echo "</div>";
 
 if ($google_analytics_id != "") {
