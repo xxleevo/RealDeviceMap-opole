@@ -34,4 +34,7 @@ $discord_role_ids = []; //Role IDs the user should have
 $discord_bot_token = ""; //Discord bot token
 
 $log_discord_users = false;
+
+$paypal_link = "";
+$venmo_link = "";
 ?>

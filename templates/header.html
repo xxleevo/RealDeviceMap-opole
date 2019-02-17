@@ -33,12 +33,21 @@
         <li class="nav-item <?=$_GET['page']==='stats' ? 'active' : '' ?>">
           <a class="nav-link" href="/stats"><i class="fa fa-bar-chart" aria-hidden="true"></i>&nbsp;Stats</a>
         </li>
+<?php if (!empty($discord_invite_link)) { ?>
         <li class="nav-item">
-          <a class="nav-link" href="https://discord.ver.sx"><img src="./static/images/discord.png" width="24" height="20"></a>
+          <a class="nav-link" href="<?=$discord_invite_link ?>"><img src="./static/images/discord.png" width="24" height="20"></a>
         </li>
+<?php } ?>
+<?php if (!empty($paypal_link)) { ?>
         <li class="nav-item">
-          <a class="nav-link" href="https://paypal.me/versxPOGO"><img src="./static/images/paypal.png" width="24" height="20"></a>
+          <a class="nav-link" href="<?=$paypal_link ?>"><img src="./static/images/paypal.png" width="24" height="20"></a>
         </li>
+<?php } ?>
+<?php if (!empty($venmo_link)) { ?>
+        <li class="nav-item">
+          <a class="nav-link" href="<?=$venmo_link ?>"><img src="./static/images/venmo.png" width="24" height="20"></a>
+        </li>
+<?php } ?>
       </ul>
     </div>
   </div>
