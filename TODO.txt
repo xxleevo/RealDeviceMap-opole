@@ -1,11 +1,11 @@
 - Secure pages
+- Pokemon page
+- Statistics page
+- Stat charts
 - Finish quest rewards
 - Finish Dashboard page
-- Pokemon page
-- Add map to Pokestops page
-- Statistics page
 - Cleanup code
 - Cleanup folder structure
 - Fix table sort
 - Add icon to raids
-- Stat charts
+- Add map to Pokestops page

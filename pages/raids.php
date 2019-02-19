@@ -5,7 +5,7 @@ require_once './includes/GeofenceService.php';
 require_once './static/data/pokedex.php';
 require_once './static/data/movesets.php';
 
-$geofence_srvc = new GeofenceService();
+$geofenceSrvc = new GeofenceService();
 
 $filters = "
 <div class='container'>
@@ -23,10 +23,10 @@ $filters = "
       <select id='filter-city' class='custom-select' onchange='filter_raids()'>
         <option disabled selected>Select</option>
         <option value='all'>All</option>
-        <option value='" . $unknown_value . "'>" . $unknown_value . "</option>";
-        $count = count($geofence_srvc->geofences);
+        <option value='" . $config['ui']['unknownValue'] . "'>" . $config['ui']['unknownValue'] . "</option>";
+        $count = count($geofenceSrvc->geofences);
         for ($i = 0; $i < $count; $i++) {
-          $geofence = $geofence_srvc->geofences[$i];
+          $geofence = $geofenceSrvc->geofences[$i];
           $filters .= "<option value='".$geofence->name."'>".$geofence->name."</option>";
         }
         $filters .= "
@@ -101,7 +101,7 @@ include_once("./includes/data_fetcher.php");
 echo "</div>";
 ?>
 <script type="text/javascript">
-var refresh_rate = <?=$table_refresh_s?>;
+var refresh_rate = <?=$config['ui']['table']['refreshRateS']?>;
 var refresher = setInterval(filter_raids, refresh_rate * 1000);
 setTimeout(function() { clearInterval(refresher); }, 1800000);
 

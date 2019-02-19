@@ -4,15 +4,12 @@ session_start();
 include './vendor/autoload.php';
 include './config.php';
 
-date_default_timezone_set($time_zone);
+date_default_timezone_set($config['core']['timeZone']);
 
-if ($discord_login && !isset($_SESSION['user'])) {
+if ($config['discord']['enabled'] && !isset($_SESSION['user'])) {
   header("Location: ./discord-login.php");
   die();
 }
-
-$googleMapsLink = "https://maps.google.com/maps?q=%s,%s";
-$appleMapsLink = "https://maps.apple.com/maps?daddr=%s,%s";
 
 echo "<!doctype html>
 <html lang='en'>
@@ -21,7 +18,7 @@ echo "<!doctype html>
     <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
     <link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css' integrity='sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS' crossorigin='anonymous'>
     <link rel='stylesheet' href='./static/css/font-awesome.min.css'>
-    <title>" . $title . "</title>
+    <title>" . $config['ui']['title'] . "</title>
   </head>
   <body>
     <script type='text/javascript' src='https://code.jquery.com/jquery-3.3.1.slim.min.js' integrity='sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo' crossorigin='anonymous'></script>
@@ -76,30 +73,30 @@ switch($request_method) {
 
 echo "</div>";
 
-if ($google_analytics_id != "") {
+if (!empty($config['google']['analyticsId'])) {
   echo "
 <!-- Google Analytics -->
 <script>
   window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-  ga('create', '" . $google_analytics_id . "', 'auto');
+  ga('create', '" . $config['google']['analyticsId'] . "', 'auto');
   ga('send', 'pageview');
 </script>
 <script async src='https://www.google-analytics.com/analytics.js'></script>
 <!-- End Google Analytics -->";
 }
 
-if ($google_adsense_id != "") {
+if (!empty($config['google']['adSenseId'])) {
   echo "
 <script async src='//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'></script>
 <script>
   (adsbygoogle = window.adsbygoogle || []).push({
-    google_ad_client: '" . $google_adsense_id . "',
+    google_ad_client: '" . $config['google']['adSenseId'] . "',
     enable_page_level_ads: true
   });
 </script>";
 }
 
-if ($show_footer) {
+if ($config['core']['showFooter']) {
   include_once('./templates/footer.html');
 }
 

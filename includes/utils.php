@@ -11,15 +11,15 @@ function get_team($team_id) {
   }
 }
 function get_gym_stats() {
-  global $dbhost, $dbPort, $dbuser, $dbpass, $dbname;
-  $db = new DbConnector($dbhost, $dbPort, $dbuser, $dbpass, $dbname);
+  global $config;
+  $db = new DbConnector($config['db']);
   $pdo = $db->getConnection();
   $sql = "
 SELECT
   team_id AS team,
   COUNT(id) AS count
 FROM
-  " . $dbname . ".gym
+  " . $config['db']['dbname'] . ".gym
 GROUP BY
   team
 ";
@@ -34,8 +34,8 @@ GROUP BY
 }
   
 function get_pokestop_stats() {
-  global $dbhost, $dbPort, $dbuser, $dbpass, $dbname;
-  $db = new DbConnector($dbhost, $dbPort, $dbuser, $dbpass, $dbname);
+  global $config;
+  $db = new DbConnector($config['db']);
   $pdo = $db->getConnection();
   $sql = "
 SELECT 
@@ -43,7 +43,7 @@ SELECT
   SUM(CASE WHEN lure_expire_timestamp > 0 THEN 1 ELSE 0 END) lured,
   SUM(CASE WHEN quest_reward_type THEN 1 ELSE 0 END) quests
 FROM
-  " . $dbname . ".pokestop
+  " . $config['db']['dbname'] . ".pokestop
 ";
   $result = $pdo->query($sql);
   if ($result->rowCount() > 0) {
@@ -56,10 +56,10 @@ FROM
 }
   
 function get_raid_stats() {
-  global $dbhost, $dbPort, $dbuser, $dbpass, $dbname;
-  $db = new DbConnector($dbhost, $dbPort, $dbuser, $dbpass, $dbname);
+  global $config;
+  $db = new DbConnector($config['db']);
   $pdo = $db->getConnection();
-  $count = $pdo->query("SELECT count(id) FROM $dbname.gym WHERE raid_pokemon_id IS NOT NULL && name IS NOT NULL && raid_end_timestamp >= UNIX_TIMESTAMP()")->fetchColumn();
+  $count = $pdo->query("SELECT count(id) FROM " . $config['db']['dbname'] . ".gym WHERE raid_pokemon_id IS NOT NULL && name IS NOT NULL && raid_end_timestamp >= UNIX_TIMESTAMP()")->fetchColumn();
   unset($pdo);
   unset($db);
       
@@ -67,10 +67,10 @@ function get_raid_stats() {
 }
   
 function get_table_count($table) {
-  global $dbhost, $dbPort, $dbuser, $dbpass, $dbname;
-  $db = new DbConnector($dbhost, $dbPort, $dbuser, $dbpass, $dbname);
+  global $config;
+  $db = new DbConnector($config['db']);
   $pdo = $db->getConnection();
-  $count = $pdo->query("SELECT count(id) FROM $dbname.$table")->fetchColumn();
+  $count = $pdo->query("SELECT count(id) FROM " . $config['db']['dbname'] . ".$table")->fetchColumn();
   unset($pdo);
   unset($db);
     

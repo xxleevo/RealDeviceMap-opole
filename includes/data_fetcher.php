@@ -7,22 +7,22 @@ require_once './includes/utils.php';
 require_once './static/data/movesets.php';
 require_once './static/data/pokedex.php';
 
-if ($discord_login && !isset($_SESSION['user']))
+if ($config['discord']['enabled'] && !isset($_SESSION['user']))
   die("No access");
 
-$geofence_srvc = new GeofenceService();
+$geofenceSrvc = new GeofenceService();
 
 // Establish connection to database
-$db = new DbConnector($dbhost, $dbPort, $dbuser, $dbpass, $dbname);
+$db = new DbConnector($config['db']);
 $pdo = $db->getConnection();
 
 // Query Database and Build Raid Billboard
 try {
   $sql = "
 SELECT 
-  TIME_FORMAT(CONVERT_TZ(FROM_UNIXTIME(raid_battle_timestamp), 'UTC', '" . $time_zone . "'), '%h:%i:%s %p')
+  TIME_FORMAT(CONVERT_TZ(FROM_UNIXTIME(raid_battle_timestamp), 'UTC', '" . $config['core']['timeZone'] . "'), '%h:%i:%s %p')
     AS starts, 
-  TIME_FORMAT(CONVERT_TZ(FROM_UNIXTIME(raid_end_timestamp), 'UTC', '" . $time_zone . "'),'%h:%i:%s %p')
+  TIME_FORMAT(CONVERT_TZ(FROM_UNIXTIME(raid_end_timestamp), 'UTC', '" . $config['core']['timeZone'] . "'),'%h:%i:%s %p')
     AS ends, 
   lat, 
   lon,
@@ -35,7 +35,7 @@ SELECT
   ex_raid_eligible,
   updated
 FROM 
-  " . $dbname . ".gym
+  " . $config['db']['dbname'] . ".gym
 WHERE
   raid_pokemon_id IS NOT NULL && 
   name IS NOT NULL &&
@@ -48,8 +48,8 @@ ORDER BY
   if ($result->rowCount() > 0) {
     echo $modal;
     echo "<div class='table-responsive'>";
-    echo "<table id='gym-table' class='table table-".$table_style." ".($table_striped ? 'table-striped' : null)."' border='1'>";
-    echo "<thead class='thead-".$table_header_style."'>";
+    echo "<table id='gym-table' class='table table-".$config['ui']['table']['style']." ".($config['ui']['table']['striped'] ? 'table-striped' : null)."' border='1'>";
+    echo "<thead class='thead-".$config['ui']['table']['headerStyle']."'>";
     echo "<tr class='text-nowrap'>";
       echo "<th>Remove</th>";
       echo "<th onclick='sort_table('gym-table',1)'>Raid Starts</th>";
@@ -65,13 +65,13 @@ ORDER BY
     echo "</tr>";
     echo "</thead>";
     while ($row = $result->fetch()) {	
-      $geofence = $geofence_srvc->get_geofence($row['lat'], $row['lon']);
-      $city = ($geofence == null ? $unknown_value : $geofence->name);
-      $map_link = sprintf($googleMapsLink, $row["lat"], $row["lon"]);
+      $geofence = $geofenceSrvc->get_geofence($row['lat'], $row['lon']);
+      $city = ($geofence == null ? $config['ui']['unknownValue'] : $geofence->name);
+      $map_link = sprintf($config['google']['maps'], $row["lat"], $row["lon"]);
       $pokemon = $pokedex[$row['raid_pokemon_id']];
       $fast_move = $quick_moves[$row['raid_pokemon_move_1']];
       $charge_move = $charge_moves[$row['raid_pokemon_move_2']];
-      $moveset = (($fast_move == $unknown_value && $charge_move == $unknown_value) ? $unknown_value : $fast_move . "/" . $charge_move);
+      $moveset = (($fast_move == $config['ui']['unknownValue'] && $charge_move == $config['ui']['unknownValue']) ? $config['ui']['unknownValue'] : $fast_move . "/" . $charge_move);
       echo "<tr class='text-nowrap'>";
         echo "<td scope='row' class='text-center'><a title='Remove' data-toggle='tooltip' class='delete'><i class='fa fa-times'></i></a></td>";
         echo "<td>" . $row['starts'] . "</td>";
@@ -83,7 +83,7 @@ ORDER BY
         echo "<td>" . get_team($row['team_id']) . "</td>";
         echo "<td>" . ($row['ex_raid_eligible'] ? "Yes" : "No") . "</td>";
         echo "<td><a href='" . $map_link . "' target='_blank'>" . $row['name'] . "</a></td>";
-        echo "<td>" . date($date_time_format, $row['updated']) . "</td>";
+        echo "<td>" . date($config['core']['dateTimeFormat'], $row['updated']) . "</td>";
       echo "</tr>";
     }
     echo "</table>";

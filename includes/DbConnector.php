@@ -6,12 +6,12 @@ class DbConnector {
   private $pass;
   private $db;
       
-  function __construct($host,$port,$user,$pass,$db) {
-    $this->host = $host;
-    $this->port = $port;
-    $this->user = $user;
-    $this->pass = $pass;
-    $this->db = $db;
+  function __construct($dbOptions) {
+    $this->host = $dbOptions['host'];
+    $this->port = $dbOptions['port'];
+    $this->user = $dbOptions['user'];
+    $this->pass = $dbOptions['pass'];
+    $this->db = $dbOptions['dbname'];
   }
  
   public function getConnection() {

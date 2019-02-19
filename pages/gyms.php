@@ -6,7 +6,7 @@ include './includes/GeofenceService.php';
 include './includes/utils.php';
 include './static/data/pokedex.php';
 
-$geofence_srvc = new GeofenceService();
+$geofenceSrvc = new GeofenceService();
 
 $filters = "
 <div class='container'>
@@ -57,10 +57,10 @@ $filters = "
       <select id='filter-city' class='custom-select' onchange='filter_gyms()'>
         <option disabled selected>Select</option>
         <option value='all'>All</option>
-        <option value='" . $unknown_value . "'>" . $unknown_value . "</option>";
-        $count = count($geofence_srvc->geofences);
+        <option value='" . $config['ui']['unknownValue'] . "'>" . $config['ui']['unknownValue'] . "</option>";
+        $count = count($geofenceSrvc->geofences);
         for ($i = 0; $i < $count; $i++) {
-          $geofence = $geofence_srvc->geofences[$i];
+          $geofence = $geofenceSrvc->geofences[$i];
           $filters .= "<option value='".$geofence->name."'>".$geofence->name."</option>";
         }
         $filters .= "
@@ -93,7 +93,7 @@ $modal = "
 ";
 
 // Establish connection to database
-$db = new DbConnector($dbhost, $dbPort, $dbuser, $dbpass, $dbname);
+$db = new DbConnector($config['db']);
 $pdo = $db->getConnection();
 
 // Query Database and Build Raid Billboard
@@ -109,7 +109,7 @@ SELECT
   name,
   updated
 FROM 
-  " . $dbname . ".gym
+  " . $config['db']['dbname'] . ".gym
 WHERE
   name IS NOT NULL &&
   enabled=1;
@@ -119,8 +119,8 @@ WHERE
   if ($result->rowCount() > 0) {
     echo $modal;
     echo "<div class='table-responsive'>";
-    echo "<table id='gym-table' class='table table-".$table_style." ".($table_striped ? 'table-striped' : null)."' border='1'>";
-    echo "<thead class='thead-".$table_header_style."'>";
+    echo "<table id='gym-table' class='table table-".$config['ui']['table']['style']." ".($config['ui']['table']['striped'] ? 'table-striped' : null)."' border='1'>";
+    echo "<thead class='thead-".$config['ui']['table']['headerStyle']."'>";
     echo "<tr class='text-nowrap'>";
       echo "<th>Remove</th>";
       echo "<th>Team</th>";
@@ -133,9 +133,9 @@ WHERE
     echo "</tr>";
     echo "</thead>";
     while ($row = $result->fetch()) {	
-      $geofence = $geofence_srvc->get_geofence($row['lat'], $row['lon']);
-      $city = ($geofence == null ? $unknown_value : $geofence->name);
-      $map_link = sprintf($googleMapsLink, $row["lat"], $row["lon"]);
+      $geofence = $geofenceSrvc->get_geofence($row['lat'], $row['lon']);
+      $city = ($geofence == null ? $config['ui']['unknownValue'] : $geofence->name);
+      $map_link = sprintf($config['google']['maps'], $row["lat"], $row["lon"]);
 
 	  $team = get_team($row['team_id']);
 	  $available_slots = $row['availble_slots'];
@@ -150,7 +150,7 @@ WHERE
         echo "<td>" . ($in_battle ? "Under Attack!" : "Safe") . "</td>";
         echo "<td>" . $city . "</td>";
         echo "<td><a href='" . $map_link . "' target='_blank'>" . $row['name'] . "</a></td>";
-        echo "<td>" . date($date_time_format, $row['updated']) . "</td>";
+        echo "<td>" . date($config['core']['dateTimeFormat'], $row['updated']) . "</td>";
       echo "</tr>";
     }
     echo "</table>";
