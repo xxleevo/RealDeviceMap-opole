@@ -250,16 +250,24 @@ function get_quest_conditions($conditions) {
       case 17://PlayerLevel
         array_push($quest_conditions, "Reach level");
         break;
-      case 2://PokemonCategory //TODO:
-        //list.Add(string.Join(", ", condition.Info.PokemonIds?.Select(x => Database.Instance.Pokemon[x].Name).ToList()));
+      case 2://PokemonCategory
+        $pkmn = [];
+        foreach ($condition->info->pokemon_ids as $pokemon_id) {
+          array_push($pkmn, $pokedex[$pokemon_id]);
+        }
+        array_push($quest_conditions, join(', ', $pkmn));
         break;
-      case 1://PokemonType //TODO:
-        //list.Add(string.Join(", ", condition.Info.PokemonTypeIds?.Select(x => Convert.ToString((PokemonType)x))) + "-type");
+      case 1://PokemonType
+        $types = [];
+        foreach ($condition->info->pokemon_type_ids as $pokemon_type_id) {
+          array_push($types, get_pokemon_type($pokemon_type_id));
+        }
+        array_push($quest_conditions, join(', ', $types));
         break;
       case 0://QuestContext
         break;
-      case 0://RaidLevel //TODO:
-        //list.Add("Level " + string.Join(", ", condition.Info.RaidLevels));
+      case 0://RaidLevel
+        array_push($quest_conditions, join(', ', $condition->info->raid_levels));
         break;
       case 0://SuperEffectiveCharge
         array_push($quest_conditions, "Super effective charge move");
@@ -454,6 +462,48 @@ function get_quest_icon($rewards) {
       break;
   }
   return "./static/images/quests/$icon_index.png";
+}
+function get_pokemon_type($type) {
+  switch ($type) {
+    case 1:
+      return "Normal";
+    case 2:
+      return "Fighting";
+    case 3:
+      return "Flying";
+    case 4:
+      return "Poison";
+    case 5:
+      return "Ground";
+    case 6:
+      return "Rock";
+    case 7:
+      return "Bug";
+    case 8:
+      return "Ghost";
+    case 9:
+      return "Steel";
+    case 10:
+      return "Fire";
+    case 11:
+      return "Water";
+    case 12:
+      return "Grass";
+    case 13:
+      return "Electric";
+    case 14:
+      return "Psychic";
+    case 15:
+      return "Ice";
+    case 16:
+      return "Dragon";
+    case 17:
+      return "Dark";
+    case 18:
+      return "Fairy";
+    default:
+      return "None";
+  }
 }
 ?>
 
