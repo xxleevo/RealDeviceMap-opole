@@ -1,10 +1,14 @@
 <?php
+$title = "RDM-opole"; //Website title
+
 // RealDeviceMap Database
 $dbhost = "127.0.0.1"; // Dtabase host name or IP address
 $dbPort = 3306;            // Database port. (default: 3306)
 $dbuser = "user";          // Database username.
 $dbpass = "password";      // Database user password.
 $dbname = "rdmdb";         // Database name.
+
+$backend_url = "http://map.example.com/"; //RealDeviceMap backend url. (Used for Pokemon images). e.g. https://map.example.com/
 
 // Table Style
 $table_style = "light"; // light/dark
@@ -35,6 +39,17 @@ $discord_bot_token = ""; //Discord bot token
 
 $log_discord_users = false;
 
-$paypal_link = "";
-$venmo_link = "";
+$paypal_link = ""; //PayPal.me link e.g https://paypal.me/username
+$venmo_link = ""; //Venmo link e.g. https://venmo.com/username
+
+$time_zone = "America/Denver"; //Time zone for PHP pages and MySql data
+
+$date_time_format = "m-d-Y h:i:s A"; //Date & Time format http://php.net/manual/en/function.date.php
+
+$show_footer = true;
+$show_copyright = true; //Show Nintendo/Niantic/Pokemon copyright footer
+
+/* Error reporting. */
+ini_set("error_reporting", "true");
+error_reporting(E_ALL|E_STRCT);
 ?>

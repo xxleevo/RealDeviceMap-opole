@@ -1,42 +1,42 @@
 <?php
 require_once './vendor/autoload.php';
 require_once './config.php';
-require_once './pokedex.php';
-require_once './movesets.php';
-require_once './geofence_service.php';
+require_once './includes/GeofenceService.php';
+require_once './static/data/pokedex.php';
+require_once './static/data/movesets.php';
 
 $geofence_srvc = new GeofenceService();
 
 $filters = "
-<div class='panel panel-default'>
-<div class='form-group row'>
-  <div class='col-md-4'> 
-    <div class='input-group'>
-    Search Pokemon:&nbsp;
-    <input type='text' id='search-input' class='form-control input-lg' style='display:initial !important;' onkeyup='filter_raids()' placeholder='Search by name..' title='Type in a name'>
-  </div>
-</div>
-<div class='col-md-4'> 
-  <div class='input-group'>
-    Search by city:&nbsp;
-    <select id='filter-city' class='form-control' style='display:initial !important;' onchange='filter_raids()'>
-      <option disabled selected>Select</option>
-      <option value='all'>All</option>";
-      $count = count($geofence_srvc->geofences);
-      for ($i = 0; $i < $count; $i++) {
-        $geofence = $geofence_srvc->geofences[$i];
-        $filters .= "<option value='".$geofence->name."'>".$geofence->name."</option>";
-      }
-      $filters .= "
+<div class='container'>
+  <div class='row'>
+    <div class='input-group mb-3'>
+      <div class='input-group-prepend'>
+        <label class='input-group-text' for='search-input'>Search Pokemon</label>
+      </div>
+      <input type='text' id='search-input' class='form-control input-lg' onkeyup='filter_raids()' placeholder='Search by name..' title='Type in a name'>
+    </div>
+    <div class='input-group mb-3'>
+      <div class='input-group-prepend'>
+        <label class='input-group-text' for='filter-city'>City</label>
+      </div>
+      <select id='filter-city' class='custom-select' onchange='filter_raids()'>
+        <option disabled selected>Select</option>
+        <option value='all'>All</option>
+        <option value='" . $unknown_value . "'>" . $unknown_value . "</option>";
+        $count = count($geofence_srvc->geofences);
+        for ($i = 0; $i < $count; $i++) {
+          $geofence = $geofence_srvc->geofences[$i];
+          $filters .= "<option value='".$geofence->name."'>".$geofence->name."</option>";
+        }
+        $filters .= "
       </select>
     </div>
-  </div>
-</div>
-<div class='form-group row'>
-  <div class='col-md-2'> 
-    <div class='input-group'>
-    Search by level:&nbsp;
-    <select id='filter-level' class='form-control' style='display:initial !important;' onchange='filter_raids()'>
+    <div class='input-group mb-3'>
+      <div class='input-group-prepend'>
+        <label class='input-group-text' for='filter-level'>Raid Level</label>
+      </div>
+      <select id='filter-level' class='custom-select' onchange='filter_raids()'>
         <option disabled selected>Select</option>
         <option value='all'>All</option>
         <option value='1'>1</option>
@@ -46,11 +46,11 @@ $filters = "
         <option value='5'>5</option>
       </select>
     </div>
-  </div>
-  <div class='col-md-2'> 
-    <div class='input-group'>
-      Search by team:&nbsp;
-      <select id='filter-team' class='form-control' style='display:initial !important;' onchange='filter_raids()'>
+    <div class='input-group mb-3'>
+      <div class='input-group-prepend'>
+        <label class='input-group-text' for='filter-team'>Team</label>
+      </div>
+      <select id='filter-team' class='custom-select' onchange='filter_raids()'>
         <option disabled selected>Select</option>
         <option value='all'>All</option>
         <option value='Neutral'>Neutral</option>
@@ -59,11 +59,11 @@ $filters = "
         <option value='Instinct'>Instinct</option>
       </select>
     </div>
-  </div>
-  <div class='col-md-2'> 
-    <div class='input-group'>
-      Search by Ex-Eligibility:&nbsp;
-      <select id='filter-ex' class='form-control' style='display:initial !important;' onchange='filter_raids()'>
+    <div class='input-group mb-3'>
+      <div class='input-group-prepend'>
+        <label class='input-group-text' for='search-input'>Ex-Eligible</label>
+      </div>
+      <select id='filter-ex' class='custom-select' onchange='filter_raids()'>
         <option disabled selected>Select</option>
         <option value='all'>All</option>
         <option value='yes'>Yes</option>
@@ -72,10 +72,41 @@ $filters = "
     </div>
   </div>
 </div>
+";
+
+$modal = "
+<button type='button' class='btn btn-dark float-right' data-toggle='modal' data-target='#filtersModal'>
+  Filters
+</button>
+<div class='modal fade' id='filtersModal' tabindex='-1' role='dialog' aria-labelledby='filtersModalLabel' aria-hidden='true'>
+  <div class='modal-dialog' role='document'>
+    <div class='modal-content'>
+      <div class='modal-header'>
+        <h5 class='modal-title' id='filtersModalLabel'>Raid Filters</h5>
+        <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+          <span aria-hidden='true'>&times;</span>
+        </button>
+      </div>
+      <div class='modal-body'>" . $filters . "</div>
+      <div class='modal-footer'>
+        <button type='button' class='btn btn-primary' data-dismiss='modal'>Close</button>
+      </div>
+    </div>
+  </div>
 </div>
 ";
 
 echo "<div id='table-refresh'>";
-include_once("data_fetcher.php");
+include_once("./includes/data_fetcher.php");
 echo "</div>";
 ?>
+<script type="text/javascript">
+var refresh_rate = <?=$table_refresh_s?>;
+var refresher = setInterval(filter_raids, refresh_rate * 1000);
+setTimeout(function() { clearInterval(refresher); }, 1800000);
+
+$(document).on("click", ".delete", function(){
+  $(this).parents("tr").remove();
+  $(".add-new").removeAttr("disabled");
+});
+</script>

@@ -1,7 +1,7 @@
 <?php
 require_once './vendor/autoload.php';
 require_once './config.php';
-require_once './DiscordAuth.php';
+require_once './includes/DiscordAuth.php';
 
 if ($discord_login) {
   $auth = new DiscordAuth();

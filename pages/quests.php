@@ -1,46 +1,67 @@
 <?php
 include './vendor/autoload.php';
 include './config.php';
-include './pokedex.php';
-include './geofence_service.php';
+include './includes/DbConnector.php';
+include './includes/GeofenceService.php';
+include './static/data/pokedex.php';
 
 $geofence_srvc = new GeofenceService();
 
 $filters = "
-<div class='panel panel-default'>
-<div class='form-group row'>
-  <div class='col-md-4'> 
-    <div class='input-group'>
-    Search by reward:&nbsp;
-    <input type='text' id='search-input' class='form-control input-lg' style='display:initial !important;' onkeyup='filter_quests()' placeholder='Search by name..' title='Type in a name'>
-  </div>
-</div>
-<div class='col-md-4'> 
-  <div class='input-group'>
-    Search by city:&nbsp;
-    <select id='filter-city' class='form-control' style='display:initial !important;' onchange='filter_quests()'>
-      <option disabled selected>Select</option>
-      <option value='all'>All</option>";
-      $count = count($geofence_srvc->geofences);
-      for ($i = 0; $i < $count; $i++) {
-        $geofence = $geofence_srvc->geofences[$i];
-        $filters .= "<option value='".$geofence->name."'>".$geofence->name."</option>";
-      }
-      $filters .= "
+<div class='container'>
+  <div class='row'>
+    <div class='input-group mb-3'>
+      <div class='input-group-prepend'>
+        <label class='input-group-text' for='search-input'>Search Reward</label>
+      </div>
+      <input type='text' id='search-input' class='form-control input-lg' onkeyup='filter_quests()' placeholder='Search by name..' title='Type in a name'>
+    </div>
+    <div class='input-group mb-3'>
+      <div class='input-group-prepend'>
+        <label class='input-group-text' for='filter-city'>City</label>
+      </div>
+      <select id='filter-city' class='form-control' style='display:initial !important;' onchange='filter_quests()'>
+        <option disabled selected>Select</option>
+        <option value='all'>All</option>
+        <option value='" . $unknown_value . "'>" . $unknown_value . "</option>";
+        $count = count($geofence_srvc->geofences);
+        for ($i = 0; $i < $count; $i++) {
+          $geofence = $geofence_srvc->geofences[$i];
+          $filters .= "<option value='".$geofence->name."'>".$geofence->name."</option>";
+        }
+        $filters .= "
       </select>
     </div>
   </div>
 </div>
 ";
 
+$modal = "
+<button type='button' class='btn btn-dark float-right' data-toggle='modal' data-target='#filtersModal'>
+  Filters
+</button>
+<div class='modal fade' id='filtersModal' tabindex='-1' role='dialog' aria-labelledby='filtersModalLabel' aria-hidden='true'>
+  <div class='modal-dialog' role='document'>
+    <div class='modal-content'>
+      <div class='modal-header'>
+        <h5 class='modal-title' id='filtersModalLabel'>Quest Filters</h5>
+        <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+          <span aria-hidden='true'>&times;</span>
+        </button>
+      </div>
+      <div class='modal-body'>" . $filters . "</div>
+      <div class='modal-footer'>
+        <button type='button' class='btn btn-primary' data-dismiss='modal'>Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+";
+
 // Establish connection to database
-try {
-  $pdo = new PDO("mysql:host=$dbhost;dbname=$dbname;port=$dbPort", $dbuser, $dbpass);
-  // Set the PDO error mode to exception
-  $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch(PDOException $e) {
-  die("ERROR: Could not connect. " . $e->getMessage());
-}
+$db = new DbConnector($dbhost, $dbPort, $dbuser, $dbpass, $dbname);
+$pdo = $db->getConnection();
+
 // Query Database and Build Raid Billboard
 try {
   $sql = "
@@ -56,7 +77,8 @@ SELECT
 	quest_pokemon_id,
 	quest_reward_type,
 	quest_item_id,
-  name
+  name,
+  updated
 FROM 
   " . $dbname . ".pokestop
 WHERE
@@ -67,15 +89,18 @@ WHERE
 
   $result = $pdo->query($sql);
   if ($result->rowCount() > 0) {
-    echo $filters;
-    echo "<table class='table table-".$table_style." ".($table_striped ? 'table-striped' : null)."' border='1' id='quest-table';>";
+    echo $modal;
+    echo "<div class='table-responsive'>";
+    echo "<table id='quest-table' class='table table-".$table_style." ".($table_striped ? 'table-striped' : null)."' border='1'>";
     echo "<thead class='thead-".$table_header_style."'>";
-    echo "<tr>";
-        echo "<th>Reward</th>";
-        echo "<th>Quest</th>";
-        echo "<th>Condition(s)</th>";
-        echo "<th>City</th>";
-        echo "<th>Pokestop</th>";
+    echo "<tr class='text-nowrap'>";
+      echo "<th>Remove</th>";
+      echo "<th>Reward</th>";
+      echo "<th>Quest</th>";
+      echo "<th>Condition(s)</th>";
+      echo "<th>City</th>";
+      echo "<th>Pokestop</th>";
+      echo "<th>Updated</th>";
     echo "</tr>";
     echo "</thead>";
     while ($row = $result->fetch()) {	
@@ -86,19 +111,22 @@ WHERE
       $quest_conditions_object = json_decode($row['quest_conditions']);
       $quest_rewards_object = json_decode($row['quest_rewards']);
       $quest_message = get_quest_message($row['quest_type'], $row['quest_target']);
-	  $quest_reward = get_quest_reward($quest_rewards_object);
-	  $quest_conditions_message = get_quest_conditions($quest_conditions_object);
-	  $quest_icon = get_quest_icon($quest_rewards_object);
+	    $quest_reward = get_quest_reward($quest_rewards_object);
+	    $quest_conditions_message = get_quest_conditions($quest_conditions_object);
+	    $quest_icon = get_quest_icon($quest_rewards_object);
 
-      echo "<tr>";
-        echo "<td scope='row'><a title='Remove' data-toggle='tooltip' class='delete'>X&nbsp;</a><img src='$quest_icon' height=32 width=32 />&nbsp;" . $quest_reward . "</td>";
+      echo "<tr class='text-nowrap'>";
+      echo "<td scope='row' class='text-center'><a title='Remove' data-toggle='tooltip' class='delete'><i class='fa fa-times'></i></a></td>";
+        echo "<td><img src='$quest_icon' height=32 width=32 />&nbsp;" . $quest_reward . "</td>";
         echo "<td>" . $quest_message . "</td>";
         echo "<td>" . $quest_conditions_message . "</td>";
         echo "<td>" . $city . "</td>";
         echo "<td><a href='" . $map_link . "' target='_blank'>" . $row['name'] . "</a></td>";
+        echo "<td>" . date($date_time_format, $row['updated']) . "</td>";
       echo "</tr>";
     }
     echo "</table>";
+    echo "</div>";
 		
   // Free result set
   unset($result);
@@ -431,36 +459,7 @@ function get_quest_icon($rewards) {
 
 <script type="text/javascript">
 $(document).on("click", ".delete", function(){
-	$(this).parents("tr").remove();
-	$(".add-new").removeAttr("disabled");
+  $(this).parents("tr").remove();
+  $(".add-new").removeAttr("disabled");
 });
-
-function filter_quests() {
-  var search_filter = document.getElementById("search-input").value.toUpperCase();
-  var city_filter = document.getElementById("filter-city").value.toUpperCase();
-  
-  console.log("Quest:", search_filter, "City:", city_filter);
-  
-  if (city_filter.toLowerCase().indexOf("all") === 0 ||
-    city_filter.toLowerCase().indexOf("select") === 0) {
-    city_filter = "";
-    console.log("City filter cleared");
-  }
- 
-  var table = document.getElementById("quest-table");
-  var tr = table.getElementsByTagName("tr");
-  for (var i = 0; i < tr.length; i++) {
-    if (i == 0)
-      continue;
-  
-    var reward_value = table.rows[i].cells[0].innerHTML.toUpperCase();
-    var city_value = table.rows[i].cells[3].innerHTML.toUpperCase();
-	
-    if (reward_value.indexOf(search_filter) > -1 && city_value.indexOf(city_filter) > -1) {
-      tr[i].style.display = "";
-    } else {
-      tr[i].style.display = "none";
-    }     
-  }
-}
 </script>

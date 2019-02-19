@@ -1,9 +1,11 @@
-- TimeZone
 - Secure pages
 - Finish quest rewards
-- Dashboard page
+- Finish Dashboard page
 - Pokemon page
-- Pokestops page
+- Add map to Pokestops page
 - Statistics page
 - Cleanup code
 - Cleanup folder structure
+- Fix table sort
+- Add icon to raids
+- Stat charts
