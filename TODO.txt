@@ -6,4 +6,3 @@
 - Finish Dashboard page
 - Cleanup code
 - Cleanup folder structure
-- Add icon to raids
