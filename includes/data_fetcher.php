@@ -44,26 +44,28 @@ ORDER BY
   raid_end_timestamp;
 ";
 
+  echo $modal;
+  echo "<div class='table-responsive'>";
+  echo "<table id='gym-table' class='table table-".$config['ui']['table']['style']." ".($config['ui']['table']['striped'] ? 'table-striped' : null)."' border='1'>";
+  echo "<thead class='thead-".$config['ui']['table']['headerStyle']."'>";
+  echo "<tr class='text-nowrap'>";
+    echo "<th>Remove</th>";
+    echo "<th onclick='sort_table(\"gym-table\",1)'>Raid Starts</th>";
+    echo "<th onclick='sort_table(\"gym-table\",2)'>Raid Ends</th>";
+    echo "<th onclick='sort_table(\"gym-table\",3)'>Raid Level</th>";
+    echo "<th onclick='sort_table(\"gym-table\",4)'>Raid Boss</th>";
+    echo "<th onclick='sort_table(\"gym-table\",5)'>Moveset</th>";
+    echo "<th onclick='sort_table(\"gym-table\",6)'>City</th>";
+    echo "<th onclick='sort_table(\"gym-table\",7)'>Team</th>";
+    echo "<th onclick='sort_table(\"gym-table\",8)'>Ex-Eligible</th>";
+    echo "<th onclick='sort_table(\"gym-table\",9)'>Gym</th>";
+    echo "<th onclick='sort_table(\"gym-table\",10)'>Updated</th>";
+  echo "</tr>";
+  echo "</thead>";
+  echo "<tbody>";
+
   $result = $pdo->query($sql);
   if ($result->rowCount() > 0) {
-    echo $modal;
-    echo "<div class='table-responsive'>";
-    echo "<table id='gym-table' class='table table-".$config['ui']['table']['style']." ".($config['ui']['table']['striped'] ? 'table-striped' : null)."' border='1'>";
-    echo "<thead class='thead-".$config['ui']['table']['headerStyle']."'>";
-    echo "<tr class='text-nowrap'>";
-      echo "<th>Remove</th>";
-      echo "<th onclick='sort_table(\"gym-table\",1)'>Raid Starts</th>";
-      echo "<th onclick='sort_table(\"gym-table\",2)'>Raid Ends</th>";
-      echo "<th onclick='sort_table(\"gym-table\",3)'>Raid Level</th>";
-      echo "<th onclick='sort_table(\"gym-table\",4)'>Raid Boss</th>";
-      echo "<th onclick='sort_table(\"gym-table\",5)'>Moveset</th>";
-      echo "<th onclick='sort_table(\"gym-table\",6)'>City</th>";
-      echo "<th onclick='sort_table(\"gym-table\",7)'>Team</th>";
-      echo "<th onclick='sort_table(\"gym-table\",8)'>Ex-Eligible</th>";
-      echo "<th onclick='sort_table(\"gym-table\",9)'>Gym</th>";
-      echo "<th onclick='sort_table(\"gym-table\",10)'>Updated</th>";
-    echo "</tr>";
-    echo "</thead>";
     while ($row = $result->fetch()) {	
       $geofence = $geofenceSrvc->get_geofence($row['lat'], $row['lon']);
       $city = ($geofence == null ? $config['ui']['unknownValue'] : $geofence->name);
@@ -80,7 +82,7 @@ ORDER BY
         echo "<td>" . $row['starts'] . "</td>";
         echo "<td>" . $row['ends'] . "</td>";
         echo "<td>" . $level . "</td>";
-        echo "<td><img src='$raid_image' height=32 width=32 />&nbsp;" . $pokemon . "</td>";
+        echo "<td><img src='$raid_image' height=32 width=32 />&nbsp;$pokemon</td>";
         echo "<td>" . $moveset . "</td>";
         echo "<td>" . $city . "</td>";
         echo "<td>" . get_team($row['team_id']) . "</td>";
@@ -89,17 +91,19 @@ ORDER BY
         echo "<td>" . date($config['core']['dateTimeFormat'], $row['updated']) . "</td>";
       echo "</tr>";
     }
-    echo "</table>";
-    echo "</div>";
 		
-  // Free result set
-  unset($result);
+    // Free result set
+    unset($result);
   } else{
     echo "
-  <div class='alert alert-primary' role='alert'>
-    <b>No raids available</b>, come back tomorrow after 5am.
-  </div>";
+    <div class='alert alert-primary' role='alert'>
+      <i class='fa fa-info'>&nbsp;<b>No raids available</b>, come back tomorrow after 5am.</i>
+    </div>";
   }
+  echo "</tbody>
+  </div>
+    </table>
+  </div>";
 } catch(PDOException $e){
   die("ERROR: Could not able to execute $sql. " . $e->getMessage());
 }

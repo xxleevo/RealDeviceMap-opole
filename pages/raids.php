@@ -100,6 +100,7 @@ echo "<div id='table-refresh'>";
 include_once("./includes/data_fetcher.php");
 echo "</div>";
 ?>
+<script type="text/javascript" src="./static/js/filters.js"></script>
 <script type="text/javascript">
 var refresh_rate = <?=$config['ui']['table']['refreshRateS']?>;
 var refresher = setInterval(filter_raids, refresh_rate * 1000);
