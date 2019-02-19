@@ -52,16 +52,16 @@ ORDER BY
     echo "<thead class='thead-".$config['ui']['table']['headerStyle']."'>";
     echo "<tr class='text-nowrap'>";
       echo "<th>Remove</th>";
-      echo "<th onclick='sort_table('gym-table',1)'>Raid Starts</th>";
-      echo "<th onclick='sort_table('gym-table',2)'>Raid Ends</th>";
-      echo "<th onclick='sort_table('gym-table',3)'>Raid Level</th>";
-      echo "<th onclick='sort_table('gym-table',4)'>Raid Boss</th>";
-      echo "<th onclick='sort_table('gym-table',5)'>Moveset</th>";
-      echo "<th onclick='sort_table('gym-table',6)'>City</th>";
-      echo "<th onclick='sort_table('gym-table',7)'>Team</th>";
-      echo "<th onclick='sort_table('gym-table',8)'>Ex-Eligible</th>";
-      echo "<th onclick='sort_table('gym-table',9)'>Gym</th>";
-      echo "<th onclick='sort_table('gym-table',10)'>Updated</th>";
+      echo "<th onclick='sort_table(\"gym-table\",1)'>Raid Starts</th>";
+      echo "<th onclick='sort_table(\"gym-table\",2)'>Raid Ends</th>";
+      echo "<th onclick='sort_table(\"gym-table\",3)'>Raid Level</th>";
+      echo "<th onclick='sort_table(\"gym-table\",4)'>Raid Boss</th>";
+      echo "<th onclick='sort_table(\"gym-table\",5)'>Moveset</th>";
+      echo "<th onclick='sort_table(\"gym-table\",6)'>City</th>";
+      echo "<th onclick='sort_table(\"gym-table\",7)'>Team</th>";
+      echo "<th onclick='sort_table(\"gym-table\",8)'>Ex-Eligible</th>";
+      echo "<th onclick='sort_table(\"gym-table\",9)'>Gym</th>";
+      echo "<th onclick='sort_table(\"gym-table\",10)'>Updated</th>";
     echo "</tr>";
     echo "</thead>";
     while ($row = $result->fetch()) {	

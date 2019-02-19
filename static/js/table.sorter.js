@@ -1,7 +1,7 @@
-function sort_table(table, index) {
-  console.log("Table:", table, "Index:", index);
+function sort_table(tableName,index) {
+  console.log("Table:",tableName,"Index:", index);
   var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-  table = document.getElementById(table);
+  table = document.getElementById(tableName);
   switching = true;
   // Set the sorting direction to ascending:
   dir = "asc"; 

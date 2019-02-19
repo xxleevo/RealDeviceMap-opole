@@ -6,6 +6,5 @@
 - Finish Dashboard page
 - Cleanup code
 - Cleanup folder structure
-- Fix table sort
 - Add icon to raids
 - Add map to Pokestops page
