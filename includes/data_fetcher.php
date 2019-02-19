@@ -68,7 +68,10 @@ ORDER BY
       $geofence = $geofenceSrvc->get_geofence($row['lat'], $row['lon']);
       $city = ($geofence == null ? $config['ui']['unknownValue'] : $geofence->name);
       $map_link = sprintf($config['google']['maps'], $row["lat"], $row["lon"]);
-      $pokemon = $pokedex[$row['raid_pokemon_id']];
+      $pokemon_id = $row['raid_pokemon_id'];
+      $pokemon = $pokedex[$pokemon_id];
+      $level = $row['raid_level'];
+      $raid_image = get_raid_image($pokemon_id, $level);
       $fast_move = $quick_moves[$row['raid_pokemon_move_1']];
       $charge_move = $charge_moves[$row['raid_pokemon_move_2']];
       $moveset = (($fast_move == $config['ui']['unknownValue'] && $charge_move == $config['ui']['unknownValue']) ? $config['ui']['unknownValue'] : $fast_move . "/" . $charge_move);
@@ -76,8 +79,8 @@ ORDER BY
         echo "<td scope='row' class='text-center'><a title='Remove' data-toggle='tooltip' class='delete'><i class='fa fa-times'></i></a></td>";
         echo "<td>" . $row['starts'] . "</td>";
         echo "<td>" . $row['ends'] . "</td>";
-        echo "<td>" . $row['raid_level'] . "</td>";
-        echo "<td>" . $pokemon . "</td>";
+        echo "<td>" . $level . "</td>";
+        echo "<td><img src='$raid_image' height=32 width=32 />&nbsp;" . $pokemon . "</td>";
         echo "<td>" . $moveset . "</td>";
         echo "<td>" . $city . "</td>";
         echo "<td>" . get_team($row['team_id']) . "</td>";
