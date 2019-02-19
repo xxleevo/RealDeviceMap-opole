@@ -59,7 +59,8 @@ function get_raid_stats() {
   global $config;
   $db = new DbConnector($config['db']);
   $pdo = $db->getConnection();
-  $count = $pdo->query("SELECT count(id) FROM " . $config['db']['dbname'] . ".gym WHERE raid_pokemon_id IS NOT NULL && name IS NOT NULL && raid_end_timestamp >= UNIX_TIMESTAMP()")->fetchColumn();
+  $sql = "SELECT count(id) FROM " . $config['db']['dbname'] . ".gym WHERE raid_pokemon_id IS NOT NULL && name IS NOT NULL && raid_end_timestamp >= UNIX_TIMESTAMP()";
+  $count = $pdo->query($sql)->fetchColumn();
   unset($pdo);
   unset($db);
       
@@ -70,10 +71,24 @@ function get_table_count($table) {
   global $config;
   $db = new DbConnector($config['db']);
   $pdo = $db->getConnection();
-  $count = $pdo->query("SELECT count(id) FROM " . $config['db']['dbname'] . ".$table")->fetchColumn();
+  $sql = "SELECT count(id) FROM " . $config['db']['dbname'] . ".$table";
+  $count = $pdo->query($sql)->fetchColumn();
   unset($pdo);
   unset($db);
     
   return $count;
 }
+
+function get_pokestop_objects() {
+  global $config;
+  $db = new DbConnector($config['db']);
+  $pdo = $db->getConnection();
+  $sql = "SELECT id,lat,lon,name FROM ". $config['db']['dbname'] . ".pokestop";
+  $result = $pdo->query($sql)->fetchAll();
+  unset($pdo);
+  unset($db);
+  
+  return $result;
+}
+
 ?>
