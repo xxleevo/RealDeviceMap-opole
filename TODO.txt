@@ -7,4 +7,3 @@
 - Cleanup code
 - Cleanup folder structure
 - Add icon to raids
-- Add map to Pokestops page
