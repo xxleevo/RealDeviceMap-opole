@@ -44,8 +44,6 @@ $pokestops = $data["total"];
 $lured = $data["lured"];
 $quests = $data["quests"];
 
-$pokestop_objects = get_pokestop_objects();
-
 ?>
 
 <link rel="stylesheet" href="./static/css/dashboard.css"/>
@@ -84,10 +82,7 @@ $({ pokestopsValue: 0, luredValue: 0, questsValue: 0 }).animate({ pokestopsValue
   }
 });
 
-var pokestopObjects = <?=json_encode($pokestop_objects)?>;
-pokestopObjects.forEach(pokestop => {
-  //L.marker([pokestop.lat, pokestop.lon]).addTo(mymap);
-});
+//var pokestopObjects = <?=json_encode($pokestop_objects)?>;
 
 $(document).ready(function(){
   $.ajax({
