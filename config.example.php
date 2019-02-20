@@ -7,7 +7,8 @@ $config = [
     "dateTimeFormat" => "m-d-Y h:i:s A", //Date & Time format http://php.net/manual/en/function.date.php
     "showFooter" => false, //Show bottom footer
     "showCopyright" => false, //Show Nintendo/Niantic/Pokemon copyright footer
-    "showErrors" => true //Show PHP errors
+    "showErrors" => true, //Show PHP errors
+    "startupLocation" => [1,1] //Default location to startup any map objects at.
   ],
   "google" => [
     "analyticsId" => "", //Google Analytics Id. e.g. UA-XXXXX-Y
@@ -31,6 +32,7 @@ $config = [
         "hoverBackground" => "rgba(200, 200, 200, 1)",
         "hoverBorder" => "rgba(200, 200, 200, 1)"
       ]
+    ]
   ],
   "db" => [
     "host" => "127.0.0.1", //Database host name or IP address

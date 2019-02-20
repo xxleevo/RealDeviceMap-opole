@@ -223,6 +223,7 @@ function get_quest_message($type, $target) {
   return sprintf($msg, $target);
 }
 function get_quest_conditions($conditions) {
+  global $pokedex;
   $count = count($conditions);
   $quest_conditions = [];
   for ($i = 0; $i < $count; $i++) {
