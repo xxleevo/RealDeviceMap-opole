@@ -82,8 +82,6 @@ $({ pokestopsValue: 0, luredValue: 0, questsValue: 0 }).animate({ pokestopsValue
   }
 });
 
-//var pokestopObjects = <?=json_encode($pokestop_objects)?>;
-
 $(document).ready(function(){
   $.ajax({
     url: "api.php",

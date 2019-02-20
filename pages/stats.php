@@ -1,4 +1,5 @@
 <?php
+require_once './config.php';
 include_once './static/data/pokedex.php';
 
 $html = "
@@ -57,10 +58,10 @@ $.ajax({
       labels: pokemon,
       datasets : [{
         label: 'Seen',
-        backgroundColor: 'rgba(200, 200, 200, 0.75)',
-        borderColor: 'rgba(200, 200, 200, 0.75)',
-        hoverBackgroundColor: 'rgba(200, 200, 200, 1)',
-        hoverBorderColor: 'rgba(200, 200, 200, 1)',
+        backgroundColor: '<?=$config['ui']['charts']['colors']['background']?>',
+        borderColor: '<?=$config['ui']['charts']['colors']['border']?>',
+        hoverBackgroundColor: '<?=$config['ui']['charts']['colors']['hoverBackground']?>',
+        hoverBorderColor: '<?=$config['ui']['charts']['colors']['hoverBorder']?>',
         data: amounts
       }]
     };
@@ -139,10 +140,10 @@ function updatePokemonChart(chart, dateFilter, pokeFilter, ctx) {
         labels: pokemon,
         datasets : [{
           label: 'Seen',
-          backgroundColor: 'rgba(200, 200, 200, 0.75)',
-          borderColor: 'rgba(200, 200, 200, 0.75)',
-          hoverBackgroundColor: 'rgba(200, 200, 200, 1)',
-          hoverBorderColor: 'rgba(200, 200, 200, 1)',
+          backgroundColor: '<?=$config['ui']['charts']['colors']['background']?>',
+          borderColor: '<?=$config['ui']['charts']['colors']['border']?>',
+          hoverBackgroundColor: '<?=$config['ui']['charts']['colors']['hoverBackground']?>',
+          hoverBorderColor: '<?=$config['ui']['charts']['colors']['hoverBorder']?>',
           data: amounts
         }]
       };
@@ -170,7 +171,6 @@ function updatePokemonChart(chart, dateFilter, pokeFilter, ctx) {
       });
 
       chart.data = chartData;
-      //chart.labels = pokemon;
       chart.update();
       console.log("Chart updated");
     },
@@ -181,9 +181,9 @@ function updatePokemonChart(chart, dateFilter, pokeFilter, ctx) {
 }
 
 function getDate() {
-	var d = new Date();
-	var date = d.getFullYear() + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2);
-	return date;
+  var d = new Date();
+  var date = d.getFullYear() + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2);
+  return date;
 }
 
 var pokedex = {

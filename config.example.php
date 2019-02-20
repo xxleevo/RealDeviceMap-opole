@@ -23,6 +23,14 @@ $config = [
       "striped" => true, //true/false
       "refreshRateS" => 60 //Refresh raids table data every x seconds.
     ],
+    "charts" => [
+      "type" => "bar",
+      "colors" => [
+        "background" => "rgba(200, 200, 200, 0.75)",
+        "border" => "rgba(200, 200, 200, 0.75)",
+        "hoverBackground" => "rgba(200, 200, 200, 1)",
+        "hoverBorder" => "rgba(200, 200, 200, 1)"
+      ]
   ],
   "db" => [
     "host" => "127.0.0.1", //Database host name or IP address
