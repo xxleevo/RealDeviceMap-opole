@@ -5,19 +5,19 @@ $html = "
 <div class='container'>
   <div class='row'>
 	<div class='input-group mb-3'>
-	  <input id='filter-date' type='text' class='form-control' data-toggle='datepicker' onchange='filter_pokemon_stats()'>
+	  <input id='filter-date' type='text' class='form-control' data-toggle='datepicker'>
       <div class='input-group-prepend'>
         <label class='input-group-text' for='filter-pokemon'>Pokemon</label>
       </div>
-      <select id='filter-pokemon' class='custom-select' onchange='filter_pokemon_stats()'>
+      <select id='filter-pokemon' class='custom-select'>
         <option disabled selected>Select</option>
-		<option value='all'>All</option>";
-		foreach ($pokedex as $pokemon_id => $name) {
-		  if ($pokemon_id === 0)
-			continue;
-		  $html .= "<option value='" . ($pokemon_id) . "'>" . $name . "</option>";
-		}
-		$html .= "
+		    <option value='all'>All</option>";
+		    foreach ($pokedex as $pokemon_id => $name) {
+		      if ($pokemon_id === 0)
+			      continue;
+		      $html .= "<option value='" . ($pokemon_id) . "'>" . $name . "</option>";
+		    }
+		    $html .= "
       </select>
 	</div>
   </div>
@@ -31,20 +31,6 @@ echo $html;
 <script type='text/javascript' src='https://www.chartjs.org/dist/2.7.3/Chart.bundle.js'></script>
 <script type='text/javascript'>
 
-function filter_pokemon_stats() {
-  var date_filter = document.getElementById("filter-date").value;
-  var pokemon_filter = document.getElementById("filter-pokemon").value;
-  if (pokemon_filter.toLowerCase().indexOf("select") === 0) {
-    pokemon_filter = "all";
-  }
-  console.log("Date:", date_filter, ", Pokemon:", pokemon_filter);
-  if (pokemon_filter === "all") {
-	//all pokemon
-  } else {
-	//one pokemon
-  }
-}
-
 $('[data-toggle="datepicker"]').datepicker({
   autoHide: true,
   yearFirst: true,
@@ -56,7 +42,6 @@ $.ajax({
   method: "GET",
   data: { 'table': 'pokemon_stats' },
   success: function(data) {
-    //console.log(data);
     var pokemon = [];
     var amounts = [];
     var now = getDate();
@@ -68,8 +53,7 @@ $.ajax({
       }
     });
 
-    //TODO: Get date and pokemon from user
-    var chartdata = {
+    var chartData = {
       labels: pokemon,
       datasets : [{
         label: 'Seen',
@@ -80,12 +64,88 @@ $.ajax({
         data: amounts
       }]
     };
+    var chartOptions = {
+      responsive: true,
+      title: { display: true, text: 'Pokemon Chart' },
+      tooltips: { mode: 'index', intersect: false, },
+      hover: { mode: 'nearest', intersect: true },
+      scales: {
+        xAxes: [{
+          display: true,
+          scaleLabel: { display: true, labelString: 'Pokemon' }
+        }],
+        yAxes: [{
+          display: true,
+          scaleLabel: { display: true, labelString: 'Amount Seen' }
+        }]
+      }
+    };
 
     var ctx = $("#canvas");
     var barGraph = new Chart(ctx, {
       type: 'bar',
-      data: chartdata,
-      options: {
+      data: chartData,
+      options: chartOptions
+    });
+
+    $('#filter-date').change(function() {
+      var date_filter = document.getElementById("filter-date").value;
+      var pokemon_filter = document.getElementById("filter-pokemon").value;
+      if (pokemon_filter.toLowerCase().indexOf("select") === 0) {
+        pokemon_filter = "all";
+      }
+      if (date_filter != null) {
+        console.log("Updating chart...");
+        updatePokemonChart(barGraph, date_filter, pokemon_filter, ctx);
+      }
+    });
+
+    $('#filter-pokemon').change(function() {
+      var date_filter = document.getElementById("filter-date").value;
+      var pokemon_filter = document.getElementById("filter-pokemon").value;
+      if (pokemon_filter.toLowerCase().indexOf("select") === 0) {
+        pokemon_filter = "all";
+      }
+      if (date_filter != null) {
+        console.log("Updating chart...");
+        updatePokemonChart(barGraph, date_filter, pokemon_filter, ctx);
+      }
+    });
+  },
+  error: function(data) {
+    console.log(data);
+  }
+});
+
+function updatePokemonChart(chart, dateFilter, pokeFilter, ctx) {
+  console.log("Date:",dateFilter,"Pokemon:",pokeFilter);
+  $.ajax({
+    url: "api.php",
+    method: "GET",
+    data: { 'table': 'pokemon_stats' },
+    success: function(data) {
+      var pokemon = [];
+      var amounts = [];
+      var obj = JSON.parse(data);
+      obj.forEach(stat => {
+        if (stat.date === dateFilter && (pokeFilter === stat.pokemon_id || pokeFilter === "all")) {
+          pokemon.push(pokedex[stat.pokemon_id]);
+          amounts.push(stat.count);
+        }
+      });
+
+      var chartData = {
+        labels: pokemon,
+        datasets : [{
+          label: 'Seen',
+          backgroundColor: 'rgba(200, 200, 200, 0.75)',
+          borderColor: 'rgba(200, 200, 200, 0.75)',
+          hoverBackgroundColor: 'rgba(200, 200, 200, 1)',
+          hoverBorderColor: 'rgba(200, 200, 200, 1)',
+          data: amounts
+        }]
+      };
+      var chartOptions = {
         responsive: true,
         title: { display: true, text: 'Pokemon Chart' },
         tooltips: { mode: 'index', intersect: false, },
@@ -97,22 +157,27 @@ $.ajax({
           }],
           yAxes: [{
             display: true,
-            scaleLabel: { display: true, labelString: 'Amount Seen' }
+            scaleLabel: { display: true, labelString: 'Amount Seen' },
+            ticks: { fixedStepSize: 1 }
           }]
         }
-      }
-    });
-    $('#filter-date').change(function() {
-        barGraph.data.labels = ["Player1","Player2","Player3","Player4"];
-        barGraph.data.datasets[0].data = [1,4,8,12];
-    });
-    $('#filter-pokemon').change(function() {
-    });
-  },
-  error: function(data) {
-    console.log(data);
-  }
-});
+      };
+
+      chart.data.labels.pop();
+      chart.data.datasets.forEach((dataset) => {
+        dataset.data.pop();
+      });
+
+      chart.data = chartData;
+      //chart.labels = pokemon;
+      chart.update();
+      console.log("Chart updated");
+    },
+    error: function(data) {
+      console.log(data);
+    }
+  });
+}
 
 function getDate() {
 	var d = new Date();
