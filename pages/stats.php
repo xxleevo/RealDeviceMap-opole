@@ -76,7 +76,8 @@ $.ajax({
         }],
         yAxes: [{
           display: true,
-          scaleLabel: { display: true, labelString: 'Amount Seen' }
+          scaleLabel: { display: true, labelString: 'Amount Seen' },
+          ticks: { precision: 0, beginAtZero: true }
         }]
       }
     };
@@ -158,7 +159,7 @@ function updatePokemonChart(chart, dateFilter, pokeFilter, ctx) {
           yAxes: [{
             display: true,
             scaleLabel: { display: true, labelString: 'Amount Seen' },
-            ticks: { fixedStepSize: 1 }
+            ticks: { precision: 0, beginAtZero: true }
           }]
         }
       };
