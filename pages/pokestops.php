@@ -86,7 +86,24 @@ $({ pokestopsValue: 0, luredValue: 0, questsValue: 0 }).animate({ pokestopsValue
 
 var pokestopObjects = <?=json_encode($pokestop_objects)?>;
 pokestopObjects.forEach(pokestop => {
-  L.marker([pokestop.lat, pokestop.lon]).addTo(mymap);
+  //L.marker([pokestop.lat, pokestop.lon]).addTo(mymap);
+});
+
+$(document).ready(function(){
+  $.ajax({
+    url: "api.php",
+    method: "GET",
+	  data: { 'table': 'pokestop', 'limit': 1000 },
+    success: function(data) {
+      var pokestops = JSON.parse(data);
+      pokestops.forEach(pokestop => {
+        L.marker([pokestop.lat, pokestop.lon]).addTo(mymap);
+      })
+    },
+    error: function(data) {
+      console.log("ERROR:",data);
+    }
+  });
 });
 
 function commaSeparateNumber(val) {

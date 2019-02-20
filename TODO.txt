@@ -1,7 +1,5 @@
 - Secure pages
 - Pokemon page
-- Statistics page
-- Stat charts
+- Finish Statistics page and charts
 - Finish Dashboard page
-- Cleanup code
-- Cleanup folder structure
+- Cleanup code and folder structure
