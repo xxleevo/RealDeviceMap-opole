@@ -38,6 +38,7 @@ $('[data-toggle="datepicker"]').datepicker({
   format: 'yyyy-mm-dd',
   zIndex: 2048,
 });
+$("#filter-date").datepicker('setDate', new Date());
 $.ajax({
   url: "api.php",
   method: "GET",
