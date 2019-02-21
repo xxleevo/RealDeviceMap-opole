@@ -2,6 +2,5 @@
 - Secure api.php
 - Pokemon page
 - Add quest stats
-- Finish Dashboard page
 - Loading icon for charts
 - Cleanup code and folder structure

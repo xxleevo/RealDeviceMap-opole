@@ -130,10 +130,10 @@ $html = "
 echo $html;
 
 $data = get_gym_stats();
-$neutral = $data[0]; //Neutral gyms
-$mystic = $data[1]; //Mystic gyms
-$valor = $data[2]; //Valor gyms
-$instinct = $data[3]; //Instinct gyms
+$neutral = $data == null ? 0 : $data[0]; //Neutral gyms
+$mystic = $data == null ? 0 : $data[1]; //Mystic gyms
+$valor = $data == null ? 0 : $data[2]; //Valor gyms
+$instinct = $data == null ? 0 : $data[3]; //Instinct gyms
 
 $data = get_pokestop_stats();
 $pokestops = $data["total"];

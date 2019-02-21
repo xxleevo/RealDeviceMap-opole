@@ -5,7 +5,7 @@ include './includes/DbConnector.php';
 if (isset($_GET['table'])) {
   $db = new DbConnector($config['db']);
   $pdo = $db->getConnection();
-  $table = $_GET['table']; //TODO: Check
+  $table = $_GET['table'];
   if (empty($table)) {
     die("Table is required");
   }

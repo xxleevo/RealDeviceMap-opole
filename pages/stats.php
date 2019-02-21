@@ -25,8 +25,8 @@ $html = "
 		        <option value='all'>All</option>";
 		        foreach ($pokedex as $pokemon_id => $name) {
 		          if ($pokemon_id === 0)
-			          continue;
-		          $html .= "<option value='" . ($pokemon_id) . "'>" . $name . "</option>";
+                continue;
+		          $html .= "<option value='$pokemon_id'>$name</option>";
 		        }
 		        $html .= "
           </select>
@@ -34,6 +34,7 @@ $html = "
       </div>
     </div>
     <canvas id='pokemon-stats'></canvas>
+    <progress id='pokemon-animation' max='1' value='0' style='width: 100%'></progress>
   </div>
   <div id='raids' class='tab-pane fade' role='tabpanel'>
     <div class='container'>
@@ -52,6 +53,7 @@ $html = "
       </div>
     </div>
     <canvas id='raid-stats'></canvas>
+    <progress id='raid-animation' max='1' value='0' style='width: 100%'></progress>
   </div>
   <div id='quests' class='tab-pane fade' role='tabpanel'>
     <canvas id='quest-stats'></canvas>
@@ -64,19 +66,23 @@ echo $html;
 <script type='text/javascript' src='https://fengyuanchen.github.io/datepicker/js/datepicker.js'></script>
 <script type='text/javascript' src='https://www.chartjs.org/dist/2.7.3/Chart.bundle.js'></script>
 <script type='text/javascript'>
-
+var pkmnProgress = document.getElementById("pokemon-animation");
+var raidProgress = document.getElementById("raid-animation");
 var pkmnCtx = $("#pokemon-stats");
 pkmnGraph = new Chart(pkmnCtx, {
   type: 'bar',
   //data: createChartData("Seen", pokemon, amounts),
-  options: createChartOptions("Pokemon Spawn Statistics", "Pokemon", "Amount Seen")
+  options: createChartOptions("Pokemon Spawn Statistics", "Pokemon", "Amount Seen", pkmnProgress, "pokemon-stats")
 });
+
+$("#pokemon-stats").hide();
+$("#raid-stats").hide();
 
 var raidCtx = $("#raid-stats");
 raidGraph = new Chart(raidCtx, {
   type: 'bar',
   //data: createChartData("Seen", pokemon, amounts),
-  options: createChartOptions("Raid Boss Statistics", "Pokemon", "Amount Seen")
+  options: createChartOptions("Raid Boss Statistics", "Pokemon", "Amount Seen", raidProgress, "raid-stats")
 });
 
 $("#filter-raid-level").prop("disabled", true);
@@ -100,7 +106,7 @@ filterRaidChart();
 function sendRequest(options, successCallback) {
   $.ajax({
     url: "api.php",
-    method: "GET", //TODO: Change to POST
+    method: "POST",
     data: options,
     success: successCallback,
     error: function(data) {
@@ -173,7 +179,7 @@ function updateRaidChart(chart, dateFilter, typeFilter) {
   });
 }
 
-function createChartOptions(title, xAxesLabel, yAxesLabel) {
+function createChartOptions(title, xAxesLabel, yAxesLabel, progress, canvasId) {
   var chartOptions = {
     responsive: true,
     title: { display: true, text: title },
@@ -189,6 +195,19 @@ function createChartOptions(title, xAxesLabel, yAxesLabel) {
         scaleLabel: { display: true, labelString: yAxesLabel },
         ticks: { precision: 0, beginAtZero: true }
       }]
+    },
+    animation: {
+      duration: 2000,
+      onProgress: function(animation) {
+        progress.value = animation.currentStep / animation.numSteps;
+      },
+      onComplete: function() {
+        window.setTimeout(function() {
+          progress.value = 0;
+          progress.style.display = "none";
+          $("#" + canvasId).show();
+        }, 2000);
+     }
     }
   };
   return chartOptions;
