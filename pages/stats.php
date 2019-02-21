@@ -141,17 +141,19 @@ function updatePokemonChart(chart, dateFilter, pokeFilter) {
   sendRequest({ "table": "pokemon_stats" }, function(data) {
     var pokemon = [];
     var amounts = [];
+    var colors = [];
     var obj = JSON.parse(data);
     obj.forEach(stat => {
       if (stat.date === dateFilter && (pokeFilter === stat.pokemon_id || pokeFilter === "all")) {
         pokemon.push(pokedex[stat.pokemon_id]);
         amounts.push(stat.count);
+        colors.push(getRandomColor());
       }
     });
 
     clearChartData(chart);
 
-    chart.data = createChartData("Seen", pokemon, amounts);
+    chart.data = createChartData("Seen", pokemon, amounts, colors);
     chart.update();
     console.log("Pokemon chart updated");
   });
@@ -163,11 +165,13 @@ function updateRaidChart(chart, dateFilter, typeFilter) {
   sendRequest({ "table": "raid_stats" }, function(data) {
     var pokemon = [];
     var amounts = [];
+    var colors = [];
     var obj = JSON.parse(data);
     obj.forEach(stat => {
       if (stat.date === dateFilter) {
         pokemon.push(pokedex[stat.pokemon_id] + " (Level " + stat.level + ")");
         amounts.push(stat.count);
+        colors.push(getRandomColor());
       }
     });
 
@@ -213,15 +217,19 @@ function createChartOptions(title, xAxesLabel, yAxesLabel, progress, canvasId) {
   return chartOptions;
 }
 
-function createChartData(title, labels, data) {
+function createChartData(title, labels, data, fillColors) {
   var chartData = {
     labels: labels,
     datasets : [{
       label: title,
-      backgroundColor: "<?=$config['ui']['charts']['colors']['background']?>",
-      borderColor: "<?=$config['ui']['charts']['colors']['border']?>",
-      hoverBackgroundColor: "<?=$config['ui']['charts']['colors']['hoverBackground']?>",
-      hoverBorderColor: "<?=$config['ui']['charts']['colors']['hoverBorder']?>",
+      fillColor: fillColors,//"<?=$config['ui']['charts']['colors']['fill']?>",
+      //strokeColor: "<?=$config['ui']['charts']['colors']['stroke']?>",
+      //highlightFill: "<?=$config['ui']['charts']['colors']['highlightFill']?>",
+      //highlightStroke: "<?=$config['ui']['charts']['colors']['highlightStroke']?>",
+      //backgroundColor: "<?=$config['ui']['charts']['colors']['background']?>",
+      //borderColor: "<?=$config['ui']['charts']['colors']['border']?>",
+      //hoverBackgroundColor: "<?=$config['ui']['charts']['colors']['hoverBackground']?>",
+      //hoverBorderColor: "<?=$config['ui']['charts']['colors']['hoverBorder']?>",
       data: data
     }]
   };
@@ -239,6 +247,15 @@ function getDate() {
   var d = new Date();
   var date = d.getFullYear() + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2);
   return date;
+}
+
+function getRandomColor() {
+  var letters = '0123456789ABCDEF'.split('');
+  var color = '#';
+  for (var i = 0; i < 6; i++ ) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
 }
 
 var pokedex = {
