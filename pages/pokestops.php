@@ -37,8 +37,6 @@ $html = "
 
 echo $html;
 
-//TODO: Get pokestop objects with location, parse in javascript
-
 $data = get_pokestop_stats();
 $pokestops = $data["total"];
 $lured = $data["lured"];

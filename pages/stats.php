@@ -3,27 +3,60 @@ require_once './config.php';
 include_once './static/data/pokedex.php';
 
 $html = "
-<div class='container'>
-  <div class='row'>
-	<div class='input-group mb-3'>
-	  <input id='filter-date' type='text' class='form-control' data-toggle='datepicker'>
-      <div class='input-group-prepend'>
-        <label class='input-group-text' for='filter-pokemon'>Pokemon</label>
+<ul class='nav nav-pills mb-3' role='tablist'>
+  <li class='nav-item'><a class='nav-link active' role='tab' aria-controls='pokemon' aria-selected='true' data-toggle='pill' href='#pokemon'>Pokemon</a></li>
+  <li class='nav-item'><a class='nav-link' role='tab' aria-controls='raids' aria-selected='false' data-toggle='pill' href='#raids'>Raids</a></li>
+  <li class='nav-item'><a class='nav-link' role='tab' aria-controls='quests' aria-selected='false' data-toggle='pill' href='#quests'>Quests</a></li>
+</ul>
+<div class='tab-content'>
+  <div id='pokemon' class='tab-pane fade show active' role='tabpanel'>
+    <div class='container'>
+      <div class='row'>
+        <div class='input-group mb-3'>
+          <div class='input-group-prepend'>
+            <label class='input-group-text' for='filter-date'>Date</label>
+          </div>
+	        <input id='filter-date' type='text' class='form-control' data-toggle='datepicker'>
+          <div class='input-group-prepend'>
+            <label class='input-group-text' for='filter-pokemon'>Pokemon</label>
+          </div>
+          <select id='filter-pokemon' class='custom-select'>
+            <option disabled selected>Select</option>
+		        <option value='all'>All</option>";
+		        foreach ($pokedex as $pokemon_id => $name) {
+		          if ($pokemon_id === 0)
+			          continue;
+		          $html .= "<option value='" . ($pokemon_id) . "'>" . $name . "</option>";
+		        }
+		        $html .= "
+          </select>
+	      </div>
       </div>
-      <select id='filter-pokemon' class='custom-select'>
-        <option disabled selected>Select</option>
-		    <option value='all'>All</option>";
-		    foreach ($pokedex as $pokemon_id => $name) {
-		      if ($pokemon_id === 0)
-			      continue;
-		      $html .= "<option value='" . ($pokemon_id) . "'>" . $name . "</option>";
-		    }
-		    $html .= "
-      </select>
-	</div>
+    </div>
+    <canvas id='pokemon-stats'></canvas>
+  </div>
+  <div id='raids' class='tab-pane fade' role='tabpanel'>
+    <div class='container'>
+      <div class='row'>
+        <div class='input-group mb-3'>
+          <div class='input-group-prepend'>
+            <label class='input-group-text' for='filter-raid-date'>Date</label>
+          </div>
+          <input id='filter-raid-date' type='text' class='form-control' data-toggle='datepicker'>
+          <div class='input-group-prepend'>
+            <label class='input-group-text' for='filter-raid-type'>Filter By</label>
+          </div>
+          <label class='radio-inline'><input type='radio' class='btn' name='filter-raid-type' value='0' checked>Pokemon</label>
+          <label class='radio-inline'><input type='radio' class='btn' name='filter-raid-type' value='1'>Level</label>
+        </div>
+      </div>
+    </div>
+    <canvas id='raid-stats'></canvas>
+  </div>
+  <div id='quests' class='tab-pane fade' role='tabpanel'>
+    <canvas id='quest-stats'></canvas>
   </div>
 </div>
-<canvas id='canvas'></canvas>
 ";
 echo $html;
 ?>
@@ -32,152 +65,154 @@ echo $html;
 <script type='text/javascript' src='https://www.chartjs.org/dist/2.7.3/Chart.bundle.js'></script>
 <script type='text/javascript'>
 
-$('[data-toggle="datepicker"]').datepicker({
+var pkmnCtx = $("#pokemon-stats");
+pkmnGraph = new Chart(pkmnCtx, {
+  type: 'bar',
+  //data: createChartData("Seen", pokemon, amounts),
+  options: createChartOptions("Pokemon Spawn Statistics", "Pokemon", "Amount Seen")
+});
+
+var raidCtx = $("#raid-stats");
+raidGraph = new Chart(raidCtx, {
+  type: 'bar',
+  //data: createChartData("Seen", pokemon, amounts),
+  options: createChartOptions("Raid Boss Statistics", "Pokemon", "Amount Seen")
+});
+
+$("#filter-raid-level").prop("disabled", true);
+$("[data-toggle='datepicker']").datepicker({
   autoHide: true,
   yearFirst: true,
-  format: 'yyyy-mm-dd',
+  format: "yyyy-mm-dd",
   zIndex: 2048,
 });
-$("#filter-date").datepicker('setDate', new Date());
-$.ajax({
-  url: "api.php",
-  method: "GET",
-  data: { 'table': 'pokemon_stats' },
-  success: function(data) {
+$("#filter-date").datepicker("setDate", new Date());
+$("#filter-raid-date").datepicker("setDate", new Date());
+
+$("#filter-date").change(filterPokemonChart);
+$("#filter-pokemon").change(filterPokemonChart);
+filterPokemonChart();
+
+//$("[name='filter-raid-type']").change(filterRaidChart);
+$("#filter-raid-date").change(filterRaidChart);
+filterRaidChart();
+
+function sendRequest(options, successCallback) {
+  $.ajax({
+    url: "api.php",
+    method: "GET", //TODO: Change to POST
+    data: options,
+    success: successCallback,
+    error: function(data) {
+      console.log(data);
+    }
+  });
+}
+
+function filterPokemonChart() {
+  var date_filter = document.getElementById("filter-date").value;
+  var pokemon_filter = document.getElementById("filter-pokemon").value;
+  if (pokemon_filter.toLowerCase().indexOf("select") === 0) {
+      pokemon_filter = "all";
+  }
+  if (date_filter != null) {
+    console.log("Updating pokemon chart...");
+    updatePokemonChart(pkmnGraph, date_filter, pokemon_filter);
+  }
+}
+
+function filterRaidChart() {
+  var date_filter = document.getElementById("filter-raid-date").value;
+  var type_filter = $("[name='filter-raid-type']:checked").val();
+  if (date_filter != null) {
+    console.log("Updating raid chart...");
+    updateRaidChart(raidGraph, date_filter, type_filter);
+  }
+}
+
+function updatePokemonChart(chart, dateFilter, pokeFilter) {
+  console.log("Date:",dateFilter,"Pokemon:",pokeFilter);
+  sendRequest({ "table": "pokemon_stats" }, function(data) {
     var pokemon = [];
     var amounts = [];
-    var now = getDate();
     var obj = JSON.parse(data);
     obj.forEach(stat => {
-      if (stat.date === now) {
+      if (stat.date === dateFilter && (pokeFilter === stat.pokemon_id || pokeFilter === "all")) {
         pokemon.push(pokedex[stat.pokemon_id]);
         amounts.push(stat.count);
       }
     });
 
-    var chartData = {
-      labels: pokemon,
-      datasets : [{
-        label: 'Seen',
-        backgroundColor: '<?=$config['ui']['charts']['colors']['background']?>',
-        borderColor: '<?=$config['ui']['charts']['colors']['border']?>',
-        hoverBackgroundColor: '<?=$config['ui']['charts']['colors']['hoverBackground']?>',
-        hoverBorderColor: '<?=$config['ui']['charts']['colors']['hoverBorder']?>',
-        data: amounts
+    clearChartData(chart);
+
+    chart.data = createChartData("Seen", pokemon, amounts);
+    chart.update();
+    console.log("Pokemon chart updated");
+  });
+}
+
+function updateRaidChart(chart, dateFilter, typeFilter) {
+  console.log("Date:",dateFilter,"Type:",typeFilter);
+
+  sendRequest({ "table": "raid_stats" }, function(data) {
+    var pokemon = [];
+    var amounts = [];
+    var obj = JSON.parse(data);
+    obj.forEach(stat => {
+      if (stat.date === dateFilter) {
+        pokemon.push(pokedex[stat.pokemon_id] + " (Level " + stat.level + ")");
+        amounts.push(stat.count);
+      }
+    });
+
+    clearChartData(chart);
+
+    chart.data = createChartData("Seen", pokemon, amounts);
+    chart.update();
+    console.log("Raid chart updated");
+  });
+}
+
+function createChartOptions(title, xAxesLabel, yAxesLabel) {
+  var chartOptions = {
+    responsive: true,
+    title: { display: true, text: title },
+    tooltips: { mode: "index", intersect: false, },
+    hover: { mode: "nearest", intersect: true },
+    scales: {
+      xAxes: [{
+        display: true,
+        scaleLabel: { display: true, labelString: xAxesLabel }
+      }],
+      yAxes: [{
+        display: true,
+        scaleLabel: { display: true, labelString: yAxesLabel },
+        ticks: { precision: 0, beginAtZero: true }
       }]
-    };
-    var chartOptions = {
-      responsive: true,
-      title: { display: true, text: 'Pokemon Chart' },
-      tooltips: { mode: 'index', intersect: false, },
-      hover: { mode: 'nearest', intersect: true },
-      scales: {
-        xAxes: [{
-          display: true,
-          scaleLabel: { display: true, labelString: 'Pokemon' }
-        }],
-        yAxes: [{
-          display: true,
-          scaleLabel: { display: true, labelString: 'Amount Seen' },
-          ticks: { precision: 0, beginAtZero: true }
-        }]
-      }
-    };
-
-    var ctx = $("#canvas");
-    var barGraph = new Chart(ctx, {
-      type: 'bar',
-      data: chartData,
-      options: chartOptions
-    });
-
-    $('#filter-date').change(function() {
-      var date_filter = document.getElementById("filter-date").value;
-      var pokemon_filter = document.getElementById("filter-pokemon").value;
-      if (pokemon_filter.toLowerCase().indexOf("select") === 0) {
-        pokemon_filter = "all";
-      }
-      if (date_filter != null) {
-        console.log("Updating chart...");
-        updatePokemonChart(barGraph, date_filter, pokemon_filter, ctx);
-      }
-    });
-
-    $('#filter-pokemon').change(function() {
-      var date_filter = document.getElementById("filter-date").value;
-      var pokemon_filter = document.getElementById("filter-pokemon").value;
-      if (pokemon_filter.toLowerCase().indexOf("select") === 0) {
-        pokemon_filter = "all";
-      }
-      if (date_filter != null) {
-        console.log("Updating chart...");
-        updatePokemonChart(barGraph, date_filter, pokemon_filter, ctx);
-      }
-    });
-  },
-  error: function(data) {
-    console.log(data);
-  }
-});
-
-function updatePokemonChart(chart, dateFilter, pokeFilter, ctx) {
-  console.log("Date:",dateFilter,"Pokemon:",pokeFilter);
-  $.ajax({
-    url: "api.php",
-    method: "GET",
-    data: { 'table': 'pokemon_stats' },
-    success: function(data) {
-      var pokemon = [];
-      var amounts = [];
-      var obj = JSON.parse(data);
-      obj.forEach(stat => {
-        if (stat.date === dateFilter && (pokeFilter === stat.pokemon_id || pokeFilter === "all")) {
-          pokemon.push(pokedex[stat.pokemon_id]);
-          amounts.push(stat.count);
-        }
-      });
-
-      var chartData = {
-        labels: pokemon,
-        datasets : [{
-          label: 'Seen',
-          backgroundColor: '<?=$config['ui']['charts']['colors']['background']?>',
-          borderColor: '<?=$config['ui']['charts']['colors']['border']?>',
-          hoverBackgroundColor: '<?=$config['ui']['charts']['colors']['hoverBackground']?>',
-          hoverBorderColor: '<?=$config['ui']['charts']['colors']['hoverBorder']?>',
-          data: amounts
-        }]
-      };
-      var chartOptions = {
-        responsive: true,
-        title: { display: true, text: 'Pokemon Chart' },
-        tooltips: { mode: 'index', intersect: false, },
-        hover: { mode: 'nearest', intersect: true },
-        scales: {
-          xAxes: [{
-            display: true,
-            scaleLabel: { display: true, labelString: 'Pokemon' }
-          }],
-          yAxes: [{
-            display: true,
-            scaleLabel: { display: true, labelString: 'Amount Seen' },
-            ticks: { precision: 0, beginAtZero: true }
-          }]
-        }
-      };
-
-      chart.data.labels.pop();
-      chart.data.datasets.forEach((dataset) => {
-        dataset.data.pop();
-      });
-
-      chart.data = chartData;
-      chart.update();
-      console.log("Chart updated");
-    },
-    error: function(data) {
-      console.log(data);
     }
+  };
+  return chartOptions;
+}
+
+function createChartData(title, labels, data) {
+  var chartData = {
+    labels: labels,
+    datasets : [{
+      label: title,
+      backgroundColor: "<?=$config['ui']['charts']['colors']['background']?>",
+      borderColor: "<?=$config['ui']['charts']['colors']['border']?>",
+      hoverBackgroundColor: "<?=$config['ui']['charts']['colors']['hoverBackground']?>",
+      hoverBorderColor: "<?=$config['ui']['charts']['colors']['hoverBorder']?>",
+      data: data
+    }]
+  };
+  return chartData;
+}
+
+function clearChartData(chart) {
+  chart.data.labels.pop();
+  chart.data.datasets.forEach((dataset) => {
+    dataset.data.pop();
   });
 }
 

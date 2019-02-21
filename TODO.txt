@@ -1,5 +1,7 @@
 - Secure pages
+- Secure api.php
 - Pokemon page
-- Finish Statistics page and charts
+- Add quest stats
 - Finish Dashboard page
+- Loading icon for charts
 - Cleanup code and folder structure
