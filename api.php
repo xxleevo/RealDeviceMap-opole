@@ -2,6 +2,9 @@
 include './config.php';
 include './includes/DbConnector.php';
 
+if (!(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER["HTTP_X_REQUESTED_WITH"] == "XMLHttpRequest"))
+  header("Location: index.php");
+
 if (isset($_GET['table'])) {
   $db = new DbConnector($config['db']);
   $pdo = $db->getConnection();
