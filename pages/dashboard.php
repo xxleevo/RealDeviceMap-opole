@@ -130,7 +130,7 @@ $html = "
 echo $html;
 
 $data = get_gym_stats();
-$neutral = $data == null ? 0 : $data[0]; //Neutral gyms
+$neutral = $data == null ? 0 : count($data) < 4 ? 0 : $data[0]; //Neutral gyms
 $mystic = $data == null ? 0 : $data[1]; //Mystic gyms
 $valor = $data == null ? 0 : $data[2]; //Valor gyms
 $instinct = $data == null ? 0 : $data[3]; //Instinct gyms
