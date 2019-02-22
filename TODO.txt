@@ -1,5 +1,7 @@
 - Secure pages
-- Pokemon page
+- Finish Pokemon page
+- Add url config for images
 - Add quest stats
 - Fix loading bar for charts
+- More customizability
 - Cleanup code and folder structure
