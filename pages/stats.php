@@ -164,6 +164,7 @@ function updateRaidChart(chart, dateFilter, typeFilter) {
   console.log("Date:",dateFilter,"Type:",typeFilter);
   var tmp = createToken();
   sendRequest({ "table": "raid_stats", "token": tmp }, function(data) {
+    this.tmp = null;
     var pokemon = [];
     var amounts = [];
     var obj = JSON.parse(data);
