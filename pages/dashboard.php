@@ -165,16 +165,16 @@ $({ pokemonValue: 0, gymsValue: 0, raidsValue: 0, neutralValue: 0, mysticValue: 
     easing: 'swing', // can be anything
     step: function () { // called on every step
         // Update the element's text with rounded-up value:
-        $('.pokemon-count').text(commaSeparateNumber(pokemon));
-        $('.gym-count').text(commaSeparateNumber(gyms));
-        $('.raids-count').text(commaSeparateNumber(raids));
-        $('.neutral-gyms-count').text(commaSeparateNumber(neutral));
-        $('.valor-gyms-count').text(commaSeparateNumber(valor));
-        $('.mystic-gyms-count').text(commaSeparateNumber(mystic));
-        $('.instinct-gyms-count').text(commaSeparateNumber(instinct));
-        $('.pokestop-count').text(commaSeparateNumber(pokestops));
-        $('.lured-pokestop-count').text(commaSeparateNumber(lured));
-        $('.quest-pokestop-count').text(commaSeparateNumber(quests));
+        $('.pokemon-count').text(commaSeparateNumber(Math.round(this.pokemonValue)));
+        $('.gym-count').text(commaSeparateNumber(Math.round(this.gymsValue)));
+        $('.raids-count').text(commaSeparateNumber(Math.round(this.raidsValue)));
+        $('.neutral-gyms-count').text(commaSeparateNumber(Math.round(this.neutralValue)));
+        $('.valor-gyms-count').text(commaSeparateNumber(Math.round(this.valorValue)));
+        $('.mystic-gyms-count').text(commaSeparateNumber(Math.round(this.mysticValue)));
+        $('.instinct-gyms-count').text(commaSeparateNumber(Math.round(this.instinctValue)));
+        $('.pokestop-count').text(commaSeparateNumber(Math.round(this.pokestopsValue)));
+        $('.lured-pokestop-count').text(commaSeparateNumber(Math.round(this.luredValue)));
+        $('.quest-pokestop-count').text(commaSeparateNumber(Math.round(this.questsValue)));
     }
 });
 

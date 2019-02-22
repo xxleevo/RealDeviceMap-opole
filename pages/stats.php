@@ -3,11 +3,12 @@ require_once './config.php';
 include_once './static/data/pokedex.php';
 
 $html = "
-<ul class='nav nav-pills mb-3' role='tablist'>
+<ul class='nav nav-pills mb-3 justify-content-center' role='tablist'>
   <li class='nav-item'><a class='nav-link active' role='tab' aria-controls='pokemon' aria-selected='true' data-toggle='pill' href='#pokemon'>Pokemon</a></li>
   <li class='nav-item'><a class='nav-link' role='tab' aria-controls='raids' aria-selected='false' data-toggle='pill' href='#raids'>Raids</a></li>
   <li class='nav-item'><a class='nav-link' role='tab' aria-controls='quests' aria-selected='false' data-toggle='pill' href='#quests'>Quests</a></li>
 </ul>
+
 <div class='tab-content'>
   <div id='pokemon' class='tab-pane fade show active' role='tabpanel'>
     <div class='container'>
@@ -138,22 +139,22 @@ function filterRaidChart() {
 
 function updatePokemonChart(chart, dateFilter, pokeFilter) {
   console.log("Date:",dateFilter,"Pokemon:",pokeFilter);
-  sendRequest({ "table": "pokemon_stats" }, function(data) {
+  var tmp = createToken();
+  sendRequest({ "table": "pokemon_stats", "token": tmp }, function(data) {
+    this.tmp = null;
     var pokemon = [];
     var amounts = [];
-    var colors = [];
     var obj = JSON.parse(data);
     obj.forEach(stat => {
       if (stat.date === dateFilter && (pokeFilter === stat.pokemon_id || pokeFilter === "all")) {
         pokemon.push(pokedex[stat.pokemon_id]);
         amounts.push(stat.count);
-        colors.push(getRandomColor());
       }
     });
 
     clearChartData(chart);
 
-    chart.data = createChartData("Seen", pokemon, amounts, colors);
+    chart.data = createChartData("Seen", pokemon, amounts);
     chart.update();
     console.log("Pokemon chart updated");
   });
@@ -161,17 +162,15 @@ function updatePokemonChart(chart, dateFilter, pokeFilter) {
 
 function updateRaidChart(chart, dateFilter, typeFilter) {
   console.log("Date:",dateFilter,"Type:",typeFilter);
-
-  sendRequest({ "table": "raid_stats" }, function(data) {
+  var tmp = createToken();
+  sendRequest({ "table": "raid_stats", "token": tmp }, function(data) {
     var pokemon = [];
     var amounts = [];
-    var colors = [];
     var obj = JSON.parse(data);
     obj.forEach(stat => {
       if (stat.date === dateFilter) {
         pokemon.push(pokedex[stat.pokemon_id] + " (Level " + stat.level + ")");
         amounts.push(stat.count);
-        colors.push(getRandomColor());
       }
     });
 
@@ -186,7 +185,7 @@ function updateRaidChart(chart, dateFilter, typeFilter) {
 function createChartOptions(title, xAxesLabel, yAxesLabel, progress, canvasId) {
   var chartOptions = {
     responsive: true,
-    title: { display: true, text: title },
+    title: { display: true, text: title, fontSize: 18, fontColor: "#111" },
     tooltips: { mode: "index", intersect: false, },
     hover: { mode: "nearest", intersect: true },
     scales: {
@@ -211,25 +210,28 @@ function createChartOptions(title, xAxesLabel, yAxesLabel, progress, canvasId) {
           progress.style.display = "none";
           $("#" + canvasId).show();
         }, 2000);
-     }
+      }
     }
   };
   return chartOptions;
 }
 
-function createChartData(title, labels, data, fillColors) {
+function createChartData(title, labels, data) {
+  var colors = [];
+  for (var i = 0; i < labels.length; i++) {
+    colors.push(getRandomColor());
+  }
   var chartData = {
     labels: labels,
     datasets : [{
       label: title,
-      fillColor: fillColors,//"<?=$config['ui']['charts']['colors']['fill']?>",
-      //strokeColor: "<?=$config['ui']['charts']['colors']['stroke']?>",
-      //highlightFill: "<?=$config['ui']['charts']['colors']['highlightFill']?>",
-      //highlightStroke: "<?=$config['ui']['charts']['colors']['highlightStroke']?>",
-      //backgroundColor: "<?=$config['ui']['charts']['colors']['background']?>",
-      //borderColor: "<?=$config['ui']['charts']['colors']['border']?>",
-      //hoverBackgroundColor: "<?=$config['ui']['charts']['colors']['hoverBackground']?>",
-      //hoverBorderColor: "<?=$config['ui']['charts']['colors']['hoverBorder']?>",
+      strokeColor: createArrayOfValue("<?=$config['ui']['charts']['colors']['stroke']?>", labels.length),
+      highlightFill: createArrayOfValue("<?=$config['ui']['charts']['colors']['highlightFill']?>", labels.length),
+      highlightStroke: createArrayOfValue("<?=$config['ui']['charts']['colors']['highlightStroke']?>", labels.length),
+      backgroundColor: colors,
+      borderColor: createArrayOfValue("<?=$config['ui']['charts']['colors']['border']?>", labels.length),
+      hoverBackgroundColor: createArrayOfValue("<?=$config['ui']['charts']['colors']['hoverBackground']?>", labels.length),
+      hoverBorderColor: createArrayOfValue("<?=$config['ui']['charts']['colors']['hoverBorder']?>", labels.length),
       data: data
     }]
   };
@@ -250,12 +252,24 @@ function getDate() {
 }
 
 function getRandomColor() {
-  var letters = '0123456789ABCDEF'.split('');
+  var letters = "0123456789ABCDEF";
   var color = '#';
   for (var i = 0; i < 6; i++ ) {
     color += letters[Math.floor(Math.random() * 16)];
   }
   return color;
+}
+
+function createArrayOfValue(value, count) {
+  var array = [];
+  for (var i = 0; i < count; i++) {
+    array.push(value);
+  }
+  return array;
+}
+
+function createToken() {
+  return "<?=$_SESSION['token']='bin2hex(openssl_random_pseudo_bytes(16))'?>";
 }
 
 var pokedex = {

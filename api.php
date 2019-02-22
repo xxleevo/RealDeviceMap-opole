@@ -1,16 +1,31 @@
 <?
+session_start();
+
 include './config.php';
 include './includes/DbConnector.php';
 
-if (!(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER["HTTP_X_REQUESTED_WITH"] == "XMLHttpRequest"))
-  header("Location: index.php");
+if (!(isset($_SESSION['token']) && !empty($_SESSION['token']))) {
+  die();
+}
+if (!(isset($_GET['token']) && !empty($_GET['token']))) {
+  die();
+}
+if (strcmp($_SESSION['token'], $_GET['token']) != 0) {
+  die();
+}
+if (!(isset($_GET['table']) && !empty($_GET['table']))) {
+  die();
+}
+if (!(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER["HTTP_X_REQUESTED_WITH"] == "XMLHttpRequest")) {
+  die();
+}
 
 if (isset($_GET['table'])) {
   $db = new DbConnector($config['db']);
   $pdo = $db->getConnection();
   $table = $_GET['table'];
   if (empty($table)) {
-    die("Table is required");
+    die();
   }
 
   $limit = isset($_GET['limit']) ? $_GET['limit'] : '99999';

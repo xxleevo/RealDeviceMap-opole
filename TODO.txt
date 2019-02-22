@@ -1,6 +1,5 @@
 - Secure pages
-- Secure api.php
 - Pokemon page
 - Add quest stats
-- Loading icon for charts
+- Fix loading bar for charts
 - Cleanup code and folder structure
