@@ -44,7 +44,10 @@ $config = [
     "dbname" => "rdmdb" //Database name.
   ],
   "urls" => [
-    "backend" => "http://example.com/", //RealDeviceMap backend url. (Used for Pokemon images). e.g. https://map.example.com/
+    "images" => [
+      "pokemon" => "http://example.com/images/pokemon/%s.png", //Pokemon images url
+      "egg" => "http://example.com/images/egg/%s.png" //Egg images url
+    ],
     "paypal" => "", //PayPal.me link e.g https://paypal.me/username
     "venmo" => "", //Venmo link e.g. https://venmo.com/username
     "patreon" => "" //Patreon link e.g. https://patreon.com/username

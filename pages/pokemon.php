@@ -24,7 +24,7 @@ foreach ($pokedex as $id => $name) {
   }
   $html .= "
 <div id='pkmn-$id' class='col text-center p-2'>
-  <img src='" . $config['urls']['backend'] . "/static/img/pokemon/$id.png' width='48' height='48'>
+  <img src='" . sprintf($config['urls']['images']['pokemon'], $id) . "' width='48' height='48'>
   <div class='card-body'>
     <b>$name</b>
     <p id='pkmn-seen-$id' class='card-text'>

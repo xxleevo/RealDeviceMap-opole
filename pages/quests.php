@@ -453,7 +453,7 @@ function get_quest_icon($rewards) {
       $icon_index = $reward->info->item_id;
       break;
     case 7://Pokemon
-      return $config['urls']['backend'] . "/static/img/pokemon/" . $reward->info->pokemon_id . ".png";
+      return sprintf($config['urls']['images']['pokemon'], $reward->info->pokemon_id);
     case 6://Quest
       break;
     case 3://Stardust
