@@ -93,11 +93,10 @@ function get_pokestop_objects() {
 
 function get_raid_image($pokemonId, $raidLevel) {
   global $config;
-  if ($pokemonId === 0) {
-    return sprintf($config['urls']['images']['egg'], $raidLevel);
-  } else {
+  if ($pokemonId > 0) {
     return sprintf($config['urls']['images']['pokemon'], $pokemonId);
   }
+  return sprintf($config['urls']['images']['egg'], $raidLevel);
 }
 
 ?>
