@@ -146,6 +146,7 @@ $raids = get_raid_stats();
 
 ?>
 <link rel="stylesheet" href="./static/css/dashboard.css"/>
+<script type="text/javascript" src="./static/js/utils.js"></script>
 <script type="text/javascript">
 var neutral = "<?=$neutral?>";
 var mystic = "<?=$mystic?>";
@@ -165,23 +166,16 @@ $({ pokemonValue: 0, gymsValue: 0, raidsValue: 0, neutralValue: 0, mysticValue: 
     easing: 'swing', // can be anything
     step: function () { // called on every step
         // Update the element's text with rounded-up value:
-        $('.pokemon-count').text(commaSeparateNumber(Math.round(this.pokemonValue)));
-        $('.gym-count').text(commaSeparateNumber(Math.round(this.gymsValue)));
-        $('.raids-count').text(commaSeparateNumber(Math.round(this.raidsValue)));
-        $('.neutral-gyms-count').text(commaSeparateNumber(Math.round(this.neutralValue)));
-        $('.valor-gyms-count').text(commaSeparateNumber(Math.round(this.valorValue)));
-        $('.mystic-gyms-count').text(commaSeparateNumber(Math.round(this.mysticValue)));
-        $('.instinct-gyms-count').text(commaSeparateNumber(Math.round(this.instinctValue)));
-        $('.pokestop-count').text(commaSeparateNumber(Math.round(this.pokestopsValue)));
-        $('.lured-pokestop-count').text(commaSeparateNumber(Math.round(this.luredValue)));
-        $('.quest-pokestop-count').text(commaSeparateNumber(Math.round(this.questsValue)));
+        $('.pokemon-count').text(numberWithCommas(Math.round(this.pokemonValue)));
+        $('.gym-count').text(numberWithCommas(Math.round(this.gymsValue)));
+        $('.raids-count').text(numberWithCommas(Math.round(this.raidsValue)));
+        $('.neutral-gyms-count').text(numberWithCommas(Math.round(this.neutralValue)));
+        $('.valor-gyms-count').text(numberWithCommas(Math.round(this.valorValue)));
+        $('.mystic-gyms-count').text(numberWithCommas(Math.round(this.mysticValue)));
+        $('.instinct-gyms-count').text(numberWithCommas(Math.round(this.instinctValue)));
+        $('.pokestop-count').text(numberWithCommas(Math.round(this.pokestopsValue)));
+        $('.lured-pokestop-count').text(numberWithCommas(Math.round(this.luredValue)));
+        $('.quest-pokestop-count').text(numberWithCommas(Math.round(this.questsValue)));
     }
 });
-
-function commaSeparateNumber(val) {
-    while (/(\d+)(\d{3})/.test(val.toString())) {
-        val = val.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
-    }
-    return val;
-}
 </script>

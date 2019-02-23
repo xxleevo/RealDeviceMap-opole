@@ -228,7 +228,7 @@ function get_quest_conditions($conditions) {
   $quest_conditions = [];
   for ($i = 0; $i < $count; $i++) {
     $condition = $conditions[$i];
-	switch ($condition->type) {
+    switch ($condition->type) {
       case 16://BadgeType
         break;
       case 15://CurveBall

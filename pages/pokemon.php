@@ -40,7 +40,7 @@ echo $html;
 
 <script type='text/javascript' src='./static/js/datepicker.js'></script>
 <script type='text/javascript' src='./static/js/pokedex.js'></script>
-<script type='text/javascript' src='./static/js/utils.js'></script>
+<script type="text/javascript" src="./static/js/utils.js"></script>
 <script type='text/javascript'>
 $("[data-toggle='datepicker']").datepicker({
   autoHide: true,
@@ -52,7 +52,7 @@ $("#filter-date").change(filterPokemon);
 $("#filter-date").datepicker("setDate", new Date());
 
 //Cache retrieved pokemon stats data
-var obj = null;
+var obj = [];
 function filterPokemon() {
   var dateFilter = document.getElementById("filter-date").value;
   var pokeFilter = document.getElementById("filter-pokemon").value;
@@ -73,7 +73,7 @@ function filterPokemon() {
 function filterPokemonElements(elements, dateFilter, pokeFilter) {
   elements.map(stat => {
     if (stat.date === dateFilter) {
-      $("#pkmn-seen-" + stat.pokemon_id).text("Seen: " + stat.count);
+      $("#pkmn-seen-" + stat.pokemon_id).text("Seen: " + numberWithCommas(stat.count));
       if (pokeFilter === "") {
         $("#pkmn-" + stat.pokemon_id).show();
       } else {
