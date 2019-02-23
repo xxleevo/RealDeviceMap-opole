@@ -4,7 +4,7 @@ Billboard to show active raids sorted by which raids will end first with raid bo
 # Install  
 1.) Clone the repository: `git clone https://github.com/versx/RealDeviceMap-RaidBillBoard raids` (change `raids` to your liking)  
 2.) Change directory to newly cloned folder: `cd raids` (change `raids` to the cloned folder)  
-3.) Install Composer (https://getcomposer.org)
+3.) Install Composer (https://getcomposer.org)  
 4.) In the clone folder install the composer components required for the project: `composer install`  
 5.) Copy the example configuration file: `cp config.example.php config.php`  
 
