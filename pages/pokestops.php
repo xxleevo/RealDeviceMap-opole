@@ -81,11 +81,13 @@ $({ pokestopsValue: 0, luredValue: 0, questsValue: 0 }).animate({ pokestopsValue
 });
 
 $(document).ready(function(){
+  var tmp = createToken();
   $.ajax({
     url: "api.php",
     method: "GET",
-	  data: { 'table': 'pokestop', 'limit': 1000 },
+	  data: { 'table': "pokestop", "limit": 1000, "token": tmp },
     success: function(data) {
+      this.tmp = null;
       var pokestops = JSON.parse(data);
       pokestops.forEach(pokestop => {
         L.marker([pokestop.lat, pokestop.lon]).addTo(mymap);
@@ -96,6 +98,12 @@ $(document).ready(function(){
     }
   });
 });
+
+function createToken() {
+  //TODO: Secure
+  <?php $_SESSION['token'] = bin2hex(openssl_random_pseudo_bytes(16)); ?>
+  return "<?=$_SESSION['token']?>";
+}
 
 function commaSeparateNumber(val) {
   while (/(\d+)(\d{3})/.test(val.toString())) {
