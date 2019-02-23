@@ -40,6 +40,7 @@ echo $html;
 
 <script type='text/javascript' src='./static/js/datepicker.js'></script>
 <script type='text/javascript' src='./static/js/pokedex.js'></script>
+<script type='text/javascript' src='./static/js/utils.js'></script>
 <script type='text/javascript'>
 $("[data-toggle='datepicker']").datepicker({
   autoHide: true,
@@ -73,18 +74,6 @@ function filterPokemon() {
         }
       }
     });
-  });
-}
-
-function sendRequest(options, successCallback) {
-  $.ajax({
-    url: "api.php",
-    method: "POST",
-    data: options,
-    success: successCallback,
-    error: function(data) {
-      console.log(data);
-    }
   });
 }
 

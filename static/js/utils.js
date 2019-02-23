@@ -20,3 +20,15 @@ function createArrayOfValue(value, count) {
   }
   return values;
 }
+
+function sendRequest(options, successCallback) {
+  $.ajax({
+    url: "api.php",
+    method: "POST",
+    data: options,
+    success: successCallback,
+    error: function(data) {
+      console.log(data);
+    }
+  });
+}

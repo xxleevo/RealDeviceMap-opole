@@ -106,18 +106,6 @@ filterPokemonChart();
 $("#filter-raid-date").change(filterRaidChart);
 filterRaidChart();
 
-function sendRequest(options, successCallback) {
-  $.ajax({
-    url: "api.php",
-    method: "POST",
-    data: options,
-    success: successCallback,
-    error: function(data) {
-      console.log(data);
-    }
-  });
-}
-
 function filterPokemonChart() {
   var date_filter = document.getElementById("filter-date").value;
   var pokemon_filter = document.getElementById("filter-pokemon").value;
