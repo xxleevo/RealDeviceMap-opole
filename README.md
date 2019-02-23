@@ -19,7 +19,8 @@ Create or copy your existing geofences to the `geofences` folder. The following 
 3,3  
 ```
 
-# Time Zone
+# Configuration  
+**Time Zone**  
 mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root -p mysql_password  
 
 # config.php  

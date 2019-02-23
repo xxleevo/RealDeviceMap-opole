@@ -91,6 +91,6 @@ function sendRequest(options, successCallback) {
 function createToken() {
   //TODO: Secure
   <?php $_SESSION['token'] = bin2hex(openssl_random_pseudo_bytes(16)); ?>
-  return "<?=$_SESSION['token']?>";
+  return "<?php echo $_SESSION['token']; ?>";
 }
 </script>
