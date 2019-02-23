@@ -48,6 +48,11 @@
           <a class="nav-link" href="<?=$config['urls']['venmo'] ?>"><img src="./static/images/venmo.png" width="24" height="20"></a>
         </li>
 <?php } ?>
+<?php if (!empty($config['urls']['patreon'])) { ?>
+        <li class="nav-item">
+          <a class="nav-link" href="<?=$config['urls']['patreon'] ?>"><img src="./static/images/patreon.png" width="24", height="20"></a>
+        </li>
+<?php } ?>
 <?php if ($config['discord']['enabled'] && !empty($_SESSION['user'])) { ?>
         <li class="nav-item">
           <a class="nav-link"><i class="fa fa-fw fa-user" aria-hidden="true"></i>&nbsp;<?php echo $_SESSION['user']; ?></a>

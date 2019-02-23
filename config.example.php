@@ -46,7 +46,8 @@ $config = [
   "urls" => [
     "backend" => "http://example.com/", //RealDeviceMap backend url. (Used for Pokemon images). e.g. https://map.example.com/
     "paypal" => "", //PayPal.me link e.g https://paypal.me/username
-    "venmo" => "" //Venmo link e.g. https://venmo.com/username
+    "venmo" => "", //Venmo link e.g. https://venmo.com/username
+    "patreon" => "" //Patreon link e.g. https://patreon.com/username
   ],
   "discord" => [
     "enabled" => false, //Enable or disable Discord auth login

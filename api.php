@@ -1,4 +1,4 @@
-<?
+<?php
 session_start();
 
 include './config.php';
@@ -39,6 +39,8 @@ if (!(isset($_GET['table']) && !empty($_GET['table']))) {
 if (!(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER["HTTP_X_REQUESTED_WITH"] == "XMLHttpRequest")) {
   die();
 }
+
+//TODO: Sanitize user input
 
 $table = $_GET['table'];
 $limit = isset($_GET['limit']) ? $_GET['limit'] : '99999';
