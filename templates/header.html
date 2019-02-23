@@ -35,22 +35,22 @@
         </li>
 <?php if (!empty($discord_invite_link)) { ?>
         <li class="nav-item">
-          <a class="nav-link" href="<?=$config['discord']['inviteLink'] ?>"><img src="./static/images/discord.png" width="24" height="20"></a>
+          <a class="nav-link" href="<?=$config['discord']['inviteLink'] ?>" target="_blank"><img src="./static/images/discord.png" width="24" height="20"></a>
         </li>
 <?php } ?>
 <?php if (!empty($config['urls']['paypal'])) { ?>
         <li class="nav-item">
-          <a class="nav-link" href="<?=$config['urls']['paypal'] ?>"><img src="./static/images/paypal.png" width="24" height="20"></a>
+          <a class="nav-link" href="<?=$config['urls']['paypal'] ?>" target="_blank"><img src="./static/images/paypal.png" width="24" height="20"></a>
         </li>
 <?php } ?>
 <?php if (!empty($config['urls']['venmo'])) { ?>
         <li class="nav-item">
-          <a class="nav-link" href="<?=$config['urls']['venmo'] ?>"><img src="./static/images/venmo.png" width="24" height="20"></a>
+          <a class="nav-link" href="<?=$config['urls']['venmo'] ?>" target="_blank"><img src="./static/images/venmo.png" width="24" height="20"></a>
         </li>
 <?php } ?>
 <?php if (!empty($config['urls']['patreon'])) { ?>
         <li class="nav-item">
-          <a class="nav-link" href="<?=$config['urls']['patreon'] ?>"><img src="./static/images/patreon.png" width="24", height="20"></a>
+          <a class="nav-link" href="<?=$config['urls']['patreon'] ?>" target="_blank"><img src="./static/images/patreon.png" width="24", height="20"></a>
         </li>
 <?php } ?>
 <?php if ($config['discord']['enabled'] && !empty($_SESSION['user'])) { ?>

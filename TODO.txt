@@ -5,4 +5,5 @@
 - Fix loading bar for charts
 - More customizability
 - Move duplicate code to separate classes
+- Use ajax for dashboard data
 - Cleanup code and folder structure
