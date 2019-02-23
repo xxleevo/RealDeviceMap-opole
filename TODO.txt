@@ -6,4 +6,4 @@
 - Move duplicate code to separate classes
 - Use ajax for dashboard data
 - Move all javascript libs to bottom of index page
-- Cleanup code and folder structure
+- Cleanup code and folder structure (change from 2 spaces to 4 spaces)

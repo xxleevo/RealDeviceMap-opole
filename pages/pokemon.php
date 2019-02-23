@@ -19,7 +19,7 @@ $html = "
   </div>
   <div class='row'>";
 foreach ($pokedex as $id => $name) {
-  if ($id === 0) {
+  if ($id <= 0) {
     continue;
   }
   $html .= "

@@ -25,7 +25,7 @@ $html = "
             <option disabled selected>Select</option>
 		        <option value='all'>All</option>";
 		        foreach ($pokedex as $pokemon_id => $name) {
-		          if ($pokemon_id === 0)
+		          if ($pokemon_id <= 0)
                 continue;
 		          $html .= "<option value='$pokemon_id'>$name</option>";
 		        }
