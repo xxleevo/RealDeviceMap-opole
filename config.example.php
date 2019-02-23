@@ -42,7 +42,7 @@ $config = [
     "user" => "root", //Database username.
     "pass" => "password", //Database user password.
     "dbname" => "rdmdb", //Database name.
-    "charset" => "utf8mb4" //Database character set.
+    "charset" => "utf8mb4" //Database character set. (Default utf8mb4)
   ],
   "urls" => [
     "images" => [
