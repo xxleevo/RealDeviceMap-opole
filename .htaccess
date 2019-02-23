@@ -7,4 +7,6 @@ RewriteRule ^pokestops/?$ index.php?page=pokestops [NC,L]
 RewriteRule ^pokemon/?$ index.php?page=pokemon [NC,L]
 RewriteRule ^stats/?$ index.php?page=stats [NC,L]
 
-php_value short_open_tag 1
+<IfModule mod_php5.c>
+   php_value short_open_tag 1
+</IfModule>
