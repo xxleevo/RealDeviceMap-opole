@@ -5,6 +5,7 @@ class DbConnector {
   private $user;
   private $pass;
   private $db;
+  private $charset;
       
   function __construct($dbOptions) {
     $this->host = $dbOptions['host'];
@@ -12,12 +13,16 @@ class DbConnector {
     $this->user = $dbOptions['user'];
     $this->pass = $dbOptions['pass'];
     $this->db = $dbOptions['dbname'];
+    $this->db = $dbOptions['charset'];
   }
  
   public function getConnection() {
     // Establish connection to database
     try {
-      $pdo = new PDO("mysql:host=$this->host;dbname=$this->db;port=$this->port", $this->user, $this->pass);
+      $pdo = new PDO("mysql:host=$this->host;dbname=$this->db;port=$this->port",
+        $this->user,
+        $this->pass,
+        [PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES $this->charset"]);
       // Set the PDO error mode to exception
       $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
       return $pdo;

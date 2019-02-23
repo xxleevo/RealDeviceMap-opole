@@ -41,7 +41,8 @@ $config = [
     "port" => "3306", //Database port. (default: 3306)
     "user" => "root", //Database username.
     "pass" => "password", //Database user password.
-    "dbname" => "rdmdb" //Database name.
+    "dbname" => "rdmdb", //Database name.
+    "charset" => "utf8mb4" //Database character set.
   ],
   "urls" => [
     "images" => [
