@@ -13,7 +13,7 @@ class DbConnector {
     $this->user = $dbOptions['user'];
     $this->pass = $dbOptions['pass'];
     $this->db = $dbOptions['dbname'];
-    $this->db = $dbOptions['charset'];
+    $this->charset = $dbOptions['charset'];
   }
  
   public function getConnection() {

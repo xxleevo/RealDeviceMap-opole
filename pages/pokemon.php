@@ -19,7 +19,7 @@ $html = "
   </div>
   <div class='row'>";
 foreach ($pokedex as $id => $name) {
-  if ($id <= 0) {
+  if ($id <= 0 || $id > 807) {
     continue;
   }
   $html .= "
@@ -51,29 +51,57 @@ $("[data-toggle='datepicker']").datepicker({
 $("#filter-date").change(filterPokemon);
 $("#filter-date").datepicker("setDate", new Date());
 
+//Cache retrieved pokemon stats data
+var obj = null;
 function filterPokemon() {
-  var tmp = createToken();
-  sendRequest({ "table": "pokemon_stats", "token": tmp }, function(data) {
-    this.tmp = null;
-    var obj = JSON.parse(data);
-    var dateFilter = document.getElementById("filter-date").value;
-    var pokeFilter = document.getElementById("filter-pokemon").value;
-    //TODO: Loop 1-490, index the stats obj, and run filter check.
-    //for (const [pokemon_id, count] of Object.entries(obj)) {
-    obj.forEach(stat => {
-      if (stat.date === dateFilter) {
-        $("#pkmn-seen-" + stat.pokemon_id).text("Seen: " + stat.count);
-        if (pokeFilter === "") {
-          $("#pkmn-" + stat.pokemon_id).show();
-        } else {
-          if (pokedex[stat.pokemon_id].toLowerCase().includes(pokeFilter.toLowerCase())) {
-            $("#pkmn-" + stat.pokemon_id).show();
+  var dateFilter = document.getElementById("filter-date").value;
+  var pokeFilter = document.getElementById("filter-pokemon").value;
+  console.log("Date:",dateFilter,"Pokemon:",pokeFilter);
+  
+  if (obj != null && obj.length > 0) {
+    filterPokemonElements(obj, dateFilter, pokeFilter);
+  } else {
+    var tmp = createToken();
+    sendRequest({ "table": "pokemon_stats", "token": tmp, "limit": 999999 }, function(data) {
+      tmp = null;
+      obj = JSON.parse(data);
+      filterPokemonElements(obj, dateFilter, pokeFilter);
+    });
+  }
+}
+
+function filterPokemonElements(elements, dateFilter, pokeFilter) {
+  elements.map(stat => {
+    if (stat.date === dateFilter) {
+      $("#pkmn-seen-" + stat.pokemon_id).text("Seen: " + stat.count);
+      if (pokeFilter === "") {
+        $("#pkmn-" + stat.pokemon_id).show();
+      } else {
+        var maxPokemon = <?=$config['core']['maxPokemon']?>;
+        for (var i = 0; i <= maxPokemon; i++) {
+          var pokemonId = (i + 1);
+          if (pokedex[pokemonId].toLowerCase().includes(pokeFilter.toLowerCase())) {
+            $("#pkmn-" + pokemonId).show();
           } else {
-            $("#pkmn-" + stat.pokemon_id).hide();
+            $("#pkmn-" + pokemonId).hide();
           }
         }
       }
-    });
+    }
+  });
+}
+
+function sendRequest(options, successCallback) {
+  $.ajax({
+    url: "api.php",
+    method: "POST",
+    data: options,
+    cache: true,
+    //async: false,
+    success: successCallback,
+    error: function(data) {
+      console.log(data);
+    }
   });
 }
 

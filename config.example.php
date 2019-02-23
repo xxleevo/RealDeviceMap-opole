@@ -8,7 +8,8 @@ $config = [
     "showFooter" => false, //Show bottom footer
     "showCopyright" => false, //Show Nintendo/Niantic/Pokemon copyright footer
     "showErrors" => true, //Show PHP errors
-    "startupLocation" => [1,1] //Default location to startup any map objects at.
+    "startupLocation" => [1,1], //Default location to startup any map objects at
+    "maxPokemon" => 495 //Maximum amount of pokemon for Pokemon stats page
   ],
   "google" => [
     "analyticsId" => "", //Google Analytics Id. e.g. UA-XXXXX-Y

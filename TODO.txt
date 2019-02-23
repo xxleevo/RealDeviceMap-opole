@@ -1,5 +1,5 @@
 - Secure pages
-- Finish Pokemon page
+- Optimize Pokemon page
 - Add quest stats
 - Fix loading bar for charts
 - More customizability
