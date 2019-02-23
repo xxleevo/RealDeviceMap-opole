@@ -23,9 +23,20 @@ Create or copy your existing geofences to the `geofences` folder. The following 
 **Time Zone**  
 mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root -p mysql_password  
 
-# config.php  
-Required: Configure the database variables to match what is needed to access your RealDeviceMap Database.  
-Optionally: You can add your Google Analytics and Google Ad-Sense ids to the config file. You also have a few different table properties to customize to your liking.  
+**config.php**  
+_Core_  
+1.) Set your time zone e.g. `America/New_York`  
+2.) Set a startup location for any map objects to start at.  
+
+_Database (db)_  
+1.) Fill in your database IP or FQDN address.  
+2.) Set your database username and password.  
+3.) If you use a different database name than default, specify it.  
+All other options are default and optional at your discession.  
+
+_Urls_  
+1.) Set your pokemon images url including file extension and pokemon id placeholder in the url address. e.g. http://example.com/images/pokemon/%s.png http://example2.com/images/pokemon/%03d_000.png  
+2.) Set your egg images url, same as pokemon, include the placeholder and file extension in the url address. e.g. http://example.com/images/egg/%s.png  
 
 # Thanks  
 - Credit to Zyahko and his creditors for the base.  

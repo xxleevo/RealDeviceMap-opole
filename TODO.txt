@@ -6,4 +6,5 @@
 - Move duplicate code to separate classes
 - Use ajax for dashboard data
 - Move all javascript libs to bottom of index page
+- Filter gym names
 - Cleanup code and folder structure (change from 2 spaces to 4 spaces)
