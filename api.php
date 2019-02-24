@@ -48,9 +48,9 @@ if (!(isset($_GET['type']) && !empty($_GET['type']))) {
     die();
   }
 
-  $table = filter_input(INPUT_GET, "table", FILTER_SANITIZE_STRING);//$_GET['table'];
+  $table = filter_input(INPUT_GET, "table", FILTER_SANITIZE_STRING);
   $limit = filter_input(INPUT_GET, "limit", FILTER_SANITIZE_STRING);
-  $limit = isset($limit) ? $limit : DEFAULT_LIMIT;
+  $limit = isset($limit) && !empty($limit) ? $limit : DEFAULT_LIMIT;
   $db = new DbConnector($config['db']);
   $pdo = $db->getConnection();
   $sql = "SELECT * FROM " . $config['db']['dbname'] . ".$table LIMIT $limit";
