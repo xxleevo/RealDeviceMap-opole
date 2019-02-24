@@ -55,10 +55,10 @@ ORDER BY
     echo "<th class='level' onclick='sort_table(\"gym-table\",3)'>Raid Level</th>";
     echo "<th class='boss' onclick='sort_table(\"gym-table\",4)'>Raid Boss</th>";
     echo "<th class='moveset' onclick='sort_table(\"gym-table\",5)'>Moveset</th>";
-    echo "<th class='city' onclick='sort_table(\"gym-table\",6)'>City</th>";
-    echo "<th class='team' onclick='sort_table(\"gym-table\",7)'>Team</th>";
-    echo "<th class='ex' onclick='sort_table(\"gym-table\",8)'>Ex-Eligible</th>";
-    echo "<th class='gym' onclick='sort_table(\"gym-table\",9)'>Gym</th>";
+    echo "<th class='gym' onclick='sort_table(\"gym-table\",6)'>Gym</th>";
+    echo "<th class='city' onclick='sort_table(\"gym-table\",7)'>City</th>";
+    echo "<th class='team' onclick='sort_table(\"gym-table\",8)'>Team</th>";
+    echo "<th class='ex' onclick='sort_table(\"gym-table\",9)'>Ex-Eligible</th>";
     echo "<th class='updated' onclick='sort_table(\"gym-table\",10)'>Updated</th>";
   echo "</tr>";
   echo "</thead>";
@@ -84,10 +84,10 @@ ORDER BY
         echo "<td class='numeric' data-title='Raid Level'>" . $level . "</td>";
         echo "<td data-title='Raid Boss'><img src='$raid_image' height=32 width=32 />&nbsp;$pokemon</td>";
         echo "<td data-title='Moveset'>" . $moveset . "</td>";
+        echo "<td data-title='Gym'><a href='" . $map_link . "' target='_blank'>" . $row['name'] . "</a></td>";
         echo "<td data-title='City'>" . $city . "</td>";
         echo "<td data-title='Team'>" . get_team($row['team_id']) . "</td>";
         echo "<td data-title='Ex-Eligible'>" . ($row['ex_raid_eligible'] ? "Yes" : "No") . "</td>";
-        echo "<td data-title='Gym'><a href='" . $map_link . "' target='_blank'>" . $row['name'] . "</a></td>";
         echo "<td data-title='Updated'>" . date($config['core']['dateTimeFormat'], $row['updated']) . "</td>";
       echo "</tr>";
     }

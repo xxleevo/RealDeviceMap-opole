@@ -49,10 +49,10 @@ function filter_raids() {
 
     var levelValue = table.rows[i].cells[3].innerHTML;
     var pkmnValue = table.rows[i].cells[4].innerHTML.toUpperCase();
-    var cityValue = table.rows[i].cells[6].innerHTML.toUpperCase();
-    var teamValue = table.rows[i].cells[7].innerHTML.toUpperCase();
-    var exValue = table.rows[i].cells[8].innerHTML.toUpperCase();
-    var gymValue = table.rows[i].cells[9].innerHTML.toUpperCase();
+    var gymValue = table.rows[i].cells[6].innerHTML.toUpperCase();
+    var cityValue = table.rows[i].cells[7].innerHTML.toUpperCase();
+    var teamValue = table.rows[i].cells[8].innerHTML.toUpperCase();
+    var exValue = table.rows[i].cells[9].innerHTML.toUpperCase();
     
     if (pkmnValue.indexOf(searchFilter) > -1 &&
       cityValue.indexOf(cityFilter) > -1 &&
@@ -112,11 +112,11 @@ function filter_gyms() {
     if (i == 0)
       continue;
 
-    var teamValue = table.rows[i].cells[1].innerHTML.toUpperCase();
-    var slotsValue = table.rows[i].cells[2].innerHTML.toUpperCase();
-    var battleValue = table.rows[i].cells[4].innerHTML.toUpperCase();
-    var cityValue = table.rows[i].cells[5].innerHTML.toUpperCase();
-    var gymValue = table.rows[i].cells[6].innerHTML.toUpperCase();
+    var gymValue = table.rows[i].cells[1].innerHTML.toUpperCase();
+    var teamValue = table.rows[i].cells[2].innerHTML.toUpperCase();
+    var slotsValue = table.rows[i].cells[3].innerHTML.toUpperCase();
+    var battleValue = table.rows[i].cells[5].innerHTML.toUpperCase();
+    var cityValue = table.rows[i].cells[6].innerHTML.toUpperCase();
 
     if (teamValue.indexOf(teamFilter) > -1 && 
       ((slotsValue >= slotsFilter && slotsValue.indexOf("FULL") == -1) || (slotsValue == slotsFilter && slotsFilter.indexOf("FULL") >= -1) || slotsFilter.indexOf("ALL") > -1) &&

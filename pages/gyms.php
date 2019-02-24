@@ -161,12 +161,12 @@ WHERE
     echo "<thead class='thead-".$config['ui']['table']['headerStyle']."'>";
     echo "<tr class='text-nowrap'>";
       echo "<th class='remove'>Remove</th>";
+      echo "<th class='gym'>Gym</th>";
       echo "<th class='team'>Team</th>";
       echo "<th class='slots'>Available Slots</th>";
       echo "<th class='guard'>Guarding Pokemon</th>";
       echo "<th class='battle'>In Battle</th>";
       echo "<th class='city'>City</th>";
-      echo "<th class='gym'>Gym</th>";
       echo "<th class='updated'>Updated</th>";
     echo "</tr>";
     echo "</thead>";
@@ -174,7 +174,6 @@ WHERE
       $geofence = $geofenceSrvc->get_geofence($row['lat'], $row['lon']);
       $city = ($geofence == null ? $config['ui']['unknownValue'] : $geofence->name);
       $map_link = sprintf($config['google']['maps'], $row["lat"], $row["lon"]);
-
       $team = get_team($row['team_id']);
       $available_slots = $row['availble_slots'];
       $guarding_pokemon_id = $row['guarding_pokemon_id'];
@@ -182,12 +181,12 @@ WHERE
 
       echo "<tr class='text-nowrap'>";
         echo "<td scope='row' class='text-center' data-title='Remove'><a title='Remove' data-toggle='tooltip' class='delete'><i class='fa fa-times'></i></a></td>";
-        echo "<td data-column='Team' data-title='Team'><img src='./static/images/teams/" . strtolower($team) . ".png' height=32 width=32 />&nbsp;" . $team . "</td>";
+        echo "<td data-title='Gym'><a href='" . $map_link . "' target='_blank'>" . $row['name'] . "</a></td>";
+        echo "<td data-title='Team'><img src='./static/images/teams/" . strtolower($team) . ".png' height=32 width=32 />&nbsp;" . $team . "</td>";
         echo "<td data-title='Available Slots'>" . ($available_slots == 0 ? "Full" : $available_slots) . "</td>";
         echo "<td data-title='Guarding Pokemon'>" . $pokedex[$guarding_pokemon_id] . "</td>";
         echo "<td data-title='In Battle'>" . ($in_battle ? "Under Attack!" : "Safe") . "</td>";
         echo "<td data-title='City'>" . $city . "</td>";
-        echo "<td data-title='Gym'><a href='" . $map_link . "' target='_blank'>" . $row['name'] . "</a></td>";
         echo "<td data-title='Updated'>" . date($config['core']['dateTimeFormat'], $row['updated']) . "</td>";
       echo "</tr>";
     }
