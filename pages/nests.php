@@ -1,3 +1,3 @@
 <?php
 ?>
-<p>Soon</p>
+<p class='text-center'>Soon</p>

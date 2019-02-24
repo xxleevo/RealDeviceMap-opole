@@ -5,6 +5,8 @@ include './config.php';
 include './includes/DbConnector.php';
 include './includes/utils.php';
 
+define("DEFAULT_LIMIT", 999999);
+
 /*
 if (isset($_SERVER['HTTP_ORIGIN'])) {
   $address = 'https://' . $_SERVER['SERVER_NAME'];
@@ -28,10 +30,11 @@ if (isset($_SERVER['HTTP_REFERER'])) {
 if (!(isset($_SESSION['token']) && !empty($_SESSION['token']))) {
   die();
 }
-if (!(isset($_GET['token']) && !empty($_GET['token']))) {
+$token = filter_input(INPUT_GET, "token", FILTER_SANITIZE_STRING);
+if (!(isset($token) && !empty($token))) {
   die();
 }
-if ($_SESSION['token'] !== $_GET['token']) {
+if ($_SESSION['token'] !== $token) {
   die();
 }
 if (!(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER["HTTP_X_REQUESTED_WITH"] == "XMLHttpRequest")) {
@@ -45,8 +48,9 @@ if (!(isset($_GET['type']) && !empty($_GET['type']))) {
     die();
   }
 
-  $table = $_GET['table'];
-  $limit = isset($_GET['limit']) ? $_GET['limit'] : '99999';
+  $table = filter_input(INPUT_GET, "table", FILTER_SANITIZE_STRING);//$_GET['table'];
+  $limit = filter_input(INPUT_GET, "limit", FILTER_SANITIZE_STRING);
+  $limit = isset($limit) ? $limit : DEFAULT_LIMIT;
   $db = new DbConnector($config['db']);
   $pdo = $db->getConnection();
   $sql = "SELECT * FROM " . $config['db']['dbname'] . ".$table LIMIT $limit";

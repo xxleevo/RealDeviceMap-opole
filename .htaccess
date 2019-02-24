@@ -5,6 +5,7 @@ RewriteRule ^gyms$ index.php?page=gyms [NC,L]
 RewriteRule ^quests$ index.php?page=quests [NC,L]
 RewriteRule ^pokestops$ index.php?page=pokestops [NC,L]
 RewriteRule ^pokemon$ index.php?page=pokemon [NC,L]
+RewriteRule ^nests$ index.php?page=nests [NC,L]
 RewriteRule ^stats$ index.php?page=stats [NC,L]
 
 <IfModule mod_php5.c>
