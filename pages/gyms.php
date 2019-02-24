@@ -74,6 +74,7 @@ $modal = "
 <button type='button' class='btn btn-dark float-right' data-toggle='modal' data-target='#filtersModal'>
   Filters
 </button>
+<p>&nbsp;</p>
 <div class='modal fade' id='filtersModal' tabindex='-1' role='dialog' aria-labelledby='filtersModalLabel' aria-hidden='true'>
   <div class='modal-dialog' role='document'>
     <div class='modal-content'>
@@ -118,7 +119,7 @@ WHERE
   $result = $pdo->query($sql);
   if ($result->rowCount() > 0) {
     echo $modal;
-    echo "<div class='table-responsive'>";
+    echo "<div id='no-more-tables'>";
     echo "<table id='gym-table' class='table table-".$config['ui']['table']['style']." ".($config['ui']['table']['striped'] ? 'table-striped' : null)."' border='1'>";
     echo "<thead class='thead-".$config['ui']['table']['headerStyle']."'>";
     echo "<tr class='text-nowrap'>";
@@ -137,27 +138,27 @@ WHERE
       $city = ($geofence == null ? $config['ui']['unknownValue'] : $geofence->name);
       $map_link = sprintf($config['google']['maps'], $row["lat"], $row["lon"]);
 
-	  $team = get_team($row['team_id']);
-	  $available_slots = $row['availble_slots'];
-	  $guarding_pokemon_id = $row['guarding_pokemon_id'];
-	  $in_battle = $row['in_battle'];
+      $team = get_team($row['team_id']);
+      $available_slots = $row['availble_slots'];
+      $guarding_pokemon_id = $row['guarding_pokemon_id'];
+      $in_battle = $row['in_battle'];
 
       echo "<tr class='text-nowrap'>";
-        echo "<td scope='row' class='text-center'><a title='Remove' data-toggle='tooltip' class='delete'><i class='fa fa-times'></i></a></td>";
-        echo "<td><img src='./static/images/teams/" . strtolower($team) . ".png' height=32 width=32 />&nbsp;" . $team . "</td>";
-        echo "<td>" . ($available_slots == 0 ? "Full" : $available_slots) . "</td>";
-        echo "<td>" . $pokedex[$guarding_pokemon_id] . "</td>";
-        echo "<td>" . ($in_battle ? "Under Attack!" : "Safe") . "</td>";
-        echo "<td>" . $city . "</td>";
-        echo "<td><a href='" . $map_link . "' target='_blank'>" . $row['name'] . "</a></td>";
-        echo "<td>" . date($config['core']['dateTimeFormat'], $row['updated']) . "</td>";
+        echo "<td scope='row' class='text-center' data-title='Remove'><a title='Remove' data-toggle='tooltip' class='delete'><i class='fa fa-times'></i></a></td>";
+        echo "<td data-title='Team'><img src='./static/images/teams/" . strtolower($team) . ".png' height=32 width=32 />&nbsp;" . $team . "</td>";
+        echo "<td data-title='Available Slots'>" . ($available_slots == 0 ? "Full" : $available_slots) . "</td>";
+        echo "<td data-title='Guarding Pokemon'>" . $pokedex[$guarding_pokemon_id] . "</td>";
+        echo "<td data-title='In Battle'>" . ($in_battle ? "Under Attack!" : "Safe") . "</td>";
+        echo "<td data-title='City'>" . $city . "</td>";
+        echo "<td data-title='Gym'><a href='" . $map_link . "' target='_blank'>" . $row['name'] . "</a></td>";
+        echo "<td data-title='Updated'>" . date($config['core']['dateTimeFormat'], $row['updated']) . "</td>";
       echo "</tr>";
     }
     echo "</table>";
     echo "</div>";
 		
-  // Free result set
-  unset($result);
+    // Free result set
+    unset($result);
   } else{
     echo "<p>No gyms found.</p>";
   }
@@ -166,9 +167,24 @@ WHERE
 }
 // Close connection
 unset($pdo);
+unset($db);
 
 ?>
-
+<style>
+@media only screen and (max-width: 800px) {
+	#unseen table td:nth-child(2), 
+	#unseen table th:nth-child(2) {display: none;}
+}
+ 
+@media only screen and (max-width: 640px) {
+	#unseen table td:nth-child(4),
+	#unseen table th:nth-child(4),
+	#unseen table td:nth-child(7),
+	#unseen table th:nth-child(7),
+	#unseen table td:nth-child(8),
+	#unseen table th:nth-child(8){display: none;}
+}
+</style>
 <script type="text/javascript">
 $(document).on("click", ".delete", function(){
   $(this).parents("tr").remove();

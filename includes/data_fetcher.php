@@ -45,7 +45,7 @@ ORDER BY
 ";
 
   echo $modal;
-  echo "<div class='table-responsive'>";
+  echo "<div id='no-more-tables'>";
   echo "<table id='gym-table' class='table table-".$config['ui']['table']['style']." ".($config['ui']['table']['striped'] ? 'table-striped' : null)."' border='1'>";
   echo "<thead class='thead-".$config['ui']['table']['headerStyle']."'>";
   echo "<tr class='text-nowrap'>";
@@ -78,17 +78,17 @@ ORDER BY
       $charge_move = $charge_moves[$row['raid_pokemon_move_2']];
       $moveset = (($fast_move == $config['ui']['unknownValue'] && $charge_move == $config['ui']['unknownValue']) ? $config['ui']['unknownValue'] : $fast_move . "/" . $charge_move);
       echo "<tr class='text-nowrap'>";
-        echo "<td scope='row' class='text-center'><a title='Remove' data-toggle='tooltip' class='delete'><i class='fa fa-times'></i></a></td>";
-        echo "<td>" . $row['starts'] . "</td>";
-        echo "<td>" . $row['ends'] . "</td>";
-        echo "<td>" . $level . "</td>";
-        echo "<td><img src='$raid_image' height=32 width=32 />&nbsp;$pokemon</td>";
-        echo "<td>" . $moveset . "</td>";
-        echo "<td>" . $city . "</td>";
-        echo "<td>" . get_team($row['team_id']) . "</td>";
-        echo "<td>" . ($row['ex_raid_eligible'] ? "Yes" : "No") . "</td>";
-        echo "<td><a href='" . $map_link . "' target='_blank'>" . $row['name'] . "</a></td>";
-        echo "<td>" . date($config['core']['dateTimeFormat'], $row['updated']) . "</td>";
+        echo "<td scope='row' class='text-center' data-title='Remove'><a title='Remove' data-toggle='tooltip' class='delete'><i class='fa fa-times'></i></a></td>";
+        echo "<td data-title='Raid Starts'>" . $row['starts'] . "</td>";
+        echo "<td data-title='Raid Ends'>" . $row['ends'] . "</td>";
+        echo "<td class='numeric' data-title='Raid Level'>" . $level . "</td>";
+        echo "<td data-title='Raid Boss'><img src='$raid_image' height=32 width=32 />&nbsp;$pokemon</td>";
+        echo "<td data-title='Moveset'>" . $moveset . "</td>";
+        echo "<td data-title='City'>" . $city . "</td>";
+        echo "<td data-title='Team'>" . get_team($row['team_id']) . "</td>";
+        echo "<td data-title='Ex-Eligible'>" . ($row['ex_raid_eligible'] ? "Yes" : "No") . "</td>";
+        echo "<td data-title='Gym'><a href='" . $map_link . "' target='_blank'>" . $row['name'] . "</a></td>";
+        echo "<td data-title='Updated'>" . date($config['core']['dateTimeFormat'], $row['updated']) . "</td>";
       echo "</tr>";
     }
 		
@@ -101,14 +101,12 @@ ORDER BY
     </div>";
   }
   echo "</tbody>
-  </div>
-    </table>
-  </div>";
+  </table>
+</div>";
 } catch(PDOException $e){
   die("ERROR: Could not able to execute $sql. " . $e->getMessage());
 }
 // Close connection
 unset($pdo);
 unset($db);
-
 ?>

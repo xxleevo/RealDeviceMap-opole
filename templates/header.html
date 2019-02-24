@@ -1,64 +1,62 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="index.php">
-        <img src="./static/logo.svg" width="30" height="30" class="d-inline-block align-top" alt="">
-        <?=$config['ui']['title']?>
-      </a>
-    </div>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <div class="navbar-header">
+    <a class="navbar-brand" href="index.php">
+      <img src="./static/logo.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+      <?=$config['ui']['title']?>
+    </a>
+  </div>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-    <div class="collapse navbar-collapse" id="navbar">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item <?=(!isset($_GET['page']) ? 'active' : '') ?>">
-          <a class="nav-link" href="index.php"><i class="fa fa-fw fa-tachometer" aria-hidden="true"></i>&nbsp;Home <span class="sr-only"></span></a>
-        </li>
-        <li class="nav-item <?=$_GET['page']==='pokemon' ? 'active' : '' ?>">
-          <a class="nav-link" href="/pokemon"><i class="fa fa-fw fa-dot-circle-o" aria-hidden="true"></i>&nbsp;Pokemon</a>
-        </li>
-        <li class="nav-item <?=$_GET['page']==='raids' ? 'active' : '' ?>">
-          <a class="nav-link" href="/raids"><i class="fa fa-fw fa-tachometer" aria-hidden="true"></i>&nbsp;Raids</a>
-        </li>
-        <li class="nav-item <?=$_GET['page']==='gyms' ? 'active' : '' ?>">
-          <a class="nav-link" href="/gyms"><i class="fa fa-fw fa-shield" aria-hidden="true"></i>&nbsp;Gyms</a>
-        </li>
-        <li class="nav-item <?=$_GET['page']==='quests' ? 'active' : '' ?>">
-          <a class="nav-link" href="/quests"><i class="fa fa-fw fa-search-plus" aria-hidden="true"></i>&nbsp;Quests</a>
-        </li>
-        <li class="nav-item <?=$_GET['page']==='pokestops' ? 'active' : '' ?>">
-          <a class="nav-link" href="/pokestops"><i class="fa fa-fw fa-glass" aria-hidden="true"></i>&nbsp;Pokestops</a>
-        </li>
-        <li class="nav-item <?=$_GET['page']==='stats' ? 'active' : '' ?>">
-          <a class="nav-link" href="/stats"><i class="fa fa-fw fa-bar-chart" aria-hidden="true"></i>&nbsp;Stats</a>
-        </li>
+  <div class="collapse navbar-collapse" id="navbar">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item <?=(!isset($_GET['page']) ? 'active' : '') ?>">
+        <a class="nav-link" href="index.php"><i class="fa fa-fw fa-tachometer" aria-hidden="true"></i>&nbsp;Home <span class="sr-only"></span></a>
+      </li>
+      <li class="nav-item <?=$_GET['page']==='pokemon' ? 'active' : '' ?>">
+        <a class="nav-link" href="/pokemon"><i class="fa fa-fw fa-dot-circle-o" aria-hidden="true"></i>&nbsp;Pokemon</a>
+      </li>
+      <li class="nav-item <?=$_GET['page']==='raids' ? 'active' : '' ?>">
+        <a class="nav-link" href="/raids"><i class="fa fa-fw fa-tachometer" aria-hidden="true"></i>&nbsp;Raids</a>
+      </li>
+      <li class="nav-item <?=$_GET['page']==='gyms' ? 'active' : '' ?>">
+        <a class="nav-link" href="/gyms"><i class="fa fa-fw fa-shield" aria-hidden="true"></i>&nbsp;Gyms</a>
+      </li>
+      <li class="nav-item <?=$_GET['page']==='quests' ? 'active' : '' ?>">
+        <a class="nav-link" href="/quests"><i class="fa fa-fw fa-search-plus" aria-hidden="true"></i>&nbsp;Quests</a>
+      </li>
+      <li class="nav-item <?=$_GET['page']==='pokestops' ? 'active' : '' ?>">
+        <a class="nav-link" href="/pokestops"><i class="fa fa-fw fa-glass" aria-hidden="true"></i>&nbsp;Pokestops</a>
+      </li>
+      <li class="nav-item <?=$_GET['page']==='stats' ? 'active' : '' ?>">
+        <a class="nav-link" href="/stats"><i class="fa fa-fw fa-bar-chart" aria-hidden="true"></i>&nbsp;Stats</a>
+      </li>
 <?php if (!empty($discord_invite_link)) { ?>
-        <li class="nav-item">
-          <a class="nav-link" href="<?=$config['discord']['inviteLink'] ?>" target="_blank"><img src="./static/images/discord.png" width="24" height="24"></a>
-        </li>
+      <li class="nav-item">
+        <a class="nav-link" href="<?=$config['discord']['inviteLink'] ?>" target="_blank"><img src="./static/images/discord.png" width="24" height="24"></a>
+      </li>
 <?php } ?>
 <?php if (!empty($config['urls']['paypal'])) { ?>
-        <li class="nav-item">
-          <a class="nav-link" href="<?=$config['urls']['paypal'] ?>" target="_blank"><img src="./static/images/paypal.png" width="24" height="24"></a>
-        </li>
+      <li class="nav-item">
+        <a class="nav-link" href="<?=$config['urls']['paypal'] ?>" target="_blank"><img src="./static/images/paypal.png" width="24" height="24"></a>
+      </li>
 <?php } ?>
 <?php if (!empty($config['urls']['venmo'])) { ?>
-        <li class="nav-item">
-          <a class="nav-link" href="<?=$config['urls']['venmo'] ?>" target="_blank"><img src="./static/images/venmo.png" width="24" height="24"></a>
-        </li>
+      <li class="nav-item">
+        <a class="nav-link" href="<?=$config['urls']['venmo'] ?>" target="_blank"><img src="./static/images/venmo.png" width="24" height="24"></a>
+      </li>
 <?php } ?>
 <?php if (!empty($config['urls']['patreon'])) { ?>
-        <li class="nav-item">
-          <a class="nav-link" href="<?=$config['urls']['patreon'] ?>" target="_blank"><img src="./static/images/patreon.png" width="24", height="24"></a>
-        </li>
+      <li class="nav-item">
+        <a class="nav-link" href="<?=$config['urls']['patreon'] ?>" target="_blank"><img src="./static/images/patreon.png" width="24", height="24"></a>
+      </li>
 <?php } ?>
 <?php if ($config['discord']['enabled'] && !empty($_SESSION['user'])) { ?>
-        <li class="nav-item">
-          <a class="nav-link"><i class="fa fa-fw fa-user" aria-hidden="true"></i>&nbsp;<?php echo $_SESSION['user']; ?></a>
-        </li>
+      <li class="nav-item">
+        <a class="nav-link"><i class="fa fa-fw fa-user" aria-hidden="true"></i>&nbsp;<?php echo $_SESSION['user']; ?></a>
+      </li>
 <?php } ?>
-      </ul>
-    </div>
+    </ul>
   </div>
 </nav>

@@ -90,7 +90,7 @@ WHERE
   $result = $pdo->query($sql);
   if ($result->rowCount() > 0) {
     echo $modal;
-    echo "<div class='table-responsive'>";
+    echo "<div id='no-more-tables'>";
     echo "<table id='quest-table' class='table table-".$config['ui']['table']['style']." ".($config['ui']['table']['striped'] ? 'table-striped' : null)."' border='1'>";
     echo "<thead class='thead-".$config['ui']['table']['headerStyle']."'>";
     echo "<tr class='text-nowrap'>";
@@ -116,13 +116,13 @@ WHERE
 	    $quest_icon = get_quest_icon($quest_rewards_object);
 
       echo "<tr class='text-nowrap'>";
-      echo "<td scope='row' class='text-center'><a title='Remove' data-toggle='tooltip' class='delete'><i class='fa fa-times'></i></a></td>";
-        echo "<td><img src='$quest_icon' height=32 width=32 />&nbsp;" . $quest_reward . "</td>";
-        echo "<td>" . $quest_message . "</td>";
-        echo "<td>" . $quest_conditions_message . "</td>";
-        echo "<td>" . $city . "</td>";
-        echo "<td><a href='" . $map_link . "' target='_blank'>" . $row['name'] . "</a></td>";
-        echo "<td>" . date($config['core']['dateTimeFormat'], $row['updated']) . "</td>";
+        echo "<td scope='row' class='text-center' data-title='Remove'><a title='Remove' data-toggle='tooltip' class='delete'><i class='fa fa-times'></i></a></td>";
+        echo "<td data-title='Reward'><img src='$quest_icon' height=32 width=32 />&nbsp;" . $quest_reward . "</td>";
+        echo "<td data-title='Quest'>" . $quest_message . "</td>";
+        echo "<td data-title='Condition(s)'>" . (empty($quest_conditions_message) ? "&nbsp;" : $quest_conditions_message) . "</td>";
+        echo "<td data-title='City'>" . $city . "</td>";
+        echo "<td data-title='Gym'><a href='" . $map_link . "' target='_blank'>" . $row['name'] . "</a></td>";
+        echo "<td data-title='Updated'>" . date($config['core']['dateTimeFormat'], $row['updated']) . "</td>";
       echo "</tr>";
     }
     echo "</table>";
