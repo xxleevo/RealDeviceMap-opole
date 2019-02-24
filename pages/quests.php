@@ -39,7 +39,7 @@ $filters = "
 $modal = "
 <h2 class='page-header text-center'>Field research quests</h2>
 <button type='button' class='btn btn-dark float-right' data-toggle='modal' data-target='#filtersModal'>
-  Filters
+  <i class='fa fa-fw fa-filter' aria-hidden='true'></i>
 </button>
 <p>&nbsp;</p>
 <div class='modal fade' id='filtersModal' tabindex='-1' role='dialog' aria-labelledby='filtersModalLabel' aria-hidden='true'>

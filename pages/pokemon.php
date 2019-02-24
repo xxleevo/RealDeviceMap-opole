@@ -92,20 +92,6 @@ function filterPokemonElements(elements, dateFilter, pokeFilter) {
   });
 }
 
-function sendRequest(options, successCallback) {
-  $.ajax({
-    url: "api.php",
-    method: "POST",
-    data: options,
-    cache: true,
-    //async: false,
-    success: successCallback,
-    error: function(data) {
-      console.log(data);
-    }
-  });
-}
-
 function createToken() {
   //TODO: Secure
   <?php $_SESSION['token'] = bin2hex(openssl_random_pseudo_bytes(16)); ?>

@@ -3,6 +3,7 @@ session_start();
 
 include './config.php';
 include './includes/DbConnector.php';
+include './includes/utils.php';
 
 /*
 if (isset($_SERVER['HTTP_ORIGIN'])) {
@@ -33,25 +34,56 @@ if (!(isset($_GET['token']) && !empty($_GET['token']))) {
 if ($_SESSION['token'] !== $_GET['token']) {
   die();
 }
-if (!(isset($_GET['table']) && !empty($_GET['table']))) {
-  die();
-}
 if (!(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER["HTTP_X_REQUESTED_WITH"] == "XMLHttpRequest")) {
   die();
 }
 
 //TODO: Sanitize user input
 
-$table = $_GET['table'];
-$limit = isset($_GET['limit']) ? $_GET['limit'] : '99999';
-$db = new DbConnector($config['db']);
-$pdo = $db->getConnection();
-$sql = "SELECT * FROM " . $config['db']['dbname'] . ".$table LIMIT $limit";
-$result = $pdo->query($sql);
-if ($result->rowCount() > 0) {
-  $data = $result->fetchAll();
-  echo json_encode($data);
+if (!(isset($_GET['type']) && !empty($_GET['type']))) {
+  if (!(isset($_GET['table']) && !empty($_GET['table']))) {
+    die();
+  }
+
+  $table = $_GET['table'];
+  $limit = isset($_GET['limit']) ? $_GET['limit'] : '99999';
+  $db = new DbConnector($config['db']);
+  $pdo = $db->getConnection();
+  $sql = "SELECT * FROM " . $config['db']['dbname'] . ".$table LIMIT $limit";
+  $result = $pdo->query($sql);
+  if ($result->rowCount() > 0) {
+    $data = $result->fetchAll();
+    echo json_encode($data);
+  }
+  unset($pdo);
+  unset($db);
+} else {
+  $db = new DbConnector($config['db']);
+  $pdo = $db->getConnection();
+  $type = $_GET['type'];
+  switch ($type) {
+    case "dashboard":
+      $gymStats = get_gym_stats();
+      $stopStats = get_pokestop_stats();
+      $pokemonCount = get_table_count("pokemon");
+      $gymCount = get_table_count("gym");
+      $raidCount = get_raid_stats();
+      $obj = [
+        "pokemon" => $pokemonCount,
+        "gyms" => $gymCount,
+        "raids" => $raidCount,
+        "neutral" => $gymStats === 0 ? 0 : count($gymStats) < 4 ? 0 : $gymStats[0],
+        "mystic" => $gymStats === 0 ? 0 : $gymStats[1],
+        "valor" => $gymStats === 0 ? 0 : $gymStats[2],
+        "instinct" => $gymStats === 0 ? 0 : $gymStats[3],
+        "pokestops" => $stopStats === 0 ? 0 : $stopStats["total"],
+        "lured" => $stopStats === 0 ? 0 : $stopStats["lured"],
+        "quests" => $stopStats === 0 ? 0 :$stopStats["quests"]
+      ];
+      echo json_encode($obj);
+      break;
+  }
+  unset($pdo);
+  unset($db);
 }
-unset($pdo);
-unset($db);
 ?>

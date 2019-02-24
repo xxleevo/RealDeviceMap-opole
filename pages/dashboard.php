@@ -131,54 +131,39 @@ $html = "
 </div>
 ";
 echo $html;
-
-$data = get_gym_stats();
-$neutral = $data == null ? 0 : count($data) < 4 ? 0 : $data[0]; //Neutral gyms
-$mystic = $data == null ? 0 : $data[1]; //Mystic gyms
-$valor = $data == null ? 0 : $data[2]; //Valor gyms
-$instinct = $data == null ? 0 : $data[3]; //Instinct gyms
-
-$data = get_pokestop_stats();
-$pokestops = $data["total"];
-$lured = $data["lured"];
-$quests = $data["quests"];
-
-$pokemon = get_table_count("pokemon");
-$gyms = get_table_count("gym");
-$raids = get_raid_stats();
-
 ?>
 <link rel="stylesheet" href="./static/css/dashboard.css"/>
 <script type="text/javascript" src="./static/js/utils.js"></script>
 <script type="text/javascript">
-var neutral = "<?=$neutral?>";
-var mystic = "<?=$mystic?>";
-var valor = "<?=$valor?>";
-var instinct = "<?=$instinct?>";
-var pokestops = "<?=$pokestops?>";
-var lured = "<?=$lured?>";
-var quests = "<?=$quests?>";
-var pokemon = "<?=$pokemon?>";
-var gyms = "<?=$gyms?>";
-var raids = "<?=$raids?>";
 
-// Animate the element's value from x to y:
-$({ pokemonValue: 0, gymsValue: 0, raidsValue: 0, neutralValue: 0, mysticValue: 0, valorValue: 0, instinctValue: 0, pokestopsValue: 0, luredValue: 0, questsValue: 0 }).animate(
-    { pokemonValue: pokemon, gymsValue: gyms, raidsValue: raids, neutralValue: neutral, mysticValue: mystic, valorValue: valor, instinctValue: instinct, pokestopsValue: pokestops, luredValue: lured, questsValue: quests }, {
+var tmp = createToken();
+sendRequest({ "type": "dashboard", "token": tmp }, function(data) {
+  tmp = null;
+  console.log("Dashboard:",data);
+  var obj = JSON.parse(data);
+  // Animate the element's value from x to y:
+  $({ pokemonValue: 0, gymsValue: 0, raidsValue: 0, neutralValue: 0, mysticValue: 0, valorValue: 0, instinctValue: 0, pokestopsValue: 0, luredValue: 0, questsValue: 0 }).animate({ pokemonValue: obj.pokemon, gymsValue: obj.gyms, raidsValue: obj.raids, neutralValue: obj.neutral, mysticValue: obj.mystic, valorValue: obj.valor, instinctValue: obj.instinct, pokestopsValue: obj.pokestops, luredValue: obj.lured, questsValue: obj.quests }, {
     duration: 3000,
     easing: 'swing', // can be anything
-    step: function () { // called on every step
-        // Update the element's text with rounded-up value:
-        $('.pokemon-count').text(numberWithCommas(Math.round(this.pokemonValue)));
-        $('.gym-count').text(numberWithCommas(Math.round(this.gymsValue)));
-        $('.raids-count').text(numberWithCommas(Math.round(this.raidsValue)));
-        $('.neutral-gyms-count').text(numberWithCommas(Math.round(this.neutralValue)));
-        $('.valor-gyms-count').text(numberWithCommas(Math.round(this.valorValue)));
-        $('.mystic-gyms-count').text(numberWithCommas(Math.round(this.mysticValue)));
-        $('.instinct-gyms-count').text(numberWithCommas(Math.round(this.instinctValue)));
-        $('.pokestop-count').text(numberWithCommas(Math.round(this.pokestopsValue)));
-        $('.lured-pokestop-count').text(numberWithCommas(Math.round(this.luredValue)));
-        $('.quest-pokestop-count').text(numberWithCommas(Math.round(this.questsValue)));
+    step: function() { // called on every step
+      // Update the element's text with rounded-up value:
+      $('.pokemon-count').text(numberWithCommas(Math.round(this.pokemonValue)));
+      $('.gym-count').text(numberWithCommas(Math.round(this.gymsValue)));
+      $('.raids-count').text(numberWithCommas(Math.round(this.raidsValue)));
+      $('.neutral-gyms-count').text(numberWithCommas(Math.round(this.neutralValue)));
+      $('.valor-gyms-count').text(numberWithCommas(Math.round(this.valorValue)));
+      $('.mystic-gyms-count').text(numberWithCommas(Math.round(this.mysticValue)));
+      $('.instinct-gyms-count').text(numberWithCommas(Math.round(this.instinctValue)));
+      $('.pokestop-count').text(numberWithCommas(Math.round(this.pokestopsValue)));
+      $('.lured-pokestop-count').text(numberWithCommas(Math.round(this.luredValue)));
+      $('.quest-pokestop-count').text(numberWithCommas(Math.round(this.questsValue)));
     }
+  })
 });
+
+function createToken() {
+  //TODO: Secure
+  <?php $_SESSION['token'] = bin2hex(openssl_random_pseudo_bytes(16)); ?>
+  return "<?php echo $_SESSION['token']; ?>";
+}
 </script>

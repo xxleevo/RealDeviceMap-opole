@@ -4,7 +4,6 @@
 - Fix loading bar for charts
 - More customizability
 - Move duplicate code to separate classes
-- Use ajax for dashboard data
 - Move all javascript libs to bottom of index page
 - Filter gym names
 - Add configurable columns via config or columns selection modal
