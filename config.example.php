@@ -37,7 +37,16 @@ $config = [
         "hoverBorder" => "rgba(200, 200, 200, 1)"
       ]
     ],
-    "noRaidsAvailableMessage" => "<b>No raids available</b>, come back tomorrow after 5am." //Notice message that's shown when no raids are available for the day.
+    "noRaidsAvailableMessage" => "<b>No raids available</b>, come back tomorrow after 5am.", //Notice message that's shown when no raids are available for the day.
+    "pagesAvailable" => [
+      "pokemon" => true, //Shows/hides pokemon page
+      "raids" => true, //Shows/hides raids page
+      "gyms" => true, //Shows/hides gyms page
+      "quests" => true, //Shows/hides quests page
+      "pokestops" => true, //Shows/hides pokestops page
+      "nests" => true, //Shows/hides nests page
+      "stats" => true //Shows/hides stats page
+    ]
   ],
   "db" => [
     "host" => "127.0.0.1", //Database host name or IP address
