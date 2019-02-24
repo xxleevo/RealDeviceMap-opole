@@ -33,9 +33,9 @@ if ($config['discord']['enabled'] && !isset($_SESSION['user'])) {
     <script type='text/javascript' src='./static/js/filters.js'></script>
     <script type='text/javascript' src='./static/js/table.sorter.js'></script>
 
-    <title><?=$config['ui']['title']?>"</title>
+    <title><?=$config['ui']['title']?></title>
   </head>
-  <body>";
+  <body>
 
 <?php include_once('./templates/header.html'); ?>
 
@@ -49,26 +49,29 @@ switch($request_method) {
       $page = $_GET["page"];
       switch ($page) {
         case "pokemon":
-          include('./pages/pokemon.php');
+          include_once('./pages/pokemon.php');
           break;
         case "raids":
-          include('./pages/raids.php');
+          include_once('./pages/raids.php');
           break;
         case "gyms":
-          include('./pages/gyms.php');
+          include_once('./pages/gyms.php');
           break;
         case "quests":
-          include('./pages/quests.php');
+          include_once('./pages/quests.php');
           break;
         case "pokestops":
-          include('./pages/pokestops.php');
+          include_once('./pages/pokestops.php');
+          break;
+        case "nests":
+          include_once('./pages/nests.php');
           break;
         case "stats":
-          include('./pages/stats.php');
+          include_once('./pages/stats.php');
           break;          
       }
     } else {
-      include('./pages/dashboard.php');
+      include_once('./pages/dashboard.php');
     }
     break;
   default:
