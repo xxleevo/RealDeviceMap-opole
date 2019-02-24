@@ -36,7 +36,8 @@ $config = [
         "hoverBackground" => "rgba(200, 200, 200, 1)",
         "hoverBorder" => "rgba(200, 200, 200, 1)"
       ]
-    ]
+    ],
+    "noRaidsAvailableMessage" => "<b>No raids available</b>, come back tomorrow after 5am." //Notice message that's shown when no raids are available for the day.
   ],
   "db" => [
     "host" => "127.0.0.1", //Database host name or IP address

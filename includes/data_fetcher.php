@@ -97,7 +97,7 @@ ORDER BY
   } else{
     echo "
     <div class='alert alert-primary' role='alert'>
-      <i class='fa fa-info'>&nbsp;<b>No raids available</b>, come back tomorrow after 5am.</i>
+      <i class='fa fa-info'>&nbsp;" . $config['ui']['noRaidsAvailableMessage'] . "</i>
     </div>";
   }
   echo "</tbody>
