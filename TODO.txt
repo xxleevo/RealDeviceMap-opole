@@ -1,12 +1,10 @@
 - Secure pages
+- Sanitize user input
 - Optimize Pokemon page
 - Add quest stats
 - Fix loading bar for charts
 - More customizability
-- Move duplicate code to separate classes
 - Move all javascript libs to bottom of index page
-- Filter gym names
-- Add configurable columns via config or columns selection modal
 - Permissions per page
 - Nests page
 - Add pagination

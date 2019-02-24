@@ -1,6 +1,12 @@
 # RaidBillBoard  
 Billboard to show active raids sorted by which raids will end first with raid boss, raid level, geofence city, team control, ex-eligible raid filters.  
 
+## Requirements  
+PHP 5.4+  
+Apache 2.4+  
+Apache `mod_rewrite` enabled.  
+Existing [RealDeviceMap](https://github.com/RealDeviceMap/RealDeviceMap) database.  
+
 ## Install  
 1.) Clone the repository: `git clone https://github.com/versx/RealDeviceMap-RaidBillBoard raids` (change `raids` to your liking)  
 2.) Change directory to the newly cloned folder: `cd raids`  
