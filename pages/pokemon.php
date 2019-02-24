@@ -3,6 +3,7 @@ require_once './static/data/pokedex.php';
 
 $html = "
 <div class='container'>
+  <h2 class='page-header text-center'>Pokemon found in the wild!</h2>
   <div class='row'>
     <div class='input-group mb-3'>
       <div class='input-group-prepend'>

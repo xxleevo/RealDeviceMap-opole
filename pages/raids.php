@@ -75,8 +75,7 @@ $filters = "
 ";
 
 $modal = "
-<h2>
-</h2>
+<h2 class='page-header text-center'>On going raid battles</h2>
 <button type='button' class='btn btn-dark float-right' data-toggle='modal' data-target='#filtersModal'>
   Filters
 </button>

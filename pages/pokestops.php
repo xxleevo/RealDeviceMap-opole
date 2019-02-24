@@ -5,7 +5,7 @@ include_once './includes/utils.php';
 
 $html = "
 <div class='container'>
-  <h2 class='page-header'>Pokestops</h2>
+  <h2 class='page-header text-center'>Pokestops</h2>
   <div class='row'>
     <div class='col-md-3'>
       <a class='list-group-item'>
@@ -29,9 +29,9 @@ $html = "
       </a>
     </div>
   </div>
-</div>
-<div class='container m-3'>
-  <div id='mapid' style='width: 100%; height: 600px;'></div>
+  <div class='container m-3'>
+    <div id='mapid' style='width: 100%; height: 600px;'></div>
+  </div>
 </div>
 ";
 

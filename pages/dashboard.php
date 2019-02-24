@@ -4,6 +4,8 @@ include './includes/DbConnector.php';
 include './includes/utils.php';
 
 $html = "
+<div class='container'>
+<h2 class='page-header text-center'>Overview</h2>
 <div class='card text-center p-1 m-3'>
   <div class='card-header bg-dark text-light'><b>Overview</b></div>
   <div class='card-body'>
@@ -125,6 +127,7 @@ $html = "
       </div>
     </div>
   </div>
+</div>
 </div>
 ";
 echo $html;

@@ -40,10 +40,6 @@ include_once('./templates/header.html');
 
 echo "<br/><p class='lead'>&nbsp;</p>";
 
-if (isset($_SESSION['user'])) {
-  echo "<h1>Welcome ".$_SESSION['user']."</h1>";
-}
-
 $request_method = $_SERVER["REQUEST_METHOD"];
 switch($request_method) {
   case "GET":

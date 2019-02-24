@@ -7,7 +7,6 @@
 - Use ajax for dashboard data
 - Move all javascript libs to bottom of index page
 - Filter gym names
-- Fix responsive table
 - Add configurable columns via config or columns selection modal
 - Permissions per page
 - Nests page
