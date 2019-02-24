@@ -78,9 +78,14 @@ $filters = "
 
 $modal = "
 <h2 class='page-header text-center'>Team gyms</h2>
-<button type='button' class='btn btn-dark float-right' data-toggle='modal' data-target='#filtersModal'>
-  <i class='fa fa-fw fa-filter' aria-hidden='true'></i>
-</button>
+<div class='btn-group btn-group-sm float-right'>
+  <button type='button' class='btn btn-dark' data-toggle='modal' data-target='#filtersModal'>
+    <i class='fa fa-fw fa-filter' aria-hidden='true'></i>
+  </button>
+  <button type='button' class='btn btn-dark' data-toggle='modal' data-target='#columnsModal'>
+    <i class='fa fa-fw fa-columns' aria-hidden='true'></i>
+  </button>
+</div>
 <p>&nbsp;</p>
 <div class='modal fade' id='filtersModal' tabindex='-1' role='dialog' aria-labelledby='filtersModalLabel' aria-hidden='true'>
   <div class='modal-dialog' role='document'>
@@ -92,6 +97,31 @@ $modal = "
         </button>
       </div>
       <div class='modal-body'>" . $filters . "</div>
+      <div class='modal-footer'>
+        <button type='button' class='btn btn-primary' data-dismiss='modal'>Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class='modal fade' id='columnsModal' tabIndex='-1' role='dialog' aria-labelledby='columnsModalLabel' aria-hidden='true'>
+  <div class='modal-dialog' role='document'>
+    <div class='modal-content'>
+      <div class='modal-header'>
+        <h5 class='modal-title' id='columnsModalLabel'>Show Columns</h5>
+        <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+          <span aria-hidden='true'>&times;</span>
+        </button>
+      </div>    
+      <div class='modal-body'>
+        <div id='chkColumns'>
+          <p><input type='checkbox' name='team'/>&nbsp;Team</p>
+          <p><input type='checkbox' name='slots'/>&nbsp;Available Slots</p>
+          <p><input type='checkbox' name='guard'/>&nbsp;Guarding Pokemon</p>
+          <p><input type='checkbox' name='battle'/>&nbsp;In Battle</p>
+          <p><input type='checkbox' name='city'/>&nbsp;City</p>
+          <p><input type='checkbox' name='updated'/>&nbsp;Updated</p>
+        </div>
+      </div>
       <div class='modal-footer'>
         <button type='button' class='btn btn-primary' data-dismiss='modal'>Close</button>
       </div>
@@ -130,14 +160,14 @@ WHERE
     echo "<table id='gym-table' class='table table-".$config['ui']['table']['style']." ".($config['ui']['table']['striped'] ? 'table-striped' : null)."' border='1'>";
     echo "<thead class='thead-".$config['ui']['table']['headerStyle']."'>";
     echo "<tr class='text-nowrap'>";
-      echo "<th>Remove</th>";
-      echo "<th>Team</th>";
-      echo "<th>Available Slots</th>";
-      echo "<th>Guarding Pokemon</th>";
-      echo "<th>In Battle</th>";
-      echo "<th>City</th>";
-      echo "<th>Gym</th>";
-      echo "<th>Updated</th>";
+      echo "<th class='remove'>Remove</th>";
+      echo "<th class='team'>Team</th>";
+      echo "<th class='slots'>Available Slots</th>";
+      echo "<th class='guard'>Guarding Pokemon</th>";
+      echo "<th class='battle'>In Battle</th>";
+      echo "<th class='city'>City</th>";
+      echo "<th class='gym'>Gym</th>";
+      echo "<th class='updated'>Updated</th>";
     echo "</tr>";
     echo "</thead>";
     while ($row = $result->fetch()) {	
@@ -152,7 +182,7 @@ WHERE
 
       echo "<tr class='text-nowrap'>";
         echo "<td scope='row' class='text-center' data-title='Remove'><a title='Remove' data-toggle='tooltip' class='delete'><i class='fa fa-times'></i></a></td>";
-        echo "<td data-title='Team'><img src='./static/images/teams/" . strtolower($team) . ".png' height=32 width=32 />&nbsp;" . $team . "</td>";
+        echo "<td data-column='Team' data-title='Team'><img src='./static/images/teams/" . strtolower($team) . ".png' height=32 width=32 />&nbsp;" . $team . "</td>";
         echo "<td data-title='Available Slots'>" . ($available_slots == 0 ? "Full" : $available_slots) . "</td>";
         echo "<td data-title='Guarding Pokemon'>" . $pokedex[$guarding_pokemon_id] . "</td>";
         echo "<td data-title='In Battle'>" . ($in_battle ? "Under Attack!" : "Safe") . "</td>";
@@ -181,5 +211,15 @@ unset($db);
 $(document).on("click", ".delete", function(){
   $(this).parents("tr").remove();
   $(".add-new").removeAttr("disabled");
+});
+
+var checkbox = $("#chkColumns input:checkbox"); 
+var tbl = $("#gym-table");
+var tblHead = $("#gym-table th");
+checkbox.prop('checked', true); 
+checkbox.click(function () {
+    var colToHide = tblHead.filter("." + $(this).attr("name"));
+    var index = $(colToHide).index();
+    tbl.find('tr :nth-child(' + (index + 1) + ')').toggle();
 });
 </script>

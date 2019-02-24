@@ -39,10 +39,10 @@ FROM
 WHERE
   raid_pokemon_id IS NOT NULL && 
   name IS NOT NULL &&
-  raid_end_timestamp >= UNIX_TIMESTAMP()
+  raid_end_timestamp < UNIX_TIMESTAMP()
 ORDER BY 
   raid_end_timestamp;
-";
+"; //>=
 
   echo $modal;
   echo "<div id='no-more-tables'>";
@@ -50,16 +50,16 @@ ORDER BY
   echo "<thead class='thead-".$config['ui']['table']['headerStyle']."'>";
   echo "<tr class='text-nowrap'>";
     echo "<th>Remove</th>";
-    echo "<th onclick='sort_table(\"gym-table\",1)'>Raid Starts</th>";
-    echo "<th onclick='sort_table(\"gym-table\",2)'>Raid Ends</th>";
-    echo "<th onclick='sort_table(\"gym-table\",3)'>Raid Level</th>";
-    echo "<th onclick='sort_table(\"gym-table\",4)'>Raid Boss</th>";
-    echo "<th onclick='sort_table(\"gym-table\",5)'>Moveset</th>";
-    echo "<th onclick='sort_table(\"gym-table\",6)'>City</th>";
-    echo "<th onclick='sort_table(\"gym-table\",7)'>Team</th>";
-    echo "<th onclick='sort_table(\"gym-table\",8)'>Ex-Eligible</th>";
-    echo "<th onclick='sort_table(\"gym-table\",9)'>Gym</th>";
-    echo "<th onclick='sort_table(\"gym-table\",10)'>Updated</th>";
+    echo "<th class='starts' onclick='sort_table(\"gym-table\",1)'>Raid Starts</th>";
+    echo "<th class='ends' onclick='sort_table(\"gym-table\",2)'>Raid Ends</th>";
+    echo "<th class='level' onclick='sort_table(\"gym-table\",3)'>Raid Level</th>";
+    echo "<th class='boss' onclick='sort_table(\"gym-table\",4)'>Raid Boss</th>";
+    echo "<th class='moveset' onclick='sort_table(\"gym-table\",5)'>Moveset</th>";
+    echo "<th class='city' onclick='sort_table(\"gym-table\",6)'>City</th>";
+    echo "<th class='team' onclick='sort_table(\"gym-table\",7)'>Team</th>";
+    echo "<th class='ex' onclick='sort_table(\"gym-table\",8)'>Ex-Eligible</th>";
+    echo "<th class='gym' onclick='sort_table(\"gym-table\",9)'>Gym</th>";
+    echo "<th class='updated' onclick='sort_table(\"gym-table\",10)'>Updated</th>";
   echo "</tr>";
   echo "</thead>";
   echo "<tbody>";

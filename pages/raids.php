@@ -82,9 +82,14 @@ $filters = "
 
 $modal = "
 <h2 class='page-header text-center'>On going raid battles</h2>
-<button type='button' class='btn btn-dark float-right' data-toggle='modal' data-target='#filtersModal'>
-  <i class='fa fa-fw fa-filter' aria-hidden='true'></i>
-</button>
+<div class='btn-group btn-group-sm float-right'>
+  <button type='button' class='btn btn-dark' data-toggle='modal' data-target='#filtersModal'>
+    <i class='fa fa-fw fa-filter' aria-hidden='true'></i>
+  </button>
+  <button type='button' class='btn btn-dark' data-toggle='modal' data-target='#columnsModal'>
+    <i class='fa fa-fw fa-columns' aria-hidden='true'></i>
+  </button>
+</div>
 <p>&nbsp;</p>
 <div class='modal fade' id='filtersModal' tabindex='-1' role='dialog' aria-labelledby='filtersModalLabel' aria-hidden='true'>
   <div class='modal-dialog' role='document'>
@@ -96,6 +101,34 @@ $modal = "
         </button>
       </div>
       <div class='modal-body'>" . $filters . "</div>
+      <div class='modal-footer'>
+        <button type='button' class='btn btn-primary' data-dismiss='modal'>Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class='modal fade' id='columnsModal' tabIndex='-1' role='dialog' aria-labelledby='columnsModalLabel' aria-hidden='true'>
+  <div class='modal-dialog' role='document'>
+    <div class='modal-content'>
+      <div class='modal-header'>
+        <h5 class='modal-title' id='columnsModalLabel'>Show Columns</h5>
+        <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+          <span aria-hidden='true'>&times;</span>
+        </button>
+      </div>    
+      <div class='modal-body'>
+        <div id='chkColumns'>
+          <p><input type='checkbox' name='starts'/>&nbsp;Raid Starts</p>
+          <p><input type='checkbox' name='ends'/>&nbsp;Raid Ends</p>
+          <p><input type='checkbox' name='level'/>&nbsp;Raid Level</p>
+          <p><input type='checkbox' name='boss'/>&nbsp;Raid Boss</p>
+          <p><input type='checkbox' name='moveset'/>&nbsp;Moveset</p>
+          <p><input type='checkbox' name='city'/>&nbsp;City</p>
+          <p><input type='checkbox' name='team'/>&nbsp;Team</p>
+          <p><input type='checkbox' name='ex'/>&nbsp;Ex-Eligible</p>
+          <p><input type='checkbox' name='updated'/>&nbsp;Updated</p>
+        </div>
+      </div>
       <div class='modal-footer'>
         <button type='button' class='btn btn-primary' data-dismiss='modal'>Close</button>
       </div>
@@ -117,5 +150,15 @@ setTimeout(function() { clearInterval(refresher); }, 1800000);
 $(document).on("click", ".delete", function(){
   $(this).parents("tr").remove();
   $(".add-new").removeAttr("disabled");
+});
+
+var checkbox = $("#chkColumns input:checkbox"); 
+var tbl = $("#gym-table");
+var tblHead = $("#gym-table th");
+checkbox.prop('checked', true); 
+checkbox.click(function () {
+    var colToHide = tblHead.filter("." + $(this).attr("name"));
+    var index = $(colToHide).index();
+    tbl.find('tr :nth-child(' + (index + 1) + ')').toggle();
 });
 </script>

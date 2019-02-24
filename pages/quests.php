@@ -44,9 +44,14 @@ $filters = "
 
 $modal = "
 <h2 class='page-header text-center'>Field research quests</h2>
-<button type='button' class='btn btn-dark float-right' data-toggle='modal' data-target='#filtersModal'>
-  <i class='fa fa-fw fa-filter' aria-hidden='true'></i>
-</button>
+<div class='btn-group btn-group-sm float-right'>
+  <button type='button' class='btn btn-dark' data-toggle='modal' data-target='#filtersModal'>
+    <i class='fa fa-fw fa-filter' aria-hidden='true'></i>
+  </button>
+  <button type='button' class='btn btn-dark' data-toggle='modal' data-target='#columnsModal'>
+    <i class='fa fa-fw fa-columns' aria-hidden='true'></i>
+  </button>
+</div>
 <p>&nbsp;</p>
 <div class='modal fade' id='filtersModal' tabindex='-1' role='dialog' aria-labelledby='filtersModalLabel' aria-hidden='true'>
   <div class='modal-dialog' role='document'>
@@ -58,6 +63,30 @@ $modal = "
         </button>
       </div>
       <div class='modal-body'>" . $filters . "</div>
+      <div class='modal-footer'>
+        <button type='button' class='btn btn-primary' data-dismiss='modal'>Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class='modal fade' id='columnsModal' tabIndex='-1' role='dialog' aria-labelledby='columnsModalLabel' aria-hidden='true'>
+  <div class='modal-dialog' role='document'>
+    <div class='modal-content'>
+      <div class='modal-header'>
+        <h5 class='modal-title' id='columnsModalLabel'>Show Columns</h5>
+        <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+          <span aria-hidden='true'>&times;</span>
+        </button>
+      </div>    
+      <div class='modal-body'>
+        <div id='chkColumns'>
+          <p><input type='checkbox' name='reward'/>&nbsp;Reward</p>
+          <p><input type='checkbox' name='quest'/>&nbsp;Quest</p>
+          <p><input type='checkbox' name='condition'/>&nbsp;Condition</p>
+          <p><input type='checkbox' name='city'/>&nbsp;City</p>
+          <p><input type='checkbox' name='updated'/>&nbsp;Updated</p>
+        </div>
+      </div>
       <div class='modal-footer'>
         <button type='button' class='btn btn-primary' data-dismiss='modal'>Close</button>
       </div>
@@ -102,13 +131,13 @@ WHERE
     echo "<table id='quest-table' class='table table-".$config['ui']['table']['style']." ".($config['ui']['table']['striped'] ? 'table-striped' : null)."' border='1'>";
     echo "<thead class='thead-".$config['ui']['table']['headerStyle']."'>";
     echo "<tr class='text-nowrap'>";
-      echo "<th>Remove</th>";
-      echo "<th>Reward</th>";
-      echo "<th>Quest</th>";
-      echo "<th>Condition(s)</th>";
-      echo "<th>City</th>";
-      echo "<th>Pokestop</th>";
-      echo "<th>Updated</th>";
+      echo "<th class='remove'>Remove</th>";
+      echo "<th class='reward'>Reward</th>";
+      echo "<th class='quest'>Quest</th>";
+      echo "<th class='condition'>Condition(s)</th>";
+      echo "<th class='city'>City</th>";
+      echo "<th class='pokestop'>Pokestop</th>";
+      echo "<th class='updated'>Updated</th>";
     echo "</tr>";
     echo "</thead>";
     while ($row = $result->fetch()) {	
@@ -520,5 +549,15 @@ function get_pokemon_type($type) {
 $(document).on("click", ".delete", function(){
   $(this).parents("tr").remove();
   $(".add-new").removeAttr("disabled");
+});
+
+var checkbox = $("#chkColumns input:checkbox"); 
+var tbl = $("#quest-table");
+var tblHead = $("#quest-table th");
+checkbox.prop('checked', true); 
+checkbox.click(function () {
+    var colToHide = tblHead.filter("." + $(this).attr("name"));
+    var index = $(colToHide).index();
+    tbl.find('tr :nth-child(' + (index + 1) + ')').toggle();
 });
 </script>

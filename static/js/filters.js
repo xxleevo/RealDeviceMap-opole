@@ -23,9 +23,9 @@ function filter_raids() {
     console.log("Level filter cleared");
   }
 
-  if (teamTilter.toLowerCase().indexOf("all") === 0 ||
-    teamTilter.toLowerCase().indexOf("select") === 0) {
-    teamTilter = "";
+  if (teamFilter.toLowerCase().indexOf("all") === 0 ||
+    teamFilter.toLowerCase().indexOf("select") === 0) {
+    teamFilter = "";
     console.log("Team filter cleared");
   }
 
