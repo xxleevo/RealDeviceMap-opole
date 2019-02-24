@@ -10,4 +10,5 @@
 - Nests page
 - Add pagination
 - Fix issue with hiding a column and filtering.
+- Work on new raid display markup.
 - Cleanup code and folder structure (change from 2 spaces to 4 spaces)

@@ -9,7 +9,8 @@ $config = [
     "showCopyright" => false, //Show Nintendo/Niantic/Pokemon copyright footer
     "showErrors" => true, //Show PHP errors
     "startupLocation" => [1,1], //Default location to startup any map objects at
-    "maxPokemon" => 495 //Maximum amount of pokemon for Pokemon stats page
+    "maxPokemon" => 495, //Maximum amount of pokemon for Pokemon stats page
+    "lastNestMigration" => "2019-03-07T01:00:00Z" //UTC time of last nest migration
   ],
   "google" => [
     "analyticsId" => "", //Google Analytics Id. e.g. UA-XXXXX-Y
