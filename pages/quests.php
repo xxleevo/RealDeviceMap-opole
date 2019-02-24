@@ -18,6 +18,12 @@ $filters = "
     </div>
     <div class='input-group mb-3'>
       <div class='input-group-prepend'>
+        <label class='input-group-text' for='filter-pokestop'>Pokestop</label>
+      </div>
+      <input type='text' id='filter-pokestop' class='form-control input-lg' onkeyup='filter_quests()' placeholder='Search by pokestop..' title='Type in a pokestop name'>
+    </div>
+    <div class='input-group mb-3'>
+      <div class='input-group-prepend'>
         <label class='input-group-text' for='filter-city'>City</label>
       </div>
       <select id='filter-city' class='custom-select' onchange='filter_quests()'>

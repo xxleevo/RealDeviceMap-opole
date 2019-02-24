@@ -9,4 +9,5 @@
 - Add configurable columns via config or columns selection modal
 - Permissions per page
 - Nests page
+- Add pagination
 - Cleanup code and folder structure (change from 2 spaces to 4 spaces)

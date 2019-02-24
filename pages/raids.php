@@ -12,9 +12,15 @@ $filters = "
   <div class='row'>
     <div class='input-group mb-3'>
       <div class='input-group-prepend'>
-        <label class='input-group-text' for='search-input'>Search Pokemon</label>
+        <label class='input-group-text' for='search-input'>Pokemon</label>
       </div>
       <input type='text' id='search-input' class='form-control input-lg' onkeyup='filter_raids()' placeholder='Search by name..' title='Type in a name'>
+    </div>
+    <div class='input-group mb-3'>
+      <div class='input-group-prepend'>
+        <label class='input-group-text' for='filter-gym'>Gym</label>
+      </div>
+      <input type='text' id='filter-gym' class='form-control input-lg' onkeyup='filter_raids()' placeholder='Search by gym..' title='Type in a gym name'>
     </div>
     <div class='input-group mb-3'>
       <div class='input-group-prepend'>
@@ -102,7 +108,7 @@ echo "<div id='table-refresh'>";
 include_once("./includes/data_fetcher.php");
 echo "</div>";
 ?>
-<script type="text/javascript" src="./static/js/filters.js"></script>
+
 <script type="text/javascript">
 var refresh_rate = <?=$config['ui']['table']['refreshRateS']?>;
 var refresher = setInterval(filter_raids, refresh_rate * 1000);

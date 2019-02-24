@@ -13,6 +13,12 @@ $filters = "
   <div class='row'>
     <div class='input-group mb-3'>
       <div class='input-group-prepend'>
+        <label class='input-group-text' for='filter-gym'>Gym</label>
+      </div>
+      <input type='text' id='filter-gym' class='form-control input-lg' onkeyup='filter_gyms()' placeholder='Search by gym...' title='Type in a gym name'></input>
+    </div>
+    <div class='input-group mb-3'>
+      <div class='input-group-prepend'>
         <label class='input-group-text' for='filter-team'>Team</label>
       </div>
       <select id='filter-team' class='custom-select' onchange='filter_gyms()'>
@@ -169,23 +175,8 @@ WHERE
 // Close connection
 unset($pdo);
 unset($db);
-
 ?>
-<style>
-@media only screen and (max-width: 800px) {
-	#unseen table td:nth-child(2), 
-	#unseen table th:nth-child(2) {display: none;}
-}
- 
-@media only screen and (max-width: 640px) {
-	#unseen table td:nth-child(4),
-	#unseen table th:nth-child(4),
-	#unseen table td:nth-child(7),
-	#unseen table th:nth-child(7),
-	#unseen table td:nth-child(8),
-	#unseen table th:nth-child(8){display: none;}
-}
-</style>
+
 <script type="text/javascript">
 $(document).on("click", ".delete", function(){
   $(this).parents("tr").remove();
