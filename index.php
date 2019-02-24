@@ -10,8 +10,9 @@ if ($config['discord']['enabled'] && !isset($_SESSION['user'])) {
   header("Location: ./discord-login.php");
   die();
 }
+?>
 
-echo "<!doctype html>
+<!doctype html>
 <html lang='en'>
   <head>
     <meta charset='utf-8'>
@@ -32,14 +33,15 @@ echo "<!doctype html>
     <script type='text/javascript' src='./static/js/filters.js'></script>
     <script type='text/javascript' src='./static/js/table.sorter.js'></script>
 
-    <title>" . $config['ui']['title'] . "</title>
+    <title><?=$config['ui']['title']?>"</title>
   </head>
   <body>";
 
-include_once('./templates/header.html');
+<?php include_once('./templates/header.html'); ?>
 
-echo "<br/><p class='lead'>&nbsp;</p>";
+<br/><p class='lead'>&nbsp;</p>
 
+<?php
 $request_method = $_SERVER["REQUEST_METHOD"];
 switch($request_method) {
   case "GET":
@@ -76,31 +78,32 @@ switch($request_method) {
 }
 
 if (!empty($config['google']['analyticsId'])) {
-  echo "
-<script async src='https://www.google-analytics.com/analytics.js'></script>
-<script>
-  window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};
-  ga.l=+new Date;
-  ga('create', '" . $config['google']['analyticsId'] . "', 'auto');
-  ga('send', 'pageview');
-</script>";
+?>
+  <script async src='//google-analytics.com/analytics.js'></script>
+  <script>
+    window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};
+    ga.l=+new Date;
+    ga('create', '<?=$config['google']['analyticsId']?>', 'auto');
+    ga('send', 'pageview');
+  </script>
+<?php
 }
-
 if (!empty($config['google']['adSenseId'])) {
-  echo "
-<script async src='//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'></script>
-<script>
-  (adsbygoogle = window.adsbygoogle || []).push({
-    google_ad_client: '" . $config['google']['adSenseId'] . "',
-    enable_page_level_ads: true
-  });
-</script>";
+?>
+  <script async src='//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'></script>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+      google_ad_client: '<?=$config['google']['adSenseId']?>',
+      enable_page_level_ads: true
+    });
+  </script>
+<?php
 }
 
 if ($config['core']['showFooter']) {
   include_once('./templates/footer.html');
 }
-
-echo "</body>
-</html>";
 ?>
+
+  </body>
+</html>

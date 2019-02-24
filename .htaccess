@@ -1,11 +1,11 @@
 RewriteEngine On # Turn on the rewriting engine
 
-RewriteRule ^raids/?$ index.php?page=raids [NC,L]
-RewriteRule ^gyms/?$ index.php?page=gyms [NC,L]
-RewriteRule ^quests/?$ index.php?page=quests [NC,L]
-RewriteRule ^pokestops/?$ index.php?page=pokestops [NC,L]
-RewriteRule ^pokemon/?$ index.php?page=pokemon [NC,L]
-RewriteRule ^stats/?$ index.php?page=stats [NC,L]
+RewriteRule ^raids$ index.php?page=raids [NC,L]
+RewriteRule ^gyms$ index.php?page=gyms [NC,L]
+RewriteRule ^quests$ index.php?page=quests [NC,L]
+RewriteRule ^pokestops$ index.php?page=pokestops [NC,L]
+RewriteRule ^pokemon$ index.php?page=pokemon [NC,L]
+RewriteRule ^stats$ index.php?page=stats [NC,L]
 
 <IfModule mod_php5.c>
    php_value short_open_tag 1

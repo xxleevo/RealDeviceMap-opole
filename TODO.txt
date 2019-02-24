@@ -4,6 +4,7 @@
 - Add quest stats
 - Fix loading bar for charts
 - More customizability
+- More stats
 - Move all javascript libs to bottom of index page
 - Permissions per page
 - Nests page
