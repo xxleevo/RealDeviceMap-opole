@@ -12,7 +12,7 @@ $filters = "
   <div class='row'>
     <div class='input-group mb-3'>
       <div class='input-group-prepend'>
-        <label class='input-group-text' for='search-input'>Search Reward</label>
+        <label class='input-group-text' for='search-input'>Reward</label>
       </div>
       <input type='text' id='search-input' class='form-control input-lg' onkeyup='filter_quests()' placeholder='Search by name..' title='Type in a name'>
     </div>
