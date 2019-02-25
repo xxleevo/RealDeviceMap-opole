@@ -46,7 +46,8 @@ $config = [
       "pokestops" => true, //Shows/hides pokestops page
       "nests" => true, //Shows/hides nests page
       "stats" => true //Shows/hides stats page
-    ]
+    ],
+    "navBarIconSize" => [24, 24] //NavBar image icon size e.g. [Width, Height]
   ],
   "db" => [
     "host" => "127.0.0.1", //Database host name or IP address
@@ -57,6 +58,7 @@ $config = [
     "charset" => "utf8mb4" //Database character set. (default: utf8mb4)
   ],
   "urls" => [
+    "map" => "", //RealDeviceMap/PMSF/Other url
     "images" => [
       "pokemon" => "http://example.com/images/pokemon/%s.png", //Pokemon images url
       "egg" => "http://example.com/images/egg/%s.png" //Egg images url

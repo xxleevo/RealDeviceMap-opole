@@ -49,24 +49,29 @@
         <a class="nav-link" href="/stats"><i class="fa fa-fw fa-bar-chart" aria-hidden="true"></i>&nbsp;Stats</a>
       </li>
 <?php } ?>
+<?php if (!empty($config['urls']['map'])) { ?>
+  <li class="nav-item">
+      <a class="nav-link" href="<?=$config['urls']['map'] ?>" target="_blank"><img src="./static/images/map.png" width="<?=$config['ui']['navBarIconSize'][0]?>" height="<?=$config['ui']['navBarIconSize'][1]?>"></a>
+    </li>
+<?php } ?>
 <?php if (!empty($config['discord']['inviteLink'])) { ?>
       <li class="nav-item">
-        <a class="nav-link" href="<?=$config['discord']['inviteLink'] ?>" target="_blank"><img src="./static/images/discord.png" width="24" height="24"></a>
+        <a class="nav-link" href="<?=$config['discord']['inviteLink'] ?>" target="_blank"><img src="./static/images/discord.png" width="<?=$config['ui']['navBarIconSize'][0]?>" height="<?=$config['ui']['navBarIconSize'][1]?>"></a>
       </li>
 <?php } ?>
 <?php if (!empty($config['urls']['paypal'])) { ?>
       <li class="nav-item">
-        <a class="nav-link" href="<?=$config['urls']['paypal'] ?>" target="_blank"><img src="./static/images/paypal.png" width="24" height="24"></a>
+        <a class="nav-link" href="<?=$config['urls']['paypal'] ?>" target="_blank"><img src="./static/images/paypal.png" width="<?=$config['ui']['navBarIconSize'][0]?>" height="<?=$config['ui']['navBarIconSize'][1]?>"></a>
       </li>
 <?php } ?>
 <?php if (!empty($config['urls']['venmo'])) { ?>
       <li class="nav-item">
-        <a class="nav-link" href="<?=$config['urls']['venmo'] ?>" target="_blank"><img src="./static/images/venmo.png" width="24" height="24"></a>
+        <a class="nav-link" href="<?=$config['urls']['venmo'] ?>" target="_blank"><img src="./static/images/venmo.png" width="<?=$config['ui']['navBarIconSize'][0]?>" height="<?=$config['ui']['navBarIconSize'][1]?>"></a>
       </li>
 <?php } ?>
 <?php if (!empty($config['urls']['patreon'])) { ?>
       <li class="nav-item">
-        <a class="nav-link" href="<?=$config['urls']['patreon'] ?>" target="_blank"><img src="./static/images/patreon.png" width="24", height="24"></a>
+        <a class="nav-link" href="<?=$config['urls']['patreon'] ?>" target="_blank"><img src="./static/images/patreon.png" width="<?=$config['ui']['navBarIconSize'][0]?>", height="<?=$config['ui']['navBarIconSize'][1]?>"></a>
       </li>
 <?php } ?>
 <?php if ($config['discord']['enabled'] && !empty($_SESSION['user'])) { ?>
