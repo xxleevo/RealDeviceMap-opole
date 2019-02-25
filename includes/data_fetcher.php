@@ -38,10 +38,10 @@ FROM
 WHERE
   raid_pokemon_id IS NOT NULL && 
   name IS NOT NULL &&
-  raid_end_timestamp < UNIX_TIMESTAMP()
+  raid_end_timestamp >= UNIX_TIMESTAMP()
 ORDER BY 
   raid_end_timestamp;
-"; //>=
+";
 
   echo $modal;
   if (/*is_mobile()*/ true) {
