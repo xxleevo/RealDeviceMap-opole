@@ -72,8 +72,8 @@ $config = [
   "urls" => [
     "map" => "", //RealDeviceMap/PMSF/Other url
     "images" => [
-      "pokemon" => "http://example.com/images/pokemon/%s.png", //Pokemon images url
-      "egg" => "http://example.com/images/egg/%s.png" //Egg images url
+      "pokemon" => "http://example.com/images/pokemon/%s.png", //Pokemon images url e.g. http://map.example.com/static/img/pokemon/%s.png for RDM backend images
+      "egg" => "http://example.com/images/egg/%s.png" //Egg images url e.g. http://map.example.com/static/img/egg/%s.png for RDM backend images
     ],
     "paypal" => "", //PayPal.me link e.g https://paypal.me/username
     "venmo" => "", //Venmo link e.g. https://venmo.com/username

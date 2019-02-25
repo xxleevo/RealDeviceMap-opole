@@ -50,25 +50,39 @@ switch($request_method) {
       $page = $_GET["page"];
       switch ($page) {
         case "pokemon":
-          include_once('./pages/pokemon.php');
+          if ($config['ui']['pagesAvailable']['pokemon']) {
+            include_once('./pages/pokemon.php');
+          }
           break;
         case "raids":
-          include_once('./pages/raids.php');
+          if ($config['ui']['pagesAvailable']['raids']) {
+            include_once('./pages/raids.php');
+          }
           break;
         case "gyms":
-          include_once('./pages/gyms.php');
+          if ($config['ui']['pagesAvailable']['gyms']) {
+            include_once('./pages/gyms.php');
+          }
           break;
         case "quests":
-          include_once('./pages/quests.php');
+          if ($config['ui']['pagesAvailable']['quests']) {
+            include_once('./pages/quests.php');
+          }
           break;
         case "pokestops":
-          include_once('./pages/pokestops.php');
+          if ($config['ui']['pagesAvailable']['pokestops']) {
+            include_once('./pages/pokestops.php');
+          }
           break;
         case "nests":
-          include_once('./pages/nests.php');
+          if ($config['ui']['pagesAvailable']['nests']) {
+            include_once('./pages/nests.php');
+          }
           break;
         case "stats":
-          include_once('./pages/stats.php');
+          if ($config['ui']['pagesAvailable']['stats']) {
+            include_once('./pages/stats.php');
+          }
           break;          
       }
     } else {

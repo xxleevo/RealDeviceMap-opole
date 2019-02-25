@@ -1,7 +1,7 @@
 function filter_raids() {
   var table = $("table-refresh");
   table.load("data_fetcher.php");
-    
+
   var searchFilter = document.getElementById("search-input").value.toUpperCase();
   var gymFilter = document.getElementById("filter-gym").value.toUpperCase();
   var cityFilter = document.getElementById("filter-city").value.toUpperCase();
@@ -41,18 +41,30 @@ function filter_raids() {
     console.log("Gym filter cleared");
   }
 
+  var isMobile = true;//isMobile();
   var table = document.getElementById("gym-table");
-  var tr = table.getElementsByTagName("tr");
+  var tr = isMobile ? table.getElementsByClassName("mobile-row") : table.getElementsByTagName("tr");
   for (var i = 0; i < tr.length; i++) {
-    if (i == 0)
+    if (!isMobile && i == 0)
       continue;
 
-    var levelValue = table.rows[i].cells[3].innerHTML;
-    var pkmnValue = table.rows[i].cells[4].innerHTML.toUpperCase();
-    var gymValue = table.rows[i].cells[6].innerHTML.toUpperCase();
-    var cityValue = table.rows[i].cells[7].innerHTML.toUpperCase();
-    var teamValue = table.rows[i].cells[8].innerHTML.toUpperCase();
-    var exValue = table.rows[i].cells[9].innerHTML.toUpperCase();
+    var pkmnValue, cityValue, levelValue, teamValue, exValue, gymValue;
+    if (isMobile) {
+      var cells = tr[i].getElementsByClassName("mobile");
+      pkmnValue = cells[0].innerHTML.toUpperCase();
+      levelValue = cells[1].innerHTML;
+      gymValue = cells[4].innerHTML.toUpperCase();
+      cityValue = cells[5].innerHTML.toUpperCase();
+      teamValue = cells[6].innerHTML.toUpperCase();
+      exValue = cells[8].innerHTML.toUpperCase();
+    } else {
+      levelValue = table.rows[i].cells[3].innerHTML;
+      pkmnValue = table.rows[i].cells[4].innerHTML.toUpperCase();
+      gymValue = table.rows[i].cells[6].innerHTML.toUpperCase();
+      cityValue = table.rows[i].cells[7].innerHTML.toUpperCase();
+      teamValue = table.rows[i].cells[8].innerHTML.toUpperCase();
+      exValue = table.rows[i].cells[9].innerHTML.toUpperCase();
+    }
     
     if (pkmnValue.indexOf(searchFilter) > -1 &&
       cityValue.indexOf(cityFilter) > -1 &&

@@ -2,6 +2,7 @@
 require_once './vendor/autoload.php';
 require_once './config.php';
 require_once './includes/GeofenceService.php';
+require_once './includes/utils.php';
 require_once './static/data/pokedex.php';
 require_once './static/data/movesets.php';
 
@@ -157,8 +158,8 @@ var tbl = $("#gym-table");
 var tblHead = $("#gym-table th");
 checkbox.prop('checked', true); 
 checkbox.click(function () {
-    var colToHide = tblHead.filter("." + $(this).attr("name"));
-    var index = $(colToHide).index();
-    tbl.find('tr :nth-child(' + (index + 1) + ')').toggle();
+  var colToHide = tblHead.filter("." + $(this).attr("name"));
+  var index = $(colToHide).index();
+  tbl.find('tr :nth-child(' + (index + 1) + ')').toggle();
 });
 </script>
