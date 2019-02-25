@@ -4,6 +4,7 @@
 $config = [
   "core" => [
     "timeZone" => "America/Denver", //Time zone for PHP pages and MySql data
+    "fromTimeZoneOffset" => "UTC", //Time zone offset to convert database time from e.g. UTC, -03:00, +01:00
     "dateTimeFormat" => "m-d-Y h:i:s A", //Date & Time format http://php.net/manual/en/function.date.php
     "showFooter" => false, //Show bottom footer
     "showCopyright" => false, //Show Nintendo/Niantic/Pokemon copyright footer

@@ -1,5 +1,6 @@
 - Secure pages
 - Sanitize user input
+- Fix auto removal of raid upon ending
 - Optimize Pokemon page
 - Add quest stats
 - Fix loading bar for charts

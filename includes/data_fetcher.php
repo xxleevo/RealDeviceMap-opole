@@ -20,9 +20,9 @@ $pdo = $db->getConnection();
 try {
   $sql = "
 SELECT 
-  TIME_FORMAT(CONVERT_TZ(FROM_UNIXTIME(raid_battle_timestamp), 'UTC', '" . $config['core']['timeZone'] . "'), '%h:%i:%s %p')
+  TIME_FORMAT(CONVERT_TZ(FROM_UNIXTIME(raid_battle_timestamp)," . "'" . $config['core']['fromTimeZoneOffset'] . "', '" . $config['core']['timeZone'] . "'), '%h:%i:%s %p')
     AS starts, 
-  TIME_FORMAT(CONVERT_TZ(FROM_UNIXTIME(raid_end_timestamp), 'UTC', '" . $config['core']['timeZone'] . "'),'%h:%i:%s %p')
+  TIME_FORMAT(CONVERT_TZ(FROM_UNIXTIME(raid_end_timestamp)," . "'" . $config['core']['fromTimeZoneOffset'] . "', '" . $config['core']['timeZone'] . "'),'%h:%i:%s %p')
     AS ends, 
   lat, 
   lon,
@@ -45,7 +45,7 @@ ORDER BY
 ";
 
   echo $modal;
-  echo "<div id='no-more-tables'>";
+  echo "<div id='card'>";
   echo "<table id='gym-table' class='table table-".$config['ui']['table']['style']." ".($config['ui']['table']['striped'] ? 'table-striped' : null)."' border='1'>";
   echo "<thead class='thead-".$config['ui']['table']['headerStyle']."'>";
   echo "<tr class='text-nowrap'>";
