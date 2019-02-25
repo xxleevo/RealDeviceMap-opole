@@ -81,6 +81,7 @@ function filterPokemonElements(elements, dateFilter, pokeFilter) {
         var maxPokemon = <?=$config['core']['maxPokemon']?>;
         for (var i = 0; i <= maxPokemon; i++) {
           var pokemonId = (i + 1);
+          //TODO: VVV Fix console error spam
           if (pokedex[pokemonId].toLowerCase().includes(pokeFilter.toLowerCase())) {
             $("#pkmn-" + pokemonId).show();
           } else {

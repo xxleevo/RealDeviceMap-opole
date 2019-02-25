@@ -141,6 +141,11 @@ sendRequest({ "type": "dashboard", "token": tmp }, function(data) {
   tmp = null;
   console.log("Dashboard:",data);
   var obj = JSON.parse(data);
+  if (obj === 0) {
+    console.log("Failed to get data for dashboard.");
+    return;
+  }
+
   // Animate the element's value from x to y:
   $({ pokemonValue: 0, gymsValue: 0, raidsValue: 0, neutralValue: 0, mysticValue: 0, valorValue: 0, instinctValue: 0, pokestopsValue: 0, luredValue: 0, questsValue: 0 }).animate({ pokemonValue: obj.pokemon, gymsValue: obj.gyms, raidsValue: obj.raids, neutralValue: obj.neutral, mysticValue: obj.mystic, valorValue: obj.valor, instinctValue: obj.instinct, pokestopsValue: obj.pokestops, luredValue: obj.lured, questsValue: obj.quests }, {
     duration: 3000,
