@@ -40,13 +40,13 @@ FROM
 WHERE
   raid_pokemon_id IS NOT NULL && 
   name IS NOT NULL &&
-  raid_end_timestamp < UNIX_TIMESTAMP()
+  raid_end_timestamp > UNIX_TIMESTAMP()
 ORDER BY 
   raid_end_timestamp;
 ";
 
   echo $modal;
-  if (is_mobile()) {
+  if (/*is_mobile()*/ true) {
     $result = $pdo->query($sql);
     if ($result->rowCount() > 0) {
       echo "<div id='gym-table' class='container' style='display: flex;flex-direction: column;'>";
@@ -70,10 +70,10 @@ ORDER BY
         $endTime = $started ? getMinutesLeft($row['raid_end_timestamp']) . "m" : $ends;
         $updated = getMinutesLeft($row['updated']) . " mins ago";
         echo "<div class='row mobile-row text-nowrap shadow rounded border border-dark' style='background: #cccccc;'>";
-          echo "<div class='col w-25 small'><b><div class='mobile'>$pokemon</div>&nbsp;<img src='$raid_image' height=32 width=32 /></b></div>";
-          echo "<div class='col w-25 small'><b>Level</b> <div class='mobile'>$level</div></div>";
-          echo "<div class='col w-25 small'><b>Starts</b><br><div class='mobile'>$startTime</div></div>";
-          echo "<div class='col w-25 small'><b>Ends</b><br><div class='mobile'>$endTime</div></div>";
+          echo "<div class='col w-25 small-header'><b><div class='mobile'>$pokemon</div>&nbsp;<img src='$raid_image' height=32 width=32 /></b></div>";
+          echo "<div class='col w-25 small-header'><b>Level</b> <div class='mobile'>$level</div></div>";
+          echo "<div class='col w-25 small-header'><b>Starts</b><br><div class='mobile'>$startTime</div></div>";
+          echo "<div class='col w-25 small-header'><b>Ends</b><br><div class='mobile'>$endTime</div></div>";
           echo "<div class='w-100'></div>";
           echo "<div class='col w-50 small'><b>Gym</b> <a href='$map_link' target='_blank'><div class='mobile'>" . $row['name'] . "</div></a></div>";
           echo "<div class='col w-25 small'><b>City</b> <div class='mobile'>$city</div></small></div>";
