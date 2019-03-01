@@ -56,10 +56,12 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=p
 
 var popup = L.popup();
 function onMapClick(e) {
+/*
   popup
     .setLatLng(e.latlng)
     .setContent("You clicked the map at " + e.latlng.toString())
     .openOn(mymap);
+*/
 }
 
 mymap.on('click', onMapClick);
@@ -85,7 +87,7 @@ $(document).ready(function(){
   $.ajax({
     url: "api.php",
     method: "GET",
-	  data: { 'table': "pokestop", "limit": 1000, "token": tmp },
+	  data: { 'table': "pokestop", /*"limit": 1000,*/ "token": tmp },
     success: function(data) {
       this.tmp = null;
       var pokestops = JSON.parse(data);
@@ -94,7 +96,7 @@ $(document).ready(function(){
       })
     },
     error: function(data) {
-      console.log("ERROR:",data);
+      console.log("[ERROR]:", data);
     }
   });
 });

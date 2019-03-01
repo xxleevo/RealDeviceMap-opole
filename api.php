@@ -58,6 +58,10 @@ if (!(isset($_GET['type']) && !empty($_GET['type']))) {
   if ($result->rowCount() > 0) {
     $data = $result->fetchAll();
     echo json_encode($data);
+  } else {
+    if ($config['core']['showDebug']) {
+      echo "Query returned zero results.";
+    }
   }
   unset($pdo);
   unset($db);
@@ -70,10 +74,12 @@ if (!(isset($_GET['type']) && !empty($_GET['type']))) {
       $gymStats = get_gym_stats();
       $stopStats = get_pokestop_stats();
       $pokemonCount = get_table_count("pokemon");
+      $activePokemonCount = get_table_count("pokemon WHERE expire_timestamp > UNIX_TIMESTAMP()");
       $gymCount = get_table_count("gym");
       $raidCount = get_raid_stats();
       $obj = [
         "pokemon" => $pokemonCount,
+        "active_pokemon" => $activePokemonCount,
         "gyms" => $gymCount,
         "raids" => $raidCount,
         "neutral" => $gymStats === 0 ? 0 : count($gymStats) < 4 ? 0 : $gymStats[0],

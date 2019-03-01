@@ -1,4 +1,4 @@
-function filter_raids() {
+function filter_raids(mobile) {
   var table = $("table-refresh");
   table.load("data_fetcher.php");
 
@@ -41,7 +41,6 @@ function filter_raids() {
     console.log("Gym filter cleared");
   }
 
-  var mobile = true;/*isMobile();*/
   var table = document.getElementById("gym-table");
   var tr = mobile ? table.getElementsByClassName("mobile-row") : table.getElementsByTagName("tr");
   for (var i = 0; i < tr.length; i++) {

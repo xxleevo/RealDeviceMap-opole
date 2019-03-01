@@ -40,7 +40,7 @@ function get_pokestop_stats() {
   $sql = "
 SELECT 
   COUNT(id) total,
-  SUM(CASE WHEN lure_expire_timestamp > 0 THEN 1 ELSE 0 END) lured,
+  SUM(CASE WHEN lure_expire_timestamp > UNIX_TIMESTAMP() THEN 1 ELSE 0 END) lured,
   SUM(CASE WHEN quest_reward_type THEN 1 ELSE 0 END) quests
 FROM
   " . $config['db']['dbname'] . ".pokestop
@@ -59,7 +59,16 @@ function get_raid_stats() {
   global $config;
   $db = new DbConnector($config['db']);
   $pdo = $db->getConnection();
-  $sql = "SELECT count(id) FROM " . $config['db']['dbname'] . ".gym WHERE raid_pokemon_id IS NOT NULL && name IS NOT NULL && raid_end_timestamp >= UNIX_TIMESTAMP()";
+  $sql = "
+SELECT
+  COUNT(id)
+FROM
+  " . $config['db']['dbname'] . ".gym
+WHERE
+  raid_pokemon_id IS NOT NULL && 
+  name IS NOT NULL && 
+  raid_end_timestamp >= UNIX_TIMESTAMP()
+";
   $count = $pdo->query($sql)->fetchColumn();
   unset($pdo);
   unset($db);

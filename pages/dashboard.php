@@ -16,7 +16,7 @@ $html = "
             <a class='list-group-item'>
               <h3 class='pull-right'><img src='./static/images/quests/1.png' width='64' height='64'/></h3>
               <h4 class='list-group-item-heading pokemon-count'>0</h4>
-              <p class='list-group-item-text'>Pokemon</p>
+              <p class='list-group-item-text'>Active Pokemon</p>
             </a>
           </div>
         </div>
@@ -139,7 +139,9 @@ echo $html;
 var tmp = createToken();
 sendRequest({ "type": "dashboard", "token": tmp }, function(data) {
   tmp = null;
-  console.log("Dashboard:",data);
+  if (<?=$config['core']['showDebug']?>) {
+    console.log("Dashboard:",data);
+  }
   var obj = JSON.parse(data);
   if (obj === 0) {
     console.log("Failed to get data for dashboard.");
@@ -147,7 +149,7 @@ sendRequest({ "type": "dashboard", "token": tmp }, function(data) {
   }
 
   // Animate the element's value from x to y:
-  $({ pokemonValue: 0, gymsValue: 0, raidsValue: 0, neutralValue: 0, mysticValue: 0, valorValue: 0, instinctValue: 0, pokestopsValue: 0, luredValue: 0, questsValue: 0 }).animate({ pokemonValue: obj.pokemon, gymsValue: obj.gyms, raidsValue: obj.raids, neutralValue: obj.neutral, mysticValue: obj.mystic, valorValue: obj.valor, instinctValue: obj.instinct, pokestopsValue: obj.pokestops, luredValue: obj.lured, questsValue: obj.quests }, {
+  $({ pokemonValue: 0, gymsValue: 0, raidsValue: 0, neutralValue: 0, mysticValue: 0, valorValue: 0, instinctValue: 0, pokestopsValue: 0, luredValue: 0, questsValue: 0 }).animate({ pokemonValue: obj.active_pokemon, gymsValue: obj.gyms, raidsValue: obj.raids, neutralValue: obj.neutral, mysticValue: obj.mystic, valorValue: obj.valor, instinctValue: obj.instinct, pokestopsValue: obj.pokestops, luredValue: obj.lured, questsValue: obj.quests }, {
     duration: 3000,
     easing: 'swing', // can be anything
     step: function() { // called on every step

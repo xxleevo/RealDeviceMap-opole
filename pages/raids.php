@@ -7,6 +7,7 @@ require_once './static/data/pokedex.php';
 require_once './static/data/movesets.php';
 
 $geofenceSrvc = new GeofenceService();
+$mobile = $config['ui']['table']['forceRaidCards'] || (!$config['ui']['table']['forceRaidCards'] && is_mobile());
 
 $filters = "
 <div class='container'>
@@ -15,19 +16,19 @@ $filters = "
       <div class='input-group-prepend'>
         <label class='input-group-text' for='search-input'>Pokemon</label>
       </div>
-      <input type='text' id='search-input' class='form-control input-lg' onkeyup='filter_raids()' placeholder='Search by name..' title='Type in a name'>
+      <input type='text' id='search-input' class='form-control input-lg' onkeyup='filter_raids($mobile)' placeholder='Search by name..' title='Type in a name'>
     </div>
     <div class='input-group mb-3'>
       <div class='input-group-prepend'>
         <label class='input-group-text' for='filter-gym'>Gym</label>
       </div>
-      <input type='text' id='filter-gym' class='form-control input-lg' onkeyup='filter_raids()' placeholder='Search by gym..' title='Type in a gym name'>
+      <input type='text' id='filter-gym' class='form-control input-lg' onkeyup='filter_raids($mobile)' placeholder='Search by gym..' title='Type in a gym name'>
     </div>
     <div class='input-group mb-3'>
       <div class='input-group-prepend'>
         <label class='input-group-text' for='filter-city'>City</label>
       </div>
-      <select id='filter-city' class='custom-select' onchange='filter_raids()'>
+      <select id='filter-city' class='custom-select' onchange='filter_raids($mobile)'>
         <option disabled selected>Select</option>
         <option value='all'>All</option>
         <option value='" . $config['ui']['unknownValue'] . "'>" . $config['ui']['unknownValue'] . "</option>";
@@ -43,7 +44,7 @@ $filters = "
       <div class='input-group-prepend'>
         <label class='input-group-text' for='filter-level'>Raid Level</label>
       </div>
-      <select id='filter-level' class='custom-select' onchange='filter_raids()'>
+      <select id='filter-level' class='custom-select' onchange='filter_raids($mobile)'>
         <option disabled selected>Select</option>
         <option value='all'>All</option>
         <option value='1'>1</option>
@@ -57,7 +58,7 @@ $filters = "
       <div class='input-group-prepend'>
         <label class='input-group-text' for='filter-team'>Team</label>
       </div>
-      <select id='filter-team' class='custom-select' onchange='filter_raids()'>
+      <select id='filter-team' class='custom-select' onchange='filter_raids($mobile)'>
         <option disabled selected>Select</option>
         <option value='all'>All</option>
         <option value='Neutral'>Neutral</option>
@@ -70,7 +71,7 @@ $filters = "
       <div class='input-group-prepend'>
         <label class='input-group-text' for='search-input'>Ex-Eligible</label>
       </div>
-      <select id='filter-ex' class='custom-select' onchange='filter_raids()'>
+      <select id='filter-ex' class='custom-select' onchange='filter_raids($mobile)'>
         <option disabled selected>Select</option>
         <option value='all'>All</option>
         <option value='yes'>Yes</option>

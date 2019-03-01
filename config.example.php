@@ -9,6 +9,7 @@ $config = [
     "showFooter" => false, //Show bottom footer
     "showCopyright" => false, //Show Nintendo/Niantic/Pokemon copyright footer
     "showErrors" => true, //Show PHP errors
+    "showDebug" => true, //Shows debug output
     "startupLocation" => [1,1], //Default location to startup any map objects at
     "maxPokemon" => 495, //Maximum amount of pokemon for Pokemon stats page
     "lastNestMigration" => "2019-03-07T01:00:00Z" //UTC time of last nest migration
@@ -44,7 +45,8 @@ $config = [
       "style" => "light", //light/dark
       "headerStyle" => "dark", //light/dark
       "striped" => true, //true/false
-      "refreshRateS" => 60 //Refresh raids table data every x seconds.
+      "refreshRateS" => 60, //Refresh raids table data every x seconds.
+      "forceRaidCards" => false //Forces new display style on Desktop and Mobile if true, otherwise tables on Desktop and new style on Mobile if false.
     ],
     "charts" => [
       "type" => "bar",

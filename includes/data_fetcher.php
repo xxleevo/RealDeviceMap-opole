@@ -46,7 +46,7 @@ ORDER BY
 ";
 
   echo $modal;
-  if (/*is_mobile()*/ true) {
+  if ($config['ui']['table']['forceRaidCards'] || (!$config['ui']['table']['forceRaidCards'] && is_mobile())) {
     $result = $pdo->query($sql);
     if ($result->rowCount() > 0) {
       echo "<div id='gym-table' class='container' style='display: flex;flex-direction: column;'>";
@@ -68,7 +68,8 @@ ORDER BY
         $started = $row['raid_battle_timestamp'] > time();
         $startTime = $started ? "--" : $starts;
         $endTime = $started ? getMinutesLeft($row['raid_end_timestamp']) . "m" : $ends;
-        $updated = getMinutesLeft($row['updated']) . " mins ago";
+        $minsLeft = getMinutesLeft($row['updated']);
+        $updated = ($minsLeft === '00' ? "Just now" : $minsLeft . " mins ago");
         echo "<div class='row mobile-row text-nowrap shadow rounded border border-dark' style='background: #cccccc;'>";
           echo "<div class='col w-25 small-header'><b><div class='mobile'>$pokemon</div>&nbsp;<img src='$raid_image' height=32 width=32 /></b></div>";
           echo "<div class='col w-25 small-header'><b>Level</b> <div class='mobile'>$level</div></div>";
