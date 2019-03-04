@@ -1,84 +1,84 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-  <div class="navbar-header">
-    <a class="navbar-brand" href="index.php">
-      <img src="./static/logo.svg" width="30" height="30" class="d-inline-block align-top" alt="">
-      <?=$config['ui']['title']?>
-    </a>
-  </div>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+    <div class="navbar-header">
+        <a class="navbar-brand" href="index.php">
+            <img src="./static/logo.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+            <?=$config['ui']['title']?>
+        </a>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-  <div class="collapse navbar-collapse" id="navbar">
-    <ul class="navbar-nav ml-auto">
-      <li class="nav-item <?=(!isset($_GET['page']) ? 'active' : '') ?>">
-        <a class="nav-link" href="index.php"><i class="fa fa-fw fa-tachometer" aria-hidden="true"></i>&nbsp;Home <span class="sr-only"></span></a>
-      </li>
+    <div class="collapse navbar-collapse" id="navbar">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item <?=(!isset($_GET['page']) ? 'active' : '') ?>">
+                <a class="nav-link" href="index.php"><i class="fa fa-fw fa-tachometer" aria-hidden="true"></i>&nbsp;Home <span class="sr-only"></span></a>
+            </li>
 <?php if ($config['ui']['pagesAvailable']['pokemon']) { ?>
-      <li class="nav-item <?=$_GET['page']==='pokemon' ? 'active' : '' ?>">
-        <a class="nav-link" href="/pokemon"><i class="fa fa-fw fa-dot-circle-o" aria-hidden="true"></i>&nbsp;Pokemon</a>
-      </li>
+            <li class="nav-item <?=$_GET['page']==='pokemon' ? 'active' : '' ?>">
+                <a class="nav-link" href="/pokemon"><i class="fa fa-fw fa-dot-circle-o" aria-hidden="true"></i>&nbsp;Pokemon</a>
+            </li>
 <?php } ?>
 <?php if ($config['ui']['pagesAvailable']['raids']) { ?>
-      <li class="nav-item <?=$_GET['page']==='raids' ? 'active' : '' ?>">
-        <a class="nav-link" href="/raids"><i class="fa fa-fw fa-bolt" aria-hidden="true"></i>&nbsp;Raids</a>
-      </li>
+            <li class="nav-item <?=$_GET['page']==='raids' ? 'active' : '' ?>">
+                <a class="nav-link" href="/raids"><i class="fa fa-fw fa-bolt" aria-hidden="true"></i>&nbsp;Raids</a>
+            </li>
 <?php } ?>
 <?php if ($config['ui']['pagesAvailable']['gyms']) { ?>
-      <li class="nav-item <?=$_GET['page']==='gyms' ? 'active' : '' ?>">
-        <a class="nav-link" href="/gyms"><i class="fa fa-fw fa-shield" aria-hidden="true"></i>&nbsp;Gyms</a>
-      </li>
+            <li class="nav-item <?=$_GET['page']==='gyms' ? 'active' : '' ?>">
+                <a class="nav-link" href="/gyms"><i class="fa fa-fw fa-shield" aria-hidden="true"></i>&nbsp;Gyms</a>
+            </li>
 <?php } ?>
 <?php if ($config['ui']['pagesAvailable']['quests']) { ?>
-      <li class="nav-item <?=$_GET['page']==='quests' ? 'active' : '' ?>">
-        <a class="nav-link" href="/quests"><i class="fa fa-fw fa-search-plus" aria-hidden="true"></i>&nbsp;Quests</a>
-      </li>
+            <li class="nav-item <?=$_GET['page']==='quests' ? 'active' : '' ?>">
+                <a class="nav-link" href="/quests"><i class="fa fa-fw fa-search-plus" aria-hidden="true"></i>&nbsp;Quests</a>
+            </li>
 <?php } ?>
 <?php if ($config['ui']['pagesAvailable']['pokestops']) { ?>
-      <li class="nav-item <?=$_GET['page']==='pokestops' ? 'active' : '' ?>">
-        <a class="nav-link" href="/pokestops"><i class="fa fa-fw fa-glass" aria-hidden="true"></i>&nbsp;Pokestops</a>
-      </li>
+            <li class="nav-item <?=$_GET['page']==='pokestops' ? 'active' : '' ?>">
+                <a class="nav-link" href="/pokestops"><i class="fa fa-fw fa-glass" aria-hidden="true"></i>&nbsp;Pokestops</a>
+            </li>
 <?php } ?>
 <?php if ($config['ui']['pagesAvailable']['nests']) { ?>
-      <li class="nav-item <?=$_GET['page']==='nests' ? 'active' : '' ?>">
-        <a class="nav-link" href="/nests"><i class="fa fa-fw fa-connectdevelop" aria-hidden="true"></i>&nbsp;Nests</a>
-      </li>
+            <li class="nav-item <?=$_GET['page']==='nests' ? 'active' : '' ?>">
+                <a class="nav-link" href="/nests"><i class="fa fa-fw fa-connectdevelop" aria-hidden="true"></i>&nbsp;Nests</a>
+            </li>
 <?php } ?>
 <?php if ($config['ui']['pagesAvailable']['stats']) { ?>
-      <li class="nav-item <?=$_GET['page']==='stats' ? 'active' : '' ?>">
-        <a class="nav-link" href="/stats"><i class="fa fa-fw fa-bar-chart" aria-hidden="true"></i>&nbsp;Stats</a>
-      </li>
+            <li class="nav-item <?=$_GET['page']==='stats' ? 'active' : '' ?>">
+                <a class="nav-link" href="/stats"><i class="fa fa-fw fa-bar-chart" aria-hidden="true"></i>&nbsp;Stats</a>
+            </li>
 <?php } ?>
 <?php if (!empty($config['urls']['map'])) { ?>
-  <li class="nav-item">
-      <a class="nav-link" href="<?=$config['urls']['map'] ?>" target="_blank"><img src="./static/images/map.png" width="<?=$config['ui']['navBarIconSize'][0]?>" height="<?=$config['ui']['navBarIconSize'][1]?>"></a>
-    </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<?=$config['urls']['map'] ?>" target="_blank"><img src="./static/images/map.png" width="<?=$config['ui']['navBarIconSize'][0]?>" height="<?=$config['ui']['navBarIconSize'][1]?>"></a>
+            </li>
 <?php } ?>
 <?php if (!empty($config['discord']['inviteLink'])) { ?>
-      <li class="nav-item">
-        <a class="nav-link" href="<?=$config['discord']['inviteLink'] ?>" target="_blank"><img src="./static/images/discord.png" width="<?=$config['ui']['navBarIconSize'][0]?>" height="<?=$config['ui']['navBarIconSize'][1]?>"></a>
-      </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<?=$config['discord']['inviteLink'] ?>" target="_blank"><img src="./static/images/discord.png" width="<?=$config['ui']['navBarIconSize'][0]?>" height="<?=$config['ui']['navBarIconSize'][1]?>"></a>
+            </li>
 <?php } ?>
 <?php if (!empty($config['urls']['paypal'])) { ?>
-      <li class="nav-item">
-        <a class="nav-link" href="<?=$config['urls']['paypal'] ?>" target="_blank"><img src="./static/images/paypal.png" width="<?=$config['ui']['navBarIconSize'][0]?>" height="<?=$config['ui']['navBarIconSize'][1]?>"></a>
-      </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<?=$config['urls']['paypal'] ?>" target="_blank"><img src="./static/images/paypal.png" width="<?=$config['ui']['navBarIconSize'][0]?>" height="<?=$config['ui']['navBarIconSize'][1]?>"></a>
+            </li>
 <?php } ?>
 <?php if (!empty($config['urls']['venmo'])) { ?>
-      <li class="nav-item">
-        <a class="nav-link" href="<?=$config['urls']['venmo'] ?>" target="_blank"><img src="./static/images/venmo.png" width="<?=$config['ui']['navBarIconSize'][0]?>" height="<?=$config['ui']['navBarIconSize'][1]?>"></a>
-      </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<?=$config['urls']['venmo'] ?>" target="_blank"><img src="./static/images/venmo.png" width="<?=$config['ui']['navBarIconSize'][0]?>" height="<?=$config['ui']['navBarIconSize'][1]?>"></a>
+            </li>
 <?php } ?>
 <?php if (!empty($config['urls']['patreon'])) { ?>
-      <li class="nav-item">
-        <a class="nav-link" href="<?=$config['urls']['patreon'] ?>" target="_blank"><img src="./static/images/patreon.png" width="<?=$config['ui']['navBarIconSize'][0]?>", height="<?=$config['ui']['navBarIconSize'][1]?>"></a>
-      </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<?=$config['urls']['patreon'] ?>" target="_blank"><img src="./static/images/patreon.png" width="<?=$config['ui']['navBarIconSize'][0]?>", height="<?=$config['ui']['navBarIconSize'][1]?>"></a>
+            </li>
 <?php } ?>
 <?php if ($config['discord']['enabled'] && !empty($_SESSION['user'])) { ?>
-      <li class="nav-item">
-        <a class="nav-link"><i class="fa fa-fw fa-user" aria-hidden="true"></i>&nbsp;<?php echo $_SESSION['user']; ?></a>
-      </li>
+            <li class="nav-item">
+                <a class="nav-link"><i class="fa fa-fw fa-user" aria-hidden="true"></i>&nbsp;<?php echo $_SESSION['user']; ?></a>
+            </li>
 <?php } ?>
-    </ul>
-  </div>
+        </ul>
+    </div>
 </nav>

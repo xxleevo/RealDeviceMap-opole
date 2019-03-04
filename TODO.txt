@@ -1,4 +1,5 @@
 - Secure pages
+- Switch tables to DataTables library
 - Sanitize user input
 - Fix auto removal of raid upon ending
 - Optimize Pokemon page
@@ -12,5 +13,5 @@
 - Add pagination
 - Fix issue with hiding a column and filtering.
 - Work on new raid display markup.
-- Cleanup code and folder structure (change from 2 spaces to 4 spaces)
+- Cleanup code and folder structure
 - Save user filters
