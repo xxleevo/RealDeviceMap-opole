@@ -9,89 +9,89 @@ $geofenceSrvc = new GeofenceService();
 
 $filters = "
 <div class='container'>
-    <div class='row'>
-        <div class='input-group mb-3'>
-            <div class='input-group-prepend'>
-                <label class='input-group-text' for='search-input'>Reward</label>
-            </div>
-            <input type='text' id='search-input' class='form-control input-lg' onkeyup='filter_quests()' placeholder='Search by name..' title='Type in a name'>
-        </div>
-        <div class='input-group mb-3'>
-            <div class='input-group-prepend'>
-                <label class='input-group-text' for='filter-pokestop'>Pokestop</label>
-            </div>
-            <input type='text' id='filter-pokestop' class='form-control input-lg' onkeyup='filter_quests()' placeholder='Search by pokestop..' title='Type in a pokestop name'>
-        </div>
-        <div class='input-group mb-3'>
-            <div class='input-group-prepend'>
-                <label class='input-group-text' for='filter-city'>City</label>
-            </div>
-            <select id='filter-city' class='custom-select' onchange='filter_quests()'>
-                <option disabled selected>Select</option>
-                <option value='all'>All</option>
-                <option value='" . $config['ui']['unknownValue'] . "'>" . $config['ui']['unknownValue'] . "</option>";
-                $count = count($geofenceSrvc->geofences);
-                for ($i = 0; $i < $count; $i++) {
-                    $geofence = $geofenceSrvc->geofences[$i];
-                    $filters .= "<option value='".$geofence->name."'>".$geofence->name."</option>";
-                }
-                $filters .= "
-            </select>
-        </div>
+  <div class='row'>
+    <div class='input-group mb-3'>
+      <div class='input-group-prepend'>
+        <label class='input-group-text' for='search-input'>Reward</label>
+      </div>
+      <input type='text' id='search-input' class='form-control input-lg' onkeyup='filter_quests()' placeholder='Search by name..' title='Type in a name'>
     </div>
+    <div class='input-group mb-3'>
+      <div class='input-group-prepend'>
+        <label class='input-group-text' for='filter-pokestop'>Pokestop</label>
+      </div>
+      <input type='text' id='filter-pokestop' class='form-control input-lg' onkeyup='filter_quests()' placeholder='Search by pokestop..' title='Type in a pokestop name'>
+    </div>
+    <div class='input-group mb-3'>
+      <div class='input-group-prepend'>
+        <label class='input-group-text' for='filter-city'>City</label>
+      </div>
+      <select id='filter-city' class='custom-select' onchange='filter_quests()'>
+        <option disabled selected>Select</option>
+        <option value='all'>All</option>
+        <option value='" . $config['ui']['unknownValue'] . "'>" . $config['ui']['unknownValue'] . "</option>";
+        $count = count($geofenceSrvc->geofences);
+        for ($i = 0; $i < $count; $i++) {
+            $geofence = $geofenceSrvc->geofences[$i];
+            $filters .= "<option value='".$geofence->name."'>".$geofence->name."</option>";
+        }
+        $filters .= "
+      </select>
+    </div>
+  </div>
 </div>
 ";
 
 $modal = "
 <h2 class='page-header text-center'>Field research quests</h2>
 <div class='btn-group btn-group-sm float-right'>
-    <button type='button' class='btn btn-dark' data-toggle='modal' data-target='#filtersModal'>
-        <i class='fa fa-fw fa-filter' aria-hidden='true'></i>
-    </button>
-    <button type='button' class='btn btn-dark' data-toggle='modal' data-target='#columnsModal'>
-        <i class='fa fa-fw fa-columns' aria-hidden='true'></i>
-    </button>
+  <button type='button' class='btn btn-dark' data-toggle='modal' data-target='#filtersModal'>
+    <i class='fa fa-fw fa-filter' aria-hidden='true'></i>
+  </button>
+  <button type='button' class='btn btn-dark' data-toggle='modal' data-target='#columnsModal'>
+    <i class='fa fa-fw fa-columns' aria-hidden='true'></i>
+  </button>
 </div>
 <p>&nbsp;</p>
 <div class='modal fade' id='filtersModal' tabindex='-1' role='dialog' aria-labelledby='filtersModalLabel' aria-hidden='true'>
-    <div class='modal-dialog' role='document'>
-        <div class='modal-content'>
-            <div class='modal-header'>
-                <h5 class='modal-title' id='filtersModalLabel'>Quest Filters</h5>
-                <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
-                    <span aria-hidden='true'>&times;</span>
-                </button>
-            </div>
-            <div class='modal-body'>" . $filters . "</div>
-            <div class='modal-footer'>
-                <button type='button' class='btn btn-primary' data-dismiss='modal'>Close</button>
-            </div>
-        </div>
+  <div class='modal-dialog' role='document'>
+    <div class='modal-content'>
+      <div class='modal-header'>
+        <h5 class='modal-title' id='filtersModalLabel'>Quest Filters</h5>
+        <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+          <span aria-hidden='true'>&times;</span>
+        </button>
+      </div>
+      <div class='modal-body'>" . $filters . "</div>
+      <div class='modal-footer'>
+        <button type='button' class='btn btn-primary' data-dismiss='modal'>Close</button>
+      </div>
     </div>
+  </div>
 </div>
 <div class='modal fade' id='columnsModal' tabIndex='-1' role='dialog' aria-labelledby='columnsModalLabel' aria-hidden='true'>
-    <div class='modal-dialog' role='document'>
-        <div class='modal-content'>
-            <div class='modal-header'>
-                <h5 class='modal-title' id='columnsModalLabel'>Show Columns</h5>
-                <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
-                    <span aria-hidden='true'>&times;</span>
-                </button>
-            </div>    
-            <div class='modal-body'>
-                <div id='chkColumns'>
-                    <p><input type='checkbox' name='reward'/>&nbsp;Reward</p>
-                    <p><input type='checkbox' name='quest'/>&nbsp;Quest</p>
-                    <p><input type='checkbox' name='condition'/>&nbsp;Condition</p>
-                    <p><input type='checkbox' name='city'/>&nbsp;City</p>
-                    <p><input type='checkbox' name='updated'/>&nbsp;Updated</p>
-                </div>
-            </div>
-            <div class='modal-footer'>
-                <button type='button' class='btn btn-primary' data-dismiss='modal'>Close</button>
-            </div>
+  <div class='modal-dialog' role='document'>
+    <div class='modal-content'>
+      <div class='modal-header'>
+        <h5 class='modal-title' id='columnsModalLabel'>Show Columns</h5>
+        <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+          <span aria-hidden='true'>&times;</span>
+        </button>
+      </div>    
+      <div class='modal-body'>
+        <div id='chkColumns'>
+          <p><input type='checkbox' name='reward'/>&nbsp;Reward</p>
+          <p><input type='checkbox' name='quest'/>&nbsp;Quest</p>
+          <p><input type='checkbox' name='condition'/>&nbsp;Condition</p>
+          <p><input type='checkbox' name='city'/>&nbsp;City</p>
+          <p><input type='checkbox' name='updated'/>&nbsp;Updated</p>
         </div>
+      </div>
+      <div class='modal-footer'>
+        <button type='button' class='btn btn-primary' data-dismiss='modal'>Close</button>
+      </div>
     </div>
+  </div>
 </div>
 ";
 
@@ -167,10 +167,10 @@ WHERE
 		
         // Free result set
         unset($result);
-    } else{
+    } else {
         echo "<p>No field research quests available.</p>";
     }
-} catch(PDOException $e){
+} catch (PDOException $e) {
     die("ERROR: Could not able to execute $sql. " . $e->getMessage());
 }
 // Close connection
@@ -547,8 +547,8 @@ function get_pokemon_type($type) {
 
 <script type="text/javascript">
 $(document).on("click", ".delete", function(){
-    $(this).parents("tr").remove();
-    $(".add-new").removeAttr("disabled");
+  $(this).parents("tr").remove();
+  $(".add-new").removeAttr("disabled");
 });
 
 var checkbox = $("#chkColumns input:checkbox"); 
@@ -556,8 +556,8 @@ var tbl = $("#quest-table");
 var tblHead = $("#quest-table th");
 checkbox.prop('checked', true); 
 checkbox.click(function () {
-    var colToHide = tblHead.filter("." + $(this).attr("name"));
-    var index = $(colToHide).index();
-    tbl.find('tr :nth-child(' + (index + 1) + ')').toggle();
+  var colToHide = tblHead.filter("." + $(this).attr("name"));
+  var index = $(colToHide).index();
+  tbl.find('tr :nth-child(' + (index + 1) + ')').toggle();
 });
 </script>
