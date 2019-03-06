@@ -462,6 +462,8 @@ $charge_moves = [
     288=>"Psycho Boost",
     289=>"Origin Pulse",
     290=>"Precipice Blades",
-    291=>"Present"
+    291=>"Present",
+    /*TODO Fill in missing moves*/
+    319=>"Power-Up Punch"
 ];
 ?>

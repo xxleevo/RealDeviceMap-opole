@@ -8,8 +8,8 @@
 - More customizability
 - More stats
 - Move all javascript libs to bottom of index page
-- Permissions per page
-- Nests page
+- Permissions per page (Discord roles)
+- Nests page (PMSF and generated)
 - Add pagination
 - Fix issue with hiding a column and filtering.
 - Work on new raid display markup.

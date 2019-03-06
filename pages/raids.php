@@ -45,39 +45,38 @@ $filters = "
         <label class='input-group-text' for='filter-level'>Raid Level</label>
       </div>
       <select id='filter-level' class='custom-select' onchange='filter_raids($mobile)'>
-          <option disabled selected>Select</option>
-          <option value='all'>All</option>
-          <option value='1'>1</option>
-          <option value='2'>2</option>
-          <option value='3'>3</option>
-          <option value='4'>4</option>
-          <option value='5'>5</option>
-        </select>
+        <option disabled selected>Select</option>
+        <option value='all'>All</option>
+        <option value='1'>1</option>
+        <option value='2'>2</option>
+        <option value='3'>3</option>
+        <option value='4'>4</option>
+        <option value='5'>5</option>
+      </select>
+    </div>
+    <div class='input-group mb-3'>
+      <div class='input-group-prepend'>
+        <label class='input-group-text' for='filter-team'>Team</label>
       </div>
-      <div class='input-group mb-3'>
-        <div class='input-group-prepend'>
-          <label class='input-group-text' for='filter-team'>Team</label>
-        </div>
-        <select id='filter-team' class='custom-select' onchange='filter_raids($mobile)'>
-          <option disabled selected>Select</option>
-          <option value='all'>All</option>
-          <option value='Neutral'>Neutral</option>
-          <option value='Mystic'>Mystic</option>
-          <option value='Valor'>Valor</option>
-          <option value='Instinct'>Instinct</option>
-        </select>
+      <select id='filter-team' class='custom-select' onchange='filter_raids($mobile)'>
+        <option disabled selected>Select</option>
+        <option value='all'>All</option>
+        <option value='Neutral'>Neutral</option>
+        <option value='Mystic'>Mystic</option>
+        <option value='Valor'>Valor</option>
+        <option value='Instinct'>Instinct</option>
+      </select>
+    </div>
+    <div class='input-group mb-3'>
+      <div class='input-group-prepend'>
+        <label class='input-group-text' for='search-input'>Ex-Eligible</label>
       </div>
-      <div class='input-group mb-3'>
-        <div class='input-group-prepend'>
-          <label class='input-group-text' for='search-input'>Ex-Eligible</label>
-        </div>
-        <select id='filter-ex' class='custom-select' onchange='filter_raids($mobile)'>
-          <option disabled selected>Select</option>
-          <option value='all'>All</option>
-          <option value='yes'>Yes</option>
-          <option value='no'>No</option>
-        </select>
-      </div>
+      <select id='filter-ex' class='custom-select' onchange='filter_raids($mobile)'>
+        <option disabled selected>Select</option>
+        <option value='all'>All</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+      </select>
     </div>
   </div>
 </div>
