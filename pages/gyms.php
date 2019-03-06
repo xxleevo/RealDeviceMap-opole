@@ -207,6 +207,7 @@ unset($db);
 ?>
 
 <script type="text/javascript">
+/*
 $("#gym-table").DataTable({
   "paging": true,
   "pagingType": "simple_numbers",
@@ -216,6 +217,7 @@ $("#gym-table").DataTable({
   "searching": true,
   "ajax": ''
 });
+*/
 
 $(document).on("click", ".delete", function(){
   $(this).parents("tr").remove();
