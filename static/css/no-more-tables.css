@@ -9,4 +9,13 @@
     color: white;
     font-size: smaller;
   }
+
+  #gym-table {
+    -webkit-overflow-scrolling: auto;
+    overflow: auto;
+    overflow-y: auto;
+    overflow-x: auto;
+  }
+
+/*html { overflow: auto; overflow-y: auto; overflow-x: auto; }*/
 /*}*/

@@ -48,7 +48,7 @@ echo $modal;
 if ($config['ui']['table']['forceRaidCards'] || (!$config['ui']['table']['forceRaidCards'] && is_mobile())) {
     $result = $pdo->query($sql);
     if ($result->rowCount() > 0) {
-        echo "<div id='gym-table' class='container' style='display: flex; flex-direction: column; overflow: auto;'>";
+        echo "<div id='gym-table' class='container raid-card' style='display: flex; flex-direction: column;'>";
         while ($row = $result->fetch()) {	
             $starts = date($config['core']['dateTimeFormat'], $row['raid_battle_timestamp']);
             $ends = date($config['core']['dateTimeFormat'], $row['raid_end_timestamp']);
