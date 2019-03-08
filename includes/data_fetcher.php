@@ -72,16 +72,16 @@ if ($config['ui']['table']['forceRaidCards'] || (!$config['ui']['table']['forceR
             echo "<div class='row mobile-row text-nowrap shadow rounded border border-dark' style='background: #cccccc;'>";
                 echo "<div class='col w-25 small-header'><b><div class='mobile'>$pokemon</div>&nbsp;<img src='$raid_image' height=32 width=32 /></b></div>";
                 echo "<div class='col w-25 small-header'><b>Level</b> <div class='mobile'>$level</div></div>";
-                echo "<div class='col w-25 small-header'><b>Starts</b><br><div class='mobile'>$startTime</div></div>";
-                echo "<div class='col w-25 small-header'><b>Ends</b><br><div class='mobile'>$endTime</div></div>";
+                echo "<div class='col w-25 small-header'><b>Start</b><br><div class='mobile'>$startTime</div></div>";
+                echo "<div class='col w-25 small-header'><b>Ende</b><br><div class='mobile'>$endTime</div></div>";
                 echo "<div class='w-100'></div>";
-                echo "<div class='col w-50 small'><b>Gym</b> <a href='$map_link' target='_blank'><div class='mobile'>" . $row['name'] . "</div></a></div>";
-                echo "<div class='col w-25 small'><b>City</b> <div class='mobile'>$city</div></small></div>";
+                echo "<div class='col w-50 small'><b>Arena</b> <a href='$map_link' target='_blank'><div class='mobile'>" . $row['name'] . "</div></a></div>";
+                echo "<div class='col w-25 small'><b>Stadt</b> <div class='mobile'>$city</div></small></div>";
                 echo "<div class='col w-25 small'><b>Team</b> <div class='mobile'>" . get_team($row['team_id']) . "</div></div>";
                 echo "<div class='w-100'></div>";
                 echo "<div class='col w-50 small'><b>Moveset</b> <div class='mobile'>$moveset</div></div>";
-                echo "<div class='col w-25 small'><b>Ex-Eligible</b> <div class='mobile'>" . ($row['ex_raid_eligible'] ? "Yes" : "No") . "</div></div>";
-                echo "<div class='col w-25 small'><b>Updated</b> <div class='mobile'>$updated</div></div>";
+                echo "<div class='col w-25 small'><b>Ex-Fähig</b> <div class='mobile'>" . ($row['ex_raid_eligible'] ? "Yes" : "No") . "</div></div>";
+                echo "<div class='col w-25 small'><b>Aktualisiert</b> <div class='mobile'>$updated</div></div>";
             echo "</div>";
             echo "<br>";
         }

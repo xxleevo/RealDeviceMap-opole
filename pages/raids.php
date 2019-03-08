@@ -16,21 +16,21 @@ $filters = "
       <div class='input-group-prepend'>
         <label class='input-group-text' for='search-input'>Pokemon</label>
       </div>
-      <input type='text' id='search-input' class='form-control input-lg' onkeyup='filter_raids($mobile)' placeholder='Search by name..' title='Type in a name'>
+      <input type='text' id='search-input' class='form-control input-lg' onkeyup='filter_raids($mobile)' placeholder='Nach Namen suchen..' title='Type in a name'>
     </div>
     <div class='input-group mb-3'>
       <div class='input-group-prepend'>
-        <label class='input-group-text' for='filter-gym'>Gym</label>
+        <label class='input-group-text' for='filter-gym'>Arena</label>
       </div>
-      <input type='text' id='filter-gym' class='form-control input-lg' onkeyup='filter_raids($mobile)' placeholder='Search by gym..' title='Type in a gym name'>
+      <input type='text' id='filter-gym' class='form-control input-lg' onkeyup='filter_raids($mobile)' placeholder='Arena suchen..' title='Type in a gym name'>
     </div>
     <div class='input-group mb-3'>
       <div class='input-group-prepend'>
-        <label class='input-group-text' for='filter-city'>City</label>
+        <label class='input-group-text' for='filter-city'>Stadt</label>
       </div>
       <select id='filter-city' class='custom-select' onchange='filter_raids($mobile)'>
         <option disabled selected>Select</option>
-        <option value='all'>All</option>
+        <option value='all'>Alle</option>
         <option value='" . $config['ui']['unknownValue'] . "'>" . $config['ui']['unknownValue'] . "</option>";
         $count = count($geofenceSrvc->geofences);
         for ($i = 0; $i < $count; $i++) {
@@ -46,7 +46,7 @@ $filters = "
       </div>
       <select id='filter-level' class='custom-select' onchange='filter_raids($mobile)'>
         <option disabled selected>Select</option>
-        <option value='all'>All</option>
+        <option value='all'>Alle</option>
         <option value='1'>1</option>
         <option value='2'>2</option>
         <option value='3'>3</option>
@@ -60,7 +60,7 @@ $filters = "
       </div>
       <select id='filter-team' class='custom-select' onchange='filter_raids($mobile)'>
         <option disabled selected>Select</option>
-        <option value='all'>All</option>
+        <option value='all'>Alle</option>
         <option value='Neutral'>Neutral</option>
         <option value='Mystic'>Mystic</option>
         <option value='Valor'>Valor</option>
@@ -69,13 +69,13 @@ $filters = "
     </div>
     <div class='input-group mb-3'>
       <div class='input-group-prepend'>
-        <label class='input-group-text' for='search-input'>Ex-Eligible</label>
+        <label class='input-group-text' for='search-input'>Ex-Fähig</label>
       </div>
       <select id='filter-ex' class='custom-select' onchange='filter_raids($mobile)'>
         <option disabled selected>Select</option>
-        <option value='all'>All</option>
-        <option value='yes'>Yes</option>
-        <option value='no'>No</option>
+        <option value='all'>Alle</option>
+        <option value='yes'>Ja</option>
+        <option value='no'>Nein</option>
       </select>
     </div>
   </div>
@@ -83,7 +83,7 @@ $filters = "
 ";
 
 $modal = "
-<h2 class='page-header text-center'>On going raid battles</h2>
+<h2 class='page-header text-center'>Aktuelle Raidkämpfe</h2>
 <div class='btn-group btn-group-sm float-right'>
   <button type='button' class='btn btn-dark' data-toggle='modal' data-target='#filtersModal'>
     <i class='fa fa-fw fa-filter' aria-hidden='true'></i>
@@ -97,14 +97,14 @@ $modal = "
   <div class='modal-dialog' role='document'>
     <div class='modal-content'>
       <div class='modal-header'>
-        <h5 class='modal-title' id='filtersModalLabel'>Raid Filters</h5>
+        <h5 class='modal-title' id='filtersModalLabel'>Raids filtern</h5>
         <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
           <span aria-hidden='true'>&times;</span>
         </button>
       </div>
       <div class='modal-body'>" . $filters . "</div>
       <div class='modal-footer'>
-        <button type='button' class='btn btn-primary' data-dismiss='modal'>Close</button>
+        <button type='button' class='btn btn-primary' data-dismiss='modal'>Schließen</button>
       </div>
     </div>
   </div>
@@ -113,26 +113,26 @@ $modal = "
   <div class='modal-dialog' role='document'>
     <div class='modal-content'>
       <div class='modal-header'>
-        <h5 class='modal-title' id='columnsModalLabel'>Show Columns</h5>
+        <h5 class='modal-title' id='columnsModalLabel'>Spalten anzeigen</h5>
         <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
           <span aria-hidden='true'>&times;</span>
         </button>
       </div>    
       <div class='modal-body'>
         <div id='chkColumns'>
-          <p><input type='checkbox' name='starts'/>&nbsp;Raid Starts</p>
-          <p><input type='checkbox' name='ends'/>&nbsp;Raid Ends</p>
+          <p><input type='checkbox' name='starts'/>&nbsp;Raidstart</p>
+          <p><input type='checkbox' name='ends'/>&nbsp;Raidende</p>
           <p><input type='checkbox' name='level'/>&nbsp;Raid Level</p>
           <p><input type='checkbox' name='boss'/>&nbsp;Raid Boss</p>
           <p><input type='checkbox' name='moveset'/>&nbsp;Moveset</p>
-          <p><input type='checkbox' name='city'/>&nbsp;City</p>
+          <p><input type='checkbox' name='city'/>&nbsp;Stadt</p>
           <p><input type='checkbox' name='team'/>&nbsp;Team</p>
-          <p><input type='checkbox' name='ex'/>&nbsp;Ex-Eligible</p>
-          <p><input type='checkbox' name='updated'/>&nbsp;Updated</p>
+          <p><input type='checkbox' name='ex'/>&nbsp;Ex-Fähig</p>
+          <p><input type='checkbox' name='updated'/>&nbsp;Aktualisiert</p>
         </div>
       </div>
       <div class='modal-footer'>
-        <button type='button' class='btn btn-primary' data-dismiss='modal'>Close</button>
+        <button type='button' class='btn btn-primary' data-dismiss='modal'>Schließen</button>
       </div>
     </div>
   </div>
