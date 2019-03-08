@@ -3,19 +3,19 @@ require_once './static/data/pokedex.php';
 
 $html = "
 <div class='container'>
-  <h2 class='page-header text-center'>Pokemon found in the wild!</h2>
+  <h2 class='page-header text-center'>In der Wildnis gesichtete Pokemon !</h2>
   <div class='row'>
     <div class='input-group mb-3'>
       <div class='input-group-prepend'>
-        <label class='input-group-text' for='filter-date'>Date</label>
+        <label class='input-group-text' for='filter-date'>Datum</label>
       </div>
       <input id='filter-date' type='text' class='form-control' data-toggle='datepicker'>
     </div>
     <div class='input-group mb-3'>
       <div class='input-group-prepend'>
-        <label class='input-group-text' for='search-input'>Search Pokemon</label>
+        <label class='input-group-text' for='search-input'>Pokemon suchen</label>
       </div>
-      <input type='text' id='filter-pokemon' class='form-control input-lg' onkeyup='filterPokemon()' placeholder='Search by name..' title='Type in a name'>
+      <input type='text' id='filter-pokemon' class='form-control input-lg' onkeyup='filterPokemon()' placeholder='Namen suchen..' title='Type in a name'>
     </div>
   </div>
   <div class='row'>";
