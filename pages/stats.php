@@ -3,7 +3,7 @@ require_once './config.php';
 include_once './static/data/pokedex.php';
 
 $html = "
-<h2 class='page-header text-center'>Statistics</h2>
+<h2 class='page-header text-center'>Statistiken</h2>
 <ul class='nav nav-pills mb-3 justify-content-center' role='tablist'>
   <li class='nav-item'><a class='nav-link active' role='tab' aria-controls='pokemon' aria-selected='true' data-toggle='pill' href='#pokemon'>Pokemon</a></li>
   <li class='nav-item'><a class='nav-link' role='tab' aria-controls='raids' aria-selected='false' data-toggle='pill' href='#raids'>Raids</a></li>
