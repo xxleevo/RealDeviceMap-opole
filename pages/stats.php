@@ -17,7 +17,7 @@ $html = "
         <div class='row'>
           <div class='input-group mb-3'>
             <div class='input-group-prepend'>
-              <label class='input-group-text' for='filter-date'>Date</label>
+              <label class='input-group-text' for='filter-date'>Datum</label>
             </div>
             <input id='filter-date' type='text' class='form-control' data-toggle='datepicker'>
             <div class='input-group-prepend'>
@@ -44,11 +44,11 @@ $html = "
         <div class='row'>
           <div class='input-group mb-3'>
             <div class='input-group-prepend'>
-              <label class='input-group-text' for='filter-raid-date'>Date</label>
+              <label class='input-group-text' for='filter-raid-date'>Datum</label>
             </div>
             <input id='filter-raid-date' type='text' class='form-control' data-toggle='datepicker'>
             <div class='input-group-prepend'>
-              <label class='input-group-text' for='filter-raid-type'>Filter By</label>
+              <label class='input-group-text' for='filter-raid-type'>Filtern nach</label>
             </div>
             <label class='radio-inline'><input type='radio' class='btn' name='filter-raid-type' value='0' checked>Pokemon</label>
             <label class='radio-inline'><input type='radio' class='btn' name='filter-raid-type' value='1'>Level</label>
@@ -79,7 +79,7 @@ var pkmnCtx = $("#pokemon-stats");
 pkmnChart = new Chart(pkmnCtx, {
   type: 'bar',
   //data: createChartData("Seen", pokemon, amounts),
-  options: createChartOptions("Pokemon Spawn Statistics", "Pokemon", "Amount Seen", pkmnProgress, "pokemon-stats")
+  options: createChartOptions("Pokemon Spawn Statistiken", "Pokemon", "Amount Seen", pkmnProgress, "pokemon-stats")
 });
 $("#pokemon-stats").hide();
 
@@ -87,7 +87,7 @@ var raidCtx = $("#raid-stats");
 raidChart = new Chart(raidCtx, {
   type: 'bar',
   //data: createChartData("Seen", pokemon, amounts),
-  options: createChartOptions("Raid Boss Statistics", "Pokemon", "Amount Seen", raidProgress, "raid-stats")
+  options: createChartOptions("Raid Boss Statistiken", "Pokemon", "Anzahl", raidProgress, "raid-stats")
 });
 $("#raid-stats").hide();
 
