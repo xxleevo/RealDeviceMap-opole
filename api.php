@@ -75,13 +75,17 @@ if (!(isset($_GET['type']) && !empty($_GET['type']))) {
             $stopStats = get_pokestop_stats();
             $pokemonCount = get_table_count("pokemon");
             $activePokemonCount = get_table_count("pokemon WHERE expire_timestamp > UNIX_TIMESTAMP()");
+			$ivScannedPokemonCount = get_table_count("pokemon WHERE expire_timestamp > UNIX_TIMESTAMP() AND iv is not null");
             $gymCount = get_table_count("gym");
             $raidCount = get_raid_stats();
+			$legendaryRaidCount = get_table_count("gym WHERE raid_level = 5");
             $obj = [
                 "pokemon" => $pokemonCount,
                 "active_pokemon" => $activePokemonCount,
+				"iv_pokemon" => $ivScannedPokemonCount,
                 "gyms" => $gymCount,
                 "raids" => $raidCount,
+                "legendaryRaids" => $legendaryRaidCount,
                 "neutral" => $gymStats === 0 ? 0 : count($gymStats) < 4 ? 0 : $gymStats[0],
                 "mystic" => $gymStats === 0 ? 0 : $gymStats[1],
                 "valor" => $gymStats === 0 ? 0 : $gymStats[2],

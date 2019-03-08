@@ -12,6 +12,6 @@ a.mystic i,.mystic h4.list-group-item-heading { color:#3b5998; }
 a.mystic:hover { background-color:#3b5998; }
 a.mystic:hover * { color:#FFF; }
 /* Instinct */
-a.instinct i,.instinct h4.list-group-item-heading { color:#FFF444; }
+a.instinct i,.instinct h4.list-group-item-heading { color:#FFCC00; }
 a.instinct:hover { background-color:#FFF444; }
-a.instinct:hover * { color:#FFF; }
+a.instinct:hover * { color:#555; }
