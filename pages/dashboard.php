@@ -153,7 +153,7 @@ $html = "
 
 <div class ='p-1 m-3'>
 <div class='row'>
-<div class='card text-center p-1 m-3 col-md-3'>
+<div class='card text-center p-1 m-3 col-md-2'>
 	<div class='card-header heading text-light'><b>Map</b></div>
 	<div class='card-body'>
 		<div class='container'>
@@ -166,7 +166,7 @@ $html = "
 		</div>
 	</div>
 </div>
-<div class='card text-center p-1 m-3 col-md-3'>
+<div class='card text-center p-1 m-3 col-md-2'>
 	<div class='card-header heading text-light'><b>Discord</b></div>
 	<div class='card-body'>
 		<div class='container'>
@@ -179,7 +179,7 @@ $html = "
 		</div>
 	</div>
 </div>
-<div class='card text-center p-1 m-3 col-md-3'>
+<div class='card text-center p-1 m-3 col-md-2'>
 	<div class='card-header heading text-light'><b>Patreon</b></div>
 	<div class='card-body'>
 		<div class='container'>
@@ -192,6 +192,20 @@ $html = "
 		</div>
 	</div>
 </div>
+<div class='card text-center p-1 m-3 col-md-2'>
+	<div class='card-header heading text-light'><b>Infoseite</b></div>
+	<div class='card-body'>
+		<div class='container'>
+          <a href='https://rocketmapdo.de/infopage' class='link'>
+			<center>
+			<img src='./static/info_dash.png' width='auto' height='128'/></h3>
+            <p> > Zur Infopage < </p>
+			</center>
+          </a>
+		</div>
+	</div>
+</div>
+
 </div>
 </div>
 </div>
