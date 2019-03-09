@@ -40,6 +40,7 @@ $config = [
   ],
   "ui" => [
     "title" => "RDM-opole", //Website title
+    "title-short" => "RDM-opole", //Header title
     "unknownValue" => "Unknown",
     "table" => [
       "style" => "light", //light/dark
