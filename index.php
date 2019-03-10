@@ -49,7 +49,6 @@ if ($config['discord']['enabled'] && !isset($_SESSION['user'])) {
 <br/><p class='lead'>&nbsp;</p>
 
 <?php
-echo $_SESSION['redirect'];
 $request_method = $_SERVER["REQUEST_METHOD"];
 switch($request_method) {
     case "GET":

@@ -67,7 +67,7 @@ function buildOsmUri(p1_lat, p1_lon, p2_lat, p2_lon) {
   var osmData = "?data=";
   var osmType = "[out:json]";
   var date = '[date:"' + osmDate + '"];';
-  var osmTags = `
+  var osmTags = ""
   way["landuse"="farmland"];
   way["landuse"="farmyard"];
   way["landuse"="grass"];
@@ -85,10 +85,10 @@ function buildOsmUri(p1_lat, p1_lon, p2_lat, p2_lon) {
   way["natural"="grassland"];
   way["natural"="heath"];
   way["natural"="scrub"];
-`;
+"";
   var tagData = osmTags.replace("\n", "");
   var osmTagData = "(" + tagData + ");";
   var osmEnd = "out;>;out skel qt;";
-  var uri = osmApi + osmData + quote(osmType + osmBbox + date + osmTagData + osmEnd);
+  var uri = osmApi + osmData + JSON.stringify(osmType + osmBbox + date + osmTagData + osmEnd);
   return uri;
 }
