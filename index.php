@@ -8,6 +8,7 @@ include './includes/utils.php';
 date_default_timezone_set($config['core']['timeZone']);
 
 if ($config['discord']['enabled'] && !isset($_SESSION['user'])) {
+    $_SESSION['redirect'] = $_SERVER['REQUEST_URI'];
     header("Location: ./discord-login.php");
     die();
 }
@@ -48,6 +49,7 @@ if ($config['discord']['enabled'] && !isset($_SESSION['user'])) {
 <br/><p class='lead'>&nbsp;</p>
 
 <?php
+echo $_SESSION['redirect'];
 $request_method = $_SERVER["REQUEST_METHOD"];
 switch($request_method) {
     case "GET":

@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 include './vendor/autoload.php';
 require_once './config.php';
 require_once './includes/DiscordAuth.php';
@@ -48,7 +50,8 @@ try {
         }
         if ($valid) {
             $_SESSION['user'] = ["username" => $user->username, "roles" => $roles];
-	        header("Location: .");
+            $path = isset($_SESSION['redirect']) && !empty($_SESSION['redirect']) ? $_SESSION['redirect'] : ".";
+	        header("Location: $path");
         }
     }
 } catch (Exception $e) {

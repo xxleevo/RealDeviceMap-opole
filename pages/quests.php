@@ -1,7 +1,6 @@
 <?php
 include './vendor/autoload.php';
 include './config.php';
-include './includes/DbConnector.php';
 include './includes/GeofenceService.php';
 include './static/data/pokedex.php';
 
