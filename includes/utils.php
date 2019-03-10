@@ -202,7 +202,7 @@ function hasDiscordRole($userRoles, $requiredRoles) {
     if (count($requiredRoles) == 0) {
         return true;
     }
-    foreach ($roles as $role) {
+    foreach ($userRoles as $role) {
         if (in_array($role, $requiredRoles)) {
             return true;
         }

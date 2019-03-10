@@ -4,6 +4,7 @@ session_start();
 include './vendor/autoload.php';
 require_once './config.php';
 require_once './includes/DiscordAuth.php';
+require_once './includes/utils.php';
 
 use RestCord\DiscordClient;
 

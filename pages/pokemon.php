@@ -65,7 +65,7 @@ function filterPokemon() {
     filterPokemonElements(obj, dateFilter, pokeFilter);
   } else {
     var tmp = createToken();
-    sendRequest({ "table": "pokemon_stats", "token": tmp }, function(data, success) {
+    sendRequest({ "table": "pokemon_stats", "token": tmp }, function(data, status) {
       tmp = null;
       if (<?=$config['core']['showDebug']?>) {
         if (data === 0) {

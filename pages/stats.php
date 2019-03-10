@@ -132,7 +132,7 @@ function filterRaidChart() {
 function updatePokemonChart(chart, dateFilter, pokeFilter) {
   console.log("Date:", dateFilter, "Pokemon:", pokeFilter);
   var tmp = createToken();
-  sendRequest({ "table": "pokemon_stats", "token": tmp }, function(data, success) {
+  sendRequest({ "table": "pokemon_stats", "token": tmp }, function(data, status) {
     tmp = null;
     if (<?=$config['core']['showDebug']?>) {
       if (data !== false) {
@@ -161,7 +161,7 @@ function updatePokemonChart(chart, dateFilter, pokeFilter) {
 function updateRaidChart(chart, dateFilter, typeFilter) {
   console.log("Date:", dateFilter, "Type:", typeFilter);
   var tmp = createToken();
-  sendRequest({ "table": "raid_stats", "token": tmp }, function(data, success) {
+  sendRequest({ "table": "raid_stats", "token": tmp }, function(data, status) {
     tmp = null;
     if (<?=$config['core']['showDebug']?>) {
       if (data !== false) {

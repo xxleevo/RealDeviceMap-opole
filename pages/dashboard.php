@@ -225,7 +225,7 @@ echo $html;
 <script type="text/javascript" src="./static/js/utils.js"></script>
 <script type="text/javascript">
 var tmp = createToken();
-sendRequest({ "type": "dashboard", "token": tmp }, function(data, success) {
+sendRequest({ "type": "dashboard", "token": tmp }, function(data, status) {
   tmp = null;
   if (<?=$config['core']['showDebug']?>) {
     if (data === 0) {
@@ -260,7 +260,7 @@ sendRequest({ "type": "dashboard", "token": tmp }, function(data, success) {
   $.each(obj.top10_pokemon, function(key, value) {
     var name = pokedex[value.pokemon_id];
     var pkmnId = ('000' + value.pokemon_id).substr(-3);
-    var pkmnImage = sprintf("<?=$config['urls']['images']['pokemon']?>", pkmnId).replace("%03d", pkmnId).replace("%s", pkmnId);
+    var pkmnImage = sprintf("<?=$config['urls']['images']['pokemon']?>", pkmnId).replace("%03d", pkmnId).replace("%02d", pkmnId).replace("%s", pkmnId); //TODO: Fix
     if (count === 5) {
       html += "<div class='row'>";
     }
