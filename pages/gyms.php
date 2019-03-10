@@ -1,8 +1,6 @@
 <?php
 include './vendor/autoload.php';
-include './config.php';
 include './includes/GeofenceService.php';
-include './includes/utils.php';
 include './static/data/pokedex.php';
 
 $geofenceSrvc = new GeofenceService();
