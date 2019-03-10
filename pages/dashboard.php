@@ -10,6 +10,13 @@ $html = "
 <div style='max-width:1280px;margin: 0 auto !important;float: none !important;'>
 
 <h2 class='page-header text-center'>Übersicht</h2>
+<div class='card p-1 m-4'>
+Willkommen auf bei der Rocketmap-Dortmund!<br>
+Finde Pokemon,Raids,Pokestops,Arenen, Pokemon mit IV, Quests und vieles mehr!<br>
+Auf dieser Seite findest du eine Übersicht darüber, welche Daten durch unsere Map gescannt werden.<br>
+<center><hr style='width:50%;'></center>
+Für alle nötigen Infos zur Map kannst du unsere Infoseite besuchen.
+</div>
 <div class='card text-center p-1 m-4'>
 	<div class='card-header heading text-light'><b>Allgemein</b></div>
 	<div class='card-body'>
@@ -177,7 +184,7 @@ $html = "
   </div>
 </div>";
 // Show this Raid Stats only from 5:00 to 22:00
-if (date('H') > 5 && date('H') < 22) {
+if (date('H') > 4 && date('H') < 23) {
 $html .="
 <div class='card text-center p-1 m-3'>
   <div class='card-header heading text-light'><b>Raids & Eier</b></div>
