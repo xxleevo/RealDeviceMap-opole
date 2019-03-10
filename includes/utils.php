@@ -100,6 +100,56 @@ function get_pokestop_objects() {
     return $result;
 }
 
+function get_spawnpoint_stats() {
+    global $config;
+    $db = new DbConnector($config['db']);
+    $pdo = $db->getConnection();
+    $sql = "
+SELECT 
+  (SELECT COUNT(id) FROM " . $config['db']['dbname'] . ".spawnpoint) AS total, 
+  (SELECT COUNT(id) FROM " . $config['db']['dbname'] . ".spawnpoint WHERE despawn_sec IS NOT NULL) AS found,
+  (SELECT COUNT(id) FROM " . $config['db']['dbname'] . ".spawnpoint WHERE despawn_sec IS NULL) AS missing,
+  ROUND(((SELECT found)/(SELECT total) * 100 ), 2) AS percentage
+FROM
+" . $config['db']['dbname'] . ".spawnpoint
+LIMIT
+  1
+";
+    $result = $pdo->query($sql);
+    if ($result->rowCount() > 0) {
+        $data = $result->fetchAll()[0];
+    }
+    unset($pdo);
+    unset($db);
+
+    return $data;
+}
+
+function get_pokemon_stats() {
+    global $config;
+    $db = new DbConnector($config['db']);
+    $pdo = $db->getConnection();
+    $sql = "
+SELECT
+    (SELECT COUNT(id) FROM " . $config['db']['dbname'] . ".pokemon) AS total,
+    (SELECT COUNT(id) FROM " . $config['db']['dbname'] . ".pokemon WHERE expire_timestamp >= UNIX_TIMESTAMP()) AS active,
+    (SELECT COUNT(id) FROM " . $config['db']['dbname'] . ".pokemon WHERE iv IS NOT NULL) AS iv_total,
+    (SELECT COUNT(id) FROM " . $config['db']['dbname'] . ".pokemon WHERE iv IS NOT NULL && expire_timestamp >= UNIX_TIMESTAMP()) AS iv_active
+FROM
+  " . $config['db']['dbname'] . ".pokemon
+LIMIT
+  1
+";
+    $result = $pdo->query($sql);
+    if ($result->rowCount() > 0) {
+        $data = $result->fetchAll()[0];
+    }
+    unset($pdo);
+    unset($db);
+
+    return $data;
+}
+
 function get_raid_image($pokemonId, $raidLevel) {
     global $config;
     if ($pokemonId > 0) {

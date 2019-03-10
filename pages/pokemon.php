@@ -18,7 +18,7 @@ $html = "
       <input type='text' id='filter-pokemon' class='form-control input-lg' onkeyup='filterPokemon()' placeholder='Search by name..' title='Type in a name'>
     </div>
   </div>
-  <div class='row'>";
+<div class='row'>";
 foreach ($pokedex as $id => $name) {
     if ($id <= 0 || $id > 807) {
         continue;
@@ -27,14 +27,16 @@ foreach ($pokedex as $id => $name) {
 <div id='pkmn-$id' class='col text-center p-2'>
   <img src='" . sprintf($config['urls']['images']['pokemon'], $id) . "' width='48' height='48'>
   <div class='card-body'>
-    <b>$name</b>
-    <p id='pkmn-seen-$id' class='card-text text-nowrap'>
-      Seen: 0
+    <span class='text-nowrap'><b>$name</b> #$id</span>
+    <p class='card-text text-nowrap'>
+      Seen:
+      <span id='pkmn-seen-$id'>0</span>
     </p>
   </div>
 </div>";
 }
-$html .= "</div>
+$html .= "
+</div>
 </div>";
 echo $html;
 ?>
@@ -57,14 +59,21 @@ var obj = [];
 function filterPokemon() {
   var dateFilter = document.getElementById("filter-date").value;
   var pokeFilter = document.getElementById("filter-pokemon").value;
-  console.log("Date:",dateFilter,"Pokemon:",pokeFilter);
+  console.log("Date:", dateFilter, "Pokemon:", pokeFilter);
   
   if (obj != null && obj.length > 0) {
     filterPokemonElements(obj, dateFilter, pokeFilter);
   } else {
     var tmp = createToken();
-    sendRequest({ "table": "pokemon_stats", "token": tmp, "limit": 999999 }, function(data) {
+    sendRequest({ "table": "pokemon_stats", "token": tmp }, function(data, success) {
       tmp = null;
+      if (<?=$config['core']['showDebug']?>) {
+        if (data === 0) {
+          conosle.log("Failed to get pokemon stats data.");
+        } else {
+          console.log("Pokemon:", data);
+        }
+      }
       obj = JSON.parse(data);
       filterPokemonElements(obj, dateFilter, pokeFilter);
     });
@@ -74,7 +83,7 @@ function filterPokemon() {
 function filterPokemonElements(elements, dateFilter, pokeFilter) {
   elements.map(stat => {
     if (stat.date === dateFilter) {
-      $("#pkmn-seen-" + stat.pokemon_id).text("Seen: " + numberWithCommas(stat.count));
+      $("#pkmn-seen-" + stat.pokemon_id).text(numberWithCommas(stat.count));
       if (pokeFilter === "") {
         $("#pkmn-" + stat.pokemon_id).show();
       } else {

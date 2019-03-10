@@ -73,8 +73,6 @@ echo $html;
 <script type='text/javascript' src='./static/js/utils.js'></script>
 <script type='text/javascript'>
 var pkmnProgress = document.getElementById("pokemon-animation");
-var raidProgress = document.getElementById("raid-animation");
-
 var pkmnCtx = $("#pokemon-stats");
 pkmnChart = new Chart(pkmnCtx, {
   type: 'bar',
@@ -83,6 +81,7 @@ pkmnChart = new Chart(pkmnCtx, {
 });
 $("#pokemon-stats").hide();
 
+var raidProgress = document.getElementById("raid-animation");
 var raidCtx = $("#raid-stats");
 raidChart = new Chart(raidCtx, {
   type: 'bar',
@@ -131,10 +130,17 @@ function filterRaidChart() {
 }
 
 function updatePokemonChart(chart, dateFilter, pokeFilter) {
-  console.log("Date:",dateFilter,"Pokemon:",pokeFilter);
+  console.log("Date:", dateFilter, "Pokemon:", pokeFilter);
   var tmp = createToken();
-  sendRequest({ "table": "pokemon_stats", "token": tmp }, function(data) {
+  sendRequest({ "table": "pokemon_stats", "token": tmp }, function(data, success) {
     tmp = null;
+    if (<?=$config['core']['showDebug']?>) {
+      if (data !== false) {
+        console.log("Pokemon:", data);
+      } else {
+        conosle.log("Failed to get pokemon stats data.");        
+      }
+    }
     var pokemon = [];
     var amounts = [];
     var obj = JSON.parse(data);
@@ -146,7 +152,6 @@ function updatePokemonChart(chart, dateFilter, pokeFilter) {
     });
 
     clearChartData(chart);
-
     chart.data = createChartData("Seen", pokemon, amounts);
     chart.update();
     console.log("Pokemon chart updated");
@@ -154,10 +159,17 @@ function updatePokemonChart(chart, dateFilter, pokeFilter) {
 }
 
 function updateRaidChart(chart, dateFilter, typeFilter) {
-  console.log("Date:",dateFilter,"Type:",typeFilter);
+  console.log("Date:", dateFilter, "Type:", typeFilter);
   var tmp = createToken();
-  sendRequest({ "table": "raid_stats", "token": tmp }, function(data) {
+  sendRequest({ "table": "raid_stats", "token": tmp }, function(data, success) {
     tmp = null;
+    if (<?=$config['core']['showDebug']?>) {
+      if (data !== false) {
+        console.log("Raids:", data);
+      } else {
+        conosle.log("Failed to get raid stats data.");
+      }
+    }
     var pokemon = [];
     var amounts = [];
     var obj = JSON.parse(data);
@@ -169,7 +181,6 @@ function updateRaidChart(chart, dateFilter, typeFilter) {
     });
 
     clearChartData(chart);
-
     chart.data = createChartData("Seen", pokemon, amounts);
     chart.update();
     console.log("Raid chart updated");

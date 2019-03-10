@@ -30,7 +30,10 @@ if (isset($_SERVER['HTTP_REFERER'])) {
 if (!(isset($_SESSION['token']) && !empty($_SESSION['token']))) {
     die();
 }
-$token = filter_input(INPUT_GET, "token", FILTER_SANITIZE_STRING);
+$rawData = file_get_contents("php://input");
+$data = json_decode($rawData, true);
+
+$token = filter_var($data["token"], FILTER_SANITIZE_STRING);
 if (!(isset($token) && !empty($token))) {
     die();
 }
@@ -41,45 +44,44 @@ if (!(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER["HTTP_X_REQUESTED_WIT
     die();
 }
 
-//TODO: Sanitize user input
-
-if (!(isset($_GET['type']) && !empty($_GET['type']))) {
-    if (!(isset($_GET['table']) && !empty($_GET['table']))) {
+if (!(isset($data['type']) && !empty($data['type']))) {
+    if (!(isset($data['table']) && !empty($data['table']))) {
         die();
     }
 
-    $table = filter_input(INPUT_GET, "table", FILTER_SANITIZE_STRING);
-    $limit = filter_input(INPUT_GET, "limit", FILTER_SANITIZE_STRING);
-    $limit = isset($limit) && !empty($limit) ? $limit : DEFAULT_LIMIT;
-    $db = new DbConnector($config['db']);
+    $table = filter_var($data["table"], FILTER_SANITIZE_STRING);
+    $limit = filter_var(isset($data["limit"]) ? $data["limit"] : DEFAULT_LIMIT, FILTER_SANITIZE_STRING);
+    $db = new DbConnector($config["db"]);
     $pdo = $db->getConnection();
-    $sql = "SELECT * FROM " . $config['db']['dbname'] . ".$table LIMIT $limit";
+    $sql = "SELECT * FROM " . $config["db"]["dbname"] . ".$table LIMIT $limit";
     $result = $pdo->query($sql);
     if ($result->rowCount() > 0) {
         $data = $result->fetchAll();
         echo json_encode($data);
     } else {
-        if ($config['core']['showDebug']) {
-            echo "Query returned zero results.";
+        if ($config["core"]["showDebug"]) {
+            echo json_encode(["error" => 1, "message" => "Query returned zero results."]);
         }
     }
     unset($pdo);
     unset($db);
 } else {
-    $db = new DbConnector($config['db']);
+    $db = new DbConnector($config["db"]);
     $pdo = $db->getConnection();
-    $type = $_GET['type'];
+    $type = filter_var($data["type"], FILTER_SANITIZE_STRING);
     switch ($type) {
         case "dashboard":
             $gymStats = get_gym_stats();
             $stopStats = get_pokestop_stats();
-            $pokemonCount = get_table_count("pokemon");
-            $activePokemonCount = get_table_count("pokemon WHERE expire_timestamp > UNIX_TIMESTAMP()");
+            $pokemonStats = get_pokemon_stats();
             $gymCount = get_table_count("gym");
             $raidCount = get_raid_stats();
+            $spawnpointStats = get_spawnpoint_stats();
             $obj = [
-                "pokemon" => $pokemonCount,
-                "active_pokemon" => $activePokemonCount,
+                "pokemon" => $pokemonStats["total"],
+                "active_pokemon" => $pokemonStats["active"],
+                "iv_total" => $pokemonStats["iv_total"],
+                "iv_active" => $pokemonStats["iv_active"],
                 "gyms" => $gymCount,
                 "raids" => $raidCount,
                 "neutral" => $gymStats === 0 ? 0 : count($gymStats) < 4 ? 0 : $gymStats[0],
@@ -88,7 +90,11 @@ if (!(isset($_GET['type']) && !empty($_GET['type']))) {
                 "instinct" => $gymStats === 0 ? 0 : $gymStats[3],
                 "pokestops" => $stopStats === 0 ? 0 : $stopStats["total"],
                 "lured" => $stopStats === 0 ? 0 : $stopStats["lured"],
-                "quests" => $stopStats === 0 ? 0 : $stopStats["quests"]
+                "quests" => $stopStats === 0 ? 0 : $stopStats["quests"],
+                "tth_total" => $spawnpointStats === 0 ? 0 : $spawnpointStats["total"],
+                "tth_found" => $spawnpointStats === 0 ? 0 : $spawnpointStats["found"],
+                "tth_missing" => $spawnpointStats === 0 ? 0 : $spawnpointStats["missing"],
+                "tth_percentage" => $spawnpointStats === 0 ? 0 : $spawnpointStats["percentage"],
             ];
             echo json_encode($obj);
             break;

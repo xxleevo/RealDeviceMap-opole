@@ -6,7 +6,7 @@ include_once './includes/utils.php';
 $html = "
 <div class='container'>
   <h2 class='page-header text-center'>Pokestops</h2>
-  <div class='row'>
+  <div class='row justify-content-center'>
     <div class='col-md-3'>
       <a class='list-group-item'>
         <h3 class='pull-right'><img src='./static/images/pokestop.png' width='64' height='64'/></h3>
@@ -45,8 +45,15 @@ $quests = $data["quests"];
 
 <link rel="stylesheet" href="./static/css/dashboard.css"/>
 <script type='text/javascript'>
-var mymap = L.map('mapid').setView(<?=json_encode($config['core']['startupLocation'])?>, 11);
+var pokestops = "<?=$pokestops?>";
+var lured = "<?=$lured?>";
+var quests = "<?=$quests?>";
 
+updateCounter(".pokestop-count", pokestops);
+updateCounter(".lured-pokestop-count", lured);
+updateCounter(".quest-pokestop-count", quests);
+
+var mymap = L.map('mapid').setView(<?=json_encode($config['core']['startupLocation'])?>, 11);
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
   maxZoom: 18,
   attribution: '',
@@ -65,38 +72,20 @@ function onMapClick(e) {
 
 mymap.on('click', onMapClick);
 
-var pokestops = "<?=$pokestops?>";
-var lured = "<?=$lured?>";
-var quests = "<?=$quests?>";
-
-// Animate the element's value from x to y:
-$({ pokestopsValue: 0, luredValue: 0, questsValue: 0 }).animate({ pokestopsValue: pokestops, luredValue: lured, questsValue: quests }, {
-  duration: 3000,
-  easing: 'swing', // can be anything
-  step: function () { // called on every step
-    // Update the element's text with rounded-up value:
-    $('.pokestop-count').text(commaSeparateNumber(Math.round(pokestops)));
-    $('.lured-pokestop-count').text(commaSeparateNumber(Math.round(lured)));
-    $('.quest-pokestop-count').text(commaSeparateNumber(Math.round(quests)));
-  }
-});
-
-$(document).ready(function(){
-  var tmp = createToken();
-  $.ajax({
-    url: "api.php",
-    method: "GET",
-    data: { 'table': "pokestop", /*"limit": 1000,*/ "token": tmp },
-    success: function(data) {
-      tmp = null;
-      var pokestops = JSON.parse(data);
-      pokestops.forEach(pokestop => {
-        L.marker([pokestop.lat, pokestop.lon]).addTo(mymap);
-      })
-    },
-    error: function(data) {
-      console.log("[ERROR]:", data);
+var tmp = createToken();
+sendRequest({ "table": "pokestop", "limit": 1000, "token": tmp }, function(data) {
+  tmp = null;
+  if (<?=$config['core']['showDebug']?>) {
+    if (data === 0) {
+      console.log("Failed to get data for pokestops.");
+      return;
+    } else {
+      console.log("Pokestops:", data);
     }
+  }
+  var pokestops = JSON.parse(data);
+  pokestops.forEach(pokestop => {
+    L.marker([pokestop.lat, pokestop.lon]).addTo(mymap);
   });
 });
 
@@ -104,12 +93,5 @@ function createToken() {
   //TODO: Secure
   <?php $_SESSION['token'] = bin2hex(openssl_random_pseudo_bytes(16)); ?>
   return "<?=$_SESSION['token']?>";
-}
-
-function commaSeparateNumber(val) {
-  while (/(\d+)(\d{3})/.test(val.toString())) {
-    val = val.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
-  }
-  return val;
 }
 </script>

@@ -1,8 +1,4 @@
 <?php
-include './config.php';
-include './includes/DbConnector.php';
-include './includes/utils.php';
-
 $html = "
 <div class='container'>
 <h2 class='page-header text-center'>Overview</h2>
@@ -48,7 +44,53 @@ $html = "
           </div>
         </div>
       </div>
-    <div>
+    </div>
+  </div>
+</div>
+
+<div class='card text-center p-1 m-3'>
+  <div class='card-header bg-dark text-light'><b>Pokemon</b></div>
+  <div class='card-body'>
+    <div class='container'>
+      <div class='row'>
+        <div class='col-md-3'>
+          <div class='list-group'>
+            <a class='list-group-item'>
+              <h3 class='pull-right'><img src='./static/images/quests/1.png' width='64' height='64'/></h3>
+              <h4 class='list-group-item-heading total-pokemon-count'>0</h4>
+              <p class='list-group-item-text'>Total Pokemon</p>
+            </a>
+          </div>
+        </div>
+        <div class='col-md-3'>
+          <div class='list-group'>
+            <a class='list-group-item'>
+              <h3 class='pull-right'><img src='./static/images/quests/1.png' width='64' height='64'/></h3>
+              <h4 class='list-group-item-heading pokemon-count'>0</h4>
+              <p class='list-group-item-text'>Active Pokemon</p>
+            </a>
+          </div>
+        </div>
+        <div class='col-md-3'>
+          <div class='list-group'>
+            <a class='list-group-item'>
+              <h3 class='pull-right'><img src='./static/images/100.png' width='64' height='64'/></h3>
+              <h4 class='list-group-item-heading total-iv-count'>0</h4>
+              <p class='list-group-item-text'>Total IVs</p>
+            </a>
+          </div>
+        </div>
+        <div class='col-md-3'>
+          <div class='list-group'>
+            <a class='list-group-item'>
+              <h3 class='pull-right'><img src='./static/images/100.png' width='64' height='64'/></h3>
+              <h4 class='list-group-item-heading active-iv-count'>0</h4>
+              <p class='list-group-item-text'>Active with IVs</p>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -128,6 +170,44 @@ $html = "
     </div>
   </div>
 </div>
+
+<div class='card text-center p-1 m-3'>
+  <div class='card-header bg-dark text-light'><b>Spawnpoints Timers</b></div>
+  <div class='card-body'>
+    <div class='container'>
+      <div class='row'>
+        <div class='col-md-3'>
+          <a class='list-group-item'>
+            <h3 class='pull-right'><img src='./static/images/spawnpoint.png' width='64' height='64'/></h3>
+            <h4 class='list-group-item-heading spawnpoint-count'>0</h4>
+            <p class='list-group-item-text'>Total</p>
+          </a>
+        </div>
+        <div class='col-md-3'>
+          <a class='list-group-item'>
+            <h3 class='pull-right'><img src='./static/images/found.png' width='64' height='64'/></h3>
+            <h4 class='list-group-item-heading found-spawnpoint-count'>0</h4>
+            <p class='list-group-item-text'>Found</p>
+          </a>
+        </div>
+        <div class='col-md-3'>
+          <a class='list-group-item'>
+            <h3 class='pull-right'><img src='./static/images/missing.png' width='64' height='64'/></h3>
+            <h4 class='list-group-item-heading missing-spawnpoint-count'>0</h4>
+            <p class='list-group-item-text'>Missing</p>
+          </a>
+        </div>
+        <div class='col-md-3'>
+          <a class='list-group-item'>
+            <h3 class='pull-right'><img src='./static/images/percentage.png' width='64' height='64'/></h3>
+            <h4 class='list-group-item-heading percentage-spawnpoint-count'>0%</h4>
+            <p class='list-group-item-text'>Percentage</p>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 </div>
 ";
 echo $html;
@@ -139,33 +219,33 @@ var tmp = createToken();
 sendRequest({ "type": "dashboard", "token": tmp }, function(data) {
   tmp = null;
   if (<?=$config['core']['showDebug']?>) {
-    console.log("Dashboard:",data);
+    if (data === 0) {
+      console.log("Failed to get data for dashboard.");
+      return;
+    } else {
+      console.log("Dashboard:", data);
+    }
   }
   var obj = JSON.parse(data);
-  if (obj === 0) {
-    console.log("Failed to get data for dashboard.");
-    return;
-  }
-
-  // Animate the element's value from x to y:
-  $({ pokemonValue: 0, gymsValue: 0, raidsValue: 0, neutralValue: 0, mysticValue: 0, valorValue: 0, instinctValue: 0, pokestopsValue: 0, luredValue: 0, questsValue: 0 }).animate({ pokemonValue: obj.active_pokemon, gymsValue: obj.gyms, raidsValue: obj.raids, neutralValue: obj.neutral, mysticValue: obj.mystic, valorValue: obj.valor, instinctValue: obj.instinct, pokestopsValue: obj.pokestops, luredValue: obj.lured, questsValue: obj.quests }, {
-    duration: 3000,
-    easing: 'swing', // can be anything
-    step: function() { // called on every step
-      // Update the element's text with rounded-up value:
-      $('.pokemon-count').text(numberWithCommas(Math.round(this.pokemonValue)));
-      $('.gym-count').text(numberWithCommas(Math.round(this.gymsValue)));
-      $('.raids-count').text(numberWithCommas(Math.round(this.raidsValue)));
-      $('.neutral-gyms-count').text(numberWithCommas(Math.round(this.neutralValue)));
-      $('.valor-gyms-count').text(numberWithCommas(Math.round(this.valorValue)));
-      $('.mystic-gyms-count').text(numberWithCommas(Math.round(this.mysticValue)));
-      $('.instinct-gyms-count').text(numberWithCommas(Math.round(this.instinctValue)));
-      $('.pokestop-count').text(numberWithCommas(Math.round(this.pokestopsValue)));
-      $('.lured-pokestop-count').text(numberWithCommas(Math.round(this.luredValue)));
-      $('.quest-pokestop-count').text(numberWithCommas(Math.round(this.questsValue)));
-    }
-  });
+  updateCounter(".pokemon-count", obj.active_pokemon);
+  updateCounter(".gym-count", obj.gyms);
+  updateCounter(".raids-count", obj.raids);
+  updateCounter(".total-pokemon-count", obj.pokemon);
+  updateCounter(".total-iv-count", obj.iv_total);
+  updateCounter(".active-iv-count", obj.iv_active);
+  updateCounter(".neutral-gyms-count", obj.neutral);
+  updateCounter(".valor-gyms-count", obj.valor);
+  updateCounter(".mystic-gyms-count", obj.mystic);
+  updateCounter(".instinct-gyms-count", obj.instinct);
+  updateCounter(".pokestop-count", obj.pokestops);
+  updateCounter(".lured-pokestop-count", obj.lured);
+  updateCounter(".quest-pokestop-count", obj.quests);
+  updateCounter(".spawnpoint-count", obj.tth_total);
+  updateCounter(".found-spawnpoint-count", obj.tth_found);
+  updateCounter(".missing-spawnpoint-count", obj.tth_missing);
+  updateCounter(".percentage-spawnpoint-count", obj.tth_percentage);
 });
+
 
 function createToken() {
   //TODO: Secure

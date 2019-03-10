@@ -1,5 +1,6 @@
 - Secure pages
 - Switch tables to DataTables library
+- Add lifetime stats (Tabs: lifetime and by date)
 - Sanitize user input
 - Fix auto removal of raid upon ending
 - Optimize Pokemon page

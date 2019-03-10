@@ -33,7 +33,10 @@ if ($config['discord']['enabled'] && !isset($_SESSION['user'])) {
     <script type='text/javascript' src='https://unpkg.com/leaflet@1.4.0/dist/leaflet.js' integrity='sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg==' crossorigin=''></script>
     <script type='text/javascript' charset='utf8' src='https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js'></script>
     <script type='text/javascript' src='./static/js/filters.js'></script>
+    <script type='text/javascript' src='./static/js/jquery.countdown.min.js'></script>
+    <script type='text/javascript' src='./static/js/moment.js'></script>
     <script type='text/javascript' src='./static/js/table.sorter.js'></script>
+    <script type='text/javascript' src='./static/js/utils.js'></script>
 
     <title><?=$config['ui']['title']?></title>
   </head>
