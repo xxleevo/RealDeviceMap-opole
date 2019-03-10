@@ -48,7 +48,7 @@ echo $modal;
 if ($config['ui']['table']['forceRaidCards'] || (!$config['ui']['table']['forceRaidCards'] && is_mobile())) {
     $result = $pdo->query($sql);
     if ($result->rowCount() > 0) {
-        echo "<div id='gym-table' class='container raid-card' style='display: flex; flex-direction: column;'>";
+        echo "<div id='gym-table' class='container' style='display: flex; flex-direction: column;'>";
         while ($row = $result->fetch()) {	
             $starts = date($config['core']['dateTimeFormat'], $row['raid_battle_timestamp']);
             $ends = date($config['core']['dateTimeFormat'], $row['raid_end_timestamp']);
@@ -64,7 +64,7 @@ if ($config['ui']['table']['forceRaidCards'] || (!$config['ui']['table']['forceR
             $moveset = (($fast_move == $config['ui']['unknownValue'] && ($charge_move == $config['ui']['unknownValue'])) 
                 ? $config['ui']['unknownValue'] 
                 : $fast_move . "/" . $charge_move);
-            $started = $row['raid_battle_timestamp'] > time();
+            $started = $row['raid_battle_timestamp'] < time();
             $startTime = $started ? "--" : $starts;
             $endTime = $started ? getMinutesLeft($row['raid_end_timestamp']) . "m" : $ends;
             $minsLeft = getMinutesLeft($row['updated']);
