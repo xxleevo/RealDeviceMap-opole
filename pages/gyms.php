@@ -95,6 +95,7 @@ $modal = "
       </div>
       <div class='modal-body'>" . $filters . "</div>
       <div class='modal-footer'>
+        <button type='button' class='btn btn-danger' id='reset-filters'>Reset Filters</button>
         <button type='button' class='btn btn-primary' data-dismiss='modal'>Close</button>
       </div>
     </div>
@@ -229,5 +230,34 @@ checkbox.click(function () {
   var colToHide = tblHead.filter("." + $(this).attr("name"));
   var index = $(colToHide).index();
   tbl.find('tr :nth-child(' + (index + 1) + ')').toggle();
+});
+
+if (get("gyms-filter-team") !== false) {
+  $('#filter-team').val(get("gyms-team"));
+}
+if (get("gyms-filter-slots") !== false) {
+  $('#filter-slots').val(get("gyms-filter-slots"));
+}
+if (get("gyms-filter-battle") !== false) {
+  $('#filter-battle').val(get("gyms-filter-battle"));
+}
+if (get("gyms-filter-city") !== false) {
+  $('#filter-city').val(get("gyms-filter-city"));
+}
+if (get("gyms-filter-gym") !== false) {
+  $('#filter-gym').val(get("gyms-filter-gym"));
+}
+
+filter_gyms();
+
+$('#reset-filters').on('click', function() {
+  if (confirm("Are you sure you want to reset the gym filters?")) {
+    $('#filter-team').val('All');
+    $('#filter-slots').val('All');
+    $('#filter-battle').val('All');
+    $('#filter-city').val('All');
+    $('#filter-gym').val('');
+    filter_gyms();
+  }
 });
 </script>

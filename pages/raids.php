@@ -104,6 +104,7 @@ $modal = "
       </div>
       <div class='modal-body'>" . $filters . "</div>
       <div class='modal-footer'>
+        <button type='button' class='btn btn-danger' id='reset-filters'>Reset Filters</button>
         <button type='button' class='btn btn-primary' data-dismiss='modal'>Close</button>
       </div>
     </div>
@@ -161,5 +162,39 @@ checkbox.click(function () {
   var colToHide = tblHead.filter("." + $(this).attr("name"));
   var index = $(colToHide).index();
   tbl.find('tr :nth-child(' + (index + 1) + ')').toggle();
+});
+
+if (get("raids-search-input") !== false) {
+  $('#search-input').val(get("raids-search-input"));
+}
+if (get("raids-filter-gym") !== false) {
+  $('#filter-gym').val(get("raids-filter-gym"));
+}
+if (get("raids-filter-city") !== false) {
+  $('#filter-city').val(get("raids-filter-city"));
+}
+if (get("raids-filter-level") !== false) {
+  $('#filter-level').val(get("raids-filter-level"));
+}
+if (get("raids-filter-team") !== false) {
+  $('#filter-team').val(get("raids-filter-team"));
+}
+if (get("raids-filter-ex") !== false) {
+  $('#filter-ex').val(get("raids-filter-ex"));
+}
+
+var isMobile = <?=$config['ui']['table']['forceRaidCards'] || (!$config['ui']['table']['forceRaidCards'] && is_mobile())?>;
+filter_raids(isMobile);
+
+$('#reset-filters').on('click', function() {
+  if (confirm("Are you sure you want to reset the raid filters?")) {
+    $('#search-input').val('');
+    $('#filter-gym').val('All');
+    $('#filter-city').val('All');
+    $('#filter-level').val('All');
+    $('#filter-team').val('All');
+    $('#filter-ex').val('All');
+    filter_raids(isMobile);
+  }
 });
 </script>

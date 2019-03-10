@@ -2,12 +2,25 @@ function filter_raids(mobile) {
   var table = $("table-refresh");
   table.load("data_fetcher.php");
 
-  var searchFilter = document.getElementById("search-input").value.toUpperCase();
-  var gymFilter = document.getElementById("filter-gym").value.toUpperCase();
-  var cityFilter = document.getElementById("filter-city").value.toUpperCase();
-  var levelFilter = document.getElementById("filter-level").value.toUpperCase();
-  var teamFilter = document.getElementById("filter-team").value.toUpperCase();
-  var exFilter = document.getElementById("filter-ex").value.toUpperCase();
+  var searchFilter = document.getElementById("search-input").value;
+  var gymFilter = document.getElementById("filter-gym").value;
+  var cityFilter = document.getElementById("filter-city").value;
+  var levelFilter = document.getElementById("filter-level").value;
+  var teamFilter = document.getElementById("filter-team").value;
+  var exFilter = document.getElementById("filter-ex").value;
+
+  set("raids-search-input", searchFilter);
+  set("raids-filter-gym", gymFilter);
+  set("raids-filter-city", cityFilter);
+  set("raids-filter-level", levelFilter);
+  set("raids-filter-team", teamFilter);
+  set("raids-filter-ex", exFilter);
+  searchFilter = searchFilter.toUpperCase();
+  gymFilter = gymFilter.toUpperCase();
+  cityFilter = cityFilter.toUpperCase();
+  levelFilter = levelFilter.toUpperCase();
+  teamFilter = teamFilter.toUpperCase();
+  exFilter = exFilter.toUpperCase();
 
   console.log("Pokemon:", searchFilter, "City:", cityFilter, "Level:", levelFilter, "Team:", teamFilter, "Ex:", exFilter, "Gym:", gymFilter);
 
@@ -79,11 +92,22 @@ function filter_raids(mobile) {
 }
 
 function filter_gyms() {
-  var teamFilter = document.getElementById("filter-team").value.toUpperCase();
-  var slotsFilter = document.getElementById("filter-slots").value.toUpperCase();
-  var battleFilter = document.getElementById("filter-battle").value.toUpperCase();
-  var cityFilter = document.getElementById("filter-city").value.toUpperCase();
-  var gymFilter = document.getElementById("filter-gym").value.toUpperCase();
+  var teamFilter = document.getElementById("filter-team").value;
+  var slotsFilter = document.getElementById("filter-slots").value;
+  var battleFilter = document.getElementById("filter-battle").value;
+  var cityFilter = document.getElementById("filter-city").value;
+  var gymFilter = document.getElementById("filter-gym").value;
+
+  set("gyms-filter-team", teamFilter);
+  set("gyms-filter-slots", slotsFilter);
+  set("gyms-filter-battle", battleFilter);
+  set("gyms-filter-city", cityFilter);
+  set("gyms-filter-gym", gymFilter);
+  teamFilter = teamFilter.toUpperCase();
+  slotsFilter = slotsFilter.toUpperCase();
+  battleFilter = battleFilter.toUpperCase();
+  cityFilter = cityFilter.toUpperCase();
+  gymFilter = gymFilter.toUpperCase();
 
   console.log("Team:", teamFilter, "Slots:", slotsFilter, "In Battle:", battleFilter, "City:", cityFilter, "Gym:", gymFilter);
 
@@ -142,11 +166,17 @@ function filter_gyms() {
 }
 
 function filter_quests() {
-  var searchFilter = document.getElementById("search-input").value.toUpperCase();
-  var cityFilter = document.getElementById("filter-city").value.toUpperCase();
-  var pokestopFilter = document.getElementById("filter-pokestop").value.toUpperCase();
+  var searchFilter = document.getElementById("search-input").value;
+  var cityFilter = document.getElementById("filter-city").value;
+  var pokestopFilter = document.getElementById("filter-pokestop").value;
 
   console.log("Quest:", searchFilter, "City:", cityFilter, "Pokestop:", pokestopFilter);
+  set("quests-search-input", searchFilter);
+  set("quests-filter-city", cityFilter);
+  set("quests-filter-pokestop", pokestopFilter);
+  searchFilter = searchFilter.toUpperCase();
+  cityFilter = cityFilter.toUpperCase();
+  pokestopFilter = pokestopFilter.toUpperCase();
 
   if (cityFilter.toLowerCase().indexOf("all") === 0 ||
     cityFilter.toLowerCase().indexOf("select") === 0) {

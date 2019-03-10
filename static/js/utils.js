@@ -65,6 +65,14 @@ function sprintf(format, args) {
   });
 }
 
+function set(name, value) {
+  localStorage.setItem(name, value);
+}
+
+function get(name) {
+  return localStorage.getItem(name);
+}
+
 function getNests(p1_lat, p1_lon, p2_lat, p2_lon) {
   const overpassApiEndpoint = 'https://overpass-api.de/api/interpreter';
   var queryBbox = [ // s, e, n, w

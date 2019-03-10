@@ -63,6 +63,7 @@ $modal = "
       </div>
       <div class='modal-body'>" . $filters . "</div>
       <div class='modal-footer'>
+        <button type='button' class='btn btn-danger' id='reset-filters'>Reset Filters</button>
         <button type='button' class='btn btn-primary' data-dismiss='modal'>Close</button>
       </div>
     </div>
@@ -558,5 +559,26 @@ checkbox.click(function () {
   var colToHide = tblHead.filter("." + $(this).attr("name"));
   var index = $(colToHide).index();
   tbl.find('tr :nth-child(' + (index + 1) + ')').toggle();
+});
+
+if (get("quests-search-input") !== false) {
+  $('#search-input').val(get("quests-search-input"));
+}
+if (get("quests-filter-city") !== false) {
+  $('#filter-city').val(get("quests-filter-city"));
+}
+if (get("quests-filter-pokestop") !== false) {
+  $('#filter-pokestop').val(get("quests-filter-pokestop"));
+}
+
+filter_quests();
+
+$('#reset-filters').on('click', function() {
+  if (confirm("Are you sure you want to reset the quest filters?")) {
+    $('#search-input').val('');
+    $('#filter-city').val('All');
+    $('#filter-pokestop').val('');
+    filter_quests();
+  }
 });
 </script>
