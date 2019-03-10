@@ -91,7 +91,7 @@ $html = "
         </div>
       </div>
       <div class='card text-center p-1 m-3'>
-        <div class='card-header bg-dark text-light'><b>Top 10 Pokemon</b></div>
+        <div class='card-header bg-dark text-light'><b>Top 10 Pokemon (Lifetime)</b></div>
         <div class='card-body'>
           <div class='container'>
             <div id='top-10-pokemon' class='row justify-content-center'></div>

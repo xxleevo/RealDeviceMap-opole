@@ -198,8 +198,16 @@ function getMinutesLeft($endTimestamp) {
     return $minutes;
 }
 
-function hasDiscordRole($roles, $role) {
-    return in_array($role, $roles) || $role === 0;
+function hasDiscordRole($userRoles, $requiredRoles) {
+    if (count($requiredRoles) == 0) {
+        return true;
+    }
+    foreach ($roles as $role) {
+        if (in_array($role, $requiredRoles)) {
+            return true;
+        }
+    }
+    return false;
 }
 
 ?>

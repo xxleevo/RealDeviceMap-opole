@@ -30,7 +30,7 @@ try {
                 if ($member === null)
                     continue;
 
-                $has_trusted_role = has_trusted_role($config['discord']['roleIds'], $member->roles);
+                $has_trusted_role = hasDiscordRole($member->roles, $config['discord']['roleIds']);
                 if (!$has_trusted_role)
                     continue;
 
@@ -66,17 +66,6 @@ function in_trusted_guild($trusted_guild_ids, $guilds) {
     foreach ($guilds as $key=>$value) {
         if (in_array($value->id, $trusted_guild_ids)) {
   	        return true;
-        }
-    }
-    return false;
-}
-function has_trusted_role($trusted_role_ids, $roles) {
-    if (count($trusted_role_ids) == 0) {
-        return true;
-    }
-    foreach ($roles as $key) {
-        if (in_array($key, $trusted_role_ids)) {
-            return true;
         }
     }
     return false;
