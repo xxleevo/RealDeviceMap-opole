@@ -151,7 +151,6 @@ setTimeout(function() { clearInterval(refresher); }, 1800000);
 
 $(document).on("click", ".delete", function(){
   $(this).parents("tr").remove();
-  $(".add-new").removeAttr("disabled");
 });
 
 var checkbox = $("#chkColumns input:checkbox"); 
