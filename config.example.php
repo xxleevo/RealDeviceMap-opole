@@ -63,31 +63,31 @@ $config = [
     "pages" => [
       "pokemon" => [
         "enabled" => true, //Shows/hides pokemon page
-        "discordRoles" => 0 //Requires specific discord role, otherwise leave as 0
+        "discordRole" => 0 //Requires specific discord role, otherwise leave as 0
       ],
       "raids" => [
         "enabled" => true, //Shows/hides raids page
-        "discordRoles" => 0 //Requires specific discord role, otherwise leave as 0
+        "discordRole" => 0 //Requires specific discord role, otherwise leave as 0
       ],
       "gyms" => [
         "enabled" => true, //Shows/hides gyms page
-        "discordRoles" => 0 //Requires specific discord role, otherwise leave as 0
+        "discordRole" => 0 //Requires specific discord role, otherwise leave as 0
       ],
       "quests" => [
         "enabled" => true, //Shows/hides gyms page
-        "discordRoles" => 0 //Requires specific discord role, otherwise leave as 0
+        "discordRole" => 0 //Requires specific discord role, otherwise leave as 0
       ],
       "pokestops" => [
         "enabled" => true, //Shows/hides gyms page
-        "discordRoles" => 0 //Requires specific discord role, otherwise leave as 0
+        "discordRole" => 0 //Requires specific discord role, otherwise leave as 0
       ],
       "nests" => [
         "enabled" => true, //Shows/hides gyms page
-        "discordRoles" => 0 //Requires specific discord role, otherwise leave as 0
+        "discordRole" => 0 //Requires specific discord role, otherwise leave as 0
       ],
       "stats" => [
         "enabled" => true, //Shows/hides gyms page
-        "discordRoles" => 0 //Requires specific discord role, otherwise leave as 0
+        "discordRole" => 0 //Requires specific discord role, otherwise leave as 0
       ]
     ],
     "navBarIconSize" => [24, 24] //NavBar image icon size e.g. [Width, Height]

@@ -55,3 +55,40 @@ function updateCounter(name, value) {
     }
   });
 }
+
+function getNestData() {
+}
+
+function buildOsmUri(p1_lat, p1_lon, p2_lat, p2_lon) {
+  //Generate the OSM uri for the OSM data
+  var osmApi = "https://overpass-api.de/api/interpreter";
+  var osmDate = "2018-04-09T01:32:00Z";
+  var osmBbox = "[bbox:" + p1_lat + "," + p1_lon + "," + p2_lat + "," + p2_lon + "]";
+  var osmData = "?data=";
+  var osmType = "[out:json]";
+  var date = '[date:"' + osmDate + '"];';
+  var osmTags = `
+  way["landuse"="farmland"];
+  way["landuse"="farmyard"];
+  way["landuse"="grass"];
+  way["landuse"="greenfield"];
+  way["landuse"="meadow"];
+  way["landuse"="orchard"];
+  way["landuse"="recreation_ground"];
+  way["landuse"="vineyard"];
+  way["leisure"="garden"];
+  way["leisure"="golf_course"];
+  way["leisure"="park"];
+  way["leisure"="pitch"];
+  way["leisure"="playground"];
+  way["leisure"="recreation_ground"];
+  way["natural"="grassland"];
+  way["natural"="heath"];
+  way["natural"="scrub"];
+`;
+  var tagData = osmTags.replace("\n", "");
+  var osmTagData = "(" + tagData + ");";
+  var osmEnd = "out;>;out skel qt;";
+  var uri = osmApi + osmData + quote(osmType + osmBbox + date + osmTagData + osmEnd);
+  return uri;
+}
