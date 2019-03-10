@@ -43,24 +43,6 @@ Für alle nötigen Infos zur Map kannst du unsere Infoseite besuchen.
 				<div class='col-md-4'>
 					<div class='list-group'>
 						<a class='list-group-item'>
-							<h3 class='pull-right'><img src='./static/images/iv.png' width='48' height='48'/></h3>
-							<h4 class='list-group-item-heading pokemon-total-iv-count'>0</h4>
-							<p class='list-group-item-text'>IV Pokemon Heute Gesamt</p>
-						</a>
-					</div>
-				</div>
-				<div class='col-md-4'>
-					<div class='list-group'>
-						<a class='list-group-item'>
-							<h3 class='pull-right'><img src='./static/images/teams/neutral.png' width='64' height='64'/></h3>
-							<h4 class='list-group-item-heading gym-count'>0</h4>
-							<p class='list-group-item-text'>Arenen Gesamt</p>
-						</a>
-					</div>
-				</div>
-				<div class='col-md-4'>
-					<div class='list-group'>
-						<a class='list-group-item'>
 							<h3 class='pull-right'><img src='./static/images/quests/1402.png'  width='64' height='64'/></h3>
 							<h4 class='list-group-item-heading raids-count'>0</h4>
 							<p class='list-group-item-text'>Aktive Raids</p>
@@ -70,9 +52,28 @@ Für alle nötigen Infos zur Map kannst du unsere Infoseite besuchen.
 				<div class='col-md-4'>
 					<div class='list-group'>
 						<a class='list-group-item'>
-							<h3 class='pull-right'><img src='./static/images/raids/5.png' width='auto' height='64'/></h3>
-							<h4 class='list-group-item-heading legendary-raids-count'>0</h4>
-							<p class='list-group-item-text'>Aktive Legendäre Raids</p>
+							<h3 class='pull-right'><img src='./static/images/quests/1.png' width='64' height='64'/></h3>
+							<h4 class='list-group-item-heading total-pokemon-count'>0</h4>
+							<p class='list-group-item-text'>Pokemon heute Gesamt</p>
+						</a>
+					</div>
+				</div>
+
+				<div class='col-md-4'>
+					<div class='list-group'>
+						<a class='list-group-item'>
+							<h3 class='pull-right'><img src='./static/images/iv.png' width='48' height='48'/></h3>
+							<h4 class='list-group-item-heading pokemon-total-iv-count'>0</h4>
+							<p class='list-group-item-text'>IV Pokemon heute Gesamt</p>
+						</a>
+					</div>
+				</div>
+				<div class='col-md-4'>
+					<div class='list-group'>
+						<a class='list-group-item'>
+							<h3 class='pull-right'><img src='./static/images/teams/neutral.png' width='64' height='64'/></h3>
+							<h4 class='list-group-item-heading gym-count'>0</h4>
+							<p class='list-group-item-text'>Arenen Gesamt</p>
 						</a>
 					</div>
 				</div>
@@ -183,8 +184,8 @@ Für alle nötigen Infos zur Map kannst du unsere Infoseite besuchen.
     </div>
   </div>
 </div>";
-// Show this Raid Stats only from 5:00 to 22:00
-if (date('H') > 4 && date('H') < 23) {
+// Show this Raid Stats only from 4:00 to 23:00
+if (Date('H') >= 4 && Date('H') < 23) {
 $html .="
 <div class='card text-center p-1 m-3'>
   <div class='card-header heading text-light'><b>Raids & Eier</b></div>
@@ -318,11 +319,12 @@ sendRequest({ "type": "dashboard", "token": tmp }, function(data) {
   }
 
   // Animate the element's value from x to y:
-  $({ pokemonValue: 0, pokemonIvValue: 0, pokemonTotalIvValue: 0, gymsValue: 0, raidsValue: 0, normalRaidsValue: 0, legendaryRaidsValue: 0, eggsValue:0, normalEggsValue:0, legendaryEggsValue:0, neutralValue: 0, mysticValue: 0, valorValue: 0, instinctValue: 0, pokestopsValue: 0, luredValue: 0, questsValue: 0, spawnpointValue:0, spawnpointVerifiedValue:0, nestValue:0 }).animate({ pokemonValue: obj.active_pokemon, pokemonIvValue: obj.iv_pokemon, pokemonTotalIvValue: obj.total_iv_pokemon, gymsValue: obj.gyms, raidsValue: obj.raids, normalRaidsValue: obj.raids_normal, legendaryRaidsValue: obj.raids_legendary, eggsValue:obj.eggs, normalEggsValue:obj.eggs_normal, legendaryEggsValue:obj.eggs_legendary, neutralValue: obj.neutral, mysticValue: obj.mystic, valorValue: obj.valor, instinctValue: obj.instinct, pokestopsValue: obj.pokestops, luredValue: obj.lured, questsValue: obj.quests , spawnpointValue: obj.spawnpoint, spawnpointVerifiedValue: obj.tth_spawnpoint }, {
+  $({ pokemonTotalValue:0, pokemonValue: 0, pokemonIvValue: 0, pokemonTotalIvValue: 0, gymsValue: 0, raidsValue: 0, normalRaidsValue: 0, legendaryRaidsValue: 0, eggsValue:0, normalEggsValue:0, legendaryEggsValue:0, neutralValue: 0, mysticValue: 0, valorValue: 0, instinctValue: 0, pokestopsValue: 0, luredValue: 0, questsValue: 0, spawnpointValue:0, spawnpointVerifiedValue:0, nestValue:0 }).animate({ pokemonTotalValue: obj.pokemon, pokemonValue: obj.active_pokemon, pokemonIvValue: obj.iv_pokemon, pokemonTotalIvValue: obj.total_iv_pokemon, gymsValue: obj.gyms, raidsValue: obj.raids, normalRaidsValue: obj.raids_normal, legendaryRaidsValue: obj.raids_legendary, eggsValue:obj.eggs, normalEggsValue:obj.eggs_normal, legendaryEggsValue:obj.eggs_legendary, neutralValue: obj.neutral, mysticValue: obj.mystic, valorValue: obj.valor, instinctValue: obj.instinct, pokestopsValue: obj.pokestops, luredValue: obj.lured, questsValue: obj.quests , spawnpointValue: obj.spawnpoint, spawnpointVerifiedValue: obj.tth_spawnpoint }, {
     duration: 2000,
     easing: 'swing', // can be anything
     step: function() { // called on every step
       // Update the element's text with rounded-up value:
+      $('.total-pokemon-count').text(numberWithCommas(Math.round(this.pokemonTotalValue)));
       $('.pokemon-count').text(numberWithCommas(Math.round(this.pokemonValue)));
       $('.pokemon-iv-count').text(numberWithCommas(Math.round(this.pokemonIvValue)));
       $('.pokemon-total-iv-count').text(numberWithCommas(Math.round(this.pokemonTotalIvValue)));
