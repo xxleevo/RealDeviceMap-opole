@@ -79,8 +79,9 @@ if (!(isset($_GET['type']) && !empty($_GET['type']))) {
 			$totalIvScannedPokemonCount = get_table_count("pokemon WHERE iv is not null");
             $gymCount = get_table_count("gym");
             $raidCount = get_raid_stats();
-			$normalRaidCount = get_table_count("gym where raid_level >= 1 AND raid_level < 5 AND raid_end_timestamp > UNIX_TIMESTAMP()");
-			$legendaryRaidCount = get_table_count("gym WHERE raid_level = 5 AND raid_end_timestamp > UNIX_TIMESTAMP()");
+            $raidHatchedCount = get_table_count("gym where raid_level >= 1 AND raid_level <= 5 AND raid_battle_timestamp < UNIX_TIMESTAMP() AND raid_end_timestamp > UNIX_TIMESTAMP()");
+			$normalRaidCount = get_table_count("gym where raid_level >= 1 AND raid_level < 5 AND raid_battle_timestamp < UNIX_TIMESTAMP() AND raid_end_timestamp > UNIX_TIMESTAMP()");
+			$legendaryRaidCount = get_table_count("gym WHERE raid_level = 5 AND raid_battle_timestamp < UNIX_TIMESTAMP()  AND raid_end_timestamp > UNIX_TIMESTAMP()");
 			$eggCount = get_table_count("gym where raid_level >=1 AND raid_level <=5 AND raid_battle_timestamp > UNIX_TIMESTAMP()");
 			$normalEggCount = get_table_count("gym where raid_level >= 1 AND raid_level < 5 AND raid_battle_timestamp > UNIX_TIMESTAMP()");
 			$legendaryEggCount = get_table_count("gym where raid_level = 5 AND raid_battle_timestamp > UNIX_TIMESTAMP()");
@@ -93,6 +94,7 @@ if (!(isset($_GET['type']) && !empty($_GET['type']))) {
 				"total_iv_pokemon" => $totalIvScannedPokemonCount,
                 "gyms" => $gymCount,
                 "raids" => $raidCount,
+                "raids_all_hatched" => $raidHatchedCount,
                 "raids_normal" => $normalRaidCount,
                 "raids_legendary" => $legendaryRaidCount,
                 "eggs" => $eggCount,

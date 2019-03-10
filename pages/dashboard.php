@@ -45,7 +45,7 @@ Für alle nötigen Infos zur Map kannst du unsere Infoseite besuchen.
 						<a class='list-group-item'>
 							<h3 class='pull-right'><img src='./static/images/quests/1402.png'  width='64' height='64'/></h3>
 							<h4 class='list-group-item-heading raids-count'>0</h4>
-							<p class='list-group-item-text'>Aktive Raids</p>
+							<p class='list-group-item-text'>Aktive Raids & Eier</p>
 						</a>
 					</div>
 				</div>
@@ -216,7 +216,7 @@ $html .="
         <div class='col-md-4'>
           <a class='list-group-item'>
             <h3 class='pull-right'><img src='./static/images/raids/raids_hatched.png' width='auto' height='64'/></h3>
-            <h4 class='list-group-item-heading raids-count'>0</h4>
+            <h4 class='list-group-item-heading raids-all-hatched'>0</h4>
             <p class='list-group-item-text'>Raids Gesamt</p>
           </a>
         </div>
@@ -319,7 +319,7 @@ sendRequest({ "type": "dashboard", "token": tmp }, function(data) {
   }
 
   // Animate the element's value from x to y:
-  $({ pokemonTotalValue:0, pokemonValue: 0, pokemonIvValue: 0, pokemonTotalIvValue: 0, gymsValue: 0, raidsValue: 0, normalRaidsValue: 0, legendaryRaidsValue: 0, eggsValue:0, normalEggsValue:0, legendaryEggsValue:0, neutralValue: 0, mysticValue: 0, valorValue: 0, instinctValue: 0, pokestopsValue: 0, luredValue: 0, questsValue: 0, spawnpointValue:0, spawnpointVerifiedValue:0, nestValue:0 }).animate({ pokemonTotalValue: obj.pokemon, pokemonValue: obj.active_pokemon, pokemonIvValue: obj.iv_pokemon, pokemonTotalIvValue: obj.total_iv_pokemon, gymsValue: obj.gyms, raidsValue: obj.raids, normalRaidsValue: obj.raids_normal, legendaryRaidsValue: obj.raids_legendary, eggsValue:obj.eggs, normalEggsValue:obj.eggs_normal, legendaryEggsValue:obj.eggs_legendary, neutralValue: obj.neutral, mysticValue: obj.mystic, valorValue: obj.valor, instinctValue: obj.instinct, pokestopsValue: obj.pokestops, luredValue: obj.lured, questsValue: obj.quests , spawnpointValue: obj.spawnpoint, spawnpointVerifiedValue: obj.tth_spawnpoint }, {
+  $({ pokemonTotalValue:0, pokemonValue: 0, pokemonIvValue: 0, pokemonTotalIvValue: 0, gymsValue: 0, raidsValue: 0, raidsHatchedValue:0, normalRaidsValue: 0, legendaryRaidsValue: 0, eggsValue:0, normalEggsValue:0, legendaryEggsValue:0, neutralValue: 0, mysticValue: 0, valorValue: 0, instinctValue: 0, pokestopsValue: 0, luredValue: 0, questsValue: 0, spawnpointValue:0, spawnpointVerifiedValue:0, nestValue:0 }).animate({ pokemonTotalValue: obj.pokemon, pokemonValue: obj.active_pokemon, pokemonIvValue: obj.iv_pokemon, pokemonTotalIvValue: obj.total_iv_pokemon, gymsValue: obj.gyms, raidsValue: obj.raids, raidsHatchedValue: obj.raids_all_hatched, normalRaidsValue: obj.raids_normal, legendaryRaidsValue: obj.raids_legendary, eggsValue:obj.eggs, normalEggsValue:obj.eggs_normal, legendaryEggsValue:obj.eggs_legendary, neutralValue: obj.neutral, mysticValue: obj.mystic, valorValue: obj.valor, instinctValue: obj.instinct, pokestopsValue: obj.pokestops, luredValue: obj.lured, questsValue: obj.quests , spawnpointValue: obj.spawnpoint, spawnpointVerifiedValue: obj.tth_spawnpoint }, {
     duration: 2000,
     easing: 'swing', // can be anything
     step: function() { // called on every step
@@ -333,6 +333,7 @@ sendRequest({ "type": "dashboard", "token": tmp }, function(data) {
       $('.normal-eggs-count').text(numberWithCommas(Math.round(this.normalEggsValue)));
       $('.legendary-eggs-count').text(numberWithCommas(Math.round(this.legendaryEggsValue)));
       $('.raids-count').text(numberWithCommas(Math.round(this.raidsValue)));
+      $('.raids-all-hatched').text(numberWithCommas(Math.round(this.raidsHatchedValue)));
       $('.normal-raids-count').text(numberWithCommas(Math.round(this.normalRaidsValue)));
       $('.legendary-raids-count').text(numberWithCommas(Math.round(this.legendaryRaidsValue)));
       $('.neutral-gyms-count').text(numberWithCommas(Math.round(this.neutralValue)));
