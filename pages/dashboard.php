@@ -3,7 +3,10 @@ include './config.php';
 include './includes/DbConnector.php';
 include './includes/utils.php';
 
+
+
 $html = "
+
 <div style='max-width:1280px;margin: 0 auto !important;float: none !important;'>
 
 <h2 class='page-header text-center'>Übersicht</h2>
@@ -72,7 +75,6 @@ $html = "
 </div>
 </div>
 </div>
-
 
 <div class='card text-center p-1 m-4'>
   <div class='card-header heading text-light'><b>Teams</b></div>
@@ -151,6 +153,85 @@ $html = "
   </div>
 </div>
 
+<div class='card text-center p-1 m-3'>
+  <div class='card-header heading text-light'><b>Spawnpunkte</b></div>
+  <div class='card-body'>
+    <div class='container'>
+      <div class='row'>
+        <div class='col-md-3'>
+          <a class='list-group-item'>
+            <h3 class='pull-right'><img src='./static/images/spawns.png' width='64' height='64'/></h3>
+            <h4 class='list-group-item-heading spawnpoint-count'>0</h4>
+            <p class='list-group-item-text'>Spawnpunkte Gesamt</p>
+          </a>
+        </div>
+        <div class='col-md-3'>
+          <a class='list-group-item'>
+            <h3 class='pull-right'><img src='./static/images/spawns_verified.png' width='64' height='64'/></h3>
+            <h4 class='list-group-item-heading tth-spawnpoint-count'>0</h4>
+            <p class='list-group-item-text'>Verifizierte Despawnzeiten</p>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>";
+// Show this Raid Stats only from 5:00 to 22:00
+if (date('H') > 5 && date('H') < 22) {
+$html .="
+<div class='card text-center p-1 m-3'>
+  <div class='card-header heading text-light'><b>Raids & Eier</b></div>
+  <div class='card-body'>
+    <div class='container'>
+      <div class='row'>
+        <div class='col-md-4'>
+          <a class='list-group-item'>
+            <h3 class='pull-right'><img src='./static/images/raids/eggs.png' width='auto' height='64'/></h3>
+            <h4 class='list-group-item-heading eggs-count'>0</h4>
+            <p class='list-group-item-text'>Raideier Gesamt</p>
+          </a>
+        </div>
+        <div class='col-md-4'>
+          <a class='list-group-item'>
+            <h3 class='pull-right'><img src='./static/images/raids/eggs_normal.png' width='auto' height='64'/></h3>
+            <h4 class='list-group-item-heading normal-eggs-count'>0</h4>
+            <p class='list-group-item-text'>Normale Raideier</p>
+          </a>
+        </div>
+        <div class='col-md-4'>
+          <a class='list-group-item'>
+            <h3 class='pull-right'><img src='./static/images/raids/5.png' width='auto' height='64'/></h3>
+            <h4 class='list-group-item-heading legendary-eggs-count'>0</h4>
+            <p class='list-group-item-text'>Legendäre Raideier</p>
+          </a>
+        </div>
+        <div class='col-md-4'>
+          <a class='list-group-item'>
+            <h3 class='pull-right'><img src='./static/images/raids/raids_hatched.png' width='auto' height='64'/></h3>
+            <h4 class='list-group-item-heading raids-count'>0</h4>
+            <p class='list-group-item-text'>Raids Gesamt</p>
+          </a>
+        </div>
+        <div class='col-md-4'>
+          <a class='list-group-item'>
+            <h3 class='pull-right'><img src='./static/images/raids/raids_hatched_normal.png' width='auto' height='64'/></h3>
+            <h4 class='list-group-item-heading normal-raids-count'>0</h4>
+            <p class='list-group-item-text'>Normale Raids</p>
+          </a>
+        </div>
+        <div class='col-md-4'>
+          <a class='list-group-item'>
+            <h3 class='pull-right'><img src='./static/images/raids/raids_hatched_legendary.png' width='auto' height='64'/></h3>
+            <h4 class='list-group-item-heading legendary-raids-count'>0</h4>
+            <p class='list-group-item-text'>Legendäre Raids</p>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>";
+}
+$html .="
 <div class ='p-1 m-3'>
 <div class='row'>
 <div class='card text-center p-1 m-3 col-md-2'>
@@ -209,8 +290,9 @@ $html = "
 </div>
 </div>
 </div>
-
 ";
+
+
 echo $html;
 ?>
 <link rel="stylesheet" href="./static/css/dashboard.css"/>
@@ -229,7 +311,7 @@ sendRequest({ "type": "dashboard", "token": tmp }, function(data) {
   }
 
   // Animate the element's value from x to y:
-  $({ pokemonValue: 0, pokemonIvValue: 0, pokemonTotalIvValue: 0, gymsValue: 0, raidsValue: 0, legendaryRaidsValue: 0, neutralValue: 0, mysticValue: 0, valorValue: 0, instinctValue: 0, pokestopsValue: 0, luredValue: 0, questsValue: 0 }).animate({ pokemonValue: obj.active_pokemon, pokemonIvValue: obj.iv_pokemon, pokemonTotalIvValue: obj.total_iv_pokemon, gymsValue: obj.gyms, raidsValue: obj.raids, legendaryRaidsValue: obj.legendaryRaids, neutralValue: obj.neutral, mysticValue: obj.mystic, valorValue: obj.valor, instinctValue: obj.instinct, pokestopsValue: obj.pokestops, luredValue: obj.lured, questsValue: obj.quests }, {
+  $({ pokemonValue: 0, pokemonIvValue: 0, pokemonTotalIvValue: 0, gymsValue: 0, raidsValue: 0, normalRaidsValue: 0, legendaryRaidsValue: 0, eggsValue:0, normalEggsValue:0, legendaryEggsValue:0, neutralValue: 0, mysticValue: 0, valorValue: 0, instinctValue: 0, pokestopsValue: 0, luredValue: 0, questsValue: 0, spawnpointValue:0, spawnpointVerifiedValue:0, nestValue:0 }).animate({ pokemonValue: obj.active_pokemon, pokemonIvValue: obj.iv_pokemon, pokemonTotalIvValue: obj.total_iv_pokemon, gymsValue: obj.gyms, raidsValue: obj.raids, normalRaidsValue: obj.raids_normal, legendaryRaidsValue: obj.raids_legendary, eggsValue:obj.eggs, normalEggsValue:obj.eggs_normal, legendaryEggsValue:obj.eggs_legendary, neutralValue: obj.neutral, mysticValue: obj.mystic, valorValue: obj.valor, instinctValue: obj.instinct, pokestopsValue: obj.pokestops, luredValue: obj.lured, questsValue: obj.quests , spawnpointValue: obj.spawnpoint, spawnpointVerifiedValue: obj.tth_spawnpoint }, {
     duration: 2000,
     easing: 'swing', // can be anything
     step: function() { // called on every step
@@ -238,7 +320,11 @@ sendRequest({ "type": "dashboard", "token": tmp }, function(data) {
       $('.pokemon-iv-count').text(numberWithCommas(Math.round(this.pokemonIvValue)));
       $('.pokemon-total-iv-count').text(numberWithCommas(Math.round(this.pokemonTotalIvValue)));
       $('.gym-count').text(numberWithCommas(Math.round(this.gymsValue)));
+      $('.eggs-count').text(numberWithCommas(Math.round(this.eggsValue)));
+      $('.normal-eggs-count').text(numberWithCommas(Math.round(this.normalEggsValue)));
+      $('.legendary-eggs-count').text(numberWithCommas(Math.round(this.legendaryEggsValue)));
       $('.raids-count').text(numberWithCommas(Math.round(this.raidsValue)));
+      $('.normal-raids-count').text(numberWithCommas(Math.round(this.normalRaidsValue)));
       $('.legendary-raids-count').text(numberWithCommas(Math.round(this.legendaryRaidsValue)));
       $('.neutral-gyms-count').text(numberWithCommas(Math.round(this.neutralValue)));
       $('.valor-gyms-count').text(numberWithCommas(Math.round(this.valorValue)));
@@ -247,6 +333,8 @@ sendRequest({ "type": "dashboard", "token": tmp }, function(data) {
       $('.pokestop-count').text(numberWithCommas(Math.round(this.pokestopsValue)));
       $('.lured-pokestop-count').text(numberWithCommas(Math.round(this.luredValue)));
       $('.quest-pokestop-count').text(numberWithCommas(Math.round(this.questsValue)));
+      $('.spawnpoint-count').text(numberWithCommas(Math.round(this.spawnpointValue)));
+      $('.tth-spawnpoint-count').text(numberWithCommas(Math.round(this.spawnpointVerifiedValue)));
     }
   });
 });

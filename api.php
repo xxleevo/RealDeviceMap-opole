@@ -79,7 +79,13 @@ if (!(isset($_GET['type']) && !empty($_GET['type']))) {
 			$totalIvScannedPokemonCount = get_table_count("pokemon WHERE iv is not null");
             $gymCount = get_table_count("gym");
             $raidCount = get_raid_stats();
+			$normalRaidCount = get_table_count("gym where raid_level >= 1 AND raid_level < 5 AND raid_end_timestamp > UNIX_TIMESTAMP()");
 			$legendaryRaidCount = get_table_count("gym WHERE raid_level = 5 AND raid_end_timestamp > UNIX_TIMESTAMP()");
+			$eggCount = get_table_count("gym where raid_level >=1 AND raid_level <=5 AND raid_battle_timestamp > UNIX_TIMESTAMP()");
+			$normalEggCount = get_table_count("gym where raid_level >= 1 AND raid_level < 5 AND raid_battle_timestamp > UNIX_TIMESTAMP()");
+			$legendaryEggCount = get_table_count("gym where raid_level = 5 AND raid_battle_timestamp > UNIX_TIMESTAMP()");
+			$spawnpointCount = get_table_count("spawnpoint where id is not null");
+			$spawnpointVerifiedCount = get_table_count("spawnpoint where despawn_sec is not null");
             $obj = [
                 "pokemon" => $pokemonCount,
                 "active_pokemon" => $activePokemonCount,
@@ -87,14 +93,20 @@ if (!(isset($_GET['type']) && !empty($_GET['type']))) {
 				"total_iv_pokemon" => $totalIvScannedPokemonCount,
                 "gyms" => $gymCount,
                 "raids" => $raidCount,
-                "legendaryRaids" => $legendaryRaidCount,
+                "raids_normal" => $normalRaidCount,
+                "raids_legendary" => $legendaryRaidCount,
+                "eggs" => $eggCount,
+                "eggs_normal" => $normalEggCount,
+                "eggs_legendary" => $legendaryEggCount,
                 "neutral" => $gymStats === 0 ? 0 : count($gymStats) < 4 ? 0 : $gymStats[0],
                 "mystic" => $gymStats === 0 ? 0 : $gymStats[1],
                 "valor" => $gymStats === 0 ? 0 : $gymStats[2],
                 "instinct" => $gymStats === 0 ? 0 : $gymStats[3],
                 "pokestops" => $stopStats === 0 ? 0 : $stopStats["total"],
                 "lured" => $stopStats === 0 ? 0 : $stopStats["lured"],
-                "quests" => $stopStats === 0 ? 0 : $stopStats["quests"]
+                "quests" => $stopStats === 0 ? 0 : $stopStats["quests"],
+                "spawnpoint" => $spawnpointCount,
+                "tth_spawnpoint" => $spawnpointVerifiedCount
             ];
             echo json_encode($obj);
             break;
