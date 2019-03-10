@@ -60,14 +60,35 @@ $config = [
       ]
     ],
     "noRaidsAvailableMessage" => "<b>No raids available</b>, come back tomorrow after 5am.", //Notice message that's shown when no raids are available for the day.
-    "pagesAvailable" => [
-      "pokemon" => true, //Shows/hides pokemon page
-      "raids" => true, //Shows/hides raids page
-      "gyms" => true, //Shows/hides gyms page
-      "quests" => true, //Shows/hides quests page
-      "pokestops" => true, //Shows/hides pokestops page
-      "nests" => true, //Shows/hides nests page
-      "stats" => true //Shows/hides stats page
+    "pages" => [
+      "pokemon" => [
+        "enabled" => true, //Shows/hides pokemon page
+        "discordRoles" => 0 //Requires specific discord role, otherwise leave as 0
+      ],
+      "raids" => [
+        "enabled" => true, //Shows/hides raids page
+        "discordRoles" => 0 //Requires specific discord role, otherwise leave as 0
+      ],
+      "gyms" => [
+        "enabled" => true, //Shows/hides gyms page
+        "discordRoles" => 0 //Requires specific discord role, otherwise leave as 0
+      ],
+      "quests" => [
+        "enabled" => true, //Shows/hides gyms page
+        "discordRoles" => 0 //Requires specific discord role, otherwise leave as 0
+      ],
+      "pokestops" => [
+        "enabled" => true, //Shows/hides gyms page
+        "discordRoles" => 0 //Requires specific discord role, otherwise leave as 0
+      ],
+      "nests" => [
+        "enabled" => true, //Shows/hides gyms page
+        "discordRoles" => 0 //Requires specific discord role, otherwise leave as 0
+      ],
+      "stats" => [
+        "enabled" => true, //Shows/hides gyms page
+        "discordRoles" => 0 //Requires specific discord role, otherwise leave as 0
+      ]
     ],
     "navBarIconSize" => [24, 24] //NavBar image icon size e.g. [Width, Height]
   ],

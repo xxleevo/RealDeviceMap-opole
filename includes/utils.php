@@ -172,4 +172,8 @@ function getMinutesLeft($endTimestamp) {
     return $minutes;
 }
 
+function hasDiscordRole($roles, $role) {
+    return in_array($role, $roles) || $role === 0;
+}
+
 ?>

@@ -19,6 +19,7 @@ try {
         }
 
         $valid = false;
+        $roles = [];
         if (!empty($config['discord']['botToken'])) {
             $discord = new DiscordClient(['token' => $config['discord']['botToken']]); // Token is required
             $count = count($config['discord']['guildIds']);
@@ -35,9 +36,8 @@ try {
                     file_put_contents('./discord_users.txt', print_r($user, true), FILE_APPEND);
                 }
 
-                $_SESSION['user'] = $user->{'username'};
-
                 setcookie("LoginCookie", session_id(), time()+$session_lifetime);
+                array_push($roles, $member->roles);
                 $valid = true;
                 break;
             }
@@ -46,9 +46,10 @@ try {
                 die("You do not have the required permissions to access this page.");
             }
         }
-    }
-    if ($valid) {
-	    header("Location: .");
+        if ($valid) {
+            $_SESSION['user'] = ["username" => $user->username, "roles" => $roles];
+	        header("Location: .");
+        }
     }
 } catch (Exception $e) {
     file_put_contents('error.log', $e->getMessage(), FILE_APPEND);
