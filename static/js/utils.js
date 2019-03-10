@@ -56,7 +56,63 @@ function updateCounter(name, value) {
   });
 }
 
-function getNestData() {
+function sprintf(format, args) {
+  return format.replace(/{(\d+)}/g, function(match, number) { 
+    return typeof args[number] != 'undefined'
+      ? args[number]
+      : match
+    ;
+  });
+}
+
+function getNests(p1_lat, p1_lon, p2_lat, p2_lon) {
+  const overpassApiEndpoint = 'https://overpass-api.de/api/interpreter';
+  var queryBbox = [ // s, e, n, w
+    p1_lat,
+    p1_lon,
+    p2_lat,
+    p2_lon,
+  ].join(',');
+  var queryDate = "2018-04-09T01:32:00Z";
+  var queryOptions = [
+    '[out:json]',
+    '[bbox:' + queryBbox + ']',
+    '[date:"' + queryDate + '"]'
+  ].join('');
+  var queryNestWays = [
+    'way["leisure"="park"];',
+    'way["leisure"="recreation_ground"];',
+    'way["landuse"="recreation_ground"];'
+  ].join('');
+  var overPassQuery = queryOptions + ';(' + queryNestWays + ')' + ';out;>;out skel qt;';
+  if (debug !== false) {
+    console.log(overPassQuery);
+  }
+  
+  $.ajax({
+    //beforeSend: function() {
+    //  $("#modalLoading").modal('show');
+    //},
+    url: overpassApiEndpoint,
+    type: 'GET',
+    dataType: 'json',
+    data: {'data': overPassQuery},
+    success: function (result) {
+      if (debug !== false) {
+        console.log(result);
+      }
+      var geoJsonFeatures = osmtogeojson(result);
+      geoJsonFeatures.features.forEach(function(feature) {
+        feature = turf.flip(feature);
+        console.log("Feature:", feature);
+        console.log("Name:", feature.properties.tags.name);
+        console.log("Geometry:", feature.geometry); //feature.geometry.coordinates
+      });
+    },
+    complete: function() {
+      //$("#modalLoading").modal('hide');
+    }
+  });
 }
 
 function buildOsmUri(p1_lat, p1_lon, p2_lat, p2_lon) {
@@ -67,28 +123,9 @@ function buildOsmUri(p1_lat, p1_lon, p2_lat, p2_lon) {
   var osmData = "?data=";
   var osmType = "[out:json]";
   var date = '[date:"' + osmDate + '"];';
-  var osmTags = ""
-  way["landuse"="farmland"];
-  way["landuse"="farmyard"];
-  way["landuse"="grass"];
-  way["landuse"="greenfield"];
-  way["landuse"="meadow"];
-  way["landuse"="orchard"];
-  way["landuse"="recreation_ground"];
-  way["landuse"="vineyard"];
-  way["leisure"="garden"];
-  way["leisure"="golf_course"];
-  way["leisure"="park"];
-  way["leisure"="pitch"];
-  way["leisure"="playground"];
-  way["leisure"="recreation_ground"];
-  way["natural"="grassland"];
-  way["natural"="heath"];
-  way["natural"="scrub"];
-"";
-  var tagData = osmTags.replace("\n", "");
-  var osmTagData = "(" + tagData + ");";
+  var osmTags = 'way["landuse"="farmland"];way["landuse"="farmyard"];way["landuse"="grass"];way["landuse"="greenfield"];way["landuse"="meadow"];way["landuse"="orchard"];way["landuse"="recreation_ground"];way["landuse"="vineyard"];way["leisure"="garden"];way["leisure"="golf_course"];way["leisure"="park"];way["leisure"="pitch"];way["leisure"="playground"];way["leisure"="recreation_ground"];way["natural"="grassland"];way["natural"="heath"];way["natural"="scrub"];';
+  var osmTagData = "(" + osmTags + ");";
   var osmEnd = "out;>;out skel qt;";
-  var uri = osmApi + osmData + JSON.stringify(osmType + osmBbox + date + osmTagData + osmEnd);
+  var uri = osmApi + osmData + (osmType + osmBbox + date + osmTagData + osmEnd);
   return uri;
 }

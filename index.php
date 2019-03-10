@@ -21,11 +21,11 @@ if ($config['discord']['enabled'] && !isset($_SESSION['user'])) {
     <meta name='viewport' content='width=device-width, initial-scale=1.0, shrink-to-fit=no'>
 
     <link rel='shortcut icon' type='image/x-icon' href='./static/favicon.ico' />
-    <link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css' integrity='sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS' crossorigin='anonymous'>
-    <link rel='stylesheet' href='https://unpkg.com/leaflet@1.4.0/dist/leaflet.css' integrity='sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==' crossorigin=''/>
-    <link rel='stylesheet' href='./static/css/font-awesome.min.css'>
-    <link rel='stylesheet' href='./static/css/datepicker.css'>
-    <link rel='stylesheet' href='./static/css/no-more-tables.css'>
+    <link rel='stylesheet' type='text/css' href='https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css' integrity='sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS' crossorigin='anonymous'>
+    <link rel='stylesheet' type='text/css' href='https://unpkg.com/leaflet@1.4.0/dist/leaflet.css' integrity='sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==' crossorigin=''/>
+    <link rel='stylesheet' type='text/css' href='./static/css/font-awesome.min.css'>
+    <link rel='stylesheet' type='text/css' href='./static/css/datepicker.css'>
+    <link rel='stylesheet' type='text/css' href='./static/css/no-more-tables.css'>
     <link rel='stylesheet' type='text/css' href='https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css'>
 
     <script type='text/javascript' src='https://code.jquery.com/jquery-3.3.1.slim.min.js' integrity='sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo' crossorigin='anonymous'></script>

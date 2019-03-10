@@ -150,6 +150,32 @@ LIMIT
     return $data;
 }
 
+function get_top_pokemon($limit = 10) {
+    global $config;
+    $db = new DbConnector($config['db']);
+    $pdo = $db->getConnection();
+    $sql = "
+SELECT pokemon_id,
+  COUNT(pokemon_id) AS count
+FROM
+  " . $config['db']['dbname'] . ".pokemon
+GROUP BY
+  pokemon_id
+ORDER BY
+  2 DESC
+LIMIT
+  $limit;
+";
+    $result = $pdo->query($sql);
+    if ($result->rowCount() > 0) {
+        $data = $result->fetchAll();
+    }
+    unset($pdo);
+    unset($db);
+
+    return $data;
+}
+
 function get_raid_image($pokemonId, $raidLevel) {
     global $config;
     if ($pokemonId > 0) {

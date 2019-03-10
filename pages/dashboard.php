@@ -90,6 +90,14 @@ $html = "
           </div>
         </div>
       </div>
+      <div class='card text-center p-1 m-3'>
+        <div class='card-header bg-dark text-light'><b>Top 10 Pokemon</b></div>
+        <div class='card-body'>
+          <div class='container'>
+            <div id='top-10-pokemon' class='row justify-content-center'></div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -172,7 +180,7 @@ $html = "
 </div>
 
 <div class='card text-center p-1 m-3'>
-  <div class='card-header bg-dark text-light'><b>Spawnpoints Timers</b></div>
+  <div class='card-header bg-dark text-light'><b>Spawnpoint Timers</b></div>
   <div class='card-body'>
     <div class='container'>
       <div class='row'>
@@ -213,10 +221,11 @@ $html = "
 echo $html;
 ?>
 <link rel="stylesheet" href="./static/css/dashboard.css"/>
+<script type="text/javascript" src="./static/js/pokedex.js"></script>
 <script type="text/javascript" src="./static/js/utils.js"></script>
 <script type="text/javascript">
 var tmp = createToken();
-sendRequest({ "type": "dashboard", "token": tmp }, function(data) {
+sendRequest({ "type": "dashboard", "token": tmp }, function(data, success) {
   tmp = null;
   if (<?=$config['core']['showDebug']?>) {
     if (data === 0) {
@@ -244,8 +253,30 @@ sendRequest({ "type": "dashboard", "token": tmp }, function(data) {
   updateCounter(".found-spawnpoint-count", obj.tth_found);
   updateCounter(".missing-spawnpoint-count", obj.tth_missing);
   updateCounter(".percentage-spawnpoint-count", obj.tth_percentage);
-});
 
+  var html = "";
+  var count = 0;
+  var first = true;
+  $.each(obj.top10_pokemon, function(key, value) {
+    var name = pokedex[value.pokemon_id];
+    var pkmnId = ('000' + value.pokemon_id).substr(-3);
+    var pkmnImage = sprintf("<?=$config['urls']['images']['pokemon']?>", pkmnId).replace("%03d", pkmnId).replace("%s", pkmnId);
+    if (count === 5) {
+      html += "<div class='row'>";
+    }
+    html += "<div class='col-md-2" + (first === true ? " col-md-offset-1" : "") + "'>";
+    html += "<img src='" + pkmnImage + "' width='64' height='64'><span class='text-nowrap'>" + name + ": " + numberWithCommas(value.count) + "</span></br>";
+    html += "</div>";
+    if (count === 5) {
+      html += "</div>";
+      count = 0;
+    } else {
+      count++;
+    }
+    first = false;
+  });
+  $('#top-10-pokemon').html(html);
+});
 
 function createToken() {
   //TODO: Secure

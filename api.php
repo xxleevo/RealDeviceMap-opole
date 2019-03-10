@@ -77,6 +77,7 @@ if (!(isset($data['type']) && !empty($data['type']))) {
             $gymCount = get_table_count("gym");
             $raidCount = get_raid_stats();
             $spawnpointStats = get_spawnpoint_stats();
+            $top10Pokemon = get_top_pokemon(10);
             $obj = [
                 "pokemon" => $pokemonStats["total"],
                 "active_pokemon" => $pokemonStats["active"],
@@ -95,6 +96,7 @@ if (!(isset($data['type']) && !empty($data['type']))) {
                 "tth_found" => $spawnpointStats === 0 ? 0 : $spawnpointStats["found"],
                 "tth_missing" => $spawnpointStats === 0 ? 0 : $spawnpointStats["missing"],
                 "tth_percentage" => $spawnpointStats === 0 ? 0 : $spawnpointStats["percentage"],
+                "top10_pokemon" => $top10Pokemon
             ];
             echo json_encode($obj);
             break;
