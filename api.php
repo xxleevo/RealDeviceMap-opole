@@ -116,10 +116,123 @@ if (!(isset($data['type']) && !empty($data['type']))) {
             ];
             echo json_encode($obj);
             break;
+        case "nests":
+            $coords = $data["data"]["coordinates"];
+            $spawnpoints = getSpawnpointNestData($coords);
+            $pokestops = getPokestopNestData($coords);
+            $args = [
+                "spawn_ids" => $spawnpoints, 
+                "pokestop_ids" => $pokestops, 
+                "nest_migration_timestamp" => $data["data"]["spawn_report_limit"], 
+                "spawn_report_limit" => 1000
+            ];
+            try {
+                getSpawnData($args);
+            } catch (Exception $e) {
+                echo json_encode(["error" => true, "message" => $e]);
+            }
+            //echo json_encode($variables);
+            break;
         default:
             die();
     }
     unset($pdo);
     unset($db);
+}
+
+function getSpawnData($args) {
+    global $config;
+    $binds = array();
+
+    if (isset($args["spawn_ids"]) || isset($args["pokestop_ids"])) {
+        if (isset($args["spawn_ids"]) && count($args["spawn_ids"]) > 0) {
+            $spawns_in  = str_repeat('?,', count($args["spawn_ids"]) - 1) . '?';
+            $binds = array_merge($binds, $args["spawn_ids"]);
+        }
+        if (isset($args["pokestop_ids"]) && count($args["pokestop_ids"]) > 0) {
+            $stops_in  = str_repeat('?,', count($args["pokestop_ids"]) - 1) . '?';
+            $binds = array_merge($binds, $args["pokestop_ids"]);
+        }
+      
+        if ($stops_in && $spawns_in) {
+            $points_string = "(pokestop_id IN (" . $stops_in . ") OR spawn_id IN (" . $spawns_in . "))";
+        } else if ($stops_in) {
+            $points_string = "pokestop_id IN (" . $stops_in . ")";
+        } else if ($spawns_in) {
+            $points_string = "spawn_id IN (" . $spawns_in . ")";
+        } else {
+            echo json_encode(array('spawns' => null, 'status'=>'Error: no points!'));
+            return;
+        }
+        if (is_numeric($args["nest_migration_timestamp"]) && (int)$args["nest_migration_timestamp"] == $args["nest_migration_timestamp"]) {
+            $ts = $args["nest_migration_timestamp"];
+        } else {
+            $ts = 0;
+        }
+        $binds[] = $ts;
+
+        if (is_numeric($args["spawn_report_limit"]) && (int)$args["spawn_report_limit"] == $args["spawn_report_limit"] && (int)$args["spawn_report_limit"] != 0) {
+            $limit = " LIMIT " . $args["spawn_report_limit"];
+        } else {
+            $limit = '';
+        }    
+
+        $sql_spawn = "SELECT pokemon_id, COUNT(pokemon_id) as count FROM rdmdb.pokemon WHERE " . $points_string . " AND first_seen_timestamp >= ? GROUP BY pokemon_id ORDER BY count DESC" . $limit;
+        $db = new DbConnector($config['db']);
+        $pdo = $db->getConnection();
+        $stmt = $pdo->prepare($sql_spawn);
+        try {
+            $stmt->execute($binds);
+        } catch (PDOException $e) {
+            echo json_encode(["error" => true, "message" => $e]);
+        } 
+
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        unset($pdo);
+        unset($db);
+        echo json_encode(array('spawns' => $result, 'sql' => $sql_spawn));
+    } else {
+        echo json_encode(["error" => true, "message" => "No data provided."]);
+    }
+}
+
+function getSpawnpointNestData($coords) {
+    global $config;
+    $sql = "
+SELECT
+  id
+FROM
+  " . $config['db']['dbname'] . ".spawnpoint
+WHERE
+  ST_CONTAINS(ST_GEOMFROMTEXT('POLYGON(($coords))'), point(spawnpoint.lat, spawnpoint.lon))
+";
+    return execute($sql);
+}
+
+function getPokestopNestData($coords) {
+    global $config;
+    $sql = "
+SELECT
+  id
+FROM
+  " . $config['db']['dbname'] . ".pokestop
+WHERE
+  ST_CONTAINS(ST_GEOMFROMTEXT('POLYGON(($coords))'), point(pokestop.lat, pokestop.lon))
+";
+    return execute($sql);
+}
+
+function execute($sql, $mode = PDO::FETCH_COLUMN) {
+    global $config;
+    $db = new DbConnector($config['db']);
+    $pdo = $db->getConnection();
+    $result = $pdo->query($sql);
+    if ($result->rowCount() > 0) {
+        $data = $result->fetchAll($mode);
+    }
+    unset($pdo);
+    unset($db);
+
+    return $data;
 }
 ?>

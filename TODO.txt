@@ -6,3 +6,4 @@
 - Add pagination
 - Fix issue with hiding a column and filtering.
 - Finish new raid display markup.
+- Use prepared statements
