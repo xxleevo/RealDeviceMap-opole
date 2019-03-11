@@ -256,24 +256,21 @@ sendRequest({ "type": "dashboard", "token": tmp }, function(data, status) {
 
   var html = "";
   var count = 0;
-  var first = true;
   $.each(obj.top10_pokemon, function(key, value) {
-    var name = pokedex[value.pokemon_id];
-    var pkmnId = ('000' + value.pokemon_id).substr(-3);
-    var pkmnImage = sprintf("<?=$config['urls']['images']['pokemon']?>", pkmnId).replace("%03d", pkmnId).replace("%02d", pkmnId).replace("%s", pkmnId); //TODO: Fix
-    if (count === 5) {
-      html += "<div class='row'>";
+    if (count == 0) {
+      html += "<div class='row justify-content-center'>";
     }
-    html += "<div class='col-md-2" + (first === true ? " col-md-offset-1" : "") + "'>";
+    var name = pokedex[value.pokemon_id];
+    var pkmnImage = sprintf("<?=$config['urls']['images']['pokemon']?>", value.pokemon_id);
+    html += "<div class='col-md-2" + (count == 0 ? " col-md-offset-1" : "") + "'>";
     html += "<img src='" + pkmnImage + "' width='64' height='64'><span class='text-nowrap'>" + name + ": " + numberWithCommas(value.count) + "</span></br>";
     html += "</div>";
-    if (count === 5) {
+    if (count == 4) {
       html += "</div>";
       count = 0;
     } else {
       count++;
     }
-    first = false;
   });
   $('#top-10-pokemon').html(html);
 });

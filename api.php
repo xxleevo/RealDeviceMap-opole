@@ -7,6 +7,12 @@ include './includes/utils.php';
 
 define("DEFAULT_LIMIT", 999999);
 
+$pos = !empty($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], getenv('HTTP_HOST'));
+if ($pos === false) {
+    http_response_code(401);
+    die();
+}
+
 /*
 if (isset($_SERVER['HTTP_ORIGIN'])) {
     $address = 'https://' . $_SERVER['SERVER_NAME'];
@@ -44,8 +50,18 @@ if (!(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER["HTTP_X_REQUESTED_WIT
     die();
 }
 
+$allowedTables = [
+    "pokemon",
+    "gym",
+    "pokestop",
+    "spawnpoint",
+    "pokemon_stats",
+    "raid_stats",
+    "quest_stats"
+];
+
 if (!(isset($data['type']) && !empty($data['type']))) {
-    if (!(isset($data['table']) && !empty($data['table']))) {
+    if (!(isset($data['table']) && !empty($data['table']) && in_array($data['table'], $allowedTables))) {
         die();
     }
 
@@ -100,6 +116,8 @@ if (!(isset($data['type']) && !empty($data['type']))) {
             ];
             echo json_encode($obj);
             break;
+        default:
+            die();
     }
     unset($pdo);
     unset($db);

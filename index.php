@@ -56,37 +56,37 @@ switch($request_method) {
             $page = $_GET["page"];
             switch ($page) {
                 case "pokemon":
-                    if ($config['ui']['pages']['pokemon'] && hasDiscordRole($_SESSION['user']['roles'], $config['ui']['pages']['pokemon']['discordRoles'])) {
+                if ($config['ui']['pages']['pokemon']['enabled'] && (!$config['discord']['enabled'] || ($config['discord']['enabled'] && hasDiscordRole($_SESSION['user']['roles'], $config['ui']['pages']['pokemon']['discordRoles'])))) {
                         include_once('./pages/pokemon.php');
                     }
                     break;
                 case "raids":
-                    if ($config['ui']['pages']['raids'] && hasDiscordRole($_SESSION['user']['roles'], $config['ui']['pages']['raids']['discordRoles'])) {
+                if ($config['ui']['pages']['raids']['enabled'] && (!$config['discord']['enabled'] || ($config['discord']['enabled'] && hasDiscordRole($_SESSION['user']['roles'], $config['ui']['pages']['raids']['discordRoles'])))) {
                         include_once('./pages/raids.php');
                     }
                     break;
                 case "gyms":
-                    if ($config['ui']['pages']['gyms'] && hasDiscordRole($_SESSION['user']['roles'], $config['ui']['pages']['gyms']['discordRoles'])) {
+                if ($config['ui']['pages']['gyms']['enabled'] && (!$config['discord']['enabled'] || ($config['discord']['enabled'] && hasDiscordRole($_SESSION['user']['roles'], $config['ui']['pages']['gyms']['discordRoles'])))) {
                         include_once('./pages/gyms.php');
                     }
                     break;
                 case "quests":
-                    if ($config['ui']['pages']['quests'] && hasDiscordRole($_SESSION['user']['roles'], $config['ui']['pages']['quests']['discordRoles'])) {
+                if ($config['ui']['pages']['quests']['enabled'] && (!$config['discord']['enabled'] || ($config['discord']['enabled'] && hasDiscordRole($_SESSION['user']['roles'], $config['ui']['pages']['quests']['discordRoles'])))) {
                         include_once('./pages/quests.php');
                     }
                     break;
                 case "pokestops":
-                    if ($config['ui']['pages']['pokestops'] && hasDiscordRole($_SESSION['user']['roles'], $config['ui']['pages']['pokestops']['discordRoles'])) {
+                if ($config['ui']['pages']['pokestops']['enabled'] && (!$config['discord']['enabled'] || ($config['discord']['enabled'] && hasDiscordRole($_SESSION['user']['roles'], $config['ui']['pages']['pokestops']['discordRoles'])))) {
                         include_once('./pages/pokestops.php');
                     }
                     break;
                 case "nests":
-                    if ($config['ui']['pages']['nests'] && hasDiscordRole($_SESSION['user']['roles'], $config['ui']['pages']['nests']['discordRoles'])) {
+                if ($config['ui']['pages']['nests']['enabled'] && (!$config['discord']['enabled'] || ($config['discord']['enabled'] && hasDiscordRole($_SESSION['user']['roles'], $config['ui']['pages']['nests']['discordRoles'])))) {
                         include_once('./pages/nests.php');
                     }
                     break;
                 case "stats":
-                    if ($config['ui']['pages']['stats'] && hasDiscordRole($_SESSION['user']['roles'], $config['ui']['pages']['stats']['discordRoles'])) {
+                if ($config['ui']['pages']['stats']['enabled'] && (!$config['discord']['enabled'] || ($config['discord']['enabled'] && hasDiscordRole($_SESSION['user']['roles'], $config['ui']['pages']['stats']['discordRoles'])))) {
                         include_once('./pages/stats.php');
                     }
                     break;          

@@ -17,14 +17,18 @@ $html = "
       </div>
       <input type='text' id='filter-pokemon' class='form-control input-lg' onkeyup='filterPokemon()' placeholder='Search by name..' title='Type in a name'>
     </div>
-  </div>
-<div class='row'>";
+  </div>";
+$count = 0;
+//<div class='row'>";
 foreach ($pokedex as $id => $name) {
     if ($id <= 0 || $id > 807) {
         continue;
     }
+    if ($count == 0) {
+      $html .= "<div class='row justify-content-center'>";
+    }
     $html .= "
-<div id='pkmn-$id' class='col-md-2 text-center'>
+<div id='pkmn-$id' class='col-sm-2" . ($count == 0 ? " col-sd-offset-1" : "") . " text-center'>
   <img src='" . sprintf($config['urls']['images']['pokemon'], $id) . "' width='48' height='48'>
   <div class='card-body'>
     <span class='text-nowrap'><b>$name</b> #$id</span>
@@ -34,9 +38,15 @@ foreach ($pokedex as $id => $name) {
     </p>
   </div>
 </div>";
+    if ($count == 5) {
+      $html .= "</div>";
+      $count = 0;
+    } else {
+      $count++;
+    }
 }
 $html .= "
-</div>
+<!--</div>-->
 </div>";
 echo $html;
 ?>

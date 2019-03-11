@@ -8,8 +8,8 @@ Billboard to show active raids sorted by which raids will end first with raid bo
 * Existing [RealDeviceMap](https://github.com/RealDeviceMap/RealDeviceMap) database.  
 
 ## Install  
-1.) Clone the repository: `git clone https://github.com/versx/RealDeviceMap-RaidBillBoard raids` (change `raids` to your liking)  
-2.) Change directory to the newly cloned folder: `cd raids`  
+1.) Clone the repository: `git clone https://github.com/versx/RealDeviceMap-opole stats` (change `stats` to your liking)  
+2.) Change directory to the newly cloned folder: `cd stats`  
 3.) Install Composer (https://getcomposer.org)  
 4.) In the clone folder install the composer components required for the project: `composer install`  
 5.) Copy the example configuration file: `cp config.example.php config.php`  
@@ -47,5 +47,10 @@ Create or copy your existing geofences to the `geofences` folder. The following 
 3,3  
 ```
 
+## Discord  
+https://discordapp.com/invite/zZ9h9Xa  
+
 ## Thanks  
-- Credit to Zyahko and his creditors for the base.  
+- Credit to [Zyahko](https://github.com/Zyahko) and his creditors for the [base](https://github.com/Zyahko/RealDeviceMap-RaidBillBoard)  
+- Credit to [brusselopole](https://github.com/brusselopole) for ideas from [Worldopole](https://github.com/brusselopole/Worldopole)  
+- Credit to [abakedapplepie](https://github.com/abakedapplepie) for the nests feature from [RealDeviceMap-tools](https://github.com/abakedapplepie/RealDeviceMap-tools)  
