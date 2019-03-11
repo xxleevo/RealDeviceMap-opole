@@ -109,19 +109,19 @@ SELECT
   quest_timestamp, 
   quest_target,
   quest_conditions,
-	quest_rewards,
-	quest_template,
-	quest_pokemon_id,
-	quest_reward_type,
-	quest_item_id,
+  quest_rewards,
+  quest_template,
+  quest_pokemon_id,
+  quest_reward_type,
+  quest_item_id,
   name,
   updated
-FROM 
-  " . $config['db']['dbname'] . ".pokestop
+FROM
+  pokestop
 WHERE
-  quest_type IS NOT NULL && 
-  name IS NOT NULL &&
-  enabled=1;
+  quest_type IS NOT NULL
+  AND name IS NOT NULL
+  AND enabled = 1;
 ";
 
     $result = $pdo->query($sql);

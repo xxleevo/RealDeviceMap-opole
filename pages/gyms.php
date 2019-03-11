@@ -144,11 +144,11 @@ SELECT
   in_battle,
   name,
   updated
-FROM 
-  " . $config['db']['dbname'] . ".gym
+FROM
+  gym
 WHERE
-  name IS NOT NULL &&
-  enabled=1;
+  name IS NOT NULL
+  AND enabled = 1;
 ";
 
     $result = $pdo->query($sql);

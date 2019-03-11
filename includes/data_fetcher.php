@@ -35,13 +35,13 @@ SELECT
   team_id,
   ex_raid_eligible,
   updated
-FROM 
-  " . $config['db']['dbname'] . ".gym
+FROM
+  gym
 WHERE
-  raid_pokemon_id IS NOT NULL && 
-  name IS NOT NULL &&
-  raid_end_timestamp > UNIX_TIMESTAMP()
-ORDER BY 
+  raid_pokemon_id IS NOT NULL
+  AND name IS NOT NULL 
+  AND raid_end_timestamp > UNIX_TIMESTAMP()
+ORDER BY
   raid_end_timestamp;
 ";
 echo $modal;

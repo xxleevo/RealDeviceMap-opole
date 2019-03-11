@@ -69,7 +69,7 @@ if (!(isset($data['type']) && !empty($data['type']))) {
     $limit = filter_var(isset($data["limit"]) ? $data["limit"] : DEFAULT_LIMIT, FILTER_SANITIZE_STRING);
     $db = new DbConnector($config["db"]);
     $pdo = $db->getConnection();
-    $sql = "SELECT * FROM " . $config["db"]["dbname"] . ".$table LIMIT $limit";
+    $sql = "SELECT * FROM $table LIMIT $limit";
     $result = $pdo->query($sql);
     if ($result->rowCount() > 0) {
         $data = $result->fetchAll();
@@ -177,7 +177,18 @@ function getSpawnData($args) {
             $limit = '';
         }    
 
-        $sql_spawn = "SELECT pokemon_id, COUNT(pokemon_id) as count FROM rdmdb.pokemon WHERE " . $points_string . " AND first_seen_timestamp >= ? GROUP BY pokemon_id ORDER BY count DESC" . $limit;
+        $sql_spawn = "
+SELECT
+  pokemon_id,
+  COUNT(pokemon_id) AS count
+FROM
+  pokemon
+WHERE " . $points_string . "
+  AND first_seen_timestamp >= ?
+GROUP BY
+  pokemon_id
+ORDER BY
+  count DESC" . $limit;
         $db = new DbConnector($config['db']);
         $pdo = $db->getConnection();
         $stmt = $pdo->prepare($sql_spawn);
@@ -202,7 +213,7 @@ function getSpawnpointNestData($coords) {
 SELECT
   id
 FROM
-  " . $config['db']['dbname'] . ".spawnpoint
+  spawnpoint
 WHERE
   ST_CONTAINS(ST_GEOMFROMTEXT('POLYGON(($coords))'), point(spawnpoint.lat, spawnpoint.lon))
 ";
@@ -215,7 +226,7 @@ function getPokestopNestData($coords) {
 SELECT
   id
 FROM
-  " . $config['db']['dbname'] . ".pokestop
+  pokestop
 WHERE
   ST_CONTAINS(ST_GEOMFROMTEXT('POLYGON(($coords))'), point(pokestop.lat, pokestop.lon))
 ";

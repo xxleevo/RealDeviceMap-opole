@@ -19,7 +19,7 @@ SELECT
   team_id AS team,
   COUNT(id) AS count
 FROM
-  " . $config['db']['dbname'] . ".gym
+  gym
 GROUP BY
   team
 ";
@@ -43,7 +43,7 @@ SELECT
   SUM(CASE WHEN lure_expire_timestamp > UNIX_TIMESTAMP() THEN 1 ELSE 0 END) lured,
   SUM(CASE WHEN quest_reward_type THEN 1 ELSE 0 END) quests
 FROM
-  " . $config['db']['dbname'] . ".pokestop
+  pokestop
 ";
     $result = $pdo->query($sql);
     if ($result->rowCount() > 0) {
@@ -63,11 +63,11 @@ function get_raid_stats() {
 SELECT
   COUNT(id)
 FROM
-  " . $config['db']['dbname'] . ".gym
+  gym
 WHERE
-  raid_pokemon_id IS NOT NULL && 
-  name IS NOT NULL && 
-  raid_end_timestamp >= UNIX_TIMESTAMP()
+  raid_pokemon_id IS NOT NULL
+  AND name IS NOT NULL
+  AND raid_end_timestamp >= UNIX_TIMESTAMP()
 ";
     $count = $pdo->query($sql)->fetchColumn();
     unset($pdo);
@@ -80,7 +80,7 @@ function get_table_count($table) {
     global $config;
     $db = new DbConnector($config['db']);
     $pdo = $db->getConnection();
-    $sql = "SELECT count(id) FROM " . $config['db']['dbname'] . ".$table";
+    $sql = "SELECT count(id) FROM $table";
     $count = $pdo->query($sql)->fetchColumn();
     unset($pdo);
     unset($db);
@@ -92,7 +92,7 @@ function get_pokestop_objects() {
     global $config;
     $db = new DbConnector($config['db']);
     $pdo = $db->getConnection();
-    $sql = "SELECT id,lat,lon,name FROM ". $config['db']['dbname'] . ".pokestop";
+    $sql = "SELECT id,lat,lon,name FROM pokestop";
     $result = $pdo->query($sql)->fetchAll();
     unset($pdo);
     unset($db);
@@ -106,12 +106,12 @@ function get_spawnpoint_stats() {
     $pdo = $db->getConnection();
     $sql = "
 SELECT 
-  (SELECT COUNT(id) FROM " . $config['db']['dbname'] . ".spawnpoint) AS total, 
-  (SELECT COUNT(id) FROM " . $config['db']['dbname'] . ".spawnpoint WHERE despawn_sec IS NOT NULL) AS found,
-  (SELECT COUNT(id) FROM " . $config['db']['dbname'] . ".spawnpoint WHERE despawn_sec IS NULL) AS missing,
+  (SELECT COUNT(id) FROM spawnpoint) AS total, 
+  (SELECT COUNT(id) FROM spawnpoint WHERE despawn_sec IS NOT NULL) AS found,
+  (SELECT COUNT(id) FROM spawnpoint WHERE despawn_sec IS NULL) AS missing,
   ROUND(((SELECT found)/(SELECT total) * 100 ), 2) AS percentage
 FROM
-" . $config['db']['dbname'] . ".spawnpoint
+  spawnpoint
 LIMIT
   1
 ";
@@ -131,12 +131,12 @@ function get_pokemon_stats() {
     $pdo = $db->getConnection();
     $sql = "
 SELECT
-    (SELECT COUNT(id) FROM " . $config['db']['dbname'] . ".pokemon) AS total,
-    (SELECT COUNT(id) FROM " . $config['db']['dbname'] . ".pokemon WHERE expire_timestamp >= UNIX_TIMESTAMP()) AS active,
-    (SELECT COUNT(id) FROM " . $config['db']['dbname'] . ".pokemon WHERE iv IS NOT NULL) AS iv_total,
-    (SELECT COUNT(id) FROM " . $config['db']['dbname'] . ".pokemon WHERE iv IS NOT NULL && expire_timestamp >= UNIX_TIMESTAMP()) AS iv_active
+  (SELECT COUNT(id) FROM pokemon) AS total,
+  (SELECT COUNT(id) FROM pokemon WHERE expire_timestamp >= UNIX_TIMESTAMP()) AS active,
+  (SELECT COUNT(id) FROM pokemon WHERE iv IS NOT NULL) AS iv_total,
+  (SELECT COUNT(id) FROM pokemon WHERE iv IS NOT NULL && expire_timestamp >= UNIX_TIMESTAMP()) AS iv_active
 FROM
-  " . $config['db']['dbname'] . ".pokemon
+  pokemon
 LIMIT
   1
 ";
@@ -155,10 +155,11 @@ function get_top_pokemon($limit = 10) {
     $db = new DbConnector($config['db']);
     $pdo = $db->getConnection();
     $sql = "
-SELECT pokemon_id,
+SELECT
+  pokemon_id,
   COUNT(pokemon_id) AS count
 FROM
-  " . $config['db']['dbname'] . ".pokemon
+  pokemon
 GROUP BY
   pokemon_id
 ORDER BY
@@ -209,5 +210,4 @@ function hasDiscordRole($userRoles, $requiredRoles) {
     }
     return false;
 }
-
 ?>
