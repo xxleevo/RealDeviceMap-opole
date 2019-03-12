@@ -65,10 +65,11 @@ if ($config['ui']['table']['forceRaidCards'] || (!$config['ui']['table']['forceR
                 ? $config['ui']['unknownValue'] 
                 : $fast_move . "/" . $charge_move);
             $started = $row['raid_battle_timestamp'] < time();
-            $startTime = $started ? "--" : $starts;
-            $endTime = $started ? getMinutesLeft($row['raid_end_timestamp']) . "m" : $ends;
-            $minsLeft = getMinutesLeft($row['updated']);
-            $updated = ($minsLeft === '00' ? "Just now" : $minsLeft . " mins ago");
+            $startTime = $started ? "--" : getMinutesLeft($row['raid_battle_timestamp']) . "m";
+            $endMinutesLeft = getMinutesLeft($row['raid_end_timestamp']);
+            $endTime = $started ? ($endMinutesLeft === '00' ? "Now" : ($endMinutesLeft . "m")) : $ends;
+            $lastUpdated = getMinutesLeft($row['updated']);
+            $updated = ($lastUpdated === '00' ? "Just now" : $lastUpdated . " mins ago");
             echo "<div class='row mobile-row text-nowrap shadow rounded border border-dark' style='background: #cccccc;'>";
                 echo "<div class='col w-25 small-header'><b><div class='mobile'>$pokemon</div>&nbsp;<img src='$raid_image' height=32 width=32 /></b></div>";
                 echo "<div class='col w-25 small-header'><b>Level</b> <div class='mobile'>$level</div></div>";

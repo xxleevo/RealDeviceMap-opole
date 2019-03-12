@@ -111,7 +111,6 @@ if (!(isset($data['type']) && !empty($data['type']))) {
             } catch (Exception $e) {
                 echo json_encode(["error" => true, "message" => $e]);
             }
-            //echo json_encode($variables);
             break;
         default:
             die();

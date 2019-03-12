@@ -52,7 +52,7 @@
 <script type='text/javascript' src="https://cdn.jsdelivr.net/npm/@turf/turf@5/turf.min.js"></script>
 <script type='text/javascript' src="https://cdn.jsdelivr.net/npm/osmtogeojson@3.0.0-beta.3/osmtogeojson.js"></script>
 <script type='text/javascript'>
-$(".close").on('click', function() { //TODO: Temp workaround, fix modal not closing.
+$(document).on('click', '.close', function() { //TODO: Temp workaround, fix modal not closing.
   $('#modalSpawnReport').hide();
   $('#spawnReportTable > tbody').empty();
   $('#spawnReportTableMissed > tbody').empty();
@@ -81,6 +81,7 @@ var migrationDate = new Date("<?=$config['core']['lastNestMigration']?>");
 while (migrationDate < new Date()) {
   migrationDate = addDays(migrationDate, 14);
 }
+var migrationTimestamp = new Date(migrationDate).getTime();
 
 $("#migration").countdown(migrationDate, function(event) {
   var msg = "The next <b>nest migration</b> occurs in<br/> ";
@@ -88,7 +89,7 @@ $("#migration").countdown(migrationDate, function(event) {
   $(this).html(msg + time + "<br/>on<br/><span>" + moment(migrationDate).format("dddd MMMM Do YYYY, h:mm:ss A") + "</span>");
 });
 
-var mymap = L.map('mapid').setView(<?=json_encode($config['core']['startupLocation'])?>, 11);
+var mymap = L.map('mapid').setView(<?=json_encode($config['core']['startupLocation'])?>, <?=$config['core']['startupZoom']?>);
 var tileLayer = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
   maxZoom: 18,
   attribution: '',
@@ -213,7 +214,7 @@ function getSpawnReport(layer) {
   };
   const data = {
     'coordinates': flatCoords,
-    'nest_migration_timestamp': 1553101200,//"<?=$config['core']['lastNestMigration']?>",
+    'nest_migration_timestamp': migrationTimestamp,
     'spawn_report_limit': 10,
   };
 

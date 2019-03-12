@@ -11,6 +11,7 @@ $config = [
     "showErrors" => true, //Show PHP errors
     "showDebug" => true, //Shows debug output
     "startupLocation" => [1,1], //Default location to startup any map objects at
+    "startupZoom" => 11, //Default zoom for any map objects
     "maxPokemon" => 495, //Maximum amount of pokemon for Pokemon stats page
     "lastNestMigration" => "2019-03-07T01:00:00Z" //UTC time of last nest migration
   ],
@@ -95,8 +96,17 @@ $config = [
   "urls" => [
     "map" => "", //RealDeviceMap/PMSF/Other url
     "images" => [
-      "pokemon" => "http://example.com/images/pokemon/%s.png", //Pokemon images url e.g. http://map.example.com/static/img/pokemon/%s.png for RDM backend images
-      "egg" => "http://example.com/images/egg/%s.png" //Egg images url e.g. http://map.example.com/static/img/egg/%s.png for RDM backend images
+      /* Pokemon images url 
+        Supports PHP format strings: %s, %d, etc.
+        e.g. http://map.example.com/static/img/pokemon/%s.png for RDM backend images
+        e.g. http://map.example.com/static/img/pokemon/%03d.png for 3 digit file names
+      */
+      "pokemon" => "http://example.com/images/pokemon/%s.png",
+      /* Raid egg images url
+        Supports PHP format strings: %s, %d, etc.
+        e.g. http://map.example.com/static/img/egg/%s.png for RDM backend images
+      */
+      "egg" => "http://example.com/images/egg/%s.png"
     ],
     "paypal" => "", //PayPal.me link e.g https://paypal.me/username
     "venmo" => "", //Venmo link e.g. https://venmo.com/username

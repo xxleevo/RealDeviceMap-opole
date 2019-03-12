@@ -53,7 +53,7 @@ updateCounter(".pokestop-count", pokestops);
 updateCounter(".lured-pokestop-count", lured);
 updateCounter(".quest-pokestop-count", quests);
 
-var mymap = L.map('mapid').setView(<?=json_encode($config['core']['startupLocation'])?>, 11);
+var mymap = L.map('mapid').setView(<?=json_encode($config['core']['startupLocation'])?>, <?=$config['core']['startupZoom']?>);
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
   maxZoom: 18,
   attribution: '',
