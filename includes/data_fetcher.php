@@ -83,7 +83,6 @@ if ($config['ui']['table']['forceRaidCards'] || (!$config['ui']['table']['forceR
                 echo "<div class='col w-25 small'><b>Ex-Eligible</b> <div class='mobile'>" . ($row['ex_raid_eligible'] ? "Yes" : "No") . "</div></div>";
                 echo "<div class='col w-25 small'><b>Updated</b> <div class='mobile'>$updated</div></div>";
             echo "</div>";
-            echo "<br>";
         }
         echo "</div>";
     } else {
