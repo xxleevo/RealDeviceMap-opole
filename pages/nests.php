@@ -214,7 +214,7 @@ function getSpawnReport(layer) {
   const data = {
     'coordinates': flatCoords,
     'nest_migration_timestamp': 1553101200,//"<?=$config['core']['lastNestMigration']?>",
-    'spawn_report_limit': 1000,
+    'spawn_report_limit': 10,
   };
 
   var tmp = createToken();

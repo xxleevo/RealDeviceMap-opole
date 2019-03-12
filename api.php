@@ -13,26 +13,6 @@ if ($pos === false) {
     die();
 }
 
-/*
-if (isset($_SERVER['HTTP_ORIGIN'])) {
-    $address = 'https://' . $_SERVER['SERVER_NAME'];
-    if (strpos($address, $_SERVER['HTTP_ORIGIN']) !== 0) {
-        die("A");
-    }
-} else {
-    die("B");
-}
-
-if (isset($_SERVER['HTTP_REFERER'])) {
-    $address = 'https://' . $_SERVER['SERVER_NAME'];
-    if (strpos($address, $_SERVER['HTTP_REFERER']) !== 0) {
-        die("C");
-    }
-} else {
-    die("D");
-}
-*/
-
 if (!(isset($_SESSION['token']) && !empty($_SESSION['token']))) {
     die();
 }
@@ -124,7 +104,7 @@ if (!(isset($data['type']) && !empty($data['type']))) {
                 "spawn_ids" => $spawnpoints, 
                 "pokestop_ids" => $pokestops, 
                 "nest_migration_timestamp" => $data["data"]["spawn_report_limit"], 
-                "spawn_report_limit" => 1000
+                "spawn_report_limit" => $data["data"]["spawn_report_limit"]
             ];
             try {
                 getSpawnData($args);

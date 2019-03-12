@@ -1,3 +1,6 @@
+- Zoom config option
+- Filter by mutliple cities
+- Fix egg time countdown
 - Switch tables to DataTables library
 - Add lifetime stats (Tabs: lifetime and by date)
 - Fix auto removal of raid upon ending

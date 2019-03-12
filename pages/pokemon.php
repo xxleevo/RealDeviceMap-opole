@@ -45,9 +45,7 @@ foreach ($pokedex as $id => $name) {
       $count++;
     }
 }
-$html .= "
-<!--</div>-->
-</div>";
+$html .= "</div>";
 echo $html;
 ?>
 

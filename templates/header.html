@@ -13,7 +13,7 @@
       <li class="nav-item <?=(!isset($_GET['page']) ? 'active' : '') ?>">
         <a class="nav-link" href="index.php"><i class="fa fa-fw fa-tachometer" aria-hidden="true"></i>&nbsp;Home <span class="sr-only"></span></a>
       </li>
-      <?php if ($config['ui']['pages']['pokemon']['enabled'] && (!$config['discord']['enabled'] || ($config['discord']['enabled'] && hasDiscordRole($_SESSION['user']['roles'], $config['ui']['pages']['pokemon']['discordRoles'])))) { ?>
+<?php if ($config['ui']['pages']['pokemon']['enabled'] && (!$config['discord']['enabled'] || ($config['discord']['enabled'] && hasDiscordRole($_SESSION['user']['roles'], $config['ui']['pages']['pokemon']['discordRoles'])))) { ?>
       <li class="nav-item <?=$_GET['page']==='pokemon' ? 'active' : '' ?>">
         <a class="nav-link" href="/pokemon"><i class="fa fa-fw fa-dot-circle-o" aria-hidden="true"></i>&nbsp;Pokemon</a>
       </li>
