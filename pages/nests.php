@@ -4,17 +4,18 @@
 <div class='container m-2'>
   <h2 class='page-header text-center'>Neighborhood nests</h2>
   <p id="migration" class='text-center'></p>
+  <button id="nest-refresh" class="btn btn-secondary m-2">Refresh Nests</button>
   <div id='mapid' style='width: 100%; height: 600px;'></div>
-  <div class="modal" id="modalSpawnReport" tabindex="-1" role="dialog">
+  <div class="modal" id="modalSpawnReport" tabindex="-1" role="dialog" aria-labelledby='nestModalLabel' aria-hidden='true'>
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title"></h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <h5 class="modal-title" id="nestModalLabel"></h5>
+          <button type="button" class="close closeModal" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body" style="overflow-y: auto;">
+        <div class="modal-body">
           <table class="table table-sm" id="spawnReportTable">
             <thead>
               <tr>
@@ -31,7 +32,7 @@
           </table>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary closeModal" data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
@@ -52,7 +53,14 @@
 <script type='text/javascript' src="https://cdn.jsdelivr.net/npm/@turf/turf@5/turf.min.js"></script>
 <script type='text/javascript' src="https://cdn.jsdelivr.net/npm/osmtogeojson@3.0.0-beta.3/osmtogeojson.js"></script>
 <script type='text/javascript'>
-$(document).on('click', '.close', function() { //TODO: Temp workaround, fix modal not closing.
+/*
+$('#modalSpawnReport').on('hidden.bs.modal', function(event) {
+  $('#spawnReportTable > tbody').empty();
+  $('#spawnReportTableMissed > tbody').empty();
+  $('#modalSpawnReport .modal-title').text();
+});
+*/
+$(document).on('click', '.closeModal', function() { //TODO: Temp workaround, fix modal not closing.
   $('#modalSpawnReport').hide();
   $('#spawnReportTable > tbody').empty();
   $('#spawnReportTableMissed > tbody').empty();
@@ -68,14 +76,6 @@ $(document).on("click", ".deleteLayer", function() {
       break;
   }
 });
-
-/*
-$('#modalSpawnReport').on('hidden.bs.modal', function(event) {
-  $('#spawnReportTable > tbody').empty();
-  $('#spawnReportTableMissed > tbody').empty();
-  $('#modalSpawnReport .modal-title').text();
-});
-*/
 
 var migrationDate = new Date("<?=$config['core']['lastNestMigration']?>");
 while (migrationDate < new Date()) {
@@ -100,6 +100,10 @@ var nestLayer = new L.LayerGroup();
 nestLayer.addTo(mymap);
 
 getNests();
+
+$("#nest-refresh").on("click", function() {
+  getNests();
+});
 
 $(document).on("click", ".getSpawnReport", function() {
   var id = $(this).attr('data-layer-id');

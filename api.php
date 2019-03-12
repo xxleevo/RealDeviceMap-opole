@@ -217,6 +217,7 @@ function execute($sql, $mode = PDO::FETCH_COLUMN) {
     $db = new DbConnector($config['db']);
     $pdo = $db->getConnection();
     $result = $pdo->query($sql);
+    $data;
     if ($result->rowCount() > 0) {
         $data = $result->fetchAll($mode);
     }

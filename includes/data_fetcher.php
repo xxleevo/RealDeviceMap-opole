@@ -68,6 +68,10 @@ if ($config['ui']['table']['forceRaidCards'] || (!$config['ui']['table']['forceR
             $startTime = $started ? "--" : getMinutesLeft($row['raid_battle_timestamp']) . "m";
             $endMinutesLeft = getMinutesLeft($row['raid_end_timestamp']);
             $endTime = $started ? ($endMinutesLeft === '00' ? "Now" : ($endMinutesLeft . "m")) : $ends;
+            if ($endMinutesLeft === '00') {
+                //Skip raids with under a minute left.
+                continue;
+            }
             $lastUpdated = getMinutesLeft($row['updated']);
             $updated = ($lastUpdated === '00' ? "Just now" : $lastUpdated . " mins ago");
             echo "<div class='row mobile-row text-nowrap shadow rounded border border-dark' style='background: #cccccc;'>";
