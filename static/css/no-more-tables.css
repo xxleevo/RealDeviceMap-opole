@@ -19,3 +19,7 @@
 
 /*html { overflow: auto; overflow-y: auto; overflow-x: auto; }*/
 /*}*/
+
+.row.mobile-row {
+    margin-bottom: 20px;
+}
