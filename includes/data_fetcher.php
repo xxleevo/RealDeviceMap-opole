@@ -7,6 +7,8 @@ require_once './includes/utils.php';
 require_once './static/data/movesets.php';
 require_once './static/data/pokedex.php';
 
+define('MAX_GYM_NAME_LENGTH', 20); //TODO: Add to config
+
 if ($config['discord']['enabled'] && !isset($_SESSION['user']))
     die("No access");
 
@@ -49,7 +51,10 @@ if ($config['ui']['table']['forceRaidCards'] || (!$config['ui']['table']['forceR
     $result = $pdo->query($sql);
     if ($result->rowCount() > 0) {
         echo "<div id='gym-table' class='container' style='display: flex; flex-direction: column;'>";
-        while ($row = $result->fetch()) {	
+        while ($row = $result->fetch()) {
+            $gymName = strlen($row['name']) > MAX_GYM_NAME_LENGTH
+                ? substr($row['name'], 0, min(strlen($row['name']), MAX_GYM_NAME_LENGTH)) . "..." 
+                : $row['name'];
             $starts = date($config['core']['dateTimeFormat'], $row['raid_battle_timestamp']);
             $ends = date($config['core']['dateTimeFormat'], $row['raid_end_timestamp']);
             $geofence = $geofenceSrvc->get_geofence($row['lat'], $row['lon']);
@@ -80,7 +85,7 @@ if ($config['ui']['table']['forceRaidCards'] || (!$config['ui']['table']['forceR
                 echo "<div class='col w-25 small-header'><b>Starts</b><br><div class='mobile'>$startTime</div></div>";
                 echo "<div class='col w-25 small-header'><b>Ends</b><br><div class='mobile'>$endTime</div></div>";
                 echo "<div class='w-100'></div>";
-                echo "<div class='col w-50 small'><b>Gym</b> <a href='$map_link' target='_blank'><div class='mobile'>" . $row['name'] . "</div></a></div>";
+                echo "<div class='col w-50 small'><b>Gym</b> <a href='$map_link' target='_blank'><div class='mobile'>$gymName</div></a></div>";
                 echo "<div class='col w-25 small'><b>City</b> <div class='mobile'>$city</div></small></div>";
                 echo "<div class='col w-25 small'><b>Team</b> <div class='mobile'>" . get_team($row['team_id']) . "</div></div>";
                 echo "<div class='w-100'></div>";
