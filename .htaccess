@@ -1,12 +1,17 @@
+AddDefaultCharset utf-8
+
+Options +FollowSymlinks
+Options -Indexes
+
 RewriteEngine On # Turn on the rewriting engine
 
-RewriteRule ^raids$ index.php?page=raids [NC,L]
-RewriteRule ^gyms$ index.php?page=gyms [NC,L]
-RewriteRule ^quests$ index.php?page=quests [NC,L]
-RewriteRule ^pokestops$ index.php?page=pokestops [NC,L]
-RewriteRule ^pokemon$ index.php?page=pokemon [NC,L]
-RewriteRule ^nests$ index.php?page=nests [NC,L]
-RewriteRule ^stats$ index.php?page=stats [NC,L]
+RewriteRule ^/raids$ index.php?page=raids [QSA,NC,L]
+RewriteRule ^/gyms$ index.php?page=gyms [QSA,NC,L]
+RewriteRule ^/quests$ index.php?page=quests [QSA,NC,L]
+RewriteRule ^/pokestops$ index.php?page=pokestops [QSA,NC,L]
+RewriteRule ^/pokemon$ index.php?page=pokemon [QSA,NC,L]
+RewriteRule ^/nests$ index.php?page=nests [QSA,NC,L]
+RewriteRule ^/stats$ index.php?page=stats [QSA,NC,L]
 
 <IfModule mod_php5.c>
    php_value short_open_tag 1
