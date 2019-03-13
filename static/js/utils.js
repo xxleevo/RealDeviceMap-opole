@@ -22,10 +22,11 @@ function createArrayOfValue(value, count) {
 }
 
 function sendRequest(options, successCallback) {
-  /*
+/*
   $.ajax({
     url: "api.php",
     method: "POST",
+    async: true,
     contentType: "application/x-www-form-urlencoded; charset=utf-8",
     data: options,
     success: successCallback,
@@ -33,8 +34,16 @@ function sendRequest(options, successCallback) {
       console.log(data);
     }
   });
-  */
-  $.post("api.php", JSON.stringify(options), successCallback);
+*/
+  $.post({
+    url: "api.php", 
+    data: JSON.stringify(options), 
+    async: true, 
+    success: successCallback,
+    error: function(data) {
+      console.log("[AJAX ERROR]:", data);
+    }
+  });
 }
 
 function numberWithCommas(x) {

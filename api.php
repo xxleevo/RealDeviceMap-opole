@@ -53,6 +53,7 @@ if (!(isset($data['type']) && !empty($data['type']))) {
     $result = $pdo->query($sql);
     if ($result->rowCount() > 0) {
         $data = $result->fetchAll();
+        ini_set('memory_limit', '-1');
         echo json_encode($data);
     } else {
         if ($config["core"]["showDebug"]) {
@@ -65,8 +66,62 @@ if (!(isset($data['type']) && !empty($data['type']))) {
     $db = new DbConnector($config["db"]);
     $pdo = $db->getConnection();
     $type = filter_var($data["type"], FILTER_SANITIZE_STRING);
+    $stat = filter_var($data["stat"], FILTER_SANITIZE_STRING);
     switch ($type) {
         case "dashboard":
+            switch ($stat) {
+                case "pokemon":
+                    $pokemonStats = get_pokemon_stats();
+                    $obj = [
+                        "pokemon" => $pokemonStats["total"],
+                        "active_pokemon" => $pokemonStats["active"],
+                        "iv_total" => $pokemonStats["iv_total"],
+                        "iv_active" => $pokemonStats["iv_active"],
+                    ];
+                    echo json_encode($obj);
+                    break;
+                case "gyms":
+                    $gymStats = get_gym_stats();
+                    $gymCount = get_table_count("gym");
+                    $raidCount = get_raid_stats();
+                    $obj = [
+                        "gyms" => $gymCount,
+                        "raids" => $raidCount,
+                        "neutral" => $gymStats === 0 ? 0 : count($gymStats) < 4 ? 0 : $gymStats[0],
+                        "mystic" => $gymStats === 0 ? 0 : $gymStats[1],
+                        "valor" => $gymStats === 0 ? 0 : $gymStats[2],
+                        "instinct" => $gymStats === 0 ? 0 : $gymStats[3],
+                    ];
+                    echo json_encode($obj);
+                    break;
+                case "pokestops":
+                    $stopStats = get_pokestop_stats();
+                    $obj = [
+                        "pokestops" => $stopStats === 0 ? 0 : $stopStats["total"],
+                        "lured" => $stopStats === 0 ? 0 : $stopStats["lured"],
+                        "quests" => $stopStats === 0 ? 0 : $stopStats["quests"],
+                    ];
+                    echo json_encode($obj);
+                    break;
+                case "tth":
+                    $spawnpointStats = get_spawnpoint_stats();
+                    $obj = [
+                        "tth_total" => $spawnpointStats === 0 ? 0 : $spawnpointStats["total"],
+                        "tth_found" => $spawnpointStats === 0 ? 0 : $spawnpointStats["found"],
+                        "tth_missing" => $spawnpointStats === 0 ? 0 : $spawnpointStats["missing"],
+                        "tth_percentage" => $spawnpointStats === 0 ? 0 : $spawnpointStats["percentage"],
+                    ];
+                    echo json_encode($obj);
+                    break;
+                case "top":
+                    $top10Pokemon = get_top_pokemon(10);
+                    $obj = [
+                        "top10_pokemon" => $top10Pokemon
+                    ];
+                    echo json_encode($obj);
+                    break;
+            }
+            /*
             $gymStats = get_gym_stats();
             $stopStats = get_pokestop_stats();
             $pokemonStats = get_pokemon_stats();
@@ -95,6 +150,7 @@ if (!(isset($data['type']) && !empty($data['type']))) {
                 "top10_pokemon" => $top10Pokemon
             ];
             echo json_encode($obj);
+            */
             break;
         case "nests":
             $coords = $data["data"]["coordinates"];

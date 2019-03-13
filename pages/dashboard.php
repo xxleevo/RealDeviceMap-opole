@@ -224,6 +224,116 @@ echo $html;
 <script type="text/javascript" src="./static/js/pokedex.js"></script>
 <script type="text/javascript" src="./static/js/utils.js"></script>
 <script type="text/javascript">
+getStats();
+
+function getStats() {
+  var tmp = createToken();
+  sendRequest({ "type": "dashboard", "stat": "pokemon", "token": tmp }, function(data, status) {
+    tmp = null;
+    if (<?=$config['core']['showDebug']?>) {
+      if (data === 0) {
+        console.log("Failed to get data for dashboard.");
+        return;
+      } else {
+        console.log("Dashboard:", data);
+      }
+    }
+    var obj = JSON.parse(data);
+    updateCounter(".pokemon-count", obj.active_pokemon);
+    updateCounter(".total-pokemon-count", obj.pokemon);
+    updateCounter(".total-iv-count", obj.iv_total);
+    updateCounter(".active-iv-count", obj.iv_active);
+  });
+
+  tmp = createToken();
+  sendRequest({ "type": "dashboard", "stat": "gyms", "token": tmp }, function(data, status) {
+    tmp = null;
+    if (<?=$config['core']['showDebug']?>) {
+      if (data === 0) {
+        console.log("Failed to get data for dashboard.");
+        return;
+      } else {
+        console.log("Dashboard:", data);
+      }
+    }
+    var obj = JSON.parse(data);
+    updateCounter(".gym-count", obj.gyms);
+    updateCounter(".raids-count", obj.raids);
+    updateCounter(".neutral-gyms-count", obj.neutral);
+    updateCounter(".valor-gyms-count", obj.valor);
+    updateCounter(".mystic-gyms-count", obj.mystic);
+    updateCounter(".instinct-gyms-count", obj.instinct);
+  });
+
+  tmp = createToken();
+  sendRequest({ "type": "dashboard", "stat": "pokestops", "token": tmp }, function(data, status) {
+    tmp = null;
+    if (<?=$config['core']['showDebug']?>) {
+      if (data === 0) {
+        console.log("Failed to get data for dashboard.");
+        return;
+      } else {
+        console.log("Dashboard:", data);
+      }
+    }
+    var obj = JSON.parse(data);
+    updateCounter(".pokestop-count", obj.pokestops);
+    updateCounter(".lured-pokestop-count", obj.lured);
+    updateCounter(".quest-pokestop-count", obj.quests);
+  });
+
+  tmp = createToken();
+  sendRequest({ "type": "dashboard", "stat": "tth", "token": tmp }, function(data, status) {
+    tmp = null;
+    if (<?=$config['core']['showDebug']?>) {
+      if (data === 0) {
+        console.log("Failed to get data for dashboard.");
+        return;
+      } else {
+        console.log("Dashboard:", data);
+      }
+    }
+    var obj = JSON.parse(data);
+    updateCounter(".spawnpoint-count", obj.tth_total);
+    updateCounter(".found-spawnpoint-count", obj.tth_found);
+    updateCounter(".missing-spawnpoint-count", obj.tth_missing);
+  });
+
+  tmp = createToken();
+  sendRequest({ "type": "dashboard", "stat": "top", "token": tmp }, function(data, status) {
+    tmp = null;
+    if (<?=$config['core']['showDebug']?>) {
+      if (data === 0) {
+        console.log("Failed to get data for dashboard.");
+        return;
+      } else {
+        console.log("Dashboard:", data);
+      }
+    }
+    var obj = JSON.parse(data);
+    var html = "";
+    var count = 0;
+    $.each(obj.top10_pokemon, function(key, value) {
+      if (count == 0) {
+        html += "<div class='row justify-content-center'>";
+      }
+      var name = pokedex[value.pokemon_id];
+      var pkmnImage = sprintf("<?=$config['urls']['images']['pokemon']?>", value.pokemon_id);
+      html += "<div class='col-md-2" + (count == 0 ? " col-md-offset-1" : "") + "'>";
+      html += "<img src='" + pkmnImage + "' width='64' height='64'><span class='text-nowrap'>" + name + ": " + numberWithCommas(value.count) + "</span></br>";
+      html += "</div>";
+      if (count == 4) {
+        html += "</div>";
+        count = 0;
+      } else {
+        count++;
+      }
+    });
+    $('#top-10-pokemon').html(html);
+  });
+}
+
+/*
 var tmp = createToken();
 sendRequest({ "type": "dashboard", "token": tmp }, function(data, status) {
   tmp = null;
@@ -274,6 +384,7 @@ sendRequest({ "type": "dashboard", "token": tmp }, function(data, status) {
   });
   $('#top-10-pokemon').html(html);
 });
+*/
 
 function createToken() {
   //TODO: Secure
