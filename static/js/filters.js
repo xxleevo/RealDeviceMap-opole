@@ -77,8 +77,16 @@ function filter_raids(mobile) {
       teamValue = table.rows[i].cells[8].innerHTML.toUpperCase();
       exValue = table.rows[i].cells[9].innerHTML.toUpperCase();
     }
+
+    var searchTerms = [];
+    if (searchFilter.indexOf(',') > -1)
+    {
+      searchTerms = searchFilter.split(',');
+    }
+
+    var searchWith = (searchTerms.length > 0) ? searchTerms : searchFilter;
     
-    if (pkmnValue.indexOf(searchFilter) > -1 &&
+    if (check_mon(searchWith, pkmnValue) &&
       cityValue.indexOf(cityFilter) > -1 &&
       levelValue.indexOf(levelFilter) > -1 &&
       teamValue.indexOf(teamFilter) > -1 &&
@@ -88,6 +96,22 @@ function filter_raids(mobile) {
     } else {
       tr[i].style.display = "none";
     }     
+  }
+}
+
+function check_mon(searchTerms, name) {
+  if (Array.isArray(searchTerms))
+  {
+    for(var i=0; i < searchTerms.length; i++)
+    {
+      if (name.indexOf(searchTerms[i].trim()) > -1)
+      {
+        return true;
+      }
+    }
+    return false;
+  } else {
+    return (name.indexOf(searchTerms) > -1);
   }
 }
 
