@@ -78,7 +78,7 @@ function filter_raids(mobile) {
       exValue = table.rows[i].cells[9].innerHTML.toUpperCase();
     }
 
-    var searchTerms = (searchFilter.indexOf(',') > -1) ? searchTerms = searchFilter.split(',') : [];
+    var searchTerms = (searchFilter.indexOf(',') > -1) ? searchFilter.split(',') : [];
     var searchWith = (searchTerms.length > 0) ? searchTerms : searchFilter;
     
     if (check_mon(searchWith, pkmnValue) &&
