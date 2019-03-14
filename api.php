@@ -18,6 +18,9 @@ if (!(isset($_SESSION['token']) && !empty($_SESSION['token']))) {
 }
 $rawData = file_get_contents("php://input");
 $data = json_decode($rawData, true);
+if ($data === 0) {
+    die();
+}
 
 $token = filter_var($data["token"], FILTER_SANITIZE_STRING);
 if (!(isset($token) && !empty($token))) {
@@ -63,12 +66,10 @@ if (!(isset($data['type']) && !empty($data['type']))) {
     unset($pdo);
     unset($db);
 } else {
-    $db = new DbConnector($config["db"]);
-    $pdo = $db->getConnection();
     $type = filter_var($data["type"], FILTER_SANITIZE_STRING);
-    $stat = filter_var($data["stat"], FILTER_SANITIZE_STRING);
     switch ($type) {
         case "dashboard":
+            $stat = filter_var($data["stat"], FILTER_SANITIZE_STRING);
             switch ($stat) {
                 case "pokemon":
                     $pokemonStats = get_pokemon_stats();
@@ -159,7 +160,7 @@ if (!(isset($data['type']) && !empty($data['type']))) {
             $args = [
                 "spawn_ids" => $spawnpoints, 
                 "pokestop_ids" => $pokestops, 
-                "nest_migration_timestamp" => $data["data"]["spawn_report_limit"], 
+                "nest_migration_timestamp" => $data["data"]["nest_migration_timestamp"], 
                 "spawn_report_limit" => $data["data"]["spawn_report_limit"]
             ];
             try {
@@ -171,8 +172,6 @@ if (!(isset($data['type']) && !empty($data['type']))) {
         default:
             die();
     }
-    unset($pdo);
-    unset($db);
 }
 
 function getSpawnData($args) {
@@ -219,7 +218,7 @@ SELECT
 FROM
   pokemon
 WHERE " . $points_string . "
-  AND first_seen_timestamp >= ?
+  AND first_seen_timestamp <= ?
 GROUP BY
   pokemon_id
 ORDER BY
