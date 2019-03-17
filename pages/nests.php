@@ -77,11 +77,11 @@ $(document).on("click", ".deleteLayer", function() {
   }
 });
 
+var lastMigrationDate = new Date("<?=$config['core']['lastNestMigration']?>");
 var migrationDate = new Date("<?=$config['core']['lastNestMigration']?>");
 while (migrationDate < new Date()) {
   migrationDate = addDays(migrationDate, 14);
 }
-var migrationTimestamp = new Date(migrationDate).getTime();
 
 $("#migration").countdown(migrationDate, function(event) {
   var msg = "The next <b>nest migration</b> occurs in<br/> ";
@@ -218,8 +218,8 @@ function getSpawnReport(layer) {
   };
   const data = {
     'coordinates': flatCoords,
-    'nest_migration_timestamp': migrationTimestamp,
-    'spawn_report_limit': 10,
+    'nest_migration_timestamp': lastMigrationDate.getTime() / 1000,
+    'spawn_report_limit': 5,
   };
 
   var tmp = createToken();
@@ -246,7 +246,7 @@ function getSpawnReport(layer) {
           if (typeof layer.tags !== 'undefined') {
             $('#modalSpawnReport  .modal-title').text('Spawn Report - ' + layer.tags.name);
           }
-          $('#spawnReportTable > tbody:last-child').append('<tr><td>' + pokedex[item.pokemon_id] + '</td><td>' + item.count + '</td></tr>');
+          $('#spawnReportTable > tbody:last-child').append('<tr><td><img src="' + sprintf("<?=$config['urls']['images']['pokemon']?>", item.pokemon_id) + '" width=32 height=32 />&nbsp;' + pokedex[item.pokemon_id] + '</td><td>' + item.count + '</td></tr>');
         });
       } else {
           if (typeof layer.tags !== 'undefined') {

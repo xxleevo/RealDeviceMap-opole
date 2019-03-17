@@ -297,6 +297,7 @@ function getStats() {
     updateCounter(".spawnpoint-count", obj.tth_total);
     updateCounter(".found-spawnpoint-count", obj.tth_found);
     updateCounter(".missing-spawnpoint-count", obj.tth_missing);
+    updateCounter(".percentage-spawnpoint-count", obj.tth_percentage);
   });
 
   tmp = createToken();
