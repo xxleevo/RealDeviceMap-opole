@@ -25,9 +25,8 @@ $filters = "
       <div class='input-group-prepend'>
         <label class='input-group-text' for='filter-city'>City</label>
       </div>
-      <select id='filter-city' class='custom-select' onchange='filter_quests()'>
-        <option disabled selected>Select</option>
-        <option value='all'>All</option>
+      <select multiple id='filter-city' class='custom-select' onchange='filter_quests()'>
+        <option value='' selected>All</option>
         <option value='" . $config['ui']['unknownValue'] . "'>" . $config['ui']['unknownValue'] . "</option>";
         $count = count($geofenceSrvc->geofences);
         for ($i = 0; $i < $count; $i++) {
@@ -565,7 +564,7 @@ if (get("quests-search-input") !== false) {
   $('#search-input').val(get("quests-search-input"));
 }
 if (get("quests-filter-city") !== false) {
-  $('#filter-city').val(get("quests-filter-city"));
+  $('#filter-city').val(JSON.parse(get("quests-filter-city")));
 }
 if (get("quests-filter-pokestop") !== false) {
   $('#filter-pokestop').val(get("quests-filter-pokestop"));

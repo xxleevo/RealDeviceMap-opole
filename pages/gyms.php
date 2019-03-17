@@ -19,7 +19,7 @@ $filters = "
         <label class='input-group-text' for='filter-team'>Team</label>
       </div>
       <select id='filter-team' class='custom-select' onchange='filter_gyms()'>
-        <option selected>Select</option>
+        <option disabled selected>Select</option>
         <option value='all'>All</option>
         <option value='Neutral'>Neutral</option>
         <option value='Mystic'>Mystic</option>
@@ -57,9 +57,8 @@ $filters = "
       <div class='input-group-prepend'>
         <label class='input-group-text' for='filter-city'>City</label>
       </div>
-      <select id='filter-city' class='custom-select' onchange='filter_gyms()'>
-        <option disabled selected>Select</option>
-        <option value='all'>All</option>
+      <select multiple id='filter-city' class='custom-select' onchange='filter_gyms()'>
+        <option value='' selected>All</option>
         <option value='" . $config['ui']['unknownValue'] . "'>" . $config['ui']['unknownValue'] . "</option>";
         $count = count($geofenceSrvc->geofences);
         for ($i = 0; $i < $count; $i++) {
@@ -242,7 +241,7 @@ if (get("gyms-filter-battle") !== false) {
   $('#filter-battle').val(get("gyms-filter-battle"));
 }
 if (get("gyms-filter-city") !== false) {
-  $('#filter-city').val(get("gyms-filter-city"));
+  $('#filter-city').val(JSON.parse(get("gyms-filter-city")));
 }
 if (get("gyms-filter-gym") !== false) {
   $('#filter-gym').val(get("gyms-filter-gym"));

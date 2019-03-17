@@ -28,9 +28,8 @@ $filters = "
       <div class='input-group-prepend'>
         <label class='input-group-text' for='filter-city'>City</label>
       </div>
-      <select id='filter-city' class='custom-select' onchange='filter_raids($mobile)'>
-        <option disabled selected>Select</option>
-        <option value='all'>All</option>
+      <select multiple id='filter-city' class='custom-select' onchange='filter_raids($mobile)'>
+        <option value='' selected>All</option>
         <option value='" . $config['ui']['unknownValue'] . "'>" . $config['ui']['unknownValue'] . "</option>";
         $count = count($geofenceSrvc->geofences);
         for ($i = 0; $i < $count; $i++) {
@@ -171,7 +170,7 @@ if (get("raids-filter-gym") !== false) {
   $('#filter-gym').val(get("raids-filter-gym"));
 }
 if (get("raids-filter-city") !== false) {
-  $('#filter-city').val(get("raids-filter-city"));
+  $('#filter-city').val(JSON.parse(get("raids-filter-city")));
 }
 if (get("raids-filter-level") !== false) {
   $('#filter-level').val(get("raids-filter-level"));
