@@ -62,6 +62,10 @@ $config = [
     ],
     "noRaidsAvailableMessage" => "<b>No raids available</b>, come back tomorrow after 5am.", //Notice message that's shown when no raids are available for the day.
     "pages" => [
+      "dashboard" => [
+        "enabled" => true, //Shows/hides dashboard page
+        "discordRoles" => [] //Requires specific discord role, otherwise leave empty as []
+      ],
       "pokemon" => [
         "enabled" => true, //Shows/hides pokemon page
         "discordRoles" => [] //Requires specific discord role, otherwise leave empty as []

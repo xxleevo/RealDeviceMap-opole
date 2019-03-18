@@ -10,9 +10,11 @@
   </button>
   <div class="collapse navbar-collapse" id="navbar">
     <ul class="navbar-nav ml-auto">
-      <li class="nav-item <?=(!isset($_GET['page']) ? 'active' : '') ?>">
-        <a class="nav-link" href="index.php"><i class="fa fa-fw fa-tachometer" aria-hidden="true"></i>&nbsp;Home <span class="sr-only"></span></a>
+<?php if ($config['ui']['pages']['dashboard']['enabled'] && (!config['discord']['enabled'] || ($config['discord']['enabled'] && hasDiscordRole($_SESSION['user']['roles'], $config['ui']['pages']['dashboard']['discordRoles'])))) { ?>
+      <li class="nav-item <?=isset($_GET['page']) && $_GET['page']==='dashboard' ? 'active' : '' ?>">
+        <a class="nav-link" href="/dashboard"><i class="fa fa-fw fa-tachometer" aria-hidden="true"></i>&nbsp;Home <span class="sr-only"></span></a>
       </li>
+<?php } ?>
 <?php if ($config['ui']['pages']['pokemon']['enabled'] && (!$config['discord']['enabled'] || ($config['discord']['enabled'] && hasDiscordRole($_SESSION['user']['roles'], $config['ui']['pages']['pokemon']['discordRoles'])))) { ?>
       <li class="nav-item <?=isset($_GET['page']) && $_GET['page']==='pokemon' ? 'active' : '' ?>">
         <a class="nav-link" href="/pokemon"><i class="fa fa-fw fa-dot-circle-o" aria-hidden="true"></i>&nbsp;Pokemon</a>

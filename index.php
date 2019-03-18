@@ -56,6 +56,11 @@ switch($request_method) {
         if(!empty($_GET["page"])) {
             $page = $_GET["page"];
             switch ($page) {
+                case "dashboard":
+                    if ($config['ui']['pages']['dashboard']['enabled'] && (!$config['discord']['enabled'] || ($config['discord']['enabled'] && hasDiscordRole($_SESSION['user']['roles'], $config['ui']['pages']['dashboard']['discordRoles'])))) {
+                        include_once('./pages/dashboard.php');
+                    }                
+                    break;
                 case "pokemon":
                     if ($config['ui']['pages']['pokemon']['enabled'] && (!$config['discord']['enabled'] || ($config['discord']['enabled'] && hasDiscordRole($_SESSION['user']['roles'], $config['ui']['pages']['pokemon']['discordRoles'])))) {
                         include_once('./pages/pokemon.php');
@@ -93,13 +98,97 @@ switch($request_method) {
                     break;          
             }
         } else {
-            include_once('./pages/dashboard.php');
+            $p = getRedirectPage();
+            if ($config['ui']['pages'][$p]['enabled']) {
+                include_once("./pages/$p.php");
+            } else {
+                include_once('./pages/404.php');
+            }
         }
         break;
     default:
         // Invalid Request Method
         header("HTTP/1.0 405 Method Not Allowed");
         break;
+}
+
+function getRedirectPage() {
+    global $config;
+    if ($config['ui']['pages']['dashboard']['enabled'] &&
+        !$config['ui']['pages']['pokemon']['enabled'] &&
+        !$config['ui']['pages']['raids']['enabled'] &&
+        !$config['ui']['pages']['gyms']['enabled'] &&
+        !$config['ui']['pages']['quests']['enabled'] &&
+        !$config['ui']['pages']['pokestops']['enabled'] &&
+        !$config['ui']['pages']['nests']['enabled'] &&
+        !$config['ui']['pages']['stats']['enabled']) {
+            return 'dashboard';
+    } else if (!$config['ui']['pages']['dashboard']['enabled'] &&
+        $config['ui']['pages']['pokemon']['enabled'] &&
+        !$config['ui']['pages']['raids']['enabled'] &&
+        !$config['ui']['pages']['gyms']['enabled'] &&
+        !$config['ui']['pages']['quests']['enabled'] &&
+        !$config['ui']['pages']['pokestops']['enabled'] &&
+        !$config['ui']['pages']['nests']['enabled'] &&
+        !$config['ui']['pages']['stats']['enabled']) {
+        return 'pokemon';
+    } else if (!$config['ui']['pages']['dashboard']['enabled'] &&
+        !$config['ui']['pages']['pokemon']['enabled'] &&
+        $config['ui']['pages']['raids']['enabled'] &&
+        !$config['ui']['pages']['gyms']['enabled'] &&
+        !$config['ui']['pages']['quests']['enabled'] &&
+        !$config['ui']['pages']['pokestops']['enabled'] &&
+        !$config['ui']['pages']['nests']['enabled'] &&
+        !$config['ui']['pages']['stats']['enabled']) {
+        return 'raids';
+    } else if (!$config['ui']['pages']['dashboard']['enabled'] &&
+        !$config['ui']['pages']['pokemon']['enabled'] &&
+        !$config['ui']['pages']['raids']['enabled'] &&
+        $config['ui']['pages']['gyms']['enabled'] &&
+        !$config['ui']['pages']['quests']['enabled'] &&
+        !$config['ui']['pages']['pokestops']['enabled'] &&
+        !$config['ui']['pages']['nests']['enabled'] &&
+        !$config['ui']['pages']['stats']['enabled']) {
+        return 'gyms';
+    } else if (!$config['ui']['pages']['dashboard']['enabled'] &&
+        !$config['ui']['pages']['pokemon']['enabled'] &&
+        !$config['ui']['pages']['raids']['enabled'] &&
+        !$config['ui']['pages']['gyms']['enabled'] &&
+        $config['ui']['pages']['quests']['enabled'] &&
+        !$config['ui']['pages']['pokestops']['enabled'] &&
+        !$config['ui']['pages']['nests']['enabled'] &&
+        !$config['ui']['pages']['stats']['enabled']) {
+        return 'quests';
+    } else if (!$config['ui']['pages']['dashboard']['enabled'] &&
+        !$config['ui']['pages']['pokemon']['enabled'] &&
+        !$config['ui']['pages']['raids']['enabled'] &&
+        !$config['ui']['pages']['gyms']['enabled'] &&
+        !$config['ui']['pages']['quests']['enabled'] &&
+        $config['ui']['pages']['pokestops']['enabled'] &&
+        !$config['ui']['pages']['nests']['enabled'] &&
+        !$config['ui']['pages']['stats']['enabled']) {
+        return 'pokestops';
+    } else if (!$config['ui']['pages']['dashboard']['enabled'] &&
+        !$config['ui']['pages']['pokemon']['enabled'] &&
+        !$config['ui']['pages']['raids']['enabled'] &&
+        !$config['ui']['pages']['gyms']['enabled'] &&
+        !$config['ui']['pages']['quests']['enabled'] &&
+        !$config['ui']['pages']['pokestops']['enabled'] &&
+        $config['ui']['pages']['nests']['enabled'] &&
+        !$config['ui']['pages']['stats']['enabled']) {
+        return 'nests';
+    } else if (!$config['ui']['pages']['dashboard']['enabled'] &&
+        !$config['ui']['pages']['pokemon']['enabled'] &&
+        !$config['ui']['pages']['raids']['enabled'] &&
+        !$config['ui']['pages']['gyms']['enabled'] &&
+        !$config['ui']['pages']['quests']['enabled'] &&
+        !$config['ui']['pages']['pokestops']['enabled'] &&
+        !$config['ui']['pages']['nests']['enabled'] &&
+        !$config['ui']['pages']['stats']['enabled']) {
+        return 'stats';
+    } else {
+        return '404';
+    }
 }
 
 if (!empty($config['google']['analyticsId'])) {
