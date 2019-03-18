@@ -14,6 +14,11 @@ if ($config['discord']['enabled'] && !isset($_SESSION['user']))
 
 $geofenceSrvc = new GeofenceService();
 
+//$raids = get_raids();
+//$count = count($raids);
+
+$mobile = $config['ui']['table']['forceRaidCards'] || (!$config['ui']['table']['forceRaidCards'] && is_mobile());
+
 // Establish connection to database
 $db = new DbConnector($config['db']);
 $pdo = $db->getConnection();
@@ -129,6 +134,8 @@ if ($config['ui']['table']['forceRaidCards'] || (!$config['ui']['table']['forceR
                 $gymName = strlen($row['name']) > MAX_GYM_NAME_LENGTH
                     ? substr($row['name'], 0, min(strlen($row['name']), MAX_GYM_NAME_LENGTH)) . "..." 
                     : $row['name'];
+                $starts = date($config['core']['dateTimeFormat'], $row['raid_battle_timestamp']);
+                $ends = date($config['core']['dateTimeFormat'], $row['raid_end_timestamp']);
                 $geofence = $geofenceSrvc->get_geofence($row['lat'], $row['lon']);
                 $city = ($geofence == null ? $config['ui']['unknownValue'] : $geofence->name);
                 $map_link = sprintf($config['google']['maps'], $row["lat"], $row["lon"]);

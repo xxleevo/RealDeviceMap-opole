@@ -177,6 +177,55 @@ LIMIT
     return $data;
 }
 
+function get_raids() {
+    global $config;
+
+    $sql = "
+SELECT 
+  CONVERT_TZ(FROM_UNIXTIME(raid_battle_timestamp)," . "'" . $config['core']['fromTimeZoneOffset'] . "', '" . $config['core']['timeZone'] . "')
+    AS starts, 
+  CONVERT_TZ(FROM_UNIXTIME(raid_end_timestamp)," . "'" . $config['core']['fromTimeZoneOffset'] . "', '" . $config['core']['timeZone'] . "')
+    AS ends, 
+  id,
+  raid_battle_timestamp,
+  raid_end_timestamp,
+  lat, 
+  lon,
+  raid_level,
+  raid_pokemon_id, 
+  raid_pokemon_move_1,
+  raid_pokemon_move_2,
+  name,
+  team_id,
+  ex_raid_eligible,
+  updated
+FROM
+  gym
+WHERE
+  raid_pokemon_id IS NOT NULL
+  AND name IS NOT NULL 
+  AND raid_end_timestamp > UNIX_TIMESTAMP()
+ORDER BY
+  raid_end_timestamp;
+";
+    return execute($sql, PDO::FETCH_ASSOC);
+}
+
+function execute($sql, $mode = PDO::FETCH_ASSOC) {
+  global $config;
+  $db = new DbConnector($config['db']);
+  $pdo = $db->getConnection();
+  $result = $pdo->query($sql);
+  $data;
+  if ($result->rowCount() > 0) {
+      $data = $result->fetchAll($mode);
+  }
+  unset($pdo);
+  unset($db);
+
+  return $data;
+}
+
 function get_raid_image($pokemonId, $raidLevel) {
     global $config;
     if ($pokemonId > 0) {

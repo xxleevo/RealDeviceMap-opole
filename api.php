@@ -251,7 +251,7 @@ FROM
 WHERE
   ST_CONTAINS(ST_GEOMFROMTEXT('POLYGON(($coords))'), point(spawnpoint.lat, spawnpoint.lon))
 ";
-    return execute($sql);
+    return execute($sql, PDO::FETCH_COLUMN);
 }
 
 function getPokestopNestData($coords) {
@@ -264,21 +264,6 @@ FROM
 WHERE
   ST_CONTAINS(ST_GEOMFROMTEXT('POLYGON(($coords))'), point(pokestop.lat, pokestop.lon))
 ";
-    return execute($sql);
-}
-
-function execute($sql, $mode = PDO::FETCH_COLUMN) {
-    global $config;
-    $db = new DbConnector($config['db']);
-    $pdo = $db->getConnection();
-    $result = $pdo->query($sql);
-    $data;
-    if ($result->rowCount() > 0) {
-        $data = $result->fetchAll($mode);
-    }
-    unset($pdo);
-    unset($db);
-
-    return $data;
+    return execute($sql, PDO::FETCH_COLUMN);
 }
 ?>
