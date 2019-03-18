@@ -14,19 +14,19 @@ $filters = "
   <div class='row'>
     <div class='input-group mb-3'>
       <div class='input-group-prepend'>
-        <label class='input-group-text' for='search-input'>Pokemon</label>
+        <label class='input-group-text' for='search-input' data-i18n='raids_filter_pokemon'>Pokemon</label>
       </div>
       <input type='text' id='search-input' class='form-control input-lg' onkeyup='filter_raids($mobile)' placeholder='Search by name..' title='Type in a name'>
     </div>
     <div class='input-group mb-3'>
       <div class='input-group-prepend'>
-        <label class='input-group-text' for='filter-gym'>Gym</label>
+        <label class='input-group-text' for='filter-gym' data-i18n='raids_filter_gym'>Gym</label>
       </div>
       <input type='text' id='filter-gym' class='form-control input-lg' onkeyup='filter_raids($mobile)' placeholder='Search by gym..' title='Type in a gym name'>
     </div>
     <div class='input-group mb-3'>
       <div class='input-group-prepend'>
-        <label class='input-group-text' for='filter-city'>City</label>
+        <label class='input-group-text' for='filter-city' data-i18n='raids_filter_city'>City</label>
       </div>
       <select multiple id='filter-city' class='custom-select' onchange='filter_raids($mobile)'>
         <option value='' selected>All</option>
@@ -41,7 +41,7 @@ $filters = "
     </div>
     <div class='input-group mb-3'>
       <div class='input-group-prepend'>
-        <label class='input-group-text' for='filter-level'>Raid Level</label>
+        <label class='input-group-text' for='filter-level' data-i18n='raids_filter_level'>Raid Level</label>
       </div>
       <select id='filter-level' class='custom-select' onchange='filter_raids($mobile)'>
         <option disabled selected>Select</option>
@@ -55,7 +55,7 @@ $filters = "
     </div>
     <div class='input-group mb-3'>
       <div class='input-group-prepend'>
-        <label class='input-group-text' for='filter-team'>Team</label>
+        <label class='input-group-text' for='filter-team' data-i18n='raids_filter_team'>Team</label>
       </div>
       <select id='filter-team' class='custom-select' onchange='filter_raids($mobile)'>
         <option disabled selected>Select</option>
@@ -68,7 +68,7 @@ $filters = "
     </div>
     <div class='input-group mb-3'>
       <div class='input-group-prepend'>
-        <label class='input-group-text' for='search-input'>Ex-Eligible</label>
+        <label class='input-group-text' for='search-input' data-i18n='raids_filter_ex'>Ex-Eligible</label>
       </div>
       <select id='filter-ex' class='custom-select' onchange='filter_raids($mobile)'>
         <option disabled selected>Select</option>
@@ -82,7 +82,7 @@ $filters = "
 ";
 
 $modal = "
-<h2 class='page-header text-center'>Ongoing raid battles</h2>
+<h2 class='page-header text-center' data-i18n='raids_title'>Ongoing raid battles</h2>
 <div class='btn-group btn-group-sm float-right'>
   <button type='button' class='btn btn-dark' data-toggle='modal' data-target='#filtersModal'>
     <i class='fa fa-fw fa-filter' aria-hidden='true'></i>
@@ -96,15 +96,15 @@ $modal = "
   <div class='modal-dialog' role='document'>
     <div class='modal-content'>
       <div class='modal-header'>
-        <h5 class='modal-title' id='filtersModalLabel'>Raid Filters</h5>
+        <h5 class='modal-title' id='filtersModalLabel' data-i18n='raids_filters_title'>Raid Filters</h5>
         <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
           <span aria-hidden='true'>&times;</span>
         </button>
       </div>
       <div class='modal-body'>" . $filters . "</div>
       <div class='modal-footer'>
-        <button type='button' class='btn btn-danger' id='reset-filters'>Reset Filters</button>
-        <button type='button' class='btn btn-primary' data-dismiss='modal'>Close</button>
+        <button type='button' class='btn btn-danger' id='reset-filters' data-i18n='raids_modal_reset_filters'>Reset Filters</button>
+        <button type='button' class='btn btn-primary' data-dismiss='modal' data-i18n='raids_modal_close'>Close</button>
       </div>
     </div>
   </div>
@@ -113,26 +113,26 @@ $modal = "
   <div class='modal-dialog' role='document'>
     <div class='modal-content'>
       <div class='modal-header'>
-        <h5 class='modal-title' id='columnsModalLabel'>Show Columns</h5>
+        <h5 class='modal-title' id='columnsModalLabel' data-i18n='raids_modal_show_columns'>Show Columns</h5>
         <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
           <span aria-hidden='true'>&times;</span>
         </button>
       </div>    
       <div class='modal-body'>
         <div id='chkColumns'>
-          <p><input type='checkbox' name='starts'/>&nbsp;Raid Starts</p>
-          <p><input type='checkbox' name='ends'/>&nbsp;Raid Ends</p>
-          <p><input type='checkbox' name='level'/>&nbsp;Raid Level</p>
-          <p><input type='checkbox' name='boss'/>&nbsp;Raid Boss</p>
-          <p><input type='checkbox' name='moveset'/>&nbsp;Moveset</p>
-          <p><input type='checkbox' name='city'/>&nbsp;City</p>
-          <p><input type='checkbox' name='team'/>&nbsp;Team</p>
-          <p><input type='checkbox' name='ex'/>&nbsp;Ex-Eligible</p>
-          <p><input type='checkbox' name='updated'/>&nbsp;Updated</p>
+          <p><input type='checkbox' name='starts' data-i18n='raids_column_raid_starts' />&nbsp;Raid Starts</p>
+          <p><input type='checkbox' name='ends' data-i18n='raids_column_raid_ends' />&nbsp;Raid Ends</p>
+          <p><input type='checkbox' name='level' data-i18n='raids_column_raid_level' />&nbsp;Raid Level</p>
+          <p><input type='checkbox' name='boss' data-i18n='raids_column_raid_boss' />&nbsp;Raid Boss</p>
+          <p><input type='checkbox' name='moveset' data-i18n='raids_column_moveset' />&nbsp;Moveset</p>
+          <p><input type='checkbox' name='city' data-i18n='raids_column_city' />&nbsp;City</p>
+          <p><input type='checkbox' name='team' data-i18n='raids_column_team' />&nbsp;Team</p>
+          <p><input type='checkbox' name='ex' data-i18n='raids_column_ex' />&nbsp;Ex-Eligible</p>
+          <p><input type='checkbox' name='updated' data-i18n='raids_column_updated' />&nbsp;Updated</p>
         </div>
       </div>
       <div class='modal-footer'>
-        <button type='button' class='btn btn-primary' data-dismiss='modal'>Close</button>
+        <button type='button' class='btn btn-primary' data-dismiss='modal' data-i18n='raids_modal_close'>Close</button>
       </div>
     </div>
   </div>
@@ -186,7 +186,7 @@ var isMobile = <?=$config['ui']['table']['forceRaidCards'] || (!$config['ui']['t
 filter_raids(isMobile);
 
 $('#reset-filters').on('click', function() {
-  if (confirm("Are you sure you want to reset the raid filters?")) {
+  if (confirm($.i18n('raids_filters_reset_confirm'))) {
     $('#search-input').val('');
     $('#filter-gym').val('All');
     $('#filter-city').val('All');

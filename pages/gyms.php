@@ -10,17 +10,17 @@ $filters = "
   <div class='row'>
     <div class='input-group mb-3'>
       <div class='input-group-prepend'>
-        <label class='input-group-text' for='filter-gym'>Gym</label>
+        <label class='input-group-text' for='filter-gym' data-i18n='gyms_filter_gym'>Gym</label>
       </div>
       <input type='text' id='filter-gym' class='form-control input-lg' onkeyup='filter_gyms()' placeholder='Search by gym...' title='Type in a gym name'></input>
     </div>
     <div class='input-group mb-3'>
       <div class='input-group-prepend'>
-        <label class='input-group-text' for='filter-team'>Team</label>
+        <label class='input-group-text' for='filter-team' data-i18n='gyms_filter_team'>Team</label>
       </div>
       <select id='filter-team' class='custom-select' onchange='filter_gyms()'>
         <option disabled selected>Select</option>
-        <option value='all'>All</option>
+        <option value=''>All</option>
         <option value='Neutral'>Neutral</option>
         <option value='Mystic'>Mystic</option>
         <option value='Valor'>Valor</option>
@@ -29,22 +29,23 @@ $filters = "
     </div>
     <div class='input-group mb-3'>
       <div class='input-group-prepend'>
-        <label class='input-group-text' for='filter-slots'>Available Slots</label>
+        <label class='input-group-text' for='filter-slots' data-i18n='gyms_filter_available_slots'>Available Slots</label>
       </div>
       <select id='filter-slots' class='custom-select' onchange='filter_gyms()'>
         <option disabled selected>Select</option>
-        <option value='all'>All</option>
+        <option value=''>All</option>
         <option value='full'>Full</option>
         <option value='1'>1</option>
         <option value='2'>2</option>
         <option value='3'>3</option>
         <option value='4'>4</option>
         <option value='5'>5</option>
+        <option value='6'>Empty</option>
       </select>
     </div>
     <div class='input-group mb-3'>
       <div class='input-group-prepend'>
-        <label class='input-group-text' for='filter-battle'>In Battle Status</label>
+        <label class='input-group-text' for='filter-battle' data-i18n='gyms_filter_battle'>In Battle Status</label>
       </div>
       <select id='filter-battle' class='custom-select' onchange='filter_gyms()'>
         <option disabled selected>Select</option>
@@ -55,7 +56,7 @@ $filters = "
     </div>
     <div class='input-group mb-3'>
       <div class='input-group-prepend'>
-        <label class='input-group-text' for='filter-city'>City</label>
+        <label class='input-group-text' for='filter-city' data-i18n='gyms_filter_city'>City</label>
       </div>
       <select multiple id='filter-city' class='custom-select' onchange='filter_gyms()'>
         <option value='' selected>All</option>
@@ -73,7 +74,7 @@ $filters = "
 ";
 
 $modal = "
-<h2 class='page-header text-center'>Team gyms</h2>
+<h2 class='page-header text-center' data-i18n='gyms_title'>Team gyms</h2>
 <div class='btn-group btn-group-sm float-right'>
   <button type='button' class='btn btn-dark' data-toggle='modal' data-target='#filtersModal'>
     <i class='fa fa-fw fa-filter' aria-hidden='true'></i>
@@ -87,15 +88,15 @@ $modal = "
   <div class='modal-dialog' role='document'>
     <div class='modal-content'>
       <div class='modal-header'>
-        <h5 class='modal-title' id='filtersModalLabel'>Gym Filters</h5>
+        <h5 class='modal-title' id='filtersModalLabel' data-i18n='gyms_filters_title'>Gym Filters</h5>
         <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
           <span aria-hidden='true'>&times;</span>
         </button>
       </div>
       <div class='modal-body'>" . $filters . "</div>
       <div class='modal-footer'>
-        <button type='button' class='btn btn-danger' id='reset-filters'>Reset Filters</button>
-        <button type='button' class='btn btn-primary' data-dismiss='modal'>Close</button>
+        <button type='button' class='btn btn-danger' id='reset-filters' data-i18n='gyms_modal_reset_filters'>Reset Filters</button>
+        <button type='button' class='btn btn-primary' data-dismiss='modal' data-i18n='gyms_modal_close'>Close</button>
       </div>
     </div>
   </div>
@@ -104,7 +105,7 @@ $modal = "
   <div class='modal-dialog' role='document'>
     <div class='modal-content'>
       <div class='modal-header'>
-        <h5 class='modal-title' id='columnsModalLabel'>Show Columns</h5>
+        <h5 class='modal-title' id='columnsModalLabel' data-i18n='gyms_modal_show_columns'>Show Columns</h5>
         <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
           <span aria-hidden='true'>&times;</span>
         </button>
@@ -120,7 +121,7 @@ $modal = "
         </div>
       </div>
       <div class='modal-footer'>
-        <button type='button' class='btn btn-primary' data-dismiss='modal'>Close</button>
+        <button type='button' class='btn btn-primary' data-dismiss='modal' data-i18n='gyms_modal_close'>Close</button>
       </div>
     </div>
   </div>
@@ -157,14 +158,14 @@ WHERE
         echo "<table id='gym-table' class='table table-".$config['ui']['table']['style']." ".($config['ui']['table']['striped'] ? 'table-striped' : null)."' border='1'>";
         echo "<thead class='thead-".$config['ui']['table']['headerStyle']."'>";
         echo "<tr class='text-nowrap'>";
-            echo "<th class='remove'>Remove</th>";
-            echo "<th class='gym'>Gym</th>";
-            echo "<th class='team'>Team</th>";
-            echo "<th class='slots'>Available Slots</th>";
-            echo "<th class='guard'>Guarding Pokemon</th>";
-            echo "<th class='battle'>In Battle</th>";
-            echo "<th class='city'>City</th>";
-            echo "<th class='updated'>Updated</th>";
+            echo "<th class='remove' data-i18n='gyms_column_remove'>Remove</th>";
+            echo "<th class='gym' data-i18n='gyms_column_gym'>Gym</th>";
+            echo "<th class='team' data-i18n='gyms_column_team'>Team</th>";
+            echo "<th class='slots' data-i18n='gyms_column_available_slots'>Available Slots</th>";
+            echo "<th class='guard' data-i18n='gyms_column_guarding_pokemon'>Guarding Pokemon</th>";
+            echo "<th class='battle data-i18n='gyms_column_battle'>In Battle</th>";
+            echo "<th class='city' data-i18n='gyms_column_city'>City</th>";
+            echo "<th class='updated' data-i18n='gyms_column_updated'>Updated</th>";
         echo "</tr>";
         echo "</thead>";
         while ($row = $result->fetch()) {	
@@ -250,7 +251,7 @@ if (get("gyms-filter-gym") !== false) {
 filter_gyms();
 
 $('#reset-filters').on('click', function() {
-  if (confirm("Are you sure you want to reset the gym filters?")) {
+  if (confirm($.i18n('gyms_filters_reset_confirm'))) {
     $('#filter-team').val('All');
     $('#filter-slots').val('All');
     $('#filter-battle').val('All');

@@ -2,9 +2,9 @@
 
 <center>
 <div class='container m-2'>
-  <h2 class='page-header text-center'>Neighborhood nests</h2>
+  <h2 class='page-header text-center' data-i18n='nests_title'>Neighborhood nests</h2>
   <p id="migration" class='text-center'></p>
-  <button id="nest-refresh" class="btn btn-secondary m-2">Refresh Nests</button>
+  <button id="nest-refresh" class="btn btn-secondary m-2" data-i18n='nests_button_refresh'>Refresh Nests</button>
   <div id='mapid' style='width: 100%; height: 600px;'></div>
   <div class="modal" id="modalSpawnReport" tabindex="-1" role="dialog" aria-labelledby='nestModalLabel' aria-hidden='true'>
     <div class="modal-dialog" role="document">
@@ -19,8 +19,8 @@
           <table class="table table-sm" id="spawnReportTable">
             <thead>
               <tr>
-                <th scope="col">Pokemon</th>
-                <th scope="col">Count</th>
+                <th scope="col" data-i18n='nests_column_pokemon'>Pokemon</th>
+                <th scope="col" data-i18n='nests_column_count'>Count</th>
               </tr>
             </thead>
             <tbody>
@@ -32,7 +32,7 @@
           </table>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary closeModal" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary closeModal" data-dismiss="modal" data-i18n='nests_modal_close'>Close</button>
         </div>
       </div>
     </div>
@@ -185,7 +185,7 @@ function getNests() {//p1_lat, p1_lon, p2_lat, p2_lon) {
           var output = name +
                   '<div class="input-group mb-3"><button class="btn btn-secondary btn-sm getSpawnReport" data-layer-container="nestLayer" data-layer-id=' +
                   layer._leaflet_id +
-                  ' type="button">Go!</button><div class="input-group-append"><span style="padding: .375rem .75rem;">Get spawn report</span></div></div>';/* +
+                  ' type="button">Go!</button><div class="input-group-append"><span style="padding: .375rem .75rem;" data-i18n="nests_button_spawn_report">Get spawn report</span></div></div>';/* +
                   '<div class="input-group mb-3"><button class="btn btn-secondary btn-sm deleteLayer" data-layer-container="nestLayer" data-layer-id=' +
                   layer._leaflet_id +
                   ' type="button">Go!</button><div class="input-group-append"><span style="padding: .375rem .75rem;">Remove from map</span></div></div>' +
@@ -244,15 +244,15 @@ function getSpawnReport(layer) {
       if (result.spawns !== null) {
         result.spawns.forEach(function(item) {
           if (typeof layer.tags !== 'undefined') {
-            $('#modalSpawnReport  .modal-title').text('Spawn Report - ' + layer.tags.name);
+            $('#modalSpawnReport  .modal-title').text($.i18n('nests_spawn_report') + ' - ' + layer.tags.name);
           }
           $('#spawnReportTable > tbody:last-child').append('<tr><td><img src="' + sprintf("<?=$config['urls']['images']['pokemon']?>", item.pokemon_id) + '" width=32 height=32 />&nbsp;' + pokedex[item.pokemon_id] + '</td><td>' + item.count + '</td></tr>');
         });
       } else {
           if (typeof layer.tags !== 'undefined') {
-          $('#modalSpawnReport  .modal-title').text('Spawn Report - ' + layer.tags.name);
+          $('#modalSpawnReport  .modal-title').text($.i18n('nests_spawn_report') + ' - ' + layer.tags.name);
         }
-        $('#spawnReportTable > tbody:last-child').append('<tr><td colspan="2">No data available.</td></tr>');
+        $('#spawnReportTable > tbody:last-child').append('<tr><td colspan="2" data-i18n="nests_no_data_available"></td></tr>');
       }
     },
     complete: function() {

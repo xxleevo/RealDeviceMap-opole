@@ -1,9 +1,9 @@
 <?php
 $html = "
 <div class='container'>
-<h2 class='page-header text-center'>Overview</h2>
+<h2 class='page-header text-center' data-i18n='dashboard_title'>Overview</h2>
 <div class='card text-center p-1 m-3'>
-  <div class='card-header bg-dark text-light'><b>Overview</b></div>
+  <div class='card-header bg-dark text-light'><b data-id='dashboard_overview_header'>Overview</b></div>
   <div class='card-body'>
     <div class='container'>
       <div class='row'>
@@ -12,7 +12,7 @@ $html = "
             <a class='list-group-item'>
               <h3 class='pull-right'><img src='./static/images/quests/1.png' width='64' height='64'/></h3>
               <h4 class='list-group-item-heading pokemon-count'>0</h4>
-              <p class='list-group-item-text'>Active Pokemon</p>
+              <p class='list-group-item-text' data-i18n='dashboard_overview_active_pokemon'>Active Pokemon</p>
             </a>
           </div>
         </div>
@@ -21,7 +21,7 @@ $html = "
             <a class='list-group-item'>
               <h3 class='pull-right'><img src='./static/images/teams/neutral.png' width='64' height='64'/></h3>
               <h4 class='list-group-item-heading gym-count'>0</h4>
-              <p class='list-group-item-text'>Total Gyms</p>
+              <p class='list-group-item-text' data-i18n='dashboard_overview_gyms'>Total Gyms</p>
             </a>
           </div>
         </div>
@@ -30,7 +30,7 @@ $html = "
             <a class='list-group-item'>
               <h3 class='pull-right'><img src='./static/images/quests/1402.png' width='64' height='64'/></h3>
               <h4 class='list-group-item-heading raids-count'>0</h4>
-              <p class='list-group-item-text'>Active Raids</p>
+              <p class='list-group-item-text' data-i18n='dashboard_overview_active_raids'>Active Raids</p>
             </a>
           </div>
         </div>
@@ -39,7 +39,7 @@ $html = "
             <a class='list-group-item'>
               <h3 class='pull-right'><img src='./static/images/pokestop.png' width='64' height='64'/></h3>
               <h4 class='list-group-item-heading pokestop-count'>0</h4>
-              <p class='list-group-item-text'>Pokestops</p>
+              <p class='list-group-item-text' data-i18n='dashboard_overview_pokestops'>Pokestops</p>
             </a>
           </div>
         </div>
@@ -49,7 +49,7 @@ $html = "
 </div>
 
 <div class='card text-center p-1 m-3'>
-  <div class='card-header bg-dark text-light'><b>Pokemon</b></div>
+  <div class='card-header bg-dark text-light'><b data-i18n='dashboard_pokemon_header'>Pokemon</b></div>
   <div class='card-body'>
     <div class='container'>
       <div class='row'>
@@ -58,7 +58,7 @@ $html = "
             <a class='list-group-item'>
               <h3 class='pull-right'><img src='./static/images/quests/1.png' width='64' height='64'/></h3>
               <h4 class='list-group-item-heading total-pokemon-count'>0</h4>
-              <p class='list-group-item-text'>Total Pokemon</p>
+              <p class='list-group-item-text' data-i18n='dashboard_pokemon_total'>Total Pokemon</p>
             </a>
           </div>
         </div>
@@ -67,7 +67,7 @@ $html = "
             <a class='list-group-item'>
               <h3 class='pull-right'><img src='./static/images/quests/1.png' width='64' height='64'/></h3>
               <h4 class='list-group-item-heading pokemon-count'>0</h4>
-              <p class='list-group-item-text'>Active Pokemon</p>
+              <p class='list-group-item-text' data-i18n='dashboard_pokemon_active'>Active Pokemon</p>
             </a>
           </div>
         </div>
@@ -76,7 +76,7 @@ $html = "
             <a class='list-group-item'>
               <h3 class='pull-right'><img src='./static/images/100.png' width='64' height='64'/></h3>
               <h4 class='list-group-item-heading total-iv-count'>0</h4>
-              <p class='list-group-item-text'>Total IVs</p>
+              <p class='list-group-item-text' data-i18n='dashboard_pokemon_total_iv'>Total IVs</p>
             </a>
           </div>
         </div>
@@ -85,13 +85,13 @@ $html = "
             <a class='list-group-item'>
               <h3 class='pull-right'><img src='./static/images/100.png' width='64' height='64'/></h3>
               <h4 class='list-group-item-heading active-iv-count'>0</h4>
-              <p class='list-group-item-text'>Active with IVs</p>
+              <p class='list-group-item-text' data-i18n='dashboard_pokemon_active_iv'>Active with IVs</p>
             </a>
           </div>
         </div>
       </div>
       <div class='card text-center p-1 m-3'>
-        <div class='card-header bg-dark text-light'><b>Top 10 Pokemon (Lifetime)</b></div>
+        <div class='card-header bg-dark text-light'><b data-i18n='dashboard_pokemon_top10'>Top 10 Pokemon (Lifetime)</b></div>
         <div class='card-body'>
           <div class='container'>
             <div id='top-10-pokemon' class='row justify-content-center'></div>
@@ -103,7 +103,7 @@ $html = "
 </div>
 
 <div class='card text-center p-1 m-3'>
-  <div class='card-header bg-dark text-light'><b>Teams</b></div>
+  <div class='card-header bg-dark text-light'><b data-i18n='dashboard_teams_header'>Teams</b></div>
   <div class='card-body'>
     <div class='container'>
       <div class='row'>
@@ -112,7 +112,7 @@ $html = "
             <a class='list-group-item neutral'>
               <h3 class='pull-right'><img src='./static/images/teams/neutral.png' width='64' height='64'/></h3>
               <h4 class='list-group-item-heading neutral-gyms-count'>0</h4>
-              <p class='list-group-item-text'>Neutral Gyms</p>
+              <p class='list-group-item-text' data-i18n='dashboard_teams_neutral_gyms'>Neutral Gyms</p>
             </a>
           </div>
         </div>
@@ -121,7 +121,7 @@ $html = "
             <a class='list-group-item valor'>
               <h3 class='pull-right'><img src='./static/images/teams/valor.png' width='64' height='64'/></h3>
               <h4 class='list-group-item-heading valor-gyms-count'>0</h4>
-              <p class='list-group-item-text'>Valor Gyms</p>
+              <p class='list-group-item-text' data-i18n='dashboard_teams_valor_gyms'>Valor Gyms</p>
             </a>
           </div>
         </div>
@@ -130,7 +130,7 @@ $html = "
             <a class='list-group-item mystic'>
               <h3 class='pull-right'><img src='./static/images/teams/mystic.png' width='64' height='64'/></h3>
               <h4 class='list-group-item-heading mystic-gyms-count'>0</h4>
-              <p class='list-group-item-text'>Mystic Gyms</p>
+              <p class='list-group-item-text' data-i18n='dashboard_teams_mystic_gyms'>Mystic Gyms</p>
             </a>
           </div>
         </div>
@@ -139,7 +139,7 @@ $html = "
             <a class='list-group-item instinct'>
               <h3 class='pull-right'><img src='./static/images/teams/instinct.png' width='64' height='64'/></h3>
               <h4 class='list-group-item-heading instinct-gyms-count'>0</h4>
-              <p class='list-group-item-text'>Instinct Gyms</p>
+              <p class='list-group-item-text' data-i18n='dashboard_teams_instinct_gyms'>Instinct Gyms</p>
             </a>
           </div>
         </div>
@@ -149,7 +149,7 @@ $html = "
 </div>
 
 <div class='card text-center p-1 m-3'>
-  <div class='card-header bg-dark text-light'><b>Pokestops</b></div>
+  <div class='card-header bg-dark text-light'><b data-i18n='dashboard_pokestops_header'>Pokestops</b></div>
   <div class='card-body'>
     <div class='container'>
       <div class='row'>
@@ -157,21 +157,21 @@ $html = "
           <a class='list-group-item'>
             <h3 class='pull-right'><img src='./static/images/pokestop.png' width='64' height='64'/></h3>
             <h4 class='list-group-item-heading pokestop-count'>0</h4>
-            <p class='list-group-item-text'>Pokestops</p>
+            <p class='list-group-item-text' data-i18n='dashboard_pokestops_total'>Pokestops</p>
           </a>
         </div>
         <div class='col-md-3'>
           <a class='list-group-item'>
             <h3 class='pull-right'><img src='./static/images/lure-module.png' width='64' height='64'/></h3>
             <h4 class='list-group-item-heading lured-pokestop-count'>0</h4>
-            <p class='list-group-item-text'>Lured Pokestops</p>
+            <p class='list-group-item-text' data-i18n='dashboard_pokestops_lured'>Lured Pokestops</p>
           </a>
         </div>
         <div class='col-md-3'>
           <a class='list-group-item'>
             <h3 class='pull-right'><img src='./static/images/quests/0.png' width='64' height='64'/></h3>
             <h4 class='list-group-item-heading quest-pokestop-count'>0</h4>
-            <p class='list-group-item-text'>Field Research</p>
+            <p class='list-group-item-text' data-i18n='dashboard_pokestops_quests'>Field Research</p>
           </a>
         </div>
       </div>
@@ -180,7 +180,7 @@ $html = "
 </div>
 
 <div class='card text-center p-1 m-3'>
-  <div class='card-header bg-dark text-light'><b>Spawnpoint Timers</b></div>
+  <div class='card-header bg-dark text-light'><b data-i18n='dashboard_tth_header'>Spawnpoint Timers</b></div>
   <div class='card-body'>
     <div class='container'>
       <div class='row'>
@@ -188,28 +188,28 @@ $html = "
           <a class='list-group-item'>
             <h3 class='pull-right'><img src='./static/images/spawnpoint.png' width='64' height='64'/></h3>
             <h4 class='list-group-item-heading spawnpoint-count'>0</h4>
-            <p class='list-group-item-text'>Total</p>
+            <p class='list-group-item-text' data-i18n='dashboard_tth_total'>Total</p>
           </a>
         </div>
         <div class='col-md-3'>
           <a class='list-group-item'>
             <h3 class='pull-right'><img src='./static/images/found.png' width='64' height='64'/></h3>
             <h4 class='list-group-item-heading found-spawnpoint-count'>0</h4>
-            <p class='list-group-item-text'>Found</p>
+            <p class='list-group-item-text' data-i18n='dashboard_tth_found'>Found</p>
           </a>
         </div>
         <div class='col-md-3'>
           <a class='list-group-item'>
             <h3 class='pull-right'><img src='./static/images/missing.png' width='64' height='64'/></h3>
             <h4 class='list-group-item-heading missing-spawnpoint-count'>0</h4>
-            <p class='list-group-item-text'>Missing</p>
+            <p class='list-group-item-text' data-i18n='dashboard_tth_missing'>Missing</p>
           </a>
         </div>
         <div class='col-md-3'>
           <a class='list-group-item'>
             <h3 class='pull-right'><img src='./static/images/percentage.png' width='64' height='64'/></h3>
             <h4 class='list-group-item-heading percentage-spawnpoint-count'>0%</h4>
-            <p class='list-group-item-text'>Percentage</p>
+            <p class='list-group-item-text' data-i18n='dashboard_tth_percentage'>Percentage</p>
           </a>
         </div>
       </div>

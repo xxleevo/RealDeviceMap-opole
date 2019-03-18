@@ -3,11 +3,11 @@ require_once './config.php';
 include_once './static/data/pokedex.php';
 
 $html = "
-<h2 class='page-header text-center'>Statistics</h2>
+<h2 class='page-header text-center' data-i18n='stats_title'>Statistics</h2>
 <ul class='nav nav-pills mb-3 justify-content-center' role='tablist'>
-  <li class='nav-item'><a class='nav-link active' role='tab' aria-controls='pokemon' aria-selected='true' data-toggle='pill' href='#pokemon'>Pokemon</a></li>
-  <li class='nav-item'><a class='nav-link' role='tab' aria-controls='raids' aria-selected='false' data-toggle='pill' href='#raids'>Raids</a></li>
-  <li class='nav-item'><a class='nav-link' role='tab' aria-controls='quests' aria-selected='false' data-toggle='pill' href='#quests'>Quests</a></li>
+  <li class='nav-item'><a class='nav-link active' role='tab' aria-controls='pokemon' aria-selected='true' data-toggle='pill' href='#pokemon' data-i18n='stats_tab_pokemon'>Pokemon</a></li>
+  <li class='nav-item'><a class='nav-link' role='tab' aria-controls='raids' aria-selected='false' data-toggle='pill' href='#raids' data-i18n='stats_tab_raids'>Raids</a></li>
+  <li class='nav-item'><a class='nav-link' role='tab' aria-controls='quests' aria-selected='false' data-toggle='pill' href='#quests' data-i18n='stats_tab_quests'>Quests</a></li>
 </ul>
 
 <div class='container'>
@@ -17,11 +17,11 @@ $html = "
         <div class='row'>
           <div class='input-group mb-3'>
             <div class='input-group-prepend'>
-              <label class='input-group-text' for='filter-date'>Date</label>
+              <label class='input-group-text' for='filter-date' data-i18n='stats_filter_date'>Date</label>
             </div>
             <input id='filter-date' type='text' class='form-control' data-toggle='datepicker'>
             <div class='input-group-prepend'>
-              <label class='input-group-text' for='filter-pokemon'>Pokemon</label>
+              <label class='input-group-text' for='filter-pokemon' data-i18n='stats_filter_pokemon'>Pokemon</label>
             </div>
             <select id='filter-pokemon' class='custom-select'>
               <option disabled selected>Select</option>
@@ -44,14 +44,14 @@ $html = "
         <div class='row'>
           <div class='input-group mb-3'>
             <div class='input-group-prepend'>
-              <label class='input-group-text' for='filter-raid-date'>Date</label>
+              <label class='input-group-text' for='filter-raid-date' data-i18n='stats_filter_date'>Date</label>
             </div>
             <input id='filter-raid-date' type='text' class='form-control' data-toggle='datepicker'>
             <div class='input-group-prepend'>
-              <label class='input-group-text' for='filter-raid-type'>Filter By</label>
+              <label class='input-group-text' for='filter-raid-type' data-i18n='stats_filter_by'>Filter By</label>
             </div>
-            <label class='radio-inline'><input type='radio' class='btn' name='filter-raid-type' value='0' checked>Pokemon</label>
-            <label class='radio-inline'><input type='radio' class='btn' name='filter-raid-type' value='1'>Level</label>
+            <label class='radio-inline'><input type='radio' class='btn' name='filter-raid-type' value='0' data-i18n='stats_filter_by_pokemon' checked>Pokemon</label>
+            <label class='radio-inline'><input type='radio' class='btn' name='filter-raid-type' value='1' data-i18n='stats_filter_by_level'>Level</label>
           </div>
         </div>
       </div>

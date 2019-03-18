@@ -41,6 +41,7 @@ $config = [
   ],
   "ui" => [
     "title" => "RDM-opole", //Website title
+    "locale" => "en", //Set the language (e.g. `en` for English)
     "unknownValue" => "Unknown",
     "table" => [
       "style" => "light", //light/dark

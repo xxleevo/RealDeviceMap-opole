@@ -48,6 +48,9 @@ function filter_raids(mobile) {
   }
 
   var table = document.getElementById("gym-table");
+  if (table == null) {
+    return;
+  }
   var tr = mobile ? table.getElementsByClassName("mobile-row") : table.getElementsByTagName("tr");
   for (var i = 0; i < tr.length; i++) {
     if (!mobile && i == 0)

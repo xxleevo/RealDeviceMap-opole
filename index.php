@@ -15,7 +15,7 @@ if ($config['discord']['enabled'] && !isset($_SESSION['user'])) {
 ?>
 
 <!doctype html>
-<html lang='en'>
+<html lang='<?=$config['ui']['locale']?>'>
   <head>
     <meta charset='utf-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0, shrink-to-fit=no'>
@@ -36,6 +36,9 @@ if ($config['discord']['enabled'] && !isset($_SESSION['user'])) {
     <script type='text/javascript' src='https://unpkg.com/leaflet@1.4.0/dist/leaflet.js' integrity='sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg==' crossorigin=''></script>
     <script type='text/javascript' charset='utf8' src='https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js'></script>
     <script type='text/javascript' src='./static/js/filters.js'></script>
+    <!--<script type='text/javascript' src='./static/js/i18n.min.js'></script>-->
+    <script type='text/javascript' src='https://thottingal.in/projects/js/jquery.i18n/src/jquery.i18n.js'></script>
+    <script type='text/javascript' src='https://thottingal.in/projects/js/jquery.i18n/src/jquery.i18n.messagestore.js'></script>
     <script type='text/javascript' src='./static/js/jquery.countdown.min.js'></script>
     <script type='text/javascript' src='./static/js/moment.js'></script>
     <script type='text/javascript' src='./static/js/table.sorter.js'></script>
@@ -99,10 +102,16 @@ switch($request_method) {
             }
         } else {
             $p = getRedirectPage();
-            if ($config['ui']['pages'][$p]['enabled']) {
-                include_once("./pages/$p.php");
+            if (array_key_exists($p, $config['ui']['pages'])) {
+                if ($config['ui']['pages'][$p]['enabled']) {//TODO: Check discord perms
+                    include_once("./pages/$p.php");
+                }
             } else {
-                include_once('./pages/404.php');
+                if ($config['ui']['pages']['dashboard']['enabled'] && (!$config['discord']['enabled'] || ($config['discord']['enabled'] && hasDiscordRole($_SESSION['user']['roles'], $config['ui']['pages']['dashboard']['discordRoles'])))) {
+                    include_once('./pages/dashboard.php');
+                } else {
+                    include_once('./pages/404.php');
+                }
             }
         }
         break;
@@ -112,6 +121,7 @@ switch($request_method) {
         break;
 }
 
+//TODO: Better impl
 function getRedirectPage() {
     global $config;
     if ($config['ui']['pages']['dashboard']['enabled'] &&
@@ -221,3 +231,25 @@ if ($config['core']['showFooter']) {
 
   </body>
 </html>
+<script>
+$.i18n().load({
+  <?=$config['ui']['locale']?>: './static/locale/<?=$config['ui']['locale']?>.json'
+}).done(function() {
+  $('body').i18n();
+  console.log("Done!");
+});
+
+/*
+$.getJSON('./static/locale/<?=$config['ui']['locale']?>.json', { _: new Date() }, function(data) {
+  i18n.translator.add(data);
+  $('#hHome').text(i18n('nav_home'));
+  $('#hPokemon').text(i18n('nav_pokemon'));
+  $('#hRaids').text(i18n('nav_raids'));
+  $('#hGyms').text(i18n('nav_gyms'));
+  $('#hQuests').text(i18n('nav_quests'));
+  $('#hPokestops').text(i18n('nav_pokestops'));
+  $('#hNests').text(i18n('nav_nests'));
+  $('#hStats').text(i18n('nav_stats'));
+});
+*/
+</script>

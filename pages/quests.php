@@ -11,19 +11,19 @@ $filters = "
   <div class='row'>
     <div class='input-group mb-3'>
       <div class='input-group-prepend'>
-        <label class='input-group-text' for='search-input'>Reward</label>
+        <label class='input-group-text' for='search-input' data-i18n='quests_filter_reward'>Reward</label>
       </div>
       <input type='text' id='search-input' class='form-control input-lg' onkeyup='filter_quests()' placeholder='Search by name..' title='Type in a name'>
     </div>
     <div class='input-group mb-3'>
       <div class='input-group-prepend'>
-        <label class='input-group-text' for='filter-pokestop'>Pokestop</label>
+        <label class='input-group-text' for='filter-pokestop' data-i18n='quests_filter_pokestop'>Pokestop</label>
       </div>
       <input type='text' id='filter-pokestop' class='form-control input-lg' onkeyup='filter_quests()' placeholder='Search by pokestop..' title='Type in a pokestop name'>
     </div>
     <div class='input-group mb-3'>
       <div class='input-group-prepend'>
-        <label class='input-group-text' for='filter-city'>City</label>
+        <label class='input-group-text' for='filter-city' data-i18n='quests_filter_city'>City</label>
       </div>
       <select multiple id='filter-city' class='custom-select' onchange='filter_quests()'>
         <option value='' selected>All</option>
@@ -41,7 +41,7 @@ $filters = "
 ";
 
 $modal = "
-<h2 class='page-header text-center'>Field research quests</h2>
+<h2 class='page-header text-center' data-i18n='quests_title'>Field research quests</h2>
 <div class='btn-group btn-group-sm float-right'>
   <button type='button' class='btn btn-dark' data-toggle='modal' data-target='#filtersModal'>
     <i class='fa fa-fw fa-filter' aria-hidden='true'></i>
@@ -55,15 +55,15 @@ $modal = "
   <div class='modal-dialog' role='document'>
     <div class='modal-content'>
       <div class='modal-header'>
-        <h5 class='modal-title' id='filtersModalLabel'>Quest Filters</h5>
+        <h5 class='modal-title' id='filtersModalLabel' data-i18n='quests_filters_title'>Quest Filters</h5>
         <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
           <span aria-hidden='true'>&times;</span>
         </button>
       </div>
       <div class='modal-body'>" . $filters . "</div>
       <div class='modal-footer'>
-        <button type='button' class='btn btn-danger' id='reset-filters'>Reset Filters</button>
-        <button type='button' class='btn btn-primary' data-dismiss='modal'>Close</button>
+        <button type='button' class='btn btn-danger' id='reset-filters' data-i18n='quests_modal_reset_filters'>Reset Filters</button>
+        <button type='button' class='btn btn-primary' data-dismiss='modal' data-i18n='quests_modal_close'>Close</button>
       </div>
     </div>
   </div>
@@ -72,22 +72,22 @@ $modal = "
   <div class='modal-dialog' role='document'>
     <div class='modal-content'>
       <div class='modal-header'>
-        <h5 class='modal-title' id='columnsModalLabel'>Show Columns</h5>
+        <h5 class='modal-title' id='columnsModalLabel' data-i18n='quests_modal_show_columns'>Show Columns</h5>
         <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
           <span aria-hidden='true'>&times;</span>
         </button>
       </div>    
       <div class='modal-body'>
         <div id='chkColumns'>
-          <p><input type='checkbox' name='reward'/>&nbsp;Reward</p>
-          <p><input type='checkbox' name='quest'/>&nbsp;Quest</p>
-          <p><input type='checkbox' name='condition'/>&nbsp;Condition</p>
-          <p><input type='checkbox' name='city'/>&nbsp;City</p>
-          <p><input type='checkbox' name='updated'/>&nbsp;Updated</p>
+          <p><input type='checkbox' name='reward' data-i18n='quests_column_reward'/>&nbsp;Reward</p>
+          <p><input type='checkbox' name='quest' data-i18n='quests_column_quest' />&nbsp;Quest</p>
+          <p><input type='checkbox' name='condition' data-i18n='quests_column_condition' />&nbsp;Condition</p>
+          <p><input type='checkbox' name='city' data-i18n='quests_column_city' />&nbsp;City</p>
+          <p><input type='checkbox' name='updated' data-i18n='quests_column_updated' />&nbsp;Updated</p>
         </div>
       </div>
       <div class='modal-footer'>
-        <button type='button' class='btn btn-primary' data-dismiss='modal'>Close</button>
+        <button type='button' class='btn btn-primary' data-dismiss='modal' data-i18n='quests_modal_close'>Close</button>
       </div>
     </div>
   </div>
@@ -130,13 +130,13 @@ WHERE
         echo "<table id='quest-table' class='table table-".$config['ui']['table']['style']." ".($config['ui']['table']['striped'] ? 'table-striped' : null)."' border='1'>";
         echo "<thead class='thead-".$config['ui']['table']['headerStyle']."'>";
         echo "<tr class='text-nowrap'>";
-            echo "<th class='remove'>Remove</th>";
-            echo "<th class='reward'>Reward</th>";
-            echo "<th class='quest'>Quest</th>";
-            echo "<th class='condition'>Condition(s)</th>";
-            echo "<th class='city'>City</th>";
-            echo "<th class='pokestop'>Pokestop</th>";
-            echo "<th class='updated'>Updated</th>";
+            echo "<th class='remove' data-i18n='quests_column_remove'>Remove</th>";
+            echo "<th class='reward' data-i18n='quests_column_reward'>Reward</th>";
+            echo "<th class='quest' data-i18n='quests_column_quest'>Quest</th>";
+            echo "<th class='condition' data-i18n='quests_column_condition'>Condition(s)</th>";
+            echo "<th class='city' data-i18n='quests_column_city'>City</th>";
+            echo "<th class='pokestop' data-i18n='quests_column_pokestop'>Pokestop</th>";
+            echo "<th class='updated' data-i18n='quests_column_updated'>Updated</th>";
         echo "</tr>";
         echo "</thead>";
         while ($row = $result->fetch()) {	
@@ -167,7 +167,7 @@ WHERE
         // Free result set
         unset($result);
     } else {
-        echo "<p>No field research quests available.</p>";
+        echo "<p data-i18n='quests_none_available'>No field research quests available.</p>";
     }
 } catch (PDOException $e) {
     die("ERROR: Could not able to execute $sql. " . $e->getMessage());
@@ -573,7 +573,7 @@ if (get("quests-filter-pokestop") !== false) {
 filter_quests();
 
 $('#reset-filters').on('click', function() {
-  if (confirm("Are you sure you want to reset the quest filters?")) {
+  if (confirm($.i18n('quests_filters_reset_confirm'))) {
     $('#search-input').val('');
     $('#filter-city').val('All');
     $('#filter-pokestop').val('');

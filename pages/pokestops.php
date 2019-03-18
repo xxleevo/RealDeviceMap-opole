@@ -5,27 +5,27 @@ include_once './includes/utils.php';
 
 $html = "
 <div class='container'>
-  <h2 class='page-header text-center'>Pokestops</h2>
+  <h2 class='page-header text-center' data-i18n='pokestops_title'>Pokestops</h2>
   <div class='row justify-content-center'>
     <div class='col-md-3'>
       <a class='list-group-item'>
         <h3 class='pull-right'><img src='./static/images/pokestop.png' width='64' height='64'/></h3>
         <h4 class='list-group-item-heading pokestop-count'>0</h4>
-        <p class='list-group-item-text'>Pokestops</p>
+        <p class='list-group-item-text' data-i18n='pokestops_total'>Pokestops</p>
       </a>
     </div>
     <div class='col-md-3'>
       <a class='list-group-item'>
         <h3 class='pull-right'><img src='./static/images/lure-module.png' width='64' height='64'/></h3>
         <h4 class='list-group-item-heading lured-pokestop-count'>0</h4>
-        <p class='list-group-item-text'>Lured Pokestops</p>
+        <p class='list-group-item-text' data-i18n='pokestops_lured'>Lured Pokestops</p>
       </a>
     </div>
     <div class='col-md-3'>
       <a class='list-group-item'>
         <h3 class='pull-right'><img src='./static/images/quests/0.png' width='64' height='64'/></h3>
         <h4 class='list-group-item-heading quest-pokestop-count'>0</h4>
-        <p class='list-group-item-text'>Field Research</p>
+        <p class='list-group-item-text' data-i18n='pokestops_quests'>Field Research</p>
       </a>
     </div>
   </div>

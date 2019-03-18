@@ -1,8 +1,6 @@
-- Filter by mutliple cities
 - Fix egg time countdown
 - Add raid_is_exclusive column
 - Show nest icon queried on map
-- Smaller ajax calls for dashboard stats
 - Fix refresh raids page
 - Switch tables to DataTables library
 - Add lifetime stats (Tabs: lifetime and by date)
