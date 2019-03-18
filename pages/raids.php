@@ -7,7 +7,7 @@ require_once './static/data/pokedex.php';
 require_once './static/data/movesets.php';
 
 $geofenceSrvc = new GeofenceService();
-$mobile = $config['ui']['table']['forceRaidCards'] || (!$config['ui']['table']['forceRaidCards'] && is_mobile());
+$mobile = ($config['ui']['table']['forceRaidCards'] || (!$config['ui']['table']['forceRaidCards'] && is_mobile())) !== false ? '1' : '0';
 
 $filters = "
 <div class='container'>
@@ -29,14 +29,14 @@ $filters = "
         <label class='input-group-text' for='filter-city' data-i18n='raids_filter_city'>City</label>
       </div>
       <select multiple id='filter-city' class='custom-select' onchange='filter_raids($mobile)'>
-        <option value='' selected>All</option>
-        <option value='" . $config['ui']['unknownValue'] . "'>" . $config['ui']['unknownValue'] . "</option>";
+        <option value='' selected>All</option>";
         $count = count($geofenceSrvc->geofences);
         for ($i = 0; $i < $count; $i++) {
             $geofence = $geofenceSrvc->geofences[$i];
             $filters .= "<option value='".$geofence->name."'>".$geofence->name."</option>";
         }
         $filters .= "
+        <option value='" . $config['ui']['unknownValue'] . "'>" . $config['ui']['unknownValue'] . "</option>
       </select>
     </div>
     <div class='input-group mb-3'>
@@ -44,8 +44,7 @@ $filters = "
         <label class='input-group-text' for='filter-level' data-i18n='raids_filter_level'>Raid Level</label>
       </div>
       <select id='filter-level' class='custom-select' onchange='filter_raids($mobile)'>
-        <option disabled selected>Select</option>
-        <option value='all'>All</option>
+        <option value='all' selected>All</option>
         <option value='1'>1</option>
         <option value='2'>2</option>
         <option value='3'>3</option>
@@ -58,8 +57,7 @@ $filters = "
         <label class='input-group-text' for='filter-team' data-i18n='raids_filter_team'>Team</label>
       </div>
       <select id='filter-team' class='custom-select' onchange='filter_raids($mobile)'>
-        <option disabled selected>Select</option>
-        <option value='all'>All</option>
+        <option value='all' selected>All</option>
         <option value='Neutral'>Neutral</option>
         <option value='Mystic'>Mystic</option>
         <option value='Valor'>Valor</option>
@@ -71,8 +69,7 @@ $filters = "
         <label class='input-group-text' for='search-input' data-i18n='raids_filter_ex'>Ex-Eligible</label>
       </div>
       <select id='filter-ex' class='custom-select' onchange='filter_raids($mobile)'>
-        <option disabled selected>Select</option>
-        <option value='all'>All</option>
+        <option value='all' selected>All</option>
         <option value='yes'>Yes</option>
         <option value='no'>No</option>
       </select>
@@ -182,14 +179,15 @@ if (get("raids-filter-ex") !== false) {
   $('#filter-ex').val(get("raids-filter-ex"));
 }
 
-var isMobile = <?=$config['ui']['table']['forceRaidCards'] || (!$config['ui']['table']['forceRaidCards'] && is_mobile())?>;
+
+var isMobile = <?=$mobile?>;
 filter_raids(isMobile);
 
 $('#reset-filters').on('click', function() {
   if (confirm($.i18n('raids_filters_reset_confirm'))) {
     $('#search-input').val('');
-    $('#filter-gym').val('All');
-    $('#filter-city').val('All');
+    $('#filter-gym').val('');
+    $('#filter-city').val('');
     $('#filter-level').val('All');
     $('#filter-team').val('All');
     $('#filter-ex').val('All');

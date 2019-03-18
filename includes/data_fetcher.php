@@ -25,6 +25,7 @@ SELECT
     AS starts, 
   CONVERT_TZ(FROM_UNIXTIME(raid_end_timestamp)," . "'" . $config['core']['fromTimeZoneOffset'] . "', '" . $config['core']['timeZone'] . "')
     AS ends, 
+  id,
   raid_battle_timestamp,
   raid_end_timestamp,
   lat, 
@@ -103,7 +104,7 @@ if ($config['ui']['table']['forceRaidCards'] || (!$config['ui']['table']['forceR
     }
 } else {
     try {
-        echo "<table id='gym-table' class='table table-".$config['ui']['table']['style']." ".($config['ui']['table']['striped'] ? 'table-striped' : null)."' border='1'>";
+        echo "<table id='gym-table' class='table table-hover table-".$config['ui']['table']['style']." ".($config['ui']['table']['striped'] ? 'table-striped' : null)."' border='1'>";
         echo "<thead class='thead-".$config['ui']['table']['headerStyle']."'>";
         echo "<tr class='text-nowrap'>";
             echo "<th>Remove</th>";
@@ -111,19 +112,23 @@ if ($config['ui']['table']['forceRaidCards'] || (!$config['ui']['table']['forceR
             echo "<th class='ends' onclick='sort_table(\"gym-table\",2)' data-i18n='raids_column_raid_ends'>Raid Ends</th>";
             echo "<th class='level' onclick='sort_table(\"gym-table\",3)' data-i18n='raids_column_raid_level'>Raid Level</th>";
             echo "<th class='boss' onclick='sort_table(\"gym-table\",4)' data-i18n='raids_column_raid_boss'>Raid Boss</th>";
-            echo "<th class='moveset' onclick='sort_table(\"gym-table\",5)' data-i18n='raids_column_moveset'>Moveset</th>";
-            echo "<th class='gym' onclick='sort_table(\"gym-table\",6)' data-i18n='raids_column_gym'>Gym</th>";
-            echo "<th class='city' onclick='sort_table(\"gym-table\",7)' data-i18n='raids_column_city'>City</th>";
-            echo "<th class='team' onclick='sort_table(\"gym-table\",8)' data-i18n='raids_column_team'>Team</th>";
-            echo "<th class='ex' onclick='sort_table(\"gym-table\",9)' data-i18n='raids_column_ex'>Ex-Eligible</th>";
-            echo "<th class='updated' onclick='sort_table(\"gym-table\",10)' data-i18n='raids_column_updated'>Updated</th>";
+            //echo "<th class='moveset' onclick='sort_table(\"gym-table\",5)' data-i18n='raids_column_moveset'>Moveset</th>";
+            echo "<th class='gym' onclick='sort_table(\"gym-table\",5)' data-i18n='raids_column_gym'>Gym</th>";
+            echo "<th class='city' onclick='sort_table(\"gym-table\",6)' data-i18n='raids_column_city'>City</th>";
+            echo "<th class='team' onclick='sort_table(\"gym-table\",7)' data-i18n='raids_column_team'>Team</th>";
+            echo "<th class='ex' onclick='sort_table(\"gym-table\",8)' data-i18n='raids_column_ex'>Ex-Eligible</th>";
+            //echo "<th class='updated' onclick='sort_table(\"gym-table\",10)' data-i18n='raids_column_updated'>Updated</th>";
         echo "</tr>";
         echo "</thead>";
         echo "<tbody>";
   
         $result = $pdo->query($sql);
         if ($result->rowCount() > 0) {
-            while ($row = $result->fetch()) {	
+            while ($row = $result->fetch()) {
+                $id = 'x' . str_replace('.', '', $row['id']);
+                $gymName = strlen($row['name']) > MAX_GYM_NAME_LENGTH
+                    ? substr($row['name'], 0, min(strlen($row['name']), MAX_GYM_NAME_LENGTH)) . "..." 
+                    : $row['name'];
                 $geofence = $geofenceSrvc->get_geofence($row['lat'], $row['lon']);
                 $city = ($geofence == null ? $config['ui']['unknownValue'] : $geofence->name);
                 $map_link = sprintf($config['google']['maps'], $row["lat"], $row["lon"]);
@@ -134,18 +139,41 @@ if ($config['ui']['table']['forceRaidCards'] || (!$config['ui']['table']['forceR
                 $fast_move = $quick_moves[$row['raid_pokemon_move_1']];
                 $charge_move = $charge_moves[$row['raid_pokemon_move_2']];
                 $moveset = (($fast_move == $config['ui']['unknownValue'] && $charge_move == $config['ui']['unknownValue']) ? $config['ui']['unknownValue'] : $fast_move . "/" . $charge_move);
-                echo "<tr class='text-nowrap'>";
+                $started = $row['raid_battle_timestamp'] < time();
+                $startTime = $started ? "--" : getMinutesLeft($row['raid_battle_timestamp']) . "m";
+                $endMinutesLeft = getMinutesLeft($row['raid_end_timestamp']);
+                $endTime = $started ? ($endMinutesLeft === '00' ? "Now" : ($endMinutesLeft . "m")) : $ends;
+                if ($endMinutesLeft === '00') {
+                    //Skip raids with under a minute left.
+                    continue;
+                }
+                $lastUpdated = getMinutesLeft($row['updated']);
+                $updated = ($lastUpdated === '00' ? "Just now" : $lastUpdated . " mins ago");
+                echo "<tr class='text-nowrap clickable' data-toggle='collapse' href='#$id' data-target='#$id'>";
                     echo "<td scope='row' class='text-center' data-title='Remove'><a title='Remove' data-toggle='tooltip' class='delete'><i class='fa fa-times'></i></a></td>";
-                    echo "<td data-title='Raid Starts'>" . $row['starts'] . "</td>";
-                    echo "<td data-title='Raid Ends'>" . $row['ends'] . "</td>";
-                    echo "<td class='numeric' data-title='Raid Level'>" . $level . "</td>";
+                    echo "<td data-title='Raid Starts'>$startTime</td>";
+                    echo "<td data-title='Raid Ends'>$endTime</td>";
+                    echo "<td class='numeric' data-title='Raid Level'>$level</td>";
                     echo "<td data-title='Raid Boss'><img src='$raid_image' height=32 width=32 />&nbsp;$pokemon</td>";
-                    echo "<td data-title='Moveset'>$moveset</td>";
-                    echo "<td data-title='Gym'><a href='$map_link' target='_blank'>" . $row['name'] . "</a></td>";
+                    //echo "<td data-title='Moveset'>$moveset</td>";
+                    echo "<td data-title='Gym'><a href='$map_link' target='_blank'>$gymName</a></td>";
                     echo "<td data-title='City'>$city</td>";
                     echo "<td data-title='Team'>" . get_team($row['team_id']) . "</td>";
                     echo "<td data-title='Ex-Eligible'>" . ($row['ex_raid_eligible'] ? "Yes" : "No") . "</td>";
-                    echo "<td data-title='Updated'>" . date($config['core']['dateTimeFormat'], $row['updated']) . "</td>";
+                    //echo "<td data-title='Updated'>" . date($config['core']['dateTimeFormat'], $row['updated']) . "</td>";
+                echo "</tr>";
+                echo "<tr class='hiddenRow'>";
+                    echo "<td colspan='6' class='hiddenRow'>
+                            <div id='$id' class='collapse'>
+                            <table>
+                              <thead></thead>
+                              <tbody>
+                              <tr><td><span><b>Moveset</b>&nbsp;$moveset</span></td></tr>
+                              <tr><td><span><b>Updated</b>&nbsp;$updated</span></td></tr>
+                              </tbody>
+                            </table>
+                            </div>
+                          </td>";
                 echo "</tr>";
             }
 

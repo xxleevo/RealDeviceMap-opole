@@ -23,3 +23,7 @@
 .row.mobile-row {
     margin-bottom: 20px;
 }
+
+.hiddenRow {
+  padding: 0 !important;
+}

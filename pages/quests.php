@@ -26,14 +26,14 @@ $filters = "
         <label class='input-group-text' for='filter-city' data-i18n='quests_filter_city'>City</label>
       </div>
       <select multiple id='filter-city' class='custom-select' onchange='filter_quests()'>
-        <option value='' selected>All</option>
-        <option value='" . $config['ui']['unknownValue'] . "'>" . $config['ui']['unknownValue'] . "</option>";
+        <option value='' selected>All</option>";
         $count = count($geofenceSrvc->geofences);
         for ($i = 0; $i < $count; $i++) {
             $geofence = $geofenceSrvc->geofences[$i];
             $filters .= "<option value='".$geofence->name."'>".$geofence->name."</option>";
         }
         $filters .= "
+        <option value='" . $config['ui']['unknownValue'] . "'>" . $config['ui']['unknownValue'] . "</option>
       </select>
     </div>
   </div>

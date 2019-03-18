@@ -9,6 +9,26 @@ function filter_raids(mobile) {
   var teamFilter = document.getElementById("filter-team").value;
   var exFilter = document.getElementById("filter-ex").value;
 
+  if (levelFilter.toLowerCase().indexOf("all") === 0) {
+    levelFilter = "";
+    console.log("Level filter cleared");
+  }
+
+  if (teamFilter.toLowerCase().indexOf("all") === 0) {
+    teamFilter = "";
+    console.log("Team filter cleared");
+  }
+
+  if (exFilter.toLowerCase().indexOf("all") === 0) {
+    exFilter = "";
+    console.log("Ex filter cleared");
+  }
+
+  if (gymFilter.toLowerCase().indexOf("all") === 0) {
+    gymFilter = "";
+    console.log("Gym filter cleared");
+  }
+
   set("raids-search-input", searchFilter);
   set("raids-filter-gym", gymFilter);
   set("raids-filter-city", JSON.stringify(cityFilter));
@@ -23,39 +43,12 @@ function filter_raids(mobile) {
 
   console.log("Pokemon:", searchFilter, "City:", cityFilter, "Level:", levelFilter, "Team:", teamFilter, "Ex:", exFilter, "Gym:", gymFilter);
 
-  if (levelFilter.toLowerCase().indexOf("all") === 0 ||
-    levelFilter.toLowerCase().indexOf("select") === 0) {
-    levelFilter = "";
-    console.log("Level filter cleared");
-  }
-
-  if (teamFilter.toLowerCase().indexOf("all") === 0 ||
-    teamFilter.toLowerCase().indexOf("select") === 0) {
-    teamFilter = "";
-    console.log("Team filter cleared");
-  }
-
-  if (exFilter.toLowerCase().indexOf("all") === 0 ||
-    exFilter.toLowerCase().indexOf("select") === 0) {
-    exFilter = "";
-    console.log("Ex filter cleared");
-  }
-
-  if (gymFilter.toLowerCase().indexOf("all") === 0 ||
-    gymFilter.toLowerCase().indexOf("select") === 0) {
-    gymFilter = "";
-    console.log("Gym filter cleared");
-  }
-
   var table = document.getElementById("gym-table");
   if (table == null) {
     return;
   }
-  var tr = mobile ? table.getElementsByClassName("mobile-row") : table.getElementsByTagName("tr");
+  var tr = mobile ? table.getElementsByClassName("mobile-row") : table.getElementsByClassName("clickable");
   for (var i = 0; i < tr.length; i++) {
-    if (!mobile && i == 0)
-      continue;
-
     var pkmnValue, cityValue, levelValue, teamValue, exValue, gymValue;
     if (mobile) {
       var cells = tr[i].getElementsByClassName("mobile");
@@ -66,12 +59,12 @@ function filter_raids(mobile) {
       teamValue = cells[6].innerHTML.toUpperCase();
       exValue = cells[8].innerHTML.toUpperCase();
     } else {
-      levelValue = table.rows[i].cells[3].innerHTML;
-      pkmnValue = table.rows[i].cells[4].innerHTML.toUpperCase();
-      gymValue = table.rows[i].cells[6].innerHTML.toUpperCase();
-      cityValue = table.rows[i].cells[7].innerHTML.toUpperCase();
-      teamValue = table.rows[i].cells[8].innerHTML.toUpperCase();
-      exValue = table.rows[i].cells[9].innerHTML.toUpperCase();
+      levelValue = tr[i].cells[3].innerHTML;
+      pkmnValue = tr[i].cells[4].innerHTML.toUpperCase();
+      gymValue = tr[i].cells[5].innerHTML.toUpperCase();
+      cityValue = tr[i].cells[6].innerHTML.toUpperCase();
+      teamValue = tr[i].cells[7].innerHTML.toUpperCase();
+      exValue = tr[i].cells[8].innerHTML.toUpperCase();
     }
 
     var searchTerms = (searchFilter.indexOf(',') > -1) ? searchFilter.split(',') : [];
@@ -93,13 +86,13 @@ function filter_raids(mobile) {
 function in_array(haystack, needle) {
   if (Array.isArray(haystack)) {
     for(var i = 0; i < haystack.length; i++) {
-      if (needle.toLowerCase().indexOf(haystack[i].toLowerCase().trim()) > -1) {
+      if (needle.trim().toLowerCase().indexOf(haystack[i].toLowerCase().trim()) > -1) {
         return true;
       }
     }
     return false;
   }
-  return (needle.indexOf(haystack) > -1);
+  return (needle.trim().indexOf(haystack.trim()) > -1);
 }
 
 function filter_gyms() {
@@ -120,30 +113,6 @@ function filter_gyms() {
   gymFilter = gymFilter.toUpperCase();
 
   console.log("Team:", teamFilter, "Slots:", slotsFilter, "In Battle:", battleFilter, "City:", cityFilter, "Gym:", gymFilter);
-
-  if (teamFilter.toLowerCase().indexOf("all") === 0 ||
-    teamFilter.toLowerCase().indexOf("select") === 0) {
-    teamFilter = "";
-    console.log("Team filter cleared");
-  }
-
-  if (slotsFilter.toLowerCase().indexOf("all") === 0 ||
-    slotsFilter.toLowerCase().indexOf("select") === 0) {
-    slotsFilter = "ALL";
-    console.log("Available slots filter cleared");
-  }
-
-  if (battleFilter.toLowerCase().indexOf("all") === 0 ||
-    battleFilter.toLowerCase().indexOf("select") === 0) {
-    battleFilter = "";
-    console.log("Battle filter cleared");
-  }
-
-  if (gymFilter.toLowerCase().indexOf("all") === 0 ||
-    gymFilter.toLowerCase().indexOf("select") === 0) {
-    gymFilter = "";
-    console.log("Gym filter cleared");
-  }
 
   var table = document.getElementById("gym-table");
   var tr = table.getElementsByTagName("tr");
@@ -180,12 +149,6 @@ function filter_quests() {
   set("quests-filter-pokestop", pokestopFilter);
   searchFilter = searchFilter.toUpperCase();
   pokestopFilter = pokestopFilter.toUpperCase();
-
-  if (pokestopFilter.toLowerCase().indexOf("all") === 0 ||
-    pokestopFilter.toLowerCase().indexOf("select") === 0) {
-    pokestopFilter = "";
-    console.log("Pokestop filter cleared");
-  }
 
   var table = document.getElementById("quest-table");
   var tr = table.getElementsByTagName("tr");

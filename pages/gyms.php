@@ -19,8 +19,7 @@ $filters = "
         <label class='input-group-text' for='filter-team' data-i18n='gyms_filter_team'>Team</label>
       </div>
       <select id='filter-team' class='custom-select' onchange='filter_gyms()'>
-        <option disabled selected>Select</option>
-        <option value=''>All</option>
+        <option value='all' selected>All</option>
         <option value='Neutral'>Neutral</option>
         <option value='Mystic'>Mystic</option>
         <option value='Valor'>Valor</option>
@@ -32,8 +31,7 @@ $filters = "
         <label class='input-group-text' for='filter-slots' data-i18n='gyms_filter_available_slots'>Available Slots</label>
       </div>
       <select id='filter-slots' class='custom-select' onchange='filter_gyms()'>
-        <option disabled selected>Select</option>
-        <option value=''>All</option>
+        <option value='all' selected>All</option>
         <option value='full'>Full</option>
         <option value='1'>1</option>
         <option value='2'>2</option>
@@ -48,8 +46,7 @@ $filters = "
         <label class='input-group-text' for='filter-battle' data-i18n='gyms_filter_battle'>In Battle Status</label>
       </div>
       <select id='filter-battle' class='custom-select' onchange='filter_gyms()'>
-        <option disabled selected>Select</option>
-        <option value='all'>All</option>
+        <option value='all' selected>All</option>
         <option value='Under Attack!'>Yes</option>
         <option value='Safe'>No</option>
       </select>
@@ -59,14 +56,14 @@ $filters = "
         <label class='input-group-text' for='filter-city' data-i18n='gyms_filter_city'>City</label>
       </div>
       <select multiple id='filter-city' class='custom-select' onchange='filter_gyms()'>
-        <option value='' selected>All</option>
-        <option value='" . $config['ui']['unknownValue'] . "'>" . $config['ui']['unknownValue'] . "</option>";
+        <option value='' selected>All</option>";
         $count = count($geofenceSrvc->geofences);
         for ($i = 0; $i < $count; $i++) {
             $geofence = $geofenceSrvc->geofences[$i];
             $filters .= "<option value='".$geofence->name."'>".$geofence->name."</option>";
         }
         $filters .= "
+        <option value='" . $config['ui']['unknownValue'] . "'>" . $config['ui']['unknownValue'] . "</option>
       </select>
     </div>
   </div>
