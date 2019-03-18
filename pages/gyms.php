@@ -252,7 +252,7 @@ $('#reset-filters').on('click', function() {
     $('#filter-team').val('All');
     $('#filter-slots').val('All');
     $('#filter-battle').val('All');
-    $('#filter-city').val('All');
+    $('#filter-city').val('');
     $('#filter-gym').val('');
     filter_gyms();
   }

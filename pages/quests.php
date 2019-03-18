@@ -575,7 +575,7 @@ filter_quests();
 $('#reset-filters').on('click', function() {
   if (confirm($.i18n('quests_filters_reset_confirm'))) {
     $('#search-input').val('');
-    $('#filter-city').val('All');
+    $('#filter-city').val('');
     $('#filter-pokestop').val('');
     filter_quests();
   }
