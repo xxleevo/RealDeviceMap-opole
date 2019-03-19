@@ -179,9 +179,7 @@ if (get("raids-filter-ex") !== false) {
   $('#filter-ex').val(get("raids-filter-ex"));
 }
 
-
-var isMobile = <?=$mobile?>;
-filter_raids(isMobile);
+filter_raids('<?=$mobile?>');
 
 $('#reset-filters').on('click', function() {
   if (confirm($.i18n('raids_filters_reset_confirm'))) {

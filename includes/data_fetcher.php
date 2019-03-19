@@ -169,8 +169,8 @@ if ($config['ui']['table']['forceRaidCards'] || (!$config['ui']['table']['forceR
                     echo "<td data-title='Ex-Eligible'>" . ($row['ex_raid_eligible'] ? "Yes" : "No") . "</td>";
                     //echo "<td data-title='Updated'>" . date($config['core']['dateTimeFormat'], $row['updated']) . "</td>";
                 echo "</tr>";
-                echo "<tr class='hiddenRow'>";
-                    echo "<td colspan='6' class='hiddenRow'>
+                echo "<tr class='hiddenRow' id='" . $id . "_row'>";
+                    echo "<td colspan='100%' class='hiddenRow'>
                             <div id='$id' class='collapse'>
                             <table>
                               <thead></thead>

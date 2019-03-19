@@ -59,8 +59,6 @@ function filter_raids(mobile) {
       teamValue = cells[6].innerHTML.toUpperCase();
       exValue = cells[8].innerHTML.toUpperCase();
     } else {
-      //var id = $(tr[i].dataset.target).val();
-      //console.log("Id:", id);
       levelValue = tr[i].cells[3].innerHTML;
       pkmnValue = tr[i].cells[4].innerHTML.toUpperCase();
       gymValue = tr[i].cells[5].innerHTML.toUpperCase();
@@ -68,7 +66,6 @@ function filter_raids(mobile) {
       teamValue = tr[i].cells[7].innerHTML.toUpperCase();
       exValue = tr[i].cells[8].innerHTML.toUpperCase();
     }
-
     var searchTerms = (searchFilter.indexOf(',') > -1) ? searchFilter.split(',') : [];
     var searchWith = (searchTerms.length > 0) ? searchTerms : searchFilter;
 
@@ -79,8 +76,14 @@ function filter_raids(mobile) {
       exValue.indexOf(exFilter) > -1 &&
       gymValue.indexOf(gymFilter) > -1) {
       tr[i].style.display = "";
+      if (mobile !== false) {
+        $(tr[i].dataset.target + '_row').css("display", "");
+      }
     } else {
       tr[i].style.display = "none";
+      if (mobile !== false) {
+        $(tr[i].dataset.target + '_row').css("display", "none");
+      }
     }     
   }
 }
