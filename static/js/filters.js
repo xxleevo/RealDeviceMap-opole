@@ -76,12 +76,12 @@ function filter_raids(mobile) {
       exValue.indexOf(exFilter) > -1 &&
       gymValue.indexOf(gymFilter) > -1) {
       tr[i].style.display = "";
-      if (mobile !== false) {
+      if (mobile == '0') {
         $(tr[i].dataset.target + '_row').css("display", "");
       }
     } else {
       tr[i].style.display = "none";
-      if (mobile !== false) {
+      if (mobile == '0') {
         $(tr[i].dataset.target + '_row').css("display", "none");
       }
     }     
