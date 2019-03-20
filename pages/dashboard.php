@@ -3,7 +3,15 @@ include './config.php';
 include './includes/DbConnector.php';
 include './includes/utils.php';
 
-
+$onlineDevicesPoke = get_table_count_noId("device where uuid LIKE '%\#%' and last_seen > UNIX_TIMESTAMP()-180");
+$onlineDevicesIv = get_table_count_noId("device where uuid LIKE '%Iv%' and last_seen > UNIX_TIMESTAMP()-180");
+$onlineDevicesQuests = get_table_count_noId("device where instance_name LIKE '%Quests%' and last_seen > UNIX_TIMESTAMP()-180");
+$maxDevicesQuests = 10;
+$maxDevicesPoke = 3;
+$maxDevicesIv = 7;
+$percentOnlinePoke = (($onlineDevicesPoke/$maxDevicesPoke) *100);
+$percentOnlineIv = (($onlineDevicesIv/$maxDevicesIv)*100);
+$percentOnlineQuests = (($onlineDevicesQuests/$maxDevicesQuests)*100);
 
 $html = "
 
@@ -11,8 +19,8 @@ $html = "
 
 <h2 class='page-header text-center'>Übersicht</h2>
 <div class='card p-1 m-4'>
-Willkommen auf bei der Rocketmap-Dortmund!<br>
-Finde Pokemon,Raids,Pokestops,Arenen, Pokemon mit IV, Quests und vieles mehr!<br>
+Willkommen auf unserer Seite!<br>
+Finde Pokemon ,Raids, Pokestops ,Arenen, Pokemon mit IV, Quests und vieles mehr!<br>
 Auf dieser Seite findest du eine Übersicht darüber, welche Daten durch unsere Map gescannt werden.<br>
 <center><hr style='width:50%;'></center>
 Für alle nötigen Infos zur Map kannst du unsere Infoseite besuchen.
@@ -240,13 +248,83 @@ $html .="
 </div>";
 }
 $html .="
+<div class='card text-center p-1 m-3'>
+  <div class='card-header heading text-light'><b>Status</b></div>
+  <div class='card-body'>
+    <div class='container'>
+      <div class='row'>
+        <div class='col-md-3'>
+          <a class='list-group-item'>";
+            
+			if($onlineDevicesPoke >= 3){
+			$html .="
+					<h3 class='pull-right'><img src='./static/images/online.png' width='48' height='48'/></h3>
+					<h4 class='list-group-item-heading'>Aktiv</h4>";
+			}else if($onlineDevicesPoke >= 1 && $onlineDevicesPoke <=2){
+			$html .="
+					<h3 class='pull-right'><img src='./static/images/unstable.png' width='48' height='48'/></h3>
+					<h4 class='list-group-item-heading'>Unstable (". round($percentOnlinePoke) ."%)</h4>";
+			}else{
+			$html .="
+					<h3 class='pull-right'><img src='./static/images/offline.png' width='48' height='48'/></h3>
+					<h4 class='list-group-item-heading'>Inaktiv</h4>";
+			}
+			$html .="
+            <p class='list-group-item-text'>Normalscan-Devices</p>
+          </a>
+        </div>
+        <div class='col-md-3'>
+          <a class='list-group-item'>";
+            
+			if($onlineDevicesIv >= 7){
+			$html .="
+					<h3 class='pull-right'><img src='./static/images/online.png' width='48' height='48'/></h3>
+					<h4 class='list-group-item-heading'>Aktiv</h4>";
+			}else if($onlineDevicesIv >= 1 && $onlineDevicesIv <=6){
+			$html .="
+					<h3 class='pull-right'><img src='./static/images/unstable.png' width='48' height='48'/></h3>
+					<h4 class='list-group-item-heading'>Unstable (". round($percentOnlineIv) ."%)</h4>";
+			}else{
+			$html .="
+					<h3 class='pull-right'><img src='./static/images/offline.png' width='48' height='48'/></h3>
+					<h4 class='list-group-item-heading'>Inaktiv</h4>";
+			}
+			$html .="
+            <p class='list-group-item-text'>IVScan-Devices</p>
+          </a>
+        </div>
+        <div class='col-md-3'>
+          <a class='list-group-item'>";
+            
+			if($onlineDevicesQuests >= 10){
+			$html .="
+					<h3 class='pull-right'><img src='./static/images/online.png' width='48' height='48'/></h3>
+					<h4 class='list-group-item-heading'>Aktiv</h4>";
+			}else if($onlineDevicesQuests >= 1 && $onlineDevicesQuests <=9){
+			$html .="
+					<h3 class='pull-right'><img src='./static/images/unstable.png' width='48' height='48'/></h3>
+					<h4 class='list-group-item-heading'>Unstable (". round($percentOnlineQuests) ."%)</h4>";
+			}else{
+			$html .="
+					<h3 class='pull-right'><img src='./static/images/offline.png' width='48' height='48'/></h3>
+					<h4 class='list-group-item-heading'>Inaktiv</h4>";
+			}
+			$html .="
+            <p class='list-group-item-text'>Questscan</p>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class ='p-1 m-3'>
 <div class='row'>
 <div class='card text-center p-1 m-3 col-md-2'>
 	<div class='card-header heading text-light'><b>Map</b></div>
 	<div class='card-body'>
 		<div class='container'>
-          <a href='https://rocketmapdo.de/' class='link'>
+          <a href='https://map.rocketmapdo.de/' class='link'>
 			<center>
 			<img src='./static/map.png' width='128' height='auto'/></h3>
             <p> > Zur Map < </p>
@@ -319,7 +397,7 @@ sendRequest({ "type": "dashboard", "token": tmp }, function(data) {
   }
 
   // Animate the element's value from x to y:
-  $({ pokemonTotalValue:0, pokemonValue: 0, pokemonIvValue: 0, pokemonTotalIvValue: 0, gymsValue: 0, raidsValue: 0, raidsHatchedValue:0, normalRaidsValue: 0, legendaryRaidsValue: 0, eggsValue:0, normalEggsValue:0, legendaryEggsValue:0, neutralValue: 0, mysticValue: 0, valorValue: 0, instinctValue: 0, pokestopsValue: 0, luredValue: 0, questsValue: 0, spawnpointValue:0, spawnpointVerifiedValue:0, nestValue:0 }).animate({ pokemonTotalValue: obj.pokemon, pokemonValue: obj.active_pokemon, pokemonIvValue: obj.iv_pokemon, pokemonTotalIvValue: obj.total_iv_pokemon, gymsValue: obj.gyms, raidsValue: obj.raids, raidsHatchedValue: obj.raids_all_hatched, normalRaidsValue: obj.raids_normal, legendaryRaidsValue: obj.raids_legendary, eggsValue:obj.eggs, normalEggsValue:obj.eggs_normal, legendaryEggsValue:obj.eggs_legendary, neutralValue: obj.neutral, mysticValue: obj.mystic, valorValue: obj.valor, instinctValue: obj.instinct, pokestopsValue: obj.pokestops, luredValue: obj.lured, questsValue: obj.quests , spawnpointValue: obj.spawnpoint, spawnpointVerifiedValue: obj.tth_spawnpoint }, {
+  $({ pokemonTotalValue:0, pokemonValue: 0, pokemonIvValue: 0, pokemonTotalIvValue: 0, gymsValue: 0, raidsValue: 0, raidsHatchedValue:0, normalRaidsValue: 0, legendaryRaidsValue: 0, eggsValue:0, normalEggsValue:0, legendaryEggsValue:0, neutralValue: 0, mysticValue: 0, valorValue: 0, instinctValue: 0, pokestopsValue: 0, luredValue: 0, questsValue: 0, spawnpointValue:0, spawnpointVerifiedValue:0, nestValue:0}).animate({ pokemonTotalValue: obj.pokemon, pokemonValue: obj.active_pokemon, pokemonIvValue: obj.iv_pokemon, pokemonTotalIvValue: obj.total_iv_pokemon, gymsValue: obj.gyms, raidsValue: obj.raids, raidsHatchedValue: obj.raids_all_hatched, normalRaidsValue: obj.raids_normal, legendaryRaidsValue: obj.raids_legendary, eggsValue:obj.eggs, normalEggsValue:obj.eggs_normal, legendaryEggsValue:obj.eggs_legendary, neutralValue: obj.neutral, mysticValue: obj.mystic, valorValue: obj.valor, instinctValue: obj.instinct, pokestopsValue: obj.pokestops, luredValue: obj.lured, questsValue: obj.quests , spawnpointValue: obj.spawnpoint, spawnpointVerifiedValue: obj.tth_spawnpoint}, {
     duration: 2000,
     easing: 'swing', // can be anything
     step: function() { // called on every step

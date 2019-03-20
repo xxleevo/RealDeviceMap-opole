@@ -87,6 +87,17 @@ function get_table_count($table) {
     
     return $count;
 }
+function get_table_count_noId($table) {
+    global $config;
+    $db = new DbConnector($config['db']);
+    $pdo = $db->getConnection();
+    $sql = "SELECT count(*) FROM " . $config['db']['dbname'] . ".$table";
+    $count = $pdo->query($sql)->fetchColumn();
+    unset($pdo);
+    unset($db);
+    
+    return $count;
+}
 
 function get_pokestop_objects() {
     global $config;
