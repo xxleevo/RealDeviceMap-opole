@@ -244,13 +244,15 @@ function getSpawnReport(layer) {
       if (result.spawns !== null) {
         result.spawns.forEach(function(item) {
           if (typeof layer.tags !== 'undefined') {
-            $('#modalSpawnReport  .modal-title').text($.i18n('nests_spawn_report') + ' - ' + layer.tags.name);
+            //$('#modalSpawnReport  .modal-title').text($.i18n('nests_spawn_report') + ' - ' + layer.tags.name);
+            $('#modalSpawnReport  .modal-title').text('Spawn Report - ' + layer.tags.name);
           }
           $('#spawnReportTable > tbody:last-child').append('<tr><td><img src="' + sprintf("<?=$config['urls']['images']['pokemon']?>", item.pokemon_id) + '" width=32 height=32 />&nbsp;' + pokedex[item.pokemon_id] + '</td><td>' + item.count + '</td></tr>');
         });
       } else {
           if (typeof layer.tags !== 'undefined') {
-          $('#modalSpawnReport  .modal-title').text($.i18n('nests_spawn_report') + ' - ' + layer.tags.name);
+          //$('#modalSpawnReport  .modal-title').text($.i18n('nests_spawn_report') + ' - ' + layer.tags.name);
+          $('#modalSpawnReport  .modal-title').text('Spawn Report - ' + layer.tags.name);
         }
         $('#spawnReportTable > tbody:last-child').append('<tr><td colspan="2" data-i18n="nests_no_data_available"></td></tr>');
       }
