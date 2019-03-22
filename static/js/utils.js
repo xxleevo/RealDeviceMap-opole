@@ -51,7 +51,9 @@ function numberWithCommas(x) {
 }
 
 function addDays(date, days) {
-  return date.setDate(date.getDate() + days);
+  var d = new Date(date);
+  d.setDate(d.getDate() + days);
+  return d;
 }
 
 function updateCounter(name, value) {

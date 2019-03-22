@@ -218,7 +218,7 @@ function getSpawnReport(layer) {
   };
   const data = {
     'coordinates': flatCoords,
-    'nest_migration_timestamp': lastMigrationDate.getTime() / 1000,
+    'nest_migration_timestamp': lastMigrationDate.getTime(),
     'spawn_report_limit': 5,
   };
 
