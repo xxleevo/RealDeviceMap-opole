@@ -218,7 +218,7 @@ SELECT
 FROM
   pokemon
 WHERE " . $points_string . "
-  AND first_seen_timestamp <= ?
+  AND first_seen_timestamp >= ?
 GROUP BY
   pokemon_id
 ORDER BY
