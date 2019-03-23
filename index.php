@@ -31,14 +31,13 @@ if ($config['discord']['enabled'] && !isset($_SESSION['user'])) {
     <script type='text/javascript' src='https://code.jquery.com/jquery-3.3.1.slim.min.js' integrity='sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo' crossorigin='anonymous'></script>
     <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js' integrity='sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut' crossorigin='anonymous'></script>
     <script type='text/javascript' src='https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js' integrity='sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k' crossorigin='anonymous'></script>
-    <!--<script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>-->
     <script type='text/javascript' src='https://code.jquery.com/jquery-3.3.1.min.js'></script>
     <script type='text/javascript' src='https://unpkg.com/leaflet@1.4.0/dist/leaflet.js' integrity='sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg==' crossorigin=''></script>
     <script type='text/javascript' charset='utf8' src='https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js'></script>
     <script type='text/javascript' src='./static/js/filters.js'></script>
     <!--<script type='text/javascript' src='./static/js/i18n.min.js'></script>-->
-    <script type='text/javascript' src='https://thottingal.in/projects/js/jquery.i18n/src/jquery.i18n.js'></script>
-    <script type='text/javascript' src='https://thottingal.in/projects/js/jquery.i18n/src/jquery.i18n.messagestore.js'></script>
+    <script type='text/javascript' src='./static/js/jquery.i18n.js'></script>
+    <script type='text/javascript' src='./static/js/jquery.i18n.messagestore.js'></script>
     <script type='text/javascript' src='./static/js/jquery.countdown.min.js'></script>
     <script type='text/javascript' src='./static/js/moment.js'></script>
     <script type='text/javascript' src='./static/js/table.sorter.js'></script>
@@ -121,86 +120,6 @@ switch($request_method) {
         break;
 }
 
-//TODO: Better impl
-function getRedirectPage() {
-    global $config;
-    if ($config['ui']['pages']['dashboard']['enabled'] &&
-        !$config['ui']['pages']['pokemon']['enabled'] &&
-        !$config['ui']['pages']['raids']['enabled'] &&
-        !$config['ui']['pages']['gyms']['enabled'] &&
-        !$config['ui']['pages']['quests']['enabled'] &&
-        !$config['ui']['pages']['pokestops']['enabled'] &&
-        !$config['ui']['pages']['nests']['enabled'] &&
-        !$config['ui']['pages']['stats']['enabled']) {
-            return 'dashboard';
-    } else if (!$config['ui']['pages']['dashboard']['enabled'] &&
-        $config['ui']['pages']['pokemon']['enabled'] &&
-        !$config['ui']['pages']['raids']['enabled'] &&
-        !$config['ui']['pages']['gyms']['enabled'] &&
-        !$config['ui']['pages']['quests']['enabled'] &&
-        !$config['ui']['pages']['pokestops']['enabled'] &&
-        !$config['ui']['pages']['nests']['enabled'] &&
-        !$config['ui']['pages']['stats']['enabled']) {
-        return 'pokemon';
-    } else if (!$config['ui']['pages']['dashboard']['enabled'] &&
-        !$config['ui']['pages']['pokemon']['enabled'] &&
-        $config['ui']['pages']['raids']['enabled'] &&
-        !$config['ui']['pages']['gyms']['enabled'] &&
-        !$config['ui']['pages']['quests']['enabled'] &&
-        !$config['ui']['pages']['pokestops']['enabled'] &&
-        !$config['ui']['pages']['nests']['enabled'] &&
-        !$config['ui']['pages']['stats']['enabled']) {
-        return 'raids';
-    } else if (!$config['ui']['pages']['dashboard']['enabled'] &&
-        !$config['ui']['pages']['pokemon']['enabled'] &&
-        !$config['ui']['pages']['raids']['enabled'] &&
-        $config['ui']['pages']['gyms']['enabled'] &&
-        !$config['ui']['pages']['quests']['enabled'] &&
-        !$config['ui']['pages']['pokestops']['enabled'] &&
-        !$config['ui']['pages']['nests']['enabled'] &&
-        !$config['ui']['pages']['stats']['enabled']) {
-        return 'gyms';
-    } else if (!$config['ui']['pages']['dashboard']['enabled'] &&
-        !$config['ui']['pages']['pokemon']['enabled'] &&
-        !$config['ui']['pages']['raids']['enabled'] &&
-        !$config['ui']['pages']['gyms']['enabled'] &&
-        $config['ui']['pages']['quests']['enabled'] &&
-        !$config['ui']['pages']['pokestops']['enabled'] &&
-        !$config['ui']['pages']['nests']['enabled'] &&
-        !$config['ui']['pages']['stats']['enabled']) {
-        return 'quests';
-    } else if (!$config['ui']['pages']['dashboard']['enabled'] &&
-        !$config['ui']['pages']['pokemon']['enabled'] &&
-        !$config['ui']['pages']['raids']['enabled'] &&
-        !$config['ui']['pages']['gyms']['enabled'] &&
-        !$config['ui']['pages']['quests']['enabled'] &&
-        $config['ui']['pages']['pokestops']['enabled'] &&
-        !$config['ui']['pages']['nests']['enabled'] &&
-        !$config['ui']['pages']['stats']['enabled']) {
-        return 'pokestops';
-    } else if (!$config['ui']['pages']['dashboard']['enabled'] &&
-        !$config['ui']['pages']['pokemon']['enabled'] &&
-        !$config['ui']['pages']['raids']['enabled'] &&
-        !$config['ui']['pages']['gyms']['enabled'] &&
-        !$config['ui']['pages']['quests']['enabled'] &&
-        !$config['ui']['pages']['pokestops']['enabled'] &&
-        $config['ui']['pages']['nests']['enabled'] &&
-        !$config['ui']['pages']['stats']['enabled']) {
-        return 'nests';
-    } else if (!$config['ui']['pages']['dashboard']['enabled'] &&
-        !$config['ui']['pages']['pokemon']['enabled'] &&
-        !$config['ui']['pages']['raids']['enabled'] &&
-        !$config['ui']['pages']['gyms']['enabled'] &&
-        !$config['ui']['pages']['quests']['enabled'] &&
-        !$config['ui']['pages']['pokestops']['enabled'] &&
-        !$config['ui']['pages']['nests']['enabled'] &&
-        !$config['ui']['pages']['stats']['enabled']) {
-        return 'stats';
-    } else {
-        return '404';
-    }
-}
-
 if (!empty($config['google']['analyticsId'])) {
 ?>
 <script async src='//google-analytics.com/analytics.js'></script>
@@ -232,11 +151,13 @@ if ($config['core']['showFooter']) {
   </body>
 </html>
 <script>
-$.i18n().load({
-  <?=$config['ui']['locale']?>: './static/locale/<?=$config['ui']['locale']?>.json'
-}).done(function() {
-  $('body').i18n();
-  console.log("Done!");
+$.getJSON("./static/locale/<?=$config['ui']['locale']?>.json", { _: new Date() }, function(data) {
+  $.i18n().load({
+    <?=$config['ui']['locale']?>: data
+  }).done(function() {
+    $('body').i18n();
+    console.log("Done!");
+  });
 });
 
 /*

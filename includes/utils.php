@@ -259,4 +259,85 @@ function hasDiscordRole($userRoles, $requiredRoles) {
     }
     return false;
 }
+
+//TODO: Better impl
+function getRedirectPage() {
+    global $config;
+    if ($config['ui']['pages']['dashboard']['enabled'] &&
+        !$config['ui']['pages']['pokemon']['enabled'] &&
+        !$config['ui']['pages']['raids']['enabled'] &&
+        !$config['ui']['pages']['gyms']['enabled'] &&
+        !$config['ui']['pages']['quests']['enabled'] &&
+        !$config['ui']['pages']['pokestops']['enabled'] &&
+        !$config['ui']['pages']['nests']['enabled'] &&
+        !$config['ui']['pages']['stats']['enabled']) {
+        return 'dashboard';
+    } else if (!$config['ui']['pages']['dashboard']['enabled'] &&
+        $config['ui']['pages']['pokemon']['enabled'] &&
+        !$config['ui']['pages']['raids']['enabled'] &&
+        !$config['ui']['pages']['gyms']['enabled'] &&
+        !$config['ui']['pages']['quests']['enabled'] &&
+        !$config['ui']['pages']['pokestops']['enabled'] &&
+        !$config['ui']['pages']['nests']['enabled'] &&
+        !$config['ui']['pages']['stats']['enabled']) {
+        return 'pokemon';
+    } else if (!$config['ui']['pages']['dashboard']['enabled'] &&
+        !$config['ui']['pages']['pokemon']['enabled'] &&
+        $config['ui']['pages']['raids']['enabled'] &&
+        !$config['ui']['pages']['gyms']['enabled'] &&
+        !$config['ui']['pages']['quests']['enabled'] &&
+        !$config['ui']['pages']['pokestops']['enabled'] &&
+        !$config['ui']['pages']['nests']['enabled'] &&
+        !$config['ui']['pages']['stats']['enabled']) {
+        return 'raids';
+    } else if (!$config['ui']['pages']['dashboard']['enabled'] &&
+        !$config['ui']['pages']['pokemon']['enabled'] &&
+        !$config['ui']['pages']['raids']['enabled'] &&
+        $config['ui']['pages']['gyms']['enabled'] &&
+        !$config['ui']['pages']['quests']['enabled'] &&
+        !$config['ui']['pages']['pokestops']['enabled'] &&
+        !$config['ui']['pages']['nests']['enabled'] &&
+        !$config['ui']['pages']['stats']['enabled']) {
+        return 'gyms';
+    } else if (!$config['ui']['pages']['dashboard']['enabled'] &&
+        !$config['ui']['pages']['pokemon']['enabled'] &&
+        !$config['ui']['pages']['raids']['enabled'] &&
+        !$config['ui']['pages']['gyms']['enabled'] &&
+        $config['ui']['pages']['quests']['enabled'] &&
+        !$config['ui']['pages']['pokestops']['enabled'] &&
+        !$config['ui']['pages']['nests']['enabled'] &&
+        !$config['ui']['pages']['stats']['enabled']) {
+        return 'quests';
+    } else if (!$config['ui']['pages']['dashboard']['enabled'] &&
+        !$config['ui']['pages']['pokemon']['enabled'] &&
+        !$config['ui']['pages']['raids']['enabled'] &&
+        !$config['ui']['pages']['gyms']['enabled'] &&
+        !$config['ui']['pages']['quests']['enabled'] &&
+        $config['ui']['pages']['pokestops']['enabled'] &&
+        !$config['ui']['pages']['nests']['enabled'] &&
+        !$config['ui']['pages']['stats']['enabled']) {
+        return 'pokestops';
+    } else if (!$config['ui']['pages']['dashboard']['enabled'] &&
+        !$config['ui']['pages']['pokemon']['enabled'] &&
+        !$config['ui']['pages']['raids']['enabled'] &&
+        !$config['ui']['pages']['gyms']['enabled'] &&
+        !$config['ui']['pages']['quests']['enabled'] &&
+        !$config['ui']['pages']['pokestops']['enabled'] &&
+        $config['ui']['pages']['nests']['enabled'] &&
+        !$config['ui']['pages']['stats']['enabled']) {
+        return 'nests';
+    } else if (!$config['ui']['pages']['dashboard']['enabled'] &&
+        !$config['ui']['pages']['pokemon']['enabled'] &&
+        !$config['ui']['pages']['raids']['enabled'] &&
+        !$config['ui']['pages']['gyms']['enabled'] &&
+        !$config['ui']['pages']['quests']['enabled'] &&
+        !$config['ui']['pages']['pokestops']['enabled'] &&
+        !$config['ui']['pages']['nests']['enabled'] &&
+        !$config['ui']['pages']['stats']['enabled']) {
+        return 'stats';
+    } else {
+        return '404';
+    }
+}
+
 ?>

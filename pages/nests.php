@@ -47,11 +47,13 @@
 </div>
 </center>
 
-<script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>
 <script type='text/javascript' src='./static/js/jquery.countdown.min.js'></script>
 <script type='text/javascript' src='./static/js/pokedex.js'></script>
 <script type='text/javascript' src="https://cdn.jsdelivr.net/npm/@turf/turf@5/turf.min.js"></script>
 <script type='text/javascript' src="https://cdn.jsdelivr.net/npm/osmtogeojson@3.0.0-beta.3/osmtogeojson.js"></script>
+
+<!--<script type='text/javascript' src='./static/js/jquery.i18n.js'></script>
+<script type='text/javascript' src='./static/js/jquery.i18n.messagestore.js'></script>-->
 <script type='text/javascript'>
 /*
 $('#modalSpawnReport').on('hidden.bs.modal', function(event) {
@@ -244,15 +246,15 @@ function getSpawnReport(layer) {
       if (result.spawns !== null) {
         result.spawns.forEach(function(item) {
           if (typeof layer.tags !== 'undefined') {
-            //$('#modalSpawnReport  .modal-title').text($.i18n('nests_spawn_report') + ' - ' + layer.tags.name);
-            $('#modalSpawnReport  .modal-title').text('Spawn Report - ' + layer.tags.name);
+            $('#modalSpawnReport  .modal-title').text($.i18n('nests_spawn_report') + ' - ' + layer.tags.name);
+            //$('#modalSpawnReport  .modal-title').text('Spawn Report - ' + layer.tags.name);
           }
           $('#spawnReportTable > tbody:last-child').append('<tr><td><img src="' + sprintf("<?=$config['urls']['images']['pokemon']?>", item.pokemon_id) + '" width=32 height=32 />&nbsp;' + pokedex[item.pokemon_id] + '</td><td>' + item.count + '</td></tr>');
         });
       } else {
           if (typeof layer.tags !== 'undefined') {
-          //$('#modalSpawnReport  .modal-title').text($.i18n('nests_spawn_report') + ' - ' + layer.tags.name);
-          $('#modalSpawnReport  .modal-title').text('Spawn Report - ' + layer.tags.name);
+          $('#modalSpawnReport  .modal-title').text($.i18n('nests_spawn_report') + ' - ' + layer.tags.name);
+          //$('#modalSpawnReport  .modal-title').text('Spawn Report - ' + layer.tags.name);
         }
         $('#spawnReportTable > tbody:last-child').append('<tr><td colspan="2" data-i18n="nests_no_data_available"></td></tr>');
       }
