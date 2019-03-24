@@ -13,3 +13,5 @@
 - Finish new raid display markup.
 - Use prepared statements
 - Config option to not show Unknown raids/gyms/quests in tables
+- Heatmaps
+- CD stats

@@ -229,7 +229,8 @@ $quick_moves = [
     288=>"Psycho Boost",
     289=>"Origin Pulse",
     290=>"Precipice Blades",
-    291=>"Present"
+    291=>"Present",
+    297=>"Smack Down"
 ];
 
 $charge_moves = [
@@ -367,8 +368,8 @@ $charge_moves = [
     131=>"Body Slam",
     132=>"Rest",
     133=>"Struggle",
-    134=>"ScaldBlastoise)",
-    135=>"Hydro PumpBlastoise)",
+    134=>"Scald (Blastoise)",
+    135=>"Hydro Pump (Blastoise)",
     136=>"Wrap Green",
     137=>"Wrap Pink",
     200=>"Fury Cutter",
@@ -463,7 +464,31 @@ $charge_moves = [
     289=>"Origin Pulse",
     290=>"Precipice Blades",
     291=>"Present",
-    /*TODO Fill in missing moves*/
+    292=>"Weather Ball (Fire)",
+    293=>"Weather Ball (Ice)",
+    294=>"Weather Ball (Rock)",
+    295=>"Weather Ball (Water)",
+    296=>"Frenzy Plant",
+    298=>"Blast Burn",
+    299=>"Hydro Cannon",
+    300=>"Last Resort",
+    301=>"Meteor Mash",
+    303=>"Acid Spray",
+    304=>"Earth Power",
+    305=>"Crabhammer",
+    306=>"Lunge",
+    307=>"Crush Claw",
+    308=>"Octazooka",
+    309=>"Mirror Shot",
+    310=>"Superpower",
+    311=>"Fell Stinger",
+    312=>"Leaf Tornado",
+    313=>"Leech Life",
+    314=>"Drain Punch",
+    315=>"Shadow Bone",
+    316=>"Muddy Water",
+    317=>"Blaze Kick",
+    318=>"Razor Shell",
     319=>"Power-Up Punch"
 ];
 ?>

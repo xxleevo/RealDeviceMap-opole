@@ -109,6 +109,7 @@
     "nests_title": "Neighborhood nests",
     "nests_button_refresh": "Refresh Nests",
     "nests_modal_close": "Close",
+    "nests_modal_spawn_report": "Spawn Report",
     "nests_column_pokemon": "Pokemon",
     "nests_column_count": "Count",
     "nests_button_spawn_report": "Get Spawn Report",
