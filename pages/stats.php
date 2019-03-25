@@ -8,6 +8,7 @@ $html = "
   <li class='nav-item'><a class='nav-link active' role='tab' aria-controls='pokemon' aria-selected='true' data-toggle='pill' href='#pokemon' data-i18n='stats_tab_pokemon'>Pokemon</a></li>
   <li class='nav-item'><a class='nav-link' role='tab' aria-controls='raids' aria-selected='false' data-toggle='pill' href='#raids' data-i18n='stats_tab_raids'>Raids</a></li>
   <li class='nav-item'><a class='nav-link' role='tab' aria-controls='quests' aria-selected='false' data-toggle='pill' href='#quests' data-i18n='stats_tab_quests'>Quests</a></li>
+  <li class='nav-item'><a class='nav-link' role='tab' aria-controls='comday' aria-selected='false' data-toggle='pill' href='#comday' data-i18n='stats_tab_comday'>Comm. Day</a></li>
 </ul>
 
 <div class='container'>
@@ -60,6 +61,8 @@ $html = "
     </div>
     <div id='quests' class='tab-pane fade' role='tabpanel'>
       <canvas id='quest-stats'></canvas>
+    </div>
+    <div id='comday' class='tab-pane fade' role='tabpanel'>
     </div>
   </div>
 </div>
