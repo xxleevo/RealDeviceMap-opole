@@ -72,10 +72,11 @@ function onMapClick(e) {
 
 mymap.on('click', onMapClick);
 
+var debug = <?=$config['core']['showDebug'] !== false ? '1' : '0'?>;
 var tmp = createToken();
 sendRequest({ "table": "pokestop", "limit": 1000, "token": tmp }, function(data) {
   tmp = null;
-  if (<?=$config['core']['showDebug']?>) {
+  if (debug) {
     if (data === 0) {
       console.log("Failed to get data for pokestops.");
       return;

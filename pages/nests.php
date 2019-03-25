@@ -79,6 +79,7 @@ $(document).on("click", ".deleteLayer", function() {
   }
 });
 
+var debug = <?=$config['core']['showDebug'] !== false ? '1' : '0'?>;
 var lastMigrationDate = new Date("<?=$config['core']['lastNestMigration']?>");
 var migrationDate = new Date("<?=$config['core']['lastNestMigration']?>");
 while (migrationDate < new Date()) {
@@ -156,7 +157,7 @@ function getNests() {//p1_lat, p1_lon, p2_lat, p2_lon) {
     dataType: 'json',
     data: {'data': overPassQuery},
     success: function (result) {
-      if (<?=$config['core']['showDebug']?>) {
+      if (debug) {
         if (result === 0) {
           console.log("Failed to get osm nest data.");
           return;
@@ -235,7 +236,7 @@ function getSpawnReport(layer) {
     data: JSON.stringify({'data': data, 'type': 'nests', 'token': tmp}),
     success: function (result, success) {
       tmp = null;
-      if (<?=$config['core']['showDebug']?>) {
+      if (debug) {
         if (result === 0) {
           console.log("Failed to get nest spawn report data.");
           return;

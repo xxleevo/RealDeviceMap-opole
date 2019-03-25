@@ -224,13 +224,14 @@ echo $html;
 <script type="text/javascript" src="./static/js/pokedex.js"></script>
 <script type="text/javascript" src="./static/js/utils.js"></script>
 <script type="text/javascript">
+var debug = <?=$config['core']['showDebug'] !== false ? '1' : '0'?>;
 getStats();
 
 function getStats() {
   var tmp = createToken();
   sendRequest({ "type": "dashboard", "stat": "pokemon", "token": tmp }, function(data, status) {
     tmp = null;
-    if (<?=$config['core']['showDebug']?>) {
+    if (debug) {
       if (data === 0) {
         console.log("Failed to get data for dashboard.");
         return;
@@ -248,7 +249,7 @@ function getStats() {
   tmp = createToken();
   sendRequest({ "type": "dashboard", "stat": "gyms", "token": tmp }, function(data, status) {
     tmp = null;
-    if (<?=$config['core']['showDebug']?>) {
+    if (debug) {
       if (data === 0) {
         console.log("Failed to get data for dashboard.");
         return;
@@ -268,7 +269,7 @@ function getStats() {
   tmp = createToken();
   sendRequest({ "type": "dashboard", "stat": "pokestops", "token": tmp }, function(data, status) {
     tmp = null;
-    if (<?=$config['core']['showDebug']?>) {
+    if (debug) {
       if (data === 0) {
         console.log("Failed to get data for dashboard.");
         return;
@@ -285,7 +286,7 @@ function getStats() {
   tmp = createToken();
   sendRequest({ "type": "dashboard", "stat": "tth", "token": tmp }, function(data, status) {
     tmp = null;
-    if (<?=$config['core']['showDebug']?>) {
+    if (debug) {
       if (data === 0) {
         console.log("Failed to get data for dashboard.");
         return;
@@ -303,7 +304,7 @@ function getStats() {
   tmp = createToken();
   sendRequest({ "type": "dashboard", "stat": "top", "token": tmp }, function(data, status) {
     tmp = null;
-    if (<?=$config['core']['showDebug']?>) {
+    if (debug) {
       if (data === 0) {
         console.log("Failed to get data for dashboard.");
         return;
@@ -338,7 +339,7 @@ function getStats() {
 var tmp = createToken();
 sendRequest({ "type": "dashboard", "token": tmp }, function(data, status) {
   tmp = null;
-  if (<?=$config['core']['showDebug']?>) {
+  if (debug) {
     if (data === 0) {
       console.log("Failed to get data for dashboard.");
       return;

@@ -62,6 +62,7 @@ $("[data-toggle='datepicker']").datepicker({
 $("#filter-date").change(filterPokemon);
 $("#filter-date").datepicker("setDate", new Date());
 
+var debug = <?=$config['core']['showDebug'] !== false ? '1' : '0'?>;
 //Cache retrieved pokemon stats data
 var obj = [];
 function filterPokemon() {
@@ -75,7 +76,7 @@ function filterPokemon() {
     var tmp = createToken();
     sendRequest({ "table": "pokemon_stats", "token": tmp }, function(data, status) {
       tmp = null;
-      if (<?=$config['core']['showDebug']?>) {
+      if (debug) {
         if (data === 0) {
           conosle.log("Failed to get pokemon stats data.");
         } else {

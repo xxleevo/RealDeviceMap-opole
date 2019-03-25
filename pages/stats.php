@@ -72,6 +72,7 @@ echo $html;
 <script type='text/javascript' src='./static/js/pokedex.js'></script>
 <script type='text/javascript' src='./static/js/utils.js'></script>
 <script type='text/javascript'>
+var debug = <?=$config['core']['showDebug'] !== false ? '1' : '0'?>;
 var pkmnProgress = document.getElementById("pokemon-animation");
 var pkmnCtx = $("#pokemon-stats");
 pkmnChart = new Chart(pkmnCtx, {
@@ -134,7 +135,7 @@ function updatePokemonChart(chart, dateFilter, pokeFilter) {
   var tmp = createToken();
   sendRequest({ "table": "pokemon_stats", "token": tmp }, function(data, status) {
     tmp = null;
-    if (<?=$config['core']['showDebug']?>) {
+    if (debug) {
       if (data !== false) {
         console.log("Pokemon:", data);
       } else {
@@ -163,7 +164,7 @@ function updateRaidChart(chart, dateFilter, typeFilter) {
   var tmp = createToken();
   sendRequest({ "table": "raid_stats", "token": tmp }, function(data, status) {
     tmp = null;
-    if (<?=$config['core']['showDebug']?>) {
+    if (debug) {
       if (data !== false) {
         console.log("Raids:", data);
       } else {
