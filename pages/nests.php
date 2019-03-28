@@ -1,47 +1,63 @@
 <?php require_once './config.php'; ?>
 
+<h2 class='page-header text-center' data-i18n='nests_title'>Neighborhood nests</h2>
+<p id="migration" class='text-center'></p>
+<ul class='nav nav-pills mb-3 justify-content-center' role='tablist'>
+  <li class='nav-item'><a class='nav-link active' role='tab' aria-controls='visual' aria-selected='true' data-toggle='pill' href='#visual' data-i18n='nests_tab_map'>Map</a></li>
+  <li class='nav-item'><a class='nav-link' role='tab' aria-controls='table' aria-selected='false' data-toggle='pill' href='#table' data-i18n='nests_tab_table'>Table</a></li>
+  <li class='nav-item'><a class='nav-link' role='tab' aria-controls='pmsf' aria-selected='false' data-toggle='pill' href='#pmsf' data-i18n='nests_tab_pmsf'>PMSF</a></li>
+</ul>
+
 <center>
 <div class='container m-2'>
-  <h2 class='page-header text-center' data-i18n='nests_title'>Neighborhood nests</h2>
-  <p id="migration" class='text-center'></p>
-  <button id="nest-refresh" class="btn btn-secondary m-2" data-i18n='nests_button_refresh'>Refresh Nests</button>
-  <div id='mapid' style='width: 100%; height: 600px;'></div>
-  <div class="modal" id="modalSpawnReport" tabindex="-1" role="dialog" aria-labelledby='nestModalLabel' aria-hidden='true'>
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="nestModalLabel"></h5>
-          <button type="button" class="close closeModal" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+  <div class='tab-content'>
+    <div id='visual' class='tab-pane fade show active' role='tabpanel'>
+      <button id="nest-refresh" class="btn btn-secondary m-2" data-i18n='nests_button_refresh'>Refresh Nests</button>
+      <div id='mapid' style='width: 100%; height: 600px;'></div>
+      <div class="modal" id="modalSpawnReport" tabindex="-1" role="dialog" aria-labelledby='nestModalLabel' aria-hidden='true'>
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="nestModalLabel"></h5>
+              <button type="button" class="close closeModal" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <table class="table table-sm" id="spawnReportTable">
+                <thead>
+                  <tr>
+                    <th scope="col" data-i18n='nests_column_pokemon'>Pokemon</th>
+                    <th scope="col" data-i18n='nests_column_count'>Count</th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+              <table class="table table-sm" id="spawnReportTableMissed">
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary closeModal" data-dismiss="modal" data-i18n='nests_modal_close'>Close</button>
+            </div>
+          </div>
         </div>
-        <div class="modal-body">
-          <table class="table table-sm" id="spawnReportTable">
-            <thead>
-              <tr>
-                <th scope="col" data-i18n='nests_column_pokemon'>Pokemon</th>
-                <th scope="col" data-i18n='nests_column_count'>Count</th>
-              </tr>
-            </thead>
-            <tbody>
-            </tbody>
-          </table>
-          <table class="table table-sm" id="spawnReportTableMissed">
-            <tbody>
-            </tbody>
-          </table>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary closeModal" data-dismiss="modal" data-i18n='nests_modal_close'>Close</button>
+      </div>
+      <div class="modal modal-loader" id="modalLoading" data-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+          <div class="modal-content" style="width: 48px">
+            <span class="fa fa-spinner fa-spin fa-3x"></span>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="modal modal-loader" id="modalLoading" data-keyboard="false" tabindex="-1">
-    <div class="modal-dialog modal-sm">
-      <div class="modal-content" style="width: 48px">
-        <span class="fa fa-spinner fa-spin fa-3x"></span>
-      </div>
+
+    <div id='table' class='tab-pane fade' role='tabpanel'>
+    </div>
+
+    <div id='pmsf' class='tab-pane fade' role='tabpanel'>
     </div>
   </div>
 </div>
