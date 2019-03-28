@@ -15,3 +15,6 @@
 - Config option to not show Unknown raids/gyms/quests in tables
 - Heatmaps
 - CD stats
+- Tab pages for nests (Visual/Table/PMSF)
+- Config option to use PMSF nest db
+- Finish locale translation for comday stats page

@@ -63,6 +63,92 @@ $html = "
       <canvas id='quest-stats'></canvas>
     </div>
     <div id='comday' class='tab-pane fade' role='tabpanel'>
+      <div class='container'>
+        <div class='row'>
+          <div class='input-group mb-3'>
+            <div class='input-group-prepend'>
+              <label class='input-group-text' for='filter-date' data-i18n='stats_filter_date_start'>Start Date</label>
+            </div>
+            <input id='filter-date-start' class='flatpickr' placeholder='Select Date & Time..' data-toggle='datetimepicker'>
+
+            <div class='input-group-prepend'>
+              <label class='input-group-text' for='filter-date' data-i18n='stats_filter_date_end'>End Date</label>
+            </div>
+            <input id='filter-date-end' class='flatpickr' placeholder='Select Date & Time..' data-toggle='datetimepicker'>
+
+            <div class='input-group-prepend'>
+              <label class='input-group-text' for='filter-pokemon-comday' data-i18n='stats_filter_pokemon'>Pokemon</label>
+            </div>
+            <select id='filter-pokemon-comday' class='custom-select'>
+              <option disabled selected>Select</option>";
+              foreach ($pokedex as $pokemon_id => $name) {
+  	  	        if ($pokemon_id <= 0)
+                      continue;
+  	  	        $html .= "<option value='$pokemon_id'>$name</option>";
+  	  	    }
+  	  	    $html .= "
+            </select>
+          </div>
+        </div>
+      </div>
+    <div id='comday-stats' class='container' style='background: white'>
+    <div class='row m-2'>
+      <div class='col-md-5'>
+        <div class='row p-2'>
+          <div class='col' style='background: white'>
+            <h4 id='pkmn-title'>Scans</h4>
+            <div class='row p-2'>
+              <div class='col-lg-6'>
+                <div class='wrapper'><canvas id='scanChart'></canvas></div>
+              </div>
+              <div class='col-lg-6 justify-content-right'>
+                <h5 id='total-seen'>0 seen</h5>
+                <h6 id='total-scanned'>0 scanned</h6>
+              </div>
+            </div>
+            <div class='row p-2'>
+              <div class='col' style='background: white'>
+                <span><b>100% IV:</b><span id='iv100'>0</span></span>
+                <span><b>90% IV:</b><span id='iv90'>0</span></span>
+                <span><b>0% IV:</b><span id='iv0'>0</span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class='row p-2'>
+          <div class='col' style='background: white'>
+            <div class='wrapper'><canvas id='levelChart'></canvas></div>
+          </div>
+        </div>
+      </div>
+      <div class='col-md-7 p-2' style='background: white'>
+        <div class='wrapper'><canvas id='ivChart'></canvas></div>
+      </div>
+    </div>
+    <div class='row p-2 m-2'>
+      <div class='col-md-4' style='background: white'>
+        <h3>Sex</h3>
+        <span><span id='total-male'>0</span> male spawns</span><br>
+        <span><span id='total-female'>0</span> female spawns</span>
+      </div>
+      <div class='col-md-8' style='background: white'>
+        <div class='row text-center'>
+          <div class='col-4'>
+            <img id='evo1' src='#' height=72 width=72/><br>
+            <b id='evo1-text'></b>
+          </div>
+          <div class='col-4'>
+            <img id='evo2' src='#' height=72 width=72/><br>
+            <b id='evo2-text'></b>
+          </div>
+          <div class='col-4 justify-content-end'>
+            <img id='evo3' src='#' height=72 width=72/><br>
+            <b id='evo3-text'></b>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
     </div>
   </div>
 </div>
@@ -94,6 +180,93 @@ raidChart = new Chart(raidCtx, {
 });
 $("#raid-stats").hide();
 
+$("#comday-stats").hide();
+
+$("[data-toggle='datetimepicker']").flatpickr({
+  altInput: true,
+  altFormat: "F j, Y h\:00 K",
+  dateFormat: "U",//"Y-m-d h K",
+  enableTime: true
+});
+
+$("#filter-pokemon-comday").on('change', function() {
+  var start = $("#filter-date-start").val();
+  var end = $("#filter-date-end").val();
+  var pokemonId = this.value;
+  console.log("Start:", start, "End:", end, "Pokemon:", pokemonId);
+
+  var tmp = createToken();
+  sendRequest({ "type": "stats", "start": start, "end": end, "pokemon_id": pokemonId, "token": tmp }, function(data, status) {
+    tmp = null;
+    if (debug) {
+      if (data.length > 0) {
+        console.log("Stats:", data);
+      } else {
+        console.log("Failed to get pokemon stats data.");
+      }
+    }
+
+    var obj = JSON.parse(data)[0];
+    $("#comday-stats").show();
+
+    removeDataset(scanChart);
+    var scanData = {
+      data: [obj.total || 0, obj.with_iv || 0],
+      backgroundColor: [
+        'green',
+        'blue'
+      ],
+      label: 'Seen'
+    };
+    addDataset(scanChart, scanData);
+
+    removeDataset(levelChart);
+    var levelData = {
+      data: [
+        obj.level_1_9 || 0,
+        obj.level_10_19 || 0,
+        obj.level_20_29 || 0,
+        obj.level_30_35 || 0
+      ],
+      backgroundColor: [
+		  	'red',
+		  	'yellow',
+		  	'green',
+		  	'blue'
+		  ],
+		  label: 'Levels'
+    };
+    addDataset(levelChart, levelData);
+
+    removeDataset(ivChart);
+    addDataset(ivChart, { data: [obj.iv0], backgroundColor: 'black', label: '0% IV' });
+    addDataset(ivChart, { data: [obj.iv_1_49], backgroundColor: 'red', label: '1-49% IV' });
+    addDataset(ivChart, { data: [obj.iv_50_79], backgroundColor: 'blue', label: '50-79% IV' });
+    addDataset(ivChart, { data: [obj.iv_80_89], backgroundColor: 'yellow', label: '80-89% IV' });
+    addDataset(ivChart, { data: [obj.iv_90_99], backgroundColor: 'orange', label: '90-99% IV' });
+    addDataset(ivChart, { data: [obj.iv100], backgroundColor: 'green', label: '100% IV' });
+
+    $("#pkmn-title").text(pokedex[pokemonId] + " Scans");
+    $("#total-seen").text(numberWithCommas(obj.total || 0) + " seen");
+    $("#total-scanned").text(numberWithCommas(obj.with_iv || 0) + " scanned");
+    $("#iv100").text(obj.iv100 || 0);
+    $("#iv90").text(obj.iv90 || 0);
+    $("#iv0").text(obj.iv0 || 0);
+    $("#total-male").text(numberWithCommas(obj.male || 0) + " (" + Math.round((obj.male / obj.total) * 100, 2) + "%)");
+    $("#total-female").text(numberWithCommas(obj.female || 0) + " (" + Math.round((obj.female / obj.total) * 100, 2) + "%)");
+
+    //TODO: Check if pokemon is a 3 stage evo
+    $("#evo1").attr("src", sprintf("<?=$config['urls']['images']['pokemon']?>", pokemonId));
+    $("#evo2").attr("src", sprintf("<?=$config['urls']['images']['pokemon']?>", parseInt(pokemonId) + 1));
+    $("#evo3").attr("src", sprintf("<?=$config['urls']['images']['pokemon']?>", parseInt(pokemonId) + 2));
+
+    $("#evo1-text").text(pokedex[pokemonId]);
+    $("#evo2-text").text(pokedex[parseInt(pokemonId) + 1]);
+    $("#evo3-text").text(pokedex[parseInt(pokemonId) + 2]);
+  });
+});
+
+
 $("#filter-raid-level").prop("disabled", true);
 $("[data-toggle='datepicker']").datepicker({
   autoHide: true,
@@ -111,6 +284,134 @@ filterPokemonChart();
 //$("[name='filter-raid-type']").change(filterRaidChart);
 $("#filter-raid-date").change(filterRaidChart);
 filterRaidChart();
+
+var pieOptions = {
+    responsive: true,
+    legend: false,
+    tooltips: true,
+    elements: {
+        arc: {
+            backgroundColor: colorize.bind(null, false, false),
+            hoverBackgroundColor: hoverColorize
+        }
+    },
+    animation: {
+		animateScale: true,
+		animateRotate: true
+	}
+};
+
+var barOptions = {
+	legend: {
+		position: 'bottom',
+	},
+    tooltips: true,
+	title: {
+		display: true,
+		text: 'IV Spread'
+	},
+	scales: {
+		yAxes: [{
+      ticks: {
+        beginAtZero: true,
+        stepSize: 25
+      }
+		}]
+	},
+  elements: {
+    rectangle: {
+      backgroundColor: colorize.bind(null, false, false),
+      borderColor: colorize.bind(null, true, false),
+      borderWidth: 2
+    }
+  }
+};
+
+var donutOptions = {
+  responsive: true,
+	legend: {
+		position: 'top',
+	},
+	title: {
+		display: true,
+		text: 'Level Spread'
+	},
+	animation: {
+		animateScale: true,
+		animateRotate: true
+	}
+};
+
+var scanChart = new Chart('scanChart', {
+  type: 'pie',
+  data: {
+    datasets: [],
+    labels: [
+      'Seen',
+      'Scanned'
+    ]
+  },
+   options: pieOptions
+});
+
+var levelChart = new Chart('levelChart', {
+  type: 'doughnut',
+  data: {
+    datasets: [],
+    labels: [
+      'Level 01-09',
+      'Level 10-19',
+      'Level 20-29',
+      'Level 30-35',
+    ]
+  },
+  options: donutOptions
+});
+
+var ivChart = new Chart('ivChart', {
+    type: 'bar',
+    data: {
+      datasets: []
+    },
+    options: barOptions
+});
+
+function addDataset(chart, data) {
+
+  chart.data.datasets.push(data);
+  chart.update();
+}
+
+function removeDataset(chart) {
+  //chart.data.datasets.shift();
+  chart.data.datasets = [];
+  //chart.data.labels.pop();
+  //chart.data.datasets.forEach((dataset) => {
+  //  dataset.data.pop();
+  //});
+  chart.update();
+}
+
+function colorize(opaque, hover, ctx) {
+    var v = ctx.dataset.data[ctx.dataIndex];
+    var c = v < -50 ? '#D60000'
+        : v < 0 ? '#F46300'
+        : v < 50 ? '#0358B6'
+        : '#44DE28';
+
+    var opacity = hover ? 1 - Math.abs(v / 150) - 0.2 : 1 - Math.abs(v / 150);
+
+    return opaque ? c : transparentize(c, opacity);
+}
+
+function hoverColorize(ctx) {
+    return colorize(false, true, ctx);
+}
+
+function transparentize(color, opacity) {
+	var alpha = opacity === undefined ? 0.5 : 1 - opacity;
+	return Color(color).alpha(alpha).rgbString();
+}
 
 function filterPokemonChart() {
   var date_filter = document.getElementById("filter-date").value;

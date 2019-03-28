@@ -123,5 +123,7 @@
     "stats_filter_pokemon": "Pokemon",
     "stats_filter_by": "Filter By",
     "stats_filter_by_pokemon": "Pokemon",
-    "stats_filter_by_level": "Level"
+    "stats_filter_by_level": "Level",
+    "stats_filter_date_start": "Start",
+    "stats_filter_date_end": "End"
 }
