@@ -13,6 +13,7 @@
   <div class='tab-content'>
     <div id='visual' class='tab-pane fade show active' role='tabpanel'>
       <button id="nest-refresh" class="btn btn-secondary m-2" data-i18n='nests_button_refresh'>Refresh Nests</button>
+      <button id="getAllNests" class="btn btn-secondary m-2" data-i18n='nests_button_report'>Nests Report</button>
       <div id='mapid' style='width: 100%; height: 600px;'></div>
       <div class="modal" id="modalSpawnReport" tabindex="-1" role="dialog" aria-labelledby='nestModalLabel' aria-hidden='true'>
         <div class="modal-dialog" role="document">
@@ -22,10 +23,11 @@
               <button type="button" class="close closeModal" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
-            </div>
+            </div>  
             <div class="modal-body">
-              <table class="table table-sm" id="spawnReportTable">
-                <thead>
+              <div style="height: 450px !important; overflow-y: scroll;">
+              <table class='table table-sm table-<?=$config['ui']['table']['style']?> <?=($config['ui']['table']['striped'] ? 'table-striped' : null)?>' id="spawnReportTable">
+                <thead class='thead-<?=$config['ui']['table']['headerStyle']?>'>
                   <tr>
                     <th scope="col" data-i18n='nests_column_pokemon'>Pokemon</th>
                     <th scope="col" data-i18n='nests_column_count'>Count</th>
@@ -38,9 +40,12 @@
                 <tbody>
                 </tbody>
               </table>
+              </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-primary closeModal" data-dismiss="modal" data-i18n='nests_modal_close'>Close</button>
+              <span id='nestsComplete' class='text-left'></span>
+              <button id="exportNests" class="btn btn-primary m-2" data-i18n='nests_button_export'>Export Nests</button>
+              <button type="button" class="btn btn-secondary closeModal" data-dismiss="modal" data-i18n='nests_modal_close'>Close</button>
             </div>
           </div>
         </div>
@@ -55,6 +60,17 @@
     </div>
 
     <div id='table' class='tab-pane fade' role='tabpanel'>
+      <table class='table table-sm table-<?=$config['ui']['table']['style']?> <?=($config['ui']['table']['striped'] ? 'table-striped' : null)?>' id="nestReportTable">
+        <thead class='thead-<?=$config['ui']['table']['headerStyle']?>'>
+          <tr>
+            <th scope="col" data-i18n='nests_column_park'>Park</th>
+            <th scope="col" data-i18n='nests_column_pokemon'>Pokemon</th>
+            <th scope="col" data-i18n='nests_column_count'>Count</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
     </div>
 
     <div id='pmsf' class='tab-pane fade' role='tabpanel'>
@@ -68,8 +84,6 @@
 <script type='text/javascript' src="https://cdn.jsdelivr.net/npm/@turf/turf@5/turf.min.js"></script>
 <script type='text/javascript' src="https://cdn.jsdelivr.net/npm/osmtogeojson@3.0.0-beta.3/osmtogeojson.js"></script>
 
-<!--<script type='text/javascript' src='./static/js/jquery.i18n.js'></script>
-<script type='text/javascript' src='./static/js/jquery.i18n.messagestore.js'></script>-->
 <script type='text/javascript'>
 /*
 $('#modalSpawnReport').on('hidden.bs.modal', function(event) {
@@ -120,9 +134,7 @@ nestLayer.addTo(mymap);
 
 getNests();
 
-$("#nest-refresh").on("click", function() {
-  getNests();
-});
+$("#nest-refresh").on("click", getNests);
 
 $(document).on("click", ".getSpawnReport", function() {
   var id = $(this).attr('data-layer-id');
@@ -136,6 +148,8 @@ $(document).on("click", ".getSpawnReport", function() {
 
   getSpawnReport(layer);
 });
+
+$('#getAllNests').on('click', getAllNestsReport);
 
 function getNests() {//p1_lat, p1_lon, p2_lat, p2_lon) {
   nestLayer.clearLayers();
@@ -202,9 +216,9 @@ function getNests() {//p1_lat, p1_lon, p2_lat, p2_lon) {
             var name = '<div class="input-group mb-3 nestName"><span style="padding: .375rem .75rem; width: 100%">Nest: ' + layer.tags.name + '</span></div>';
           }
           var output = name +
-                  '<div class="input-group mb-3"><button class="btn btn-secondary btn-sm getSpawnReport" data-layer-container="nestLayer" data-layer-id=' +
+                  '<div class="input-group mb-3 justify-content-center"><button class="btn btn-secondary btn-sm getSpawnReport" data-layer-container="nestLayer" data-layer-id=' +
                   layer._leaflet_id +
-                  ' type="button">Go!</button><div class="input-group-append"><span style="padding: .375rem .75rem;" data-i18n="nests_button_spawn_report">Get spawn report</span></div></div>';/* +
+                  ' type="button">Get Spawn Report</button><div class="input-group-append"></div></div>';/* +
                   '<div class="input-group mb-3"><button class="btn btn-secondary btn-sm deleteLayer" data-layer-container="nestLayer" data-layer-id=' +
                   layer._leaflet_id +
                   ' type="button">Go!</button><div class="input-group-append"><span style="padding: .375rem .75rem;">Remove from map</span></div></div>' +
@@ -224,17 +238,7 @@ function getNests() {//p1_lat, p1_lon, p2_lat, p2_lon) {
 function getSpawnReport(layer) {
   var poly = layer.toGeoJSON();
   var coords = poly.geometry.coordinates;
-  var flatCoords = "";
-  for (var i = 0; i < coords[0].length; i++) {
-    var coord = coords[0][i];
-    if (typeof coord[0] !== 'undefined' && typeof coord[1] !== 'undefined') {
-      flatCoords += coord[1] + " " + coord[0];
-      if (i == coords[0].length - 1) {
-        break;
-      }
-      flatCoords += ",";
-    }
-  };
+  var flatCoords = flattenCoordinates(coords);
   const data = {
     'coordinates': flatCoords,
     'nest_migration_timestamp': lastMigrationDate.getTime() / 1000,
@@ -282,6 +286,120 @@ function getSpawnReport(layer) {
       console.log("ERROR:", data);
     }
   });
+}
+
+$('#exportNests').on('click', function() {
+  nests.sort(function(a, b) {
+    var nameA = a.park.toLowerCase();
+    var nameB = b.park.toLowerCase();
+    if (nameA < nameB) {
+      return -1;
+    }
+    if (nameA > nameB) {
+      return 1;
+    }
+    return 0;
+  });
+  var text = "data:text/csv;charset=utf-8,";
+  nests.forEach(function(nest) {
+    var gmapsUrl = "\"https://maps.google.com/maps?q=" + nest.lat + "," + nest.lon + "\"";
+    text += nest.nest + "," + nest.pokemon + "," + nest.count + "," + gmapsUrl + "\r\n";
+  });
+  var encodedUri = encodeURI(text);
+  window.open(encodedUri);
+});
+
+var nests = [];
+function getAllNestsReport() {
+  var nestMigrationDate = lastMigrationDate.getTime() / 1000;  
+  var missedCount = 0;
+  nests = [];
+  nestLayer.eachLayer(function(layer) {
+    var center = layer.getBounds().getCenter()
+    var poly = layer.toGeoJSON();
+    var coords = poly.geometry.coordinates;
+    var flatCoords = flattenCoordinates(coords);
+    const data = {
+      'coordinates': flatCoords,
+      'nest_migration_timestamp': lastMigrationDate.getTime() / 1000,
+      'spawn_report_limit': 1,
+    };
+    
+    var tmp = createToken();
+    $.ajax({
+      beforeSend: function() {
+        $("#modalLoading").modal('show');
+      },
+      url: 'api.php',
+      type: 'POST',
+      dataType: 'json',
+      data: JSON.stringify({'data': data, 'type': 'nests', 'token': tmp}),
+      success: function (result) {
+        tmp = null;
+        if (debug) {
+          if (result === 0) {
+            console.log("Failed to get nest spawn report data.");
+            return;
+          } else {
+            if (result.error) {
+              console.log("ERROR:", result.message);
+              return;
+            } else {
+              console.log("Spawn report:", result);
+            }
+          }
+        }
+        if (result.spawns !== null) {
+          /*
+          if (typeof layer.tags.name !== 'undefined' && typeof result.spawns !== 'undefined') {
+            $('#spawnReportTable > tbody:last-child').append('<tr><td colspan="2"><strong>' + layer.tags.name + '</strong> <em style="font-size:xx-small">at ' + center.lat.toFixed(4) + ', ' + center.lng.toFixed(4) + '</em></td></tr>');
+          } else {
+            $('#spawnReportTable > tbody:last-child').append('<tr><td colspan="2"><strong>Unnamed</strong> at <em style="font-size:xx-small">' + center.lat.toFixed(4) + ', ' + center.lng.toFixed(4) + '</em></td></tr>');
+          }
+          */
+          if (typeof result.spawns !== 'undefined') {
+            result.spawns.forEach(function(item) {
+              //$('#spawnReportTable > tbody:last-child').append('<tr><td>' + pokedex[item.pokemon_id] + '</td><td>' + item.count + '</td></tr>');
+              $('#spawnReportTable > tbody:last-child').append('<tr><td><strong>' + layer.tags.name + '</strong> <em style="font-size:xx-small">at ' + center.lat.toFixed(4) + ', ' + center.lng.toFixed(4) + '</em></td><td>' + pokedex[item.pokemon_id] + '</td><td>' + item.count + '</td></tr>');
+              $('#nestReportTable > tbody:last-child').append('<tr><td><strong>' + layer.tags.name + '</strong> <em style="font-size:xx-small">at ' + center.lat.toFixed(4) + ', ' + center.lng.toFixed(4) + '</em></td><td>' + pokedex[item.pokemon_id] + '</td><td>' + item.count + '</td></tr>');
+              nests.push({nest: layer.tags.name, pokemon: pokedex[item.pokemon_id], count: item.count, lat: center.lat.toFixed(4), lon: center.lng.toFixed(4)});
+            });
+          }
+        } /*else {
+          if (typeof layer.tags.name !== 'undefined') {
+            $('#spawnReportTableMissed > tbody:last-child').append('<tr><td colspan="2"><em style="font-size:xx-small"><strong>' + layer.tags.name + '</strong>  at ' + center.lat.toFixed(4) + ', ' + center.lng.toFixed(4) + ' skipped, no data</em></td></tr>');
+          } else {
+            $('#spawnReportTableMissed > tbody:last-child').append('<tr><td colspan="2"><em style="font-size:xx-small"><strong>Unnamed</strong> at ' + center.lat.toFixed(4) + ', ' + center.lng.toFixed(4) + ' skipped, no data</em></td></tr>');
+          }
+        }*/
+      },
+      complete: function() {
+        $("#modalLoading").modal('hide');
+        $('#modalSpawnReport  .modal-title').text('Nest Report - All Nests in View');
+        $('#modalSpawnReport').modal('show');
+      },
+      error: function(data) {
+        console.log("ERROR:", data);
+      }
+    });
+  });
+  //$('#nestsComplete').show();
+  $('#nestsComplete').text('Complete!');
+}
+
+function flattenCoordinates(coords) {
+  var flatCoords = "";
+  for (var i = 0; i < coords[0].length; i++) {
+    var coord = coords[0][i];
+    if (typeof coord[0] !== 'undefined' && typeof coord[1] !== 'undefined') {
+      flatCoords += coord[1] + " " + coord[0];
+      if (i == coords[0].length - 1) {
+        break;
+      }
+      flatCoords += ",";
+    }
+  }
+  return flatCoords;
 }
 
 function createToken() {

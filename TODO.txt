@@ -14,7 +14,8 @@
 - Use prepared statements
 - Config option to not show Unknown raids/gyms/quests in tables
 - Heatmaps
-- CD stats
-- Tab pages for nests (Visual/Table/PMSF)
 - Config option to use PMSF nest db
 - Finish locale translation for comday stats page
+- Finish locale translation for nests page
+- Get city for each nest report
+- Find all nests for table without map
