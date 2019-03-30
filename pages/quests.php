@@ -397,7 +397,7 @@ function get_item($item_id) {
         case 202://Max_Revive
             return "Max Revive";
         case 301://Lucky_Egg
-            return "Luck Egg";
+            return "Lucky Egg";
         case 401://Incense_Ordinary
             return "Incense";
         case 402://Incense_Spicy

@@ -60,7 +60,31 @@ $html = "
       <progress id='raid-animation' max='1' value='0' style='width: 100%'></progress>
     </div>
     <div id='quests' class='tab-pane fade' role='tabpanel'>
+      <div class='container'>
+        <div class='row'>
+          <div class='input-group mb-3'>
+            <div class='input-group-prepend'>
+              <label class='input-group-text' for='filter-quest-date' data-i18n='stats_filter_date'>Date</label>
+            </div>
+            <input id='filter-quest-date' type='text' class='form-control' data-toggle='datepicker'>
+            <div class='input-group-prepend'>
+              <label class='input-group-text' for='filter-reward' data-i18n='stats_filter_reward'>Reward</label>
+            </div>
+            <select id='filter-reward' class='custom-select' disabled>
+              <option disabled selected>Select</option>
+              <option value='all'>All</option>";
+              foreach ($pokedex as $pokemon_id => $name) {
+                if ($pokemon_id <= 0)
+                  continue;
+                $html .= "<option value='$pokemon_id'>$name</option>";
+              }
+              $html .= "
+            </select>
+          </div>
+        </div>
+      </div>
       <canvas id='quest-stats'></canvas>
+      <progress id='quest-animation' max='1' value='0' style='width: 100%'></progress>
     </div>
     <div id='comday' class='tab-pane fade' role='tabpanel'>
       <div class='container'>
@@ -180,6 +204,14 @@ raidChart = new Chart(raidCtx, {
 });
 $("#raid-stats").hide();
 
+var questProgress = document.getElementById("quest-animation");
+var questCtx = $("#quest-stats");
+questChart = new Chart(questCtx, {
+  type: 'bar',
+  options: createChartOptions("Field Research Statistics", "Reward", "Scanned", questProgress, "quest-stats")
+});
+$("#quest-stats").hide();
+
 $("#comday-stats").hide();
 
 $("[data-toggle='datetimepicker']").flatpickr({
@@ -276,6 +308,7 @@ $("[data-toggle='datepicker']").datepicker({
 });
 $("#filter-date").datepicker("setDate", new Date());
 $("#filter-raid-date").datepicker("setDate", new Date());
+$("#filter-quest-date").datepicker("setDate", new Date());
 
 $("#filter-date").change(filterPokemonChart);
 $("#filter-pokemon").change(filterPokemonChart);
@@ -284,6 +317,10 @@ filterPokemonChart();
 //$("[name='filter-raid-type']").change(filterRaidChart);
 $("#filter-raid-date").change(filterRaidChart);
 filterRaidChart();
+
+$("#filter-quest-date").change(filterQuestChart);
+$("#filter-reward").change(filterQuestChart);
+filterQuestChart();
 
 var pieOptions = {
     responsive: true,
@@ -434,6 +471,18 @@ function filterRaidChart() {
   }
 }
 
+function filterQuestChart() {
+  var date_filter = document.getElementById("filter-quest-date").value;
+  var reward_filter = document.getElementById("filter-reward").value;
+  if (reward_filter.toLowerCase().indexOf("select") === 0) {
+    reward_filter = "all";
+  }
+  if (date_filter != null) {
+    console.log("Updating quest chart...");
+    updateQuestChart(questChart, date_filter, reward_filter);
+  }
+}
+
 function updatePokemonChart(chart, dateFilter, pokeFilter) {
   console.log("Date:", dateFilter, "Pokemon:", pokeFilter);
   var tmp = createToken();
@@ -489,6 +538,40 @@ function updateRaidChart(chart, dateFilter, typeFilter) {
     chart.data = createChartData("Seen", pokemon, amounts);
     chart.update();
     console.log("Raid chart updated");
+  });
+}
+
+function updateQuestChart(chart, dateFilter, rewardFilter) {
+  console.log("Date:", dateFilter, "Reward:", rewardFilter);
+  var tmp = createToken();
+  sendRequest({ "table": "quest_stats", "token": tmp }, function(data, status) {
+    tmp = null;
+    if (debug) {
+      if (data !== false) {
+        console.log("Quests:", data);
+      } else {
+        console.log("Failed to get quest stats data.");
+      }
+    }
+    var rewards = [];
+    var amounts = [];
+    var obj = JSON.parse(data);
+    obj.forEach(stat => {
+      if (stat.date === dateFilter) {
+        if (stat.reward_type == 7) {
+          rewards.push(pokedex[stat.pokemon_id]);
+          amounts.push(stat.count);
+        } else {
+          rewards.push(get_item(stat.item_id));
+          amounts.push(stat.count);
+        }
+      }
+    });
+
+    clearChartData(chart);
+    chart.data = createChartData("Scanned", rewards, amounts);
+    chart.update();
+    console.log("Quest chart updated");
   });
 }
 
@@ -553,6 +636,107 @@ function clearChartData(chart) {
   chart.data.datasets.forEach((dataset) => {
     dataset.data.pop();
   });
+}
+
+function get_item($item_id) {
+    switch (parseInt($item_id)) {
+        case 1://Poke_Ball
+            return "Poke Ball";
+        case 2://Great_Ball
+            return "Great Ball";
+        case 3://Ultra_Ball
+            return "Ultra Ball";
+        case 4://Master_Ball
+            return "Master Ball";
+        case 5://Premier_Ball
+            return "Premier Ball";
+        case 101://Potion
+            return "Potion";
+        case 102://Super_Potion
+            return "Super Potion";
+        case 103://Hyper_Potion
+            return "Hyper Potion";
+        case 104://Max_Potion
+            return "Max Potion";
+        case 201://Revive
+            return "Revive";
+        case 202://Max_Revive
+            return "Max Revive";
+        case 301://Lucky_Egg
+            return "Lucky Egg";
+        case 401://Incense_Ordinary
+            return "Incense";
+        case 402://Incense_Spicy
+            return "Incense Spicy";
+        case 403://Incense_Cool
+            return "Incense Cool";
+        case 404://Incense_Floral
+            return "Incense Floral";
+        case 501://Troy_Disk
+            return "Troy Disk";
+        case 602://X_Attack
+            return "X Attack";
+        case 603://X_Defense
+            return "X Defense";
+        case 604://X_Miracle
+            return "X Miracle";
+        case 701://Razz_Berry
+            return "Razz Berry";
+        case 702://Bluk_Berry
+            return "Bluk Berry";
+        case 703://Nanab_Berry
+            return "Nanab Berry";
+        case 704://Wepar_Berry
+            return "Wepar Berry";
+        case 705://Pinap_Berry
+            return "Pinap Berry";
+        case 706://Golden_Razz_Berry
+            return "Golden Razz Berry";
+        case 707://Golden_Nanab_Berry
+            return "Golden Nanab Berry";
+        case 708://Golden_Pinap_Berry
+            return "Golden Pinap Berry";
+        case 701://Special_Camera
+            return "Special Camera";
+        case 901://Incubator_Basic_Unlimited
+            return "Incubator (Unlimited)";
+        case 902://Incubator_Basic
+            return "Incubator";
+        case 903://Incubator_Super
+            return "Super Incubator";
+        case 1001://Pokemon_Storage_Upgrade
+            return "Pokemon Storage Upgrade";
+        case 1002://Item_Storage_Upgrade
+            return "Item Storage Upgrade";
+        case 1101://Sun_Stone
+            return "Sun Stone";
+        case 1102://Kings_Rock
+            return "Kings Rock";
+        case 1103://Metal_Coat
+            return "Metal Coat";
+        case 1104://Dragon_Scale
+            return "Dragon Scale";
+        case 1105://Upgrade
+            return "Upgrade";
+        case 1201://Move_Reroll_Fast_Attack
+            return "Move Reroll Fast Attack";
+        case 1202://Move_Reroll_Special_Attack
+            return "Move Reroll Special Attack";
+        case 1301://Rare_Candy
+            return "Rare Candy";
+        case 1401://Free_Raid_Ticket
+            return "Free Raid Ticket";
+        case 1402://Paid_Raid_Ticket
+            return "Paid Raid Ticket";
+        case 1403://Legendary_Raid_Ticket
+            return "Legendary Raid Ticket";
+        case 1404://Star_Piece
+            return "Star Piece";
+        case 1405://Friend_Gift_Box
+            return "Friend Gift Box";
+        default:
+            return "Unknown";
+    }
 }
 
 function createToken() {

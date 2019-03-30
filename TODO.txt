@@ -5,7 +5,6 @@
 - Switch tables to DataTables library
 - Add lifetime stats (Tabs: lifetime and by date)
 - Fix auto removal of raid upon ending
-- Add quest stats
 - Add more stats about tth 60 min, 30 min
 - Move all javascript libs to bottom of index page
 - Add pagination
