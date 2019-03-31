@@ -168,9 +168,28 @@ function getNests() {//p1_lat, p1_lon, p2_lat, p2_lon) {
     '[date:"' + queryDate + '"]'
   ].join('');
   var queryNestWays = [
+/*
     'way["leisure"="park"];',
     'way["leisure"="recreation_ground"];',
     'way["landuse"="recreation_ground"];'
+*/
+     'way["landuse"="farmland"];',
+     'way["landuse"="farmyard"];',
+     'way["landuse"="grass"];',
+     'way["landuse"="greenfield"];',
+     'way["landuse"="meadow"];',
+     'way["landuse"="orchard"];',
+     'way["landuse"="recreation_ground"];',
+     'way["landuse"="vineyard"];',
+     'way["leisure"="garden"];',
+     'way["leisure"="golf_course"];',
+     'way["leisure"="park"];',
+     'way["leisure"="pitch"];',
+     'way["leisure"="playground"];',
+     'way["leisure"="recreation_ground"];',
+     'way["natural"="grassland"];',
+     'way["natural"="heath"];',
+     'way["natural"="scrub"];'
   ].join('');
   var overPassQuery = queryOptions + ';(' + queryNestWays + ')' + ';out;>;out skel qt;';
   var debug = true;
@@ -264,7 +283,7 @@ function getSpawnReport(layer) {
           console.log("Spawn report:", result);
         }
       }
-      if (result.spawns !== null) {
+      if (result.spawns !== null && typeof result.spawns !== 'undefined') {
         result.spawns.forEach(function(item) {
           if (typeof layer.tags !== 'undefined') {
             $('#modalSpawnReport  .modal-title').text($.i18n('nests_modal_spawn_report') + ' - ' + layer.tags.name);
@@ -272,7 +291,7 @@ function getSpawnReport(layer) {
           $('#spawnReportTable > tbody:last-child').append('<tr><td><img src="' + sprintf("<?=$config['urls']['images']['pokemon']?>", item.pokemon_id) + '" width=32 height=32 />&nbsp;' + pokedex[item.pokemon_id] + '</td><td>' + item.count + '</td></tr>');
         });
       } else {
-          if (typeof layer.tags !== 'undefined') {
+        if (typeof layer.tags !== 'undefined') {
           $('#modalSpawnReport  .modal-title').text($.i18n('nests_modal_spawn_report') + ' - ' + layer.tags.name);
         }
         $('#spawnReportTable > tbody:last-child').append('<tr><td colspan="2" data-i18n="nests_no_data_available"></td></tr>');
