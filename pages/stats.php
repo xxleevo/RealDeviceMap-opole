@@ -347,6 +347,8 @@ var barOptions = {
 		display: true,
 		text: 'IV Spread'
 	},
+  tooltips: { mode: "nearest", intersect: false, },
+  hover: { mode: "nearest", intersect: true },
 	scales: {
 		yAxes: [{
       ticks: {
@@ -556,12 +558,17 @@ function updateQuestChart(chart, dateFilter, rewardFilter) {
     var rewards = [];
     var amounts = [];
     var obj = JSON.parse(data);
+    //removeDataset(chart);
     obj.forEach(stat => {
       if (stat.date === dateFilter) {
+        //var color = getRandomColor();
+        //Pokemon encounter
         if (stat.reward_type == 7) {
+          //addDataset(chart, { data: [stat.count], backgroundColor: color, label: pokedex[stat.pokemon_id] });
           rewards.push(pokedex[stat.pokemon_id]);
           amounts.push(stat.count);
         } else {
+          //addDataset(chart, { data: [stat.count], backgroundColor: color, label: get_item(stat.item_id) });
           rewards.push(get_item(stat.item_id));
           amounts.push(stat.count);
         }
@@ -579,7 +586,7 @@ function createChartOptions(title, xAxesLabel, yAxesLabel, progress, canvasId) {
   var chartOptions = {
     responsive: true,
     title: { display: true, text: title, fontSize: 18, fontColor: "#111" },
-    tooltips: { mode: "index", intersect: false, },
+    tooltips: { mode: "nearest", intersect: false, },
     hover: { mode: "nearest", intersect: true },
     scales: {
       xAxes: [{
