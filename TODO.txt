@@ -10,7 +10,6 @@
 - Fix issue with hiding a column and filtering.
 - Finish new raid display markup.
 - Use prepared statements
-- Config option to not show Unknown raids/gyms/quests in tables
 - Heatmaps
 - Config option to use PMSF nest db
 - Finish locale translation for comday stats page

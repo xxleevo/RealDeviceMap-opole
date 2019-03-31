@@ -58,6 +58,9 @@ for ($i = 0; $i < $count; $i++) {
     $starts = date($config['core']['dateTimeFormat'], $raid['raid_battle_timestamp']);
     $ends = date($config['core']['dateTimeFormat'], $raid['raid_end_timestamp']);
     $geofence = $geofenceSrvc->get_geofence($raid['lat'], $raid['lon']);
+    if ($geofence == null && $config['ui']['pages']['raids']['ignoreUnknown'] !== false) {
+        continue;
+    }
     $city = ($geofence == null ? $config['ui']['unknownValue'] : $geofence->name);
     $map_link = sprintf($config['google']['maps'], $raid["lat"], $raid["lon"]);
     $pokemon_id = $raid['raid_pokemon_id'];

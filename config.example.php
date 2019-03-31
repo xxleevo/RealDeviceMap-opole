@@ -73,15 +73,18 @@ $config = [
       ],
       "raids" => [
         "enabled" => true, //Shows/hides raids page
-        "discordRoles" => [] //Requires specific discord role, otherwise leave empty as []
+        "discordRoles" => [], //Requires specific discord role, otherwise leave empty as []
+        "ignoreUnknown" => false
       ],
       "gyms" => [
         "enabled" => true, //Shows/hides gyms page
-        "discordRoles" => [] //Requires specific discord role, otherwise leave empty as []
+        "discordRoles" => [], //Requires specific discord role, otherwise leave empty as []
+        "ignoreUnknown" => false
       ],
       "quests" => [
         "enabled" => true, //Shows/hides gyms page
-        "discordRoles" => [] //Requires specific discord role, otherwise leave empty as []
+        "discordRoles" => [], //Requires specific discord role, otherwise leave empty as []
+        "ignoreUnknown" => false
       ],
       "pokestops" => [
         "enabled" => true, //Shows/hides gyms page

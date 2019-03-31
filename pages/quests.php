@@ -141,6 +141,9 @@ WHERE
         echo "</thead>";
         while ($row = $result->fetch()) {	
             $geofence = $geofenceSrvc->get_geofence($row['lat'], $row['lon']);
+            if ($geofence == null && $config['ui']['pages']['quests']['ignoreUnknown'] !== false) {
+                continue;
+            }
             $city = ($geofence == null ? $config['ui']['unknownValue'] : $geofence->name);
             $map_link = sprintf($config['google']['maps'], $row["lat"], $row["lon"]);
 
