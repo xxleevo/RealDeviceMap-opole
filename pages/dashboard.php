@@ -295,10 +295,11 @@ function getStats() {
       }
     }
     var obj = JSON.parse(data);
+    var percentage = Math.round(((obj.tth_found / obj.tth_total) * 100), 2);
     updateCounter(".spawnpoint-count", obj.tth_total);
     updateCounter(".found-spawnpoint-count", obj.tth_found);
     updateCounter(".missing-spawnpoint-count", obj.tth_missing);
-    updateCounter(".percentage-spawnpoint-count", obj.tth_percentage);
+    updateCounter(".percentage-spawnpoint-count", percentage);
   });
 
   tmp = createToken();

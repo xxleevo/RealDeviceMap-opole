@@ -110,8 +110,8 @@ if (!(isset($data['type']) && !empty($data['type']))) {
                     $obj = [
                         "tth_total" => $spawnpointStats === 0 ? 0 : $spawnpointStats["total"],
                         "tth_found" => $spawnpointStats === 0 ? 0 : $spawnpointStats["found"],
-                        "tth_missing" => $spawnpointStats === 0 ? 0 : $spawnpointStats["missing"],
-                        "tth_percentage" => $spawnpointStats === 0 ? 0 : $spawnpointStats["percentage"],
+                        "tth_missing" => $spawnpointStats === 0 ? 0 : $spawnpointStats["missing"]
+                        //"tth_percentage" => $spawnpointStats === 0 ? 0 : $spawnpointStats["percentage"],
                     ];
                     echo json_encode($obj);
                     break;

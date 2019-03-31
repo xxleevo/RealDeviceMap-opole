@@ -106,15 +106,13 @@ function get_spawnpoint_stats() {
     $pdo = $db->getConnection();
     $sql = "
 SELECT 
-  (SELECT COUNT(id) FROM spawnpoint) AS total, 
-  (SELECT COUNT(id) FROM spawnpoint WHERE despawn_sec IS NOT NULL) AS found,
-  (SELECT COUNT(id) FROM spawnpoint WHERE despawn_sec IS NULL) AS missing,
-  ROUND(((SELECT found)/(SELECT total) * 100 ), 2) AS percentage
+  COUNT(id) AS total,
+  SUM(despawn_sec IS NOT NULL) AS found,
+  SUM(despawn_sec IS NULL) AS missing
 FROM
   spawnpoint
-LIMIT
-  1
 ";
+//ROUND(((SELECT found)/(SELECT total) * 100 ), 2) AS percentage
     $result = $pdo->query($sql);
     if ($result->rowCount() > 0) {
         $data = $result->fetchAll()[0];
@@ -131,14 +129,12 @@ function get_pokemon_stats() {
     $pdo = $db->getConnection();
     $sql = "
 SELECT
-  (SELECT COUNT(id) FROM pokemon) AS total,
-  (SELECT COUNT(id) FROM pokemon WHERE expire_timestamp >= UNIX_TIMESTAMP()) AS active,
-  (SELECT COUNT(id) FROM pokemon WHERE iv IS NOT NULL) AS iv_total,
-  (SELECT COUNT(id) FROM pokemon WHERE iv IS NOT NULL && expire_timestamp >= UNIX_TIMESTAMP()) AS iv_active
+  COUNT(id) AS total,
+  SUM(expire_timestamp >= UNIX_TIMESTAMP()) AS active,
+  SUM(iv IS NOT NULL) AS iv_total,
+  SUM(iv IS NOT NULL && expire_timestamp >= UNIX_TIMESTAMP()) AS iv_active
 FROM
   pokemon
-LIMIT
-  1
 ";
     $result = $pdo->query($sql);
     if ($result->rowCount() > 0) {
