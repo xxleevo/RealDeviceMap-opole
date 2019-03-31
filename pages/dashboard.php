@@ -184,32 +184,46 @@ $html = "
   <div class='card-body'>
     <div class='container'>
       <div class='row'>
-        <div class='col-md-3'>
+        <div class='col-lg-4 p-1'>
           <a class='list-group-item'>
             <h3 class='pull-right'><img src='./static/images/spawnpoint.png' width='64' height='64'/></h3>
             <h4 class='list-group-item-heading spawnpoint-count'>0</h4>
             <p class='list-group-item-text' data-i18n='dashboard_tth_total'>Total</p>
           </a>
         </div>
-        <div class='col-md-3'>
+        <div class='col-lg-4 p-1'>
           <a class='list-group-item'>
             <h3 class='pull-right'><img src='./static/images/found.png' width='64' height='64'/></h3>
             <h4 class='list-group-item-heading found-spawnpoint-count'>0</h4>
             <p class='list-group-item-text' data-i18n='dashboard_tth_found'>Found</p>
           </a>
         </div>
-        <div class='col-md-3'>
+        <div class='col-lg-4 p-1'>
           <a class='list-group-item'>
             <h3 class='pull-right'><img src='./static/images/missing.png' width='64' height='64'/></h3>
             <h4 class='list-group-item-heading missing-spawnpoint-count'>0</h4>
             <p class='list-group-item-text' data-i18n='dashboard_tth_missing'>Missing</p>
           </a>
         </div>
-        <div class='col-md-3'>
+        <div class='col-lg-4 p-1'>
           <a class='list-group-item'>
             <h3 class='pull-right'><img src='./static/images/percentage.png' width='64' height='64'/></h3>
             <h4 class='list-group-item-heading percentage-spawnpoint-count'>0%</h4>
             <p class='list-group-item-text' data-i18n='dashboard_tth_percentage'>Percentage</p>
+          </a>
+        </div>
+        <div class='col-lg-4 p-1'>
+          <a class='list-group-item'>
+            <h3 class='pull-right'><img src='./static/images/30min.png' width='64' height='64'/></h3>
+            <h4 class='list-group-item-heading timer-30-min-count'>0%</h4>
+            <p class='list-group-item-text' data-i18n='dashboard_tth_30min'>30 min timers</p>
+          </a>
+        </div>
+        <div class='col-lg-4 p-1'>
+          <a class='list-group-item'>
+            <h3 class='pull-right'><img src='./static/images/60min.png' width='64' height='64'/></h3>
+            <h4 class='list-group-item-heading timer-60-min-count'>0%</h4>
+            <p class='list-group-item-text' data-i18n='dashboard_tth_60min'>60 min timers</p>
           </a>
         </div>
       </div>
@@ -300,6 +314,8 @@ function getStats() {
     updateCounter(".found-spawnpoint-count", obj.tth_found);
     updateCounter(".missing-spawnpoint-count", obj.tth_missing);
     updateCounter(".percentage-spawnpoint-count", percentage);
+    updateCounter(".timer-30-min-count", obj.tth_30min);
+    updateCounter(".timer-60-min-count", obj.tth_60min);
   });
 
   tmp = createToken();

@@ -5,7 +5,6 @@
 - Switch tables to DataTables library
 - Add lifetime stats (Tabs: lifetime and by date)
 - Fix auto removal of raid upon ending
-- Add more stats about tth 60 min, 30 min
 - Move all javascript libs to bottom of index page
 - Add pagination
 - Fix issue with hiding a column and filtering.

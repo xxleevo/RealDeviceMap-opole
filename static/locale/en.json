@@ -41,6 +41,8 @@
     "dashboard_tth_found": "Found",
     "dashboard_tth_missing": "Missing",
     "dashboard_tth_percentage": "Percentage",
+    "dashboard_tth_30min": "30 Minute Timers",
+    "dashboard_tth_60min": "60 Minute Timers",
     "pokemon_title": "Pokemon found in the wild!",
     "pokemon_filter_date": "Date",
     "pokemon_filter_pokemon": "Search Pokemon",
