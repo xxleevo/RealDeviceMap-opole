@@ -109,8 +109,8 @@ SELECT
   COUNT(id) AS total,
   SUM(despawn_sec IS NOT NULL) AS found,
   SUM(despawn_sec IS NULL) AS missing,
-  SUM(despawn_sec > 30) AS min30,
-  SUM(despawn_sec > 60) AS min60
+  SUM(despawn_sec <= 1800) AS min30,
+  SUM(despawn_sec > 1800) AS min60
 FROM
   spawnpoint
 ";
