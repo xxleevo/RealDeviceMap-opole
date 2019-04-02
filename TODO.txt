@@ -11,7 +11,7 @@
 - Finish new raid display markup.
 - Use prepared statements
 - Heatmaps
-- Config option to use PMSF nest db
+- Add search/filter to PMSF nests
 - Finish locale translation for comday stats page
 - Finish locale translation for nests page
 - Get city for each nest report

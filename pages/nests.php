@@ -1,5 +1,7 @@
 <?php
 require_once './config.php';
+require_once './includes/GeofenceService.php';
+require_once './static/data/pokedex.php';
 $osm = $config['ui']['pages']['nests']['type'] === 'osm';
 ?>
 
@@ -83,6 +85,8 @@ $osm = $config['ui']['pages']['nests']['type'] === 'osm';
 <?php
 
 if ($osm === false) {
+  $geofenceSrvc = new GeofenceService();
+
   // Establish connection to database
   $db = new DbConnector($config['ui']['pages']['nests']['db']);
   $pdo = $db->getConnection();
@@ -107,7 +111,6 @@ WHERE
 
     $result = $pdo->query($sql);
     if ($result->rowCount() > 0) {
-        echo $modal;
         echo "<div id='no-more-tables'>";
         echo "<table id='nest-table' class='table table-".$config['ui']['table']['style']." ".($config['ui']['table']['striped'] ? 'table-striped' : null)."' border='1'>";
         echo "<thead class='thead-".$config['ui']['table']['headerStyle']."'>";
