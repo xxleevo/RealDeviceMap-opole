@@ -113,9 +113,9 @@ WHERE
         echo "<thead class='thead-".$config['ui']['table']['headerStyle']."'>";
         echo "<tr class='text-nowrap'>";
             echo "<th class='park' data-i18n='nests_column_park'>Park</th>";
-            echo "<th class='slots' data-i18n='nests_column_pokemon'>Pokemon</th>";
-            echo "<th class='guard' data-i18n='nests_column_count'>Count</th>";
-            echo "<th class='battle data-i18n='nests_column_average'>Average</th>";
+            echo "<th class='pokemon' data-i18n='nests_column_pokemon'>Pokemon</th>";
+            echo "<th class='count' data-i18n='nests_column_count'>Count</th>";
+            echo "<th class='average' data-i18n='nests_column_average'>Average</th>";
             echo "<th class='city' data-i18n='nests_column_city'>City</th>";
             echo "<th class='updated' data-i18n='nests_column_updated'>Updated</th>";
         echo "</tr>";
