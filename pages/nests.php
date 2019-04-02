@@ -1,17 +1,23 @@
-<?php require_once './config.php'; ?>
+<?php
+require_once './config.php';
+$osm = $config['ui']['pages']['nests']['type'] === 'osm';
+?>
 
 <h2 class='page-header text-center' data-i18n='nests_title'>Neighborhood nests</h2>
 <p id="migration" class='text-center'></p>
 <ul class='nav nav-pills mb-3 justify-content-center' role='tablist'>
-  <li class='nav-item'><a class='nav-link active' role='tab' aria-controls='visual' aria-selected='true' data-toggle='pill' href='#visual' data-i18n='nests_tab_map'>Map</a></li>
+<?php if ($osm) { ?>
+  <li class='nav-item'><a class='nav-link <?=!$osm ? '' : 'active'?>' role='tab' aria-controls='visual' aria-selected='true' data-toggle='pill' href='#visual' data-i18n='nests_tab_map'>Map</a></li>
   <li class='nav-item'><a class='nav-link' role='tab' aria-controls='table' aria-selected='false' data-toggle='pill' href='#table' data-i18n='nests_tab_table'>Table</a></li>
-  <li class='nav-item'><a class='nav-link' role='tab' aria-controls='pmsf' aria-selected='false' data-toggle='pill' href='#pmsf' data-i18n='nests_tab_pmsf'>PMSF</a></li>
+<?php } else { ?>
+  <li class='nav-item'><a class='nav-link <?=$osm ? '' : 'active'?>' role='tab' aria-controls='pmsf' aria-selected='false' data-toggle='pill' href='#pmsf' data-i18n='nests_tab_pmsf'>PMSF</a></li>
+<?php } ?>
 </ul>
 
 <center>
 <div class='container m-2'>
   <div class='tab-content'>
-    <div id='visual' class='tab-pane fade show active' role='tabpanel'>
+    <div id='visual' class='tab-pane fade <?=!$osm ? '' : 'show active'?>' role='tabpanel'>
       <button id="nest-refresh" class="btn btn-secondary m-2" data-i18n='nests_button_refresh'>Refresh Nests</button>
       <button id="getAllNests" class="btn btn-secondary m-2" data-i18n='nests_button_report'>Nests Report</button>
       <div id='mapid' style='width: 100%; height: 600px;'></div>
@@ -73,7 +79,82 @@
       </table>
     </div>
 
-    <div id='pmsf' class='tab-pane fade' role='tabpanel'>
+    <div id='pmsf' class='tab-pane fade <?=$osm ? '' : 'show active'?>' role='tabpanel'>
+<?php
+
+if (!$osm) {
+// Establish connection to database
+$db = new DbConnector($config['ui']['pages']['nests']['db']);
+$pdo = $db->getConnection();
+
+// Query Database and Build Raid Billboard
+try {
+    $sql = "
+SELECT 
+  lat,
+  lon,
+  name,
+  pokemon_id,
+  pokemon_count,
+  pokemon_avg
+  updated
+FROM
+  nests
+WHERE
+  name IS NOT NULL
+  AND pokemon_count > 1;
+";
+
+    $result = $pdo->query($sql);
+    if ($result->rowCount() > 0) {
+        echo $modal;
+        echo "<div id='no-more-tables'>";
+        echo "<table id='gym-table' class='table table-".$config['ui']['table']['style']." ".($config['ui']['table']['striped'] ? 'table-striped' : null)."' border='1'>";
+        echo "<thead class='thead-".$config['ui']['table']['headerStyle']."'>";
+        echo "<tr class='text-nowrap'>";
+            echo "<th class='gym' data-i18n='nests_column_gym'>Park</th>";
+            echo "<th class='slots' data-i18n='nests_column_available_slots'>Pokemon</th>";
+            echo "<th class='guard' data-i18n='nests_column_guarding_pokemon'>Count</th>";
+            echo "<th class='battle data-i18n='nests_column_battle'>Average</th>";
+            echo "<th class='city' data-i18n='nests_column_city'>City</th>";
+            echo "<th class='updated' data-i18n='nests_column_updated'>Updated</th>";
+        echo "</tr>";
+        echo "</thead>";
+        while ($row = $result->fetch()) {	
+            $geofence = $geofenceSrvc->get_geofence($row['lat'], $row['lon']);
+            if ($geofence == null && $config['ui']['pages']['nests']['ignoreUnknown'] !== false) {
+                continue;
+            }
+            $city = ($geofence == null ? $config['ui']['unknownValue'] : $geofence->name);
+            $map_link = sprintf($config['google']['maps'], $row["lat"], $row["lon"]);
+            $pokemon_id = $row['pokemon_id'];
+            $pokemon = $pokedex[$pokemon_id];
+
+            echo "<tr class='text-nowrap'>";
+                echo "<td data-title='Park'><a href='" . $map_link . "' target='_blank'>" . $row['name'] . "</a></td>";
+                echo "<td data-title='Pokemon'><img src='" . sprintf($config['urls']['images']['pokemon'], $pokemon_id) . "' height=32 width=32 />&nbsp;" . $pokemon . "</td>";
+                echo "<td data-title='Count'>" . $row['pokemon_count'] . "</td>";
+                echo "<td data-title='Average'>" . $row['pokemon_avg'] . "</td>";
+                echo "<td data-title='City'>" . $city . "</td>";
+                echo "<td data-title='Updated'>" . date($config['core']['dateTimeFormat'], $row['updated']) . "</td>";
+            echo "</tr>";
+        }
+        echo "</table>";
+        echo "</div>";
+	  	
+        // Free result set
+        unset($result);
+    } else {
+        echo "<p>No nests found.</p>";
+    }
+} catch (PDOException $e) {
+    die("ERROR: Could not able to execute $sql. " . $e->getMessage());
+}
+// Close connection
+unset($pdo);
+unset($db);
+}
+?>
     </div>
   </div>
 </div>
@@ -132,7 +213,9 @@ var tileLayer = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.pn
 var nestLayer = new L.LayerGroup();
 nestLayer.addTo(mymap);
 
-getNests();
+if ('<?=$osm?>') {
+  getNests();
+}
 
 $("#nest-refresh").on("click", getNests);
 
@@ -173,23 +256,23 @@ function getNests() {//p1_lat, p1_lon, p2_lat, p2_lon) {
     'way["leisure"="recreation_ground"];',
     'way["landuse"="recreation_ground"];'
 */
-     'way["landuse"="farmland"];',
-     'way["landuse"="farmyard"];',
-     'way["landuse"="grass"];',
-     'way["landuse"="greenfield"];',
-     'way["landuse"="meadow"];',
-     'way["landuse"="orchard"];',
-     'way["landuse"="recreation_ground"];',
-     'way["landuse"="vineyard"];',
-     'way["leisure"="garden"];',
-     'way["leisure"="golf_course"];',
-     'way["leisure"="park"];',
-     'way["leisure"="pitch"];',
-     'way["leisure"="playground"];',
-     'way["leisure"="recreation_ground"];',
-     'way["natural"="grassland"];',
-     'way["natural"="heath"];',
-     'way["natural"="scrub"];'
+    'way["landuse"="farmland"];',
+    'way["landuse"="farmyard"];',
+    'way["landuse"="grass"];',
+    'way["landuse"="greenfield"];',
+    'way["landuse"="meadow"];',
+    'way["landuse"="orchard"];',
+    'way["landuse"="recreation_ground"];',
+    'way["landuse"="vineyard"];',
+    'way["leisure"="garden"];',
+    'way["leisure"="golf_course"];',
+    'way["leisure"="park"];',
+    'way["leisure"="pitch"];',
+    'way["leisure"="playground"];',
+    'way["leisure"="recreation_ground"];',
+    'way["natural"="grassland"];',
+    'way["natural"="heath"];',
+    'way["natural"="scrub"];'
   ].join('');
   var overPassQuery = queryOptions + ';(' + queryNestWays + ')' + ';out;>;out skel qt;';
   var debug = true;

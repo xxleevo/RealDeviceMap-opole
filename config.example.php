@@ -92,7 +92,17 @@ $config = [
       ],
       "nests" => [
         "enabled" => true, //Shows/hides gyms page
-        "discordRoles" => [] //Requires specific discord role, otherwise leave empty as []
+        "discordRoles" => [], //Requires specific discord role, otherwise leave empty as []
+        "ignoreUnknown",
+        "type" => "osm", //osm/pmsf
+        "db" => [ //PMSF manualdb information
+          "host" => "127.0.0.1", //PMSF database host name or IP address
+          "port" => "3306", //PMSF database port. (default: 3306)
+          "user" => "root", //PMSF database username.
+          "pass" => "password", //PMSF database user password.
+          "dbname" => "manualdb", //PMSF database name.
+          "charset" => "utf8mb4" //PMSF database character set. (default: utf8mb4)
+        ]
       ],
       "stats" => [
         "enabled" => true, //Shows/hides gyms page
