@@ -82,10 +82,10 @@ $osm = $config['ui']['pages']['nests']['type'] === 'osm';
     <div id='pmsf' class='tab-pane fade <?=$osm ? '' : 'show active'?>' role='tabpanel'>
 <?php
 
-if (!$osm) {
-// Establish connection to database
-$db = new DbConnector($config['ui']['pages']['nests']['db']);
-$pdo = $db->getConnection();
+if ($osm === false) {
+  // Establish connection to database
+  $db = new DbConnector($config['ui']['pages']['nests']['db']);
+  $pdo = $db->getConnection();
 
 // Query Database and Build Raid Billboard
 try {
@@ -96,7 +96,7 @@ SELECT
   name,
   pokemon_id,
   pokemon_count,
-  pokemon_avg
+  pokemon_avg,
   updated
 FROM
   nests
@@ -109,13 +109,13 @@ WHERE
     if ($result->rowCount() > 0) {
         echo $modal;
         echo "<div id='no-more-tables'>";
-        echo "<table id='gym-table' class='table table-".$config['ui']['table']['style']." ".($config['ui']['table']['striped'] ? 'table-striped' : null)."' border='1'>";
+        echo "<table id='nest-table' class='table table-".$config['ui']['table']['style']." ".($config['ui']['table']['striped'] ? 'table-striped' : null)."' border='1'>";
         echo "<thead class='thead-".$config['ui']['table']['headerStyle']."'>";
         echo "<tr class='text-nowrap'>";
-            echo "<th class='gym' data-i18n='nests_column_gym'>Park</th>";
-            echo "<th class='slots' data-i18n='nests_column_available_slots'>Pokemon</th>";
-            echo "<th class='guard' data-i18n='nests_column_guarding_pokemon'>Count</th>";
-            echo "<th class='battle data-i18n='nests_column_battle'>Average</th>";
+            echo "<th class='park' data-i18n='nests_column_park'>Park</th>";
+            echo "<th class='slots' data-i18n='nests_column_pokemon'>Pokemon</th>";
+            echo "<th class='guard' data-i18n='nests_column_count'>Count</th>";
+            echo "<th class='battle data-i18n='nests_column_average'>Average</th>";
             echo "<th class='city' data-i18n='nests_column_city'>City</th>";
             echo "<th class='updated' data-i18n='nests_column_updated'>Updated</th>";
         echo "</tr>";
