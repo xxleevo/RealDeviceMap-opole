@@ -106,7 +106,9 @@ FROM
   nests
 WHERE
   name IS NOT NULL
-  AND pokemon_count > 1;
+  AND pokemon_count > 1
+ORDER BY
+  pokemon_count DESC;
 ";
 
     $result = $pdo->query($sql);
