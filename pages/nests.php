@@ -12,7 +12,7 @@ $osm = $config['ui']['pages']['nests']['type'] === 'osm';
   <li class='nav-item'><a class='nav-link <?=!$osm ? '' : 'active'?>' role='tab' aria-controls='visual' aria-selected='true' data-toggle='pill' href='#visual' data-i18n='nests_tab_map'>Map</a></li>
   <li class='nav-item'><a class='nav-link' role='tab' aria-controls='table' aria-selected='false' data-toggle='pill' href='#table' data-i18n='nests_tab_table'>Table</a></li>
 <?php } else { ?>
-  <li class='nav-item'><a class='nav-link <?=$osm ? '' : 'active'?>' role='tab' aria-controls='pmsf' aria-selected='false' data-toggle='pill' href='#pmsf' data-i18n='nests_tab_pmsf'>PMSF</a></li>
+  <li class='nav-item'><a class='nav-link <?=$osm ? '' : 'active'?>' role='tab' aria-controls='pmsf' aria-selected='false' data-toggle='pill' href='#pmsf' data-i18n='nests_tab_pmsf' hidden>PMSF</a></li>
 <?php } ?>
 </ul>
 
