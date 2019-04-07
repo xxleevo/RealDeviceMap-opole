@@ -100,7 +100,7 @@ SELECT
   name,
   pokemon_id,
   pokemon_count,
-  pokemon_avg,
+  ROUND(pokemon_avg) AS avg,
   updated
 FROM
   nests
@@ -138,7 +138,7 @@ ORDER BY
                 echo "<td data-title='Park'><a href='" . $map_link . "' target='_blank'>" . $row['name'] . "</a></td>";
                 echo "<td data-title='Pokemon'><img src='" . sprintf($config['urls']['images']['pokemon'], $pokemon_id) . "' height=32 width=32 />&nbsp;" . $pokemon . "</td>";
                 echo "<td data-title='Count'>" . $row['pokemon_count'] . "</td>";
-                echo "<td data-title='Average'>" . $row['pokemon_avg'] . "</td>";
+                echo "<td data-title='Average'>" . $row['avg'] . "</td>";
                 echo "<td data-title='City'>" . $city . "</td>";
             echo "</tr>";
         }
