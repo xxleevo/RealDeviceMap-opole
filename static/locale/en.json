@@ -118,7 +118,6 @@
     "nests_column_count": "Count",
     "nests_column_average": "Average",
     "nests_column_city": "City",
-    "nests_column_updated": "Last Updated",
     "nests_button_spawn_report": "Get Spawn Report",
     "nests_button_export": "Export Nests",
     "nests_no_data_available": "No data available.",

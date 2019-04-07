@@ -120,7 +120,6 @@ WHERE
             echo "<th class='count' data-i18n='nests_column_count'>Count</th>";
             echo "<th class='average' data-i18n='nests_column_average'>Average</th>";
             echo "<th class='city' data-i18n='nests_column_city'>City</th>";
-            echo "<th class='updated' data-i18n='nests_column_updated'>Updated</th>";
         echo "</tr>";
         echo "</thead>";
         while ($row = $result->fetch()) {	
@@ -139,7 +138,6 @@ WHERE
                 echo "<td data-title='Count'>" . $row['pokemon_count'] . "</td>";
                 echo "<td data-title='Average'>" . $row['pokemon_avg'] . "</td>";
                 echo "<td data-title='City'>" . $city . "</td>";
-                echo "<td data-title='Updated'>" . date($config['core']['dateTimeFormat'], $row['updated']) . "</td>";
             echo "</tr>";
         }
         echo "</table>";
