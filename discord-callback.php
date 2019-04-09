@@ -44,13 +44,13 @@ try {
                 $valid = true;
                 break;
             }
-	  
+
             if (!$has_trusted_role) {
                 die("You do not have the required permissions to access this page.");
             }
         }
         if ($valid) {
-            $_SESSION['user'] = ["username" => $user->username, "roles" => $roles];
+            $_SESSION['user'] = ["username" => $user->username, "roles" => $roles[0]];
             $path = isset($_SESSION['redirect']) && !empty($_SESSION['redirect']) ? $_SESSION['redirect'] : ".";
 	        header("Location: $path");
         }
