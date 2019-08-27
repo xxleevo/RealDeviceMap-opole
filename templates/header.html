@@ -1,15 +1,40 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" style="background-image: linear-gradient(to top, #686868 0%, #121212 100%)">
   <div class="navbar-header">
-    <a class="navbar-brand" href="index.php">
-      <img src="./static/logo.svg" width="30" height="30" class="d-inline-block align-top" alt="">
-      <?=$config['ui']['title']?>
+    <a class="navbar-brand" href="index.php" style="margin-right:10px;">
+      <img src="./static/logo.png" width="36" height="36" class="d-inline-block align-top" alt="">
+      <?=$config['ui']['title-short']?>
     </a>
+<?php if (!empty($config['discord']['inviteLink'])) { ?>
+        <a href="<?=$config['discord']['inviteLink'] ?>" target="_blank"><img src="./static/images/discord.png" width="<?=$config['ui']['navBarIconSize'][0]?>" height="<?=$config['ui']['navBarIconSize'][1]?>"></a>
+<?php } ?>
+<?php if (!empty($config['urls']['patreon'])) { ?>
+        <a href="<?=$config['urls']['patreon'] ?>" target="_blank"><img src="./static/images/patreon.png" width="<?=$config['ui']['navBarIconSize'][0]?>", height="<?=$config['ui']['navBarIconSize'][1]?>"></a>
+<?php } ?>
+<?php if (!empty($config['urls']['map'])) { ?>
+        <a href="<?=$config['urls']['map'] ?>" target="_blank"><img src="./static/images/map.png" width="<?=$config['ui']['navBarIconSize'][0]?>" height="<?=$config['ui']['navBarIconSize'][1]?>"></a>
+<?php } ?>
+<?php if (!empty($config['urls']['paypal'])) { ?>
+        <a href="<?=$config['urls']['paypal'] ?>" target="_blank"><img src="./static/images/paypal.png" width="<?=$config['ui']['navBarIconSize'][0]?>" height="<?=$config['ui']['navBarIconSize'][1]?>"></a>
+<?php } ?>
+<?php if (!empty($config['urls']['venmo'])) { ?>
+        <a href="<?=$config['urls']['venmo'] ?>" target="_blank"><img src="./static/images/venmo.png" width="<?=$config['ui']['navBarIconSize'][0]?>" height="<?=$config['ui']['navBarIconSize'][1]?>"></a>
+<?php } ?>
+	<!--
+	<a href="https://rocketmapdo.de/infopage/">
+      <img src="./static/info.png" width="auto" height="36" class="" alt="">
+	</a>
+	-->
   </div>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbar">
     <ul class="navbar-nav ml-auto">
+<?php ##if ($config['discord']['enabled'] && !isset($_SESSION['user'])) { ?>
+      <!--<li>
+        <a class="nav-link" href="/discord-login.php"><i class="fa fa-fw fa-tachometer" aria-hidden="true"></i>&nbsp;<span data-i18n='nav_home'>Login</span> <span class="sr-only"></span></a>
+      </li> -->
+<?php #} ?>
 <?php if ($config['ui']['pages']['dashboard']['enabled'] && (!$config['discord']['enabled'] || ($config['discord']['enabled'] && hasDiscordRole($_SESSION['user']['roles'], $config['ui']['pages']['dashboard']['discordRoles'])))) { ?>
       <li class="nav-item <?=isset($_GET['page']) && $_GET['page']==='dashboard' ? 'active' : '' ?>">
         <a class="nav-link" href="/dashboard"><i class="fa fa-fw fa-tachometer" aria-hidden="true"></i>&nbsp;<span data-i18n='nav_home'>Home</span> <span class="sr-only"></span></a>
@@ -50,36 +75,22 @@
         <a class="nav-link" href="/stats"><i class="fa fa-fw fa-bar-chart" aria-hidden="true"></i>&nbsp;<span data-i18n='nav_stats'>Stats</span></a>
       </li>
 <?php } ?>
-<?php if (!empty($config['urls']['map'])) { ?>
-      <li class="nav-item">
-        <a class="nav-link" href="<?=$config['urls']['map'] ?>" target="_blank"><img src="./static/images/map.png" width="<?=$config['ui']['navBarIconSize'][0]?>" height="<?=$config['ui']['navBarIconSize'][1]?>"></a>
-      </li>
-<?php } ?>
-<?php if (!empty($config['discord']['inviteLink'])) { ?>
-      <li class="nav-item">
-        <a class="nav-link" href="<?=$config['discord']['inviteLink'] ?>" target="_blank"><img src="./static/images/discord.png" width="<?=$config['ui']['navBarIconSize'][0]?>" height="<?=$config['ui']['navBarIconSize'][1]?>"></a>
-      </li>
-<?php } ?>
-<?php if (!empty($config['urls']['paypal'])) { ?>
-      <li class="nav-item">
-        <a class="nav-link" href="<?=$config['urls']['paypal'] ?>" target="_blank"><img src="./static/images/paypal.png" width="<?=$config['ui']['navBarIconSize'][0]?>" height="<?=$config['ui']['navBarIconSize'][1]?>"></a>
-      </li>
-<?php } ?>
-<?php if (!empty($config['urls']['venmo'])) { ?>
-      <li class="nav-item">
-        <a class="nav-link" href="<?=$config['urls']['venmo'] ?>" target="_blank"><img src="./static/images/venmo.png" width="<?=$config['ui']['navBarIconSize'][0]?>" height="<?=$config['ui']['navBarIconSize'][1]?>"></a>
-      </li>
-<?php } ?>
-<?php if (!empty($config['urls']['patreon'])) { ?>
-      <li class="nav-item">
-        <a class="nav-link" href="<?=$config['urls']['patreon'] ?>" target="_blank"><img src="./static/images/patreon.png" width="<?=$config['ui']['navBarIconSize'][0]?>", height="<?=$config['ui']['navBarIconSize'][1]?>"></a>
-      </li>
-<?php } ?>
 <?php if ($config['discord']['enabled'] && !empty($_SESSION['user'])) { ?>
       <li class="nav-item">
         <a class="nav-link"><i class="fa fa-fw fa-user" aria-hidden="true"></i>&nbsp;<?php echo $_SESSION['user']['username']; ?></a>
       </li>
 <?php } ?>
+<!-- #PHP START# if ($config['discord']['enabled'] && !empty($_SESSION['user'])) { #PHP END##
+      <li class="nav-item">
+        <a class="nav-link"><i class="fa fa-fw fa-user" aria-hidden="true"></i>&nbsp;
+            <button class="settings"
+                    onclick="document.location.href='logout.php'">
+                <i class="fa" aria-hidden="true"></i> Logout
+            </button>
+		</a>
+      </li>
+	  -->
+<!-- #PHP START# } #PHP END##-->
     </ul>
   </div>
 </nav>

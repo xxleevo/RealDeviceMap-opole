@@ -11,19 +11,19 @@ $filters = "
   <div class='row'>
     <div class='input-group mb-3'>
       <div class='input-group-prepend'>
-        <label class='input-group-text' for='search-input' data-i18n='quests_filter_reward'>Reward</label>
+        <label class='input-group-text' for='search-input' data-i18n='quests_filter_reward'>Belohnung</label>
       </div>
-      <input type='text' id='search-input' class='form-control input-lg' onkeyup='filter_quests()' placeholder='Search by name..' title='Type in a name'>
+      <input type='text' id='search-input' class='form-control input-lg' onkeyup='filter_quests()' placeholder='Namen suchen..' title='Namen eingeben..'>
     </div>
     <div class='input-group mb-3'>
       <div class='input-group-prepend'>
-        <label class='input-group-text' for='filter-pokestop' data-i18n='quests_filter_pokestop'>Pokestop</label>
+        <label class='input-group-text' for='filter-pokestop' data-i18n='quests_filter_pokestop'>Stop</label>
       </div>
-      <input type='text' id='filter-pokestop' class='form-control input-lg' onkeyup='filter_quests()' placeholder='Search by pokestop..' title='Type in a pokestop name'>
+      <input type='text' id='filter-pokestop' class='form-control input-lg' onkeyup='filter_quests()' placeholder='Nach Stopnamen suchen..' title='Stop namen eingeben'>
     </div>
     <div class='input-group mb-3'>
       <div class='input-group-prepend'>
-        <label class='input-group-text' for='filter-city' data-i18n='quests_filter_city'>City</label>
+        <label class='input-group-text' for='filter-city' data-i18n='quests_filter_city'>Stadt</label>
       </div>
       <select multiple id='filter-city' class='custom-select' onchange='filter_quests()'>
         <option value='' selected>All</option>";
@@ -33,7 +33,7 @@ $filters = "
             $filters .= "<option value='".$geofence->name."'>".$geofence->name."</option>";
         }
         $filters .= "
-        <option value='" . $config['ui']['unknownValue'] . "'>" . $config['ui']['unknownValue'] . "</option>
+        <!--<option value='" . $config['ui']['unknownValue'] . "'>" . $config['ui']['unknownValue'] . "</option>-->
       </select>
     </div>
   </div>
@@ -55,14 +55,14 @@ $modal = "
   <div class='modal-dialog' role='document'>
     <div class='modal-content'>
       <div class='modal-header'>
-        <h5 class='modal-title' id='filtersModalLabel' data-i18n='quests_filters_title'>Quest Filters</h5>
-        <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+        <h5 class='modal-title' id='filtersModalLabel' data-i18n='quests_filters_title'>Quests Filtern</h5>
+        <button type='button' class='close' data-dismiss='modal' aria-label='Schließen'>
           <span aria-hidden='true'>&times;</span>
         </button>
       </div>
       <div class='modal-body'>" . $filters . "</div>
       <div class='modal-footer'>
-        <button type='button' class='btn btn-danger' id='reset-filters' data-i18n='quests_modal_reset_filters'>Reset Filters</button>
+        <button type='button' class='btn btn-danger' id='reset-filters' data-i18n='quests_modal_reset_filters'>Filter zurücksetzen</button>
         <button type='button' class='btn btn-primary' data-dismiss='modal' data-i18n='quests_modal_close'>Close</button>
       </div>
     </div>
@@ -72,22 +72,22 @@ $modal = "
   <div class='modal-dialog' role='document'>
     <div class='modal-content'>
       <div class='modal-header'>
-        <h5 class='modal-title' id='columnsModalLabel' data-i18n='quests_modal_show_columns'>Show Columns</h5>
+        <h5 class='modal-title' id='columnsModalLabel' data-i18n='quests_modal_show_columns'>Spaltenanzeige</h5>
         <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
           <span aria-hidden='true'>&times;</span>
         </button>
       </div>    
       <div class='modal-body'>
         <div id='chkColumns'>
-          <p><input type='checkbox' name='reward' data-i18n='quests_column_reward'/>&nbsp;Reward</p>
+          <p><input type='checkbox' name='reward' data-i18n='quests_column_reward'/>&nbsp;Belohnung</p>
           <p><input type='checkbox' name='quest' data-i18n='quests_column_quest' />&nbsp;Quest</p>
-          <p><input type='checkbox' name='condition' data-i18n='quests_column_condition' />&nbsp;Condition</p>
-          <p><input type='checkbox' name='city' data-i18n='quests_column_city' />&nbsp;City</p>
-          <p><input type='checkbox' name='updated' data-i18n='quests_column_updated' />&nbsp;Updated</p>
+          <p><input type='checkbox' name='condition' data-i18n='quests_column_condition' />&nbsp;Vorraussetzungen</p>
+          <p><input type='checkbox' name='city' data-i18n='quests_column_city' />&nbsp;Stadt</p>
+          <!--<p><input type='checkbox' name='updated' data-i18n='quests_column_updated' />&nbsp;Aktualisiert</p>-->
         </div>
       </div>
       <div class='modal-footer'>
-        <button type='button' class='btn btn-primary' data-dismiss='modal' data-i18n='quests_modal_close'>Close</button>
+        <button type='button' class='btn btn-primary' data-dismiss='modal' data-i18n='quests_modal_close'>Schließen</button>
       </div>
     </div>
   </div>
@@ -130,13 +130,13 @@ WHERE
         echo "<table id='quest-table' class='table table-".$config['ui']['table']['style']." ".($config['ui']['table']['striped'] ? 'table-striped' : null)."' border='1'>";
         echo "<thead class='thead-".$config['ui']['table']['headerStyle']."'>";
         echo "<tr class='text-nowrap'>";
-            echo "<th class='remove' data-i18n='quests_column_remove'>Remove</th>";
-            echo "<th class='reward' data-i18n='quests_column_reward'>Reward</th>";
+            echo "<th class='remove' data-i18n='quests_column_remove'>Schließen</th>";
+            echo "<th class='reward' data-i18n='quests_column_reward'>Belohnung</th>";
             echo "<th class='quest' data-i18n='quests_column_quest'>Quest</th>";
-            echo "<th class='condition' data-i18n='quests_column_condition'>Condition(s)</th>";
-            echo "<th class='city' data-i18n='quests_column_city'>City</th>";
-            echo "<th class='pokestop' data-i18n='quests_column_pokestop'>Pokestop</th>";
-            echo "<th class='updated' data-i18n='quests_column_updated'>Updated</th>";
+            echo "<th class='condition' data-i18n='quests_column_condition'>Vorraussetzungen</th>";
+            echo "<th class='city' data-i18n='quests_column_city'>Stadt</th>";
+            echo "<th class='pokestop' data-i18n='quests_column_pokestop'>Stop</th>";
+            //echo "<th class='updated' data-i18n='quests_column_updated'>Aktualisiert</th>";
         echo "</tr>";
         echo "</thead>";
         while ($row = $result->fetch()) {	
@@ -161,7 +161,7 @@ WHERE
                 echo "<td data-title='Condition(s)'>" . (empty($quest_conditions_message) ? "&nbsp;" : $quest_conditions_message) . "</td>";
                 echo "<td data-title='City'>" . $city . "</td>";
                 echo "<td data-title='Gym'><a href='" . $map_link . "' target='_blank'>" . $row['name'] . "</a></td>";
-                echo "<td data-title='Updated'>" . date($config['core']['dateTimeFormat'], $row['updated']) . "</td>";
+                //echo "<td data-title='Updated'>" . date($config['core']['dateTimeFormat'], $row['updated']) . "</td>";
             echo "</tr>";
         }
         echo "</table>";
@@ -170,7 +170,7 @@ WHERE
         // Free result set
         unset($result);
     } else {
-        echo "<p data-i18n='quests_none_available'>No field research quests available.</p>";
+        echo "<p data-i18n='quests_none_available'>Derzeit sind keine Quests verfügbar.</p>";
     }
 } catch (PDOException $e) {
     die("ERROR: Could not able to execute $sql. " . $e->getMessage());
@@ -181,82 +181,82 @@ unset($pdo);
 function get_quest_message($type, $target) {
     switch ($type) {
         case 22://QuestType.AddFriend:
-            $msg = "Add %s Friends";
+            $msg = "Füge %s Freunde hinzu";
             break;
         case 12://QuestType.AutoComplete:
             $msg = "Autocomplete";
             break;
         case 18://QuestType.BadgeRank:
-            $msg = "Get %s Badge(s)";
+            $msg = "Erhalte %s Medaille(n)";
             break;
         case 4://QuestType.CatchPokemon:
-            $msg = "Catch %s Pokemon";
+            $msg = "Fange %s Pokemon";
             break;
         case 21://QuestType.CompleteBattle:
-            $msg = "Complete %s Battles";
+            $msg = "Schließe %s Kämpfe ab";
             break;
         case 7://QuestType.CompleteGymBattle:
-            $msg = "Complete %s Gym Battles";
+            $msg = "Schließe %s Arenenämpfe ab";
             break;
         case 9://QuestType.CompleteQuest:
-            $msg = "Complete %s Quests";
+            $msg = "Schließe %s Quests ab";
             break;
         case 8://QuestType.CompleteRaidBattle:
-            $msg = "Complete %s Raid Battles";
+            $msg = "Schließe %s Raids ab";
             break;
         case 25://QuestType.EvolveIntoPokemon:
-            $msg = "Evolve %s Into Specific Pokemon";
+            $msg = "Entwickle %s in bestimmte Pokemon";
             break;
         case 15://QuestType.EvolvePokemon:
-            $msg = "Evolve %s Pokemon";
+            $msg = "Entwickle %s Pokemon";
             break;
         case 11://QuestType.FavoritePokemon:
-            $msg = "Favorite %s Pokemon";
+            $msg = "Favorisiere %s Pokemon";
             break;
         case 1://QuestType.FirstCatchOfTheDay:
-            $msg = "Catch first Pokemon of the day";
+            $msg = "Erster Fang des Tages";
             break;
         case 2://QuestType.FirstPokestopOfTheDay:
-            $msg = "Spin first pokestop of the day";
+            $msg = "Erster Stop des Tages";
             break;
         case 17://QuestType.GetBuddyCandy:
-            $msg = "Earn %s candy walking with your buddy";
+            $msg = "Erhalte %s von deinem Kumpel";
             break;
         case 6://QuestType.HatchEgg:
-            $msg = "Hatch %s Eggs";
+            $msg = "Brüte %s Eie(r)";
             break;
         case 20://QuestType.JoinRaid:
-            $msg = "Join %s Raid Battles";
+            $msg = "Nimm an %s Raid(s) teil";
             break;
         case 16://QuestType.LandThrow:
-            $msg = "Land %s Throws";
+            $msg = "Lande %s Würfe";
             break;
         case 3://QuestType.MultiPart:
             $msg = "Multi Part Quest";
             break;
         case 19://QuestType.PlayerLevel:
-            $msg = "Reach level %s"; ;
+            $msg = "Werde Level %s"; ;
             break;
         case 24://QuestType.SendGift:
-            $msg = "Send %s Gifts";
+            $msg = "Verschicke %s Geschenke";
             break;
         case 5://QuestType.SpinPokestop:
-            $msg = "Spin %s Pokestops";
+            $msg = "Drehe %s Pokestops";
             break;
         case 23://QuestType.TradePokemon:
-            $msg = "Trade %s Pokemon";
+            $msg = "Tausche %s Pokemon";
             break;
         case 10://QuestType.TransferPokemon:
-            $msg = "Transfer %s Pokemon";
+            $msg = "Verschicke %s Pokemon";
             break;
         case 14://QuestType.UpgradePokemon:
-            $msg = "Power up %s Pokemon";
+            $msg = "Levle %s Pokemon";
             break;
         case 13://QuestType.UseBerryInEncounter:
-            $msg = "Use %s Berries on Pokemon";
+            $msg = "Nutze %s Beeren bei Pokemon";
             break;
         default: //QuestType.Unknown:
-            $msg = "Unknown";
+            $msg = "Unbekannt";
             break;
     }
     return sprintf($msg, $target);
@@ -271,24 +271,24 @@ function get_quest_conditions($conditions) {
             case 16://BadgeType
                 break;
             case 15://CurveBall
-                array_push($quest_conditions, "Curve ball");
+                array_push($quest_conditions, "Curveball");
                 break;
             case 4://DailyCaptureBonus
-                array_push($quest_conditions, "Daily catch");
+                array_push($quest_conditions, "Tägliches Pokemon");
                 break;
             case 5://DailySpinBonus
-                array_push($quest_conditions, "Daily spin");
+                array_push($quest_conditions, "Täglicher Stop");
                 break;
             case 20://DaysInARow
                 break;
             case 11://Item
-                array_push($quest_conditions, "Use item");
+                array_push($quest_conditions, "Benutze items");
                 break;
             case 19://NewFriend
-                array_push($quest_conditions, "Make new friend");
+                array_push($quest_conditions, "Erhalte neue Freunde");
                 break;
             case 17://PlayerLevel
-                array_push($quest_conditions, "Reach level");
+                array_push($quest_conditions, "Erreiche Level");
                 break;
             case 2://PokemonCategory
                 $pkmn = [];
@@ -310,7 +310,7 @@ function get_quest_conditions($conditions) {
                 array_push($quest_conditions, join(', ', $condition->info->raid_levels));
                 break;
             case 0://SuperEffectiveCharge
-                array_push($quest_conditions, "Super effective charge move");
+                array_push($quest_conditions, "Sehr effektive Lade Attacke");
                 break;
             case 0://ThrowType
                 array_push($quest_conditions, get_throw_name($condition->info->throw_type_id));
@@ -319,19 +319,19 @@ function get_quest_conditions($conditions) {
                 array_push($quest_conditions, sprintf("%s in a row", get_throw_name($condition->info->throw_type_id)));
                 break;
             case 0://UniquePokestop
-                array_push($quest_conditions, "Unique");
+                array_push($quest_conditions, "Einzigartig");
                 break;
             case 0://WeatherBoost
-                array_push($quest_conditions, "Weather boosted");
+                array_push($quest_conditions, "Wetter-Boosted");
                 break;
             case 0://WinBattleStatus
-                array_push($quest_conditions, "Win battle status");
+                array_push($quest_conditions, "Kampf gewinnen");
                 break;
             case 0://WinGymBattleStatus
-                array_push($quest_conditions, "Win gym battle");
+                array_push($quest_conditions, "Arenenkampf gewinnen");
                 break;
             case 0://WinRaidStatus
-                array_push($quest_conditions, "Win raid status");
+                array_push($quest_conditions, "Raid gewinnen");
                 break;
         }
     }
@@ -354,7 +354,7 @@ function get_quest_reward($rewards) {
         case 6: //Quest
             return "Quest";
         case 3: //Stardust
-            return sprintf("%s Stardust", $reward->info->amount);
+            return sprintf("%s Sternenstaub", $reward->info->amount);
         default:
             return "Unknown";
     }
@@ -362,15 +362,15 @@ function get_quest_reward($rewards) {
 function get_throw_name($throw_type_id) {
     switch ($throw_type_id) {
         case 13: //CatchCurveThrow
-            return "Curve throw";
+            return "Curveball-Wurf";
         case 12: //CatchExcellentThrow
-            return "Excellent throw";
+            return "Fabelhafter Wurf";
         case 9: //CatchFirstThrow
-            return "First throw";
+            return "Erster Wurf";
         case 11: //CatchGreatThrow
-            return "Great throw";
+            return "Großartiger Wurf";
         case 10: //CatchNiceThrow
-            return "Nice throw";
+            return "Guter Wurf";
         default:
             return $throw_type_id;
     }
@@ -378,31 +378,31 @@ function get_throw_name($throw_type_id) {
 function get_item($item_id) {
     switch ($item_id) {
         case 1://Poke_Ball
-            return "Poke Ball";
+            return "x Pokeball";
         case 2://Great_Ball
-            return "Great Ball";
+            return "x Superball";
         case 3://Ultra_Ball
-            return "Ultra Ball";
+            return "x Hyperball";
         case 4://Master_Ball
-            return "Master Ball";
+            return "x Meisterball";
         case 5://Premier_Ball
-            return "Premier Ball";
+            return "x Premierball";
         case 101://Potion
-            return "Potion";
+            return "x Tank";
         case 102://Super_Potion
-            return "Super Potion";
+            return "x Supertrank";
         case 103://Hyper_Potion
-            return "Hyper Potion";
+            return "x Hypertrank";
         case 104://Max_Potion
-            return "Max Potion";
+            return "x Top-Trank";
         case 201://Revive
-            return "Revive";
+            return "x Beleber";
         case 202://Max_Revive
-            return "Max Revive";
+            return "x Top-Beleber";
         case 301://Lucky_Egg
-            return "Lucky Egg";
+            return "x Glücksei";
         case 401://Incense_Ordinary
-            return "Incense";
+            return "x Rauch";
         case 402://Incense_Spicy
             return "Incense Spicy";
         case 403://Incense_Cool
@@ -410,69 +410,69 @@ function get_item($item_id) {
         case 404://Incense_Floral
             return "Incense Floral";
         case 501://Troy_Disk
-            return "Troy Disk";
+            return "x Lockmodul";
         case 602://X_Attack
-            return "X Attack";
+            return "x X Attack";
         case 603://X_Defense
-            return "X Defense";
+            return "x X Defense";
         case 604://X_Miracle
-            return "X Miracle";
+            return "x X Miracle";
         case 701://Razz_Berry
-            return "Razz Berry";
+            return "x Himmihbeere";
         case 702://Bluk_Berry
-            return "Bluk Berry";
+            return "x Bluk Berry";
         case 703://Nanab_Berry
-            return "Nanab Berry";
+            return "x Nanabeere";
         case 704://Wepar_Berry
-            return "Wepar Berry";
+            return "x Wepar Berry";
         case 705://Pinap_Berry
-            return "Pinap Berry";
+            return "x Sananabeere";
         case 706://Golden_Razz_Berry
-            return "Golden Razz Berry";
+            return "x Goldene Himmihbeere";
         case 707://Golden_Nanab_Berry
-            return "Golden Nanab Berry";
+            return "x Goldene Nanabeere";
         case 708://Golden_Pinap_Berry
-            return "Golden Pinap Berry";
+            return "x Silberne Sananabeere";
         case 701://Special_Camera
             return "Special Camera";
         case 901://Incubator_Basic_Unlimited
-            return "Incubator (Unlimited)";
+            return "x Brutmaschine (unbegrenzt)";
         case 902://Incubator_Basic
-            return "Incubator";
+            return "x Brutmaschine";
         case 903://Incubator_Super
-            return "Super Incubator";
+            return "x Superbrutmaschine";
         case 1001://Pokemon_Storage_Upgrade
-            return "Pokemon Storage Upgrade";
+            return "x Pokemon Lager-Upgrade";
         case 1002://Item_Storage_Upgrade
-            return "Item Storage Upgrade";
+            return "x Item Lager-Upgrade";
         case 1101://Sun_Stone
-            return "Sun Stone";
+            return "x Sonnenstein";
         case 1102://Kings_Rock
-            return "Kings Rock";
+            return "x Kingstein";
         case 1103://Metal_Coat
-            return "Metal Coat";
+            return "x Metallmantel";
         case 1104://Dragon_Scale
-            return "Dragon Scale";
+            return "x Drachenklaue";
         case 1105://Upgrade
-            return "Upgrade";
+            return "x Upgrade";
         case 1201://Move_Reroll_Fast_Attack
-            return "Move Reroll Fast Attack";
+            return "x Fast-TM";
         case 1202://Move_Reroll_Special_Attack
-            return "Move Reroll Special Attack";
+            return "x Lade-TM";
         case 1301://Rare_Candy
-            return "Rare Candy";
+            return "x Sonderbonbon";
         case 1401://Free_Raid_Ticket
-            return "Free Raid Ticket";
+            return "x kostenloser Raidpass";
         case 1402://Paid_Raid_Ticket
-            return "Paid Raid Ticket";
+            return "x kostenpflichtiger Raidpass";
         case 1403://Legendary_Raid_Ticket
-            return "Legendary Raid Ticket";
+            return "x Legendärer Raidpass";
         case 1404://Star_Piece
-            return "Star Piece";
+            return "x Sternenstück";
         case 1405://Friend_Gift_Box
-            return "Friend Gift Box";
+            return "x Geschenkbox";
         default:
-            return "Unknown";
+            return "Unbekannt";
     }
 }
 function get_quest_icon($rewards) {
@@ -508,45 +508,46 @@ function get_pokemon_type($type) {
         case 1:
             return "Normal";
         case 2:
-            return "Fighting";
+            return "Kampf";
         case 3:
-            return "Flying";
+            return "Flug";
         case 4:
-            return "Poison";
+            return "Gift";
         case 5:
-            return "Ground";
+            return "Boden";
         case 6:
-            return "Rock";
+            return "Gestein";
         case 7:
-            return "Bug";
+            return "Käfer";
         case 8:
-            return "Ghost";
+            return "Geist";
         case 9:
-            return "Steel";
+            return "Stahl";
         case 10:
-            return "Fire";
+            return "Feuer";
         case 11:
-            return "Water";
+            return "Wasser";
         case 12:
-            return "Grass";
+            return "Pflanze";
         case 13:
-            return "Electric";
+            return "Elektro";
         case 14:
-            return "Psychic";
+            return "Psycho";
         case 15:
-            return "Ice";
+            return "Eis";
         case 16:
-            return "Dragon";
+            return "Drache";
         case 17:
-            return "Dark";
+            return "Unlicht";
         case 18:
-            return "Fairy";
+            return "Fee";
         default:
-            return "None";
+            return "Keins";
     }
 }
 ?>
 
+<link rel="stylesheet" href="./static/css/footerfix.css"/>
 <script type="text/javascript">
 $(document).on("click", ".delete", function(){
   $(this).parents("tr").remove();

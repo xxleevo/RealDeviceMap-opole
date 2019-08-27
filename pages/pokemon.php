@@ -3,19 +3,19 @@ require_once './static/data/pokedex.php';
 
 $html = "
 <div class='container'>
-  <h2 class='page-header text-center' data-i18n='pokemon_title'>Pokemon found in the wild!</h2>
+  <h2 class='page-header text-center' data-i18n='pokemon_title'>In der Wildnis gesichtete Pokemon !</h2>
   <div class='row'>
     <div class='input-group mb-3'>
       <div class='input-group-prepend'>
-        <label class='input-group-text' for='filter-date' data-i18n='pokemon_filter_date'>Date</label>
+        <label class='input-group-text' for='filter-date' data-i18n='pokemon_filter_date'>Datum</label>
       </div>
       <input id='filter-date' type='text' class='form-control' data-toggle='datepicker'>
     </div>
     <div class='input-group mb-3'>
       <div class='input-group-prepend'>
-        <label class='input-group-text' for='search-input' data-i18n='pokemon_filter_pokemon'>Search Pokemon</label>
+        <label class='input-group-text' for='search-input' data-i18n='pokemon_filter_pokemon'>Pokemon suchen</label>
       </div>
-      <input type='text' id='filter-pokemon' class='form-control input-lg' onkeyup='filterPokemon()' placeholder='Search by name..' title='Type in a name'>
+      <input type='text' id='filter-pokemon' class='form-control input-lg' onkeyup='filterPokemon()' placeholder='Search by name..' title='Namen suchen..'>
     </div>
   </div>";
 $count = 0;
@@ -33,7 +33,7 @@ foreach ($pokedex as $id => $name) {
   <div class='card-body'>
     <span class='text-nowrap'><b>$name</b> #$id</span>
     <p class='card-text text-nowrap'>
-      Seen:
+      gesichtet:
       <span id='pkmn-seen-$id'>0</span>
     </p>
   </div>
@@ -49,6 +49,7 @@ $html .= "</div>";
 echo $html;
 ?>
 
+<link rel="stylesheet" href="./static/css/footerfix.css"/>
 <script type='text/javascript' src='./static/js/datepicker.js'></script>
 <script type='text/javascript' src='./static/js/pokedex.js'></script>
 <script type="text/javascript" src="./static/js/utils.js"></script>

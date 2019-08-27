@@ -3,7 +3,7 @@ require_once './config.php';
 include_once './static/data/pokedex.php';
 
 $html = "
-<h2 class='page-header text-center' data-i18n='stats_title'>Statistics</h2>
+<h2 class='page-header text-center' data-i18n='stats_title'>Statistiken</h2>
 <ul class='nav nav-pills mb-3 justify-content-center' role='tablist'>
   <li class='nav-item'><a class='nav-link active' role='tab' aria-controls='pokemon' aria-selected='true' data-toggle='pill' href='#pokemon' data-i18n='stats_tab_pokemon'>Pokemon</a></li>
   <li class='nav-item'><a class='nav-link' role='tab' aria-controls='raids' aria-selected='false' data-toggle='pill' href='#raids' data-i18n='stats_tab_raids'>Raids</a></li>
@@ -18,14 +18,14 @@ $html = "
         <div class='row'>
           <div class='input-group mb-3'>
             <div class='input-group-prepend'>
-              <label class='input-group-text' for='filter-date' data-i18n='stats_filter_date'>Date</label>
+              <label class='input-group-text' for='filter-date' data-i18n='stats_filter_date'>Datum</label>
             </div>
             <input id='filter-date' type='text' class='form-control' data-toggle='datepicker'>
             <div class='input-group-prepend'>
               <label class='input-group-text' for='filter-pokemon' data-i18n='stats_filter_pokemon'>Pokemon</label>
             </div>
             <select id='filter-pokemon' class='custom-select'>
-              <option disabled selected>Select</option>
+              <option disabled selected>Auswahl..</option>
               <option value='all'>All</option>";
               foreach ($pokedex as $pokemon_id => $name) {
   	  	        if ($pokemon_id <= 0)
@@ -37,7 +37,7 @@ $html = "
           </div>
         </div>
       </div>
-      <canvas id='pokemon-stats'></canvas>
+      <canvas id='pokemon-stats' height='230' ></canvas>
       <progress id='pokemon-animation' max='1' value='0' style='width: 100%'></progress>
     </div>
     <div id='raids' class='tab-pane fade' role='tabpanel'>
@@ -45,15 +45,17 @@ $html = "
         <div class='row'>
           <div class='input-group mb-3'>
             <div class='input-group-prepend'>
-              <label class='input-group-text' for='filter-raid-date' data-i18n='stats_filter_date'>Date</label>
+              <label class='input-group-text' for='filter-raid-date' data-i18n='stats_filter_date'>Datum</label>
             </div>
             <input id='filter-raid-date' type='text' class='form-control' data-toggle='datepicker'>
-            <div class='input-group-prepend'>
+            <!--
+			<div class='input-group-prepend'>
               <label class='input-group-text' for='filter-raid-type' data-i18n='stats_filter_by'>Filter By</label>
             </div>
             <label class='radio-inline'><input type='radio' class='btn' name='filter-raid-type' value='0' data-i18n='stats_filter_by_pokemon' checked>Pokemon</label>
             <label class='radio-inline'><input type='radio' class='btn' name='filter-raid-type' value='1' data-i18n='stats_filter_by_level'>Level</label>
-          </div>
+			-->
+		  </div>
         </div>
       </div>
       <canvas id='raid-stats'></canvas>
@@ -64,9 +66,10 @@ $html = "
         <div class='row'>
           <div class='input-group mb-3'>
             <div class='input-group-prepend'>
-              <label class='input-group-text' for='filter-quest-date' data-i18n='stats_filter_date'>Date</label>
+              <label class='input-group-text' for='filter-quest-date' data-i18n='stats_filter_date'>Datum</label>
             </div>
             <input id='filter-quest-date' type='text' class='form-control' data-toggle='datepicker'>
+			
             <div class='input-group-prepend'>
               <label class='input-group-text' for='filter-reward' data-i18n='stats_filter_reward'>Reward</label>
             </div>
@@ -80,6 +83,7 @@ $html = "
               }
               $html .= "
             </select>
+			
           </div>
         </div>
       </div>
@@ -91,14 +95,14 @@ $html = "
         <div class='row'>
           <div class='input-group mb-3'>
             <div class='input-group-prepend'>
-              <label class='input-group-text' for='filter-date' data-i18n='stats_filter_date_start'>Start Date</label>
+              <label class='input-group-text' for='filter-date' data-i18n='stats_filter_date_start'>Startdatum</label>
             </div>
-            <input id='filter-date-start' class='flatpickr' placeholder='Select Date & Time..' data-toggle='datetimepicker'>
+            <input id='filter-date-start' class='flatpickr' placeholder='Datum & Zeit angeben..' data-toggle='datetimepicker'>
 
             <div class='input-group-prepend'>
-              <label class='input-group-text' for='filter-date' data-i18n='stats_filter_date_end'>End Date</label>
+              <label class='input-group-text' for='filter-date' data-i18n='stats_filter_date_end'>Enddatum</label>
             </div>
-            <input id='filter-date-end' class='flatpickr' placeholder='Select Date & Time..' data-toggle='datetimepicker'>
+            <input id='filter-date-end' class='flatpickr' placeholder='Datum & Zeit angeben..' data-toggle='datetimepicker'>
 
             <div class='input-group-prepend'>
               <label class='input-group-text' for='filter-pokemon-comday' data-i18n='stats_filter_pokemon'>Pokemon</label>
@@ -126,8 +130,8 @@ $html = "
                 <div class='wrapper'><canvas id='scanChart'></canvas></div>
               </div>
               <div class='col-lg-6 justify-content-right'>
-                <h5 id='total-seen'>0 seen</h5>
-                <h6 id='total-scanned'>0 scanned</h6>
+                <h5 id='total-seen'>0 gesichtet</h5>
+                <h6 id='total-scanned'>0 gescannt</h6>
               </div>
             </div>
             <div class='row p-2'>
@@ -146,14 +150,14 @@ $html = "
         </div>
       </div>
       <div class='col-md-7 p-2' style='background: white'>
-        <div class='wrapper'><canvas id='ivChart'></canvas></div>
+        <div class='wrapper'><canvas id='ivChart' height='250'></canvas></div>
       </div>
     </div>
     <div class='row p-2 m-2'>
       <div class='col-md-4' style='background: white'>
-        <h3>Sex</h3>
-        <span><span id='total-male'>0</span> male spawns</span><br>
-        <span><span id='total-female'>0</span> female spawns</span>
+        <h3>Geschlecht</h3>
+        <span><span id='total-male'>0</span> <font size='5'><b>♂</b></font> männlich</span><br>
+        <span><span id='total-female'>0</span> <font size='5'><b>♀</b></font> weiblich</span>
       </div>
       <div class='col-md-8' style='background: white'>
         <div class='row text-center'>
@@ -180,6 +184,7 @@ $html = "
 echo $html;
 ?>
 
+<link rel="stylesheet" href="./static/css/footerfix.css"/>
 <script type='text/javascript' src='https://www.chartjs.org/dist/latest/Chart.bundle.js'></script>
 <script type='text/javascript' src='./static/js/datepicker.js'></script>
 <script type='text/javascript' src='./static/js/pokedex.js'></script>
@@ -191,7 +196,7 @@ var pkmnCtx = $("#pokemon-stats");
 pkmnChart = new Chart(pkmnCtx, {
   type: 'bar',
   //data: createChartData("Seen", pokemon, amounts),
-  options: createChartOptions("Pokemon Spawn Statistics", "Pokemon", "Amount Seen", pkmnProgress, "pokemon-stats")
+  options: createChartOptions("Pokemon Spawn Statistik", "Pokemon", "Anzahl gesichtet", pkmnProgress, "pokemon-stats")
 });
 $("#pokemon-stats").hide();
 
@@ -200,7 +205,7 @@ var raidCtx = $("#raid-stats");
 raidChart = new Chart(raidCtx, {
   type: 'bar',
   //data: createChartData("Seen", pokemon, amounts),
-  options: createChartOptions("Raid Boss Statistics", "Pokemon", "Amount Seen", raidProgress, "raid-stats")
+  options: createChartOptions("Raids Statistik", "Pokemon", "Anzahl gesichtet", raidProgress, "raid-stats")
 });
 $("#raid-stats").hide();
 
@@ -208,7 +213,7 @@ var questProgress = document.getElementById("quest-animation");
 var questCtx = $("#quest-stats");
 questChart = new Chart(questCtx, {
   type: 'bar',
-  options: createChartOptions("Field Research Statistics", "Reward", "Scanned", questProgress, "quest-stats")
+  options: createChartOptions("Quests Statistik", "Belohnung", "Anzahl gefunden", questProgress, "quest-stats")
 });
 $("#quest-stats").hide();
 
@@ -248,7 +253,7 @@ $("#filter-pokemon-comday").on('change', function() {
         'green',
         'blue'
       ],
-      label: 'Seen'
+      label: 'gesichtet'
     };
     addDataset(scanChart, scanData);
 
@@ -271,16 +276,29 @@ $("#filter-pokemon-comday").on('change', function() {
     addDataset(levelChart, levelData);
 
     removeDataset(ivChart);
-    addDataset(ivChart, { data: [obj.iv0], backgroundColor: 'black', label: '0% IV' });
-    addDataset(ivChart, { data: [obj.iv_1_49], backgroundColor: 'red', label: '1-49% IV' });
-    addDataset(ivChart, { data: [obj.iv_50_79], backgroundColor: 'blue', label: '50-79% IV' });
-    addDataset(ivChart, { data: [obj.iv_80_89], backgroundColor: 'yellow', label: '80-89% IV' });
-    addDataset(ivChart, { data: [obj.iv_90_99], backgroundColor: 'orange', label: '90-99% IV' });
-    addDataset(ivChart, { data: [obj.iv100], backgroundColor: 'green', label: '100% IV' });
+    //addDataset(ivChart, { data: [obj.iv0], backgroundColor: 'black', label: '0% IV' });
+    //addDataset(ivChart, { data: [obj.iv_1_49], backgroundColor: 'red', label: '1-49% IV' });
+    //addDataset(ivChart, { data: [obj.iv_50_79], backgroundColor: 'blue', label: '50-79% IV' });
+    //addDataset(ivChart, { data: [obj.iv_80_89], backgroundColor: 'yellow', label: '80-89% IV' });
+    //addDataset(ivChart, { data: [obj.iv_90_99], backgroundColor: 'orange', label: '90-99% IV' });
+    //addDataset(ivChart, { data: [obj.iv100], backgroundColor: 'green', label: '100% IV' });
 
+    addDataset(ivChart, { data: [obj.iv0], backgroundColor: 'black', label: '0% IV' });
+    addDataset(ivChart, { data: [obj.iv_1_10], backgroundColor: 'red', label: '1-10%' });
+    addDataset(ivChart, { data: [obj.iv_11_20], backgroundColor: 'red', label: '11-20%' });
+    addDataset(ivChart, { data: [obj.iv_21_30], backgroundColor: 'red', label: '21-30%' });
+    addDataset(ivChart, { data: [obj.iv_31_40], backgroundColor: 'blue', label: '31-40%' });
+    addDataset(ivChart, { data: [obj.iv_41_50], backgroundColor: 'blue', label: '41-50%' });
+    addDataset(ivChart, { data: [obj.iv_51_60], backgroundColor: 'yellow', label: '51-60%' });
+    addDataset(ivChart, { data: [obj.iv_61_70], backgroundColor: 'yellow', label: '61-70%' });
+    addDataset(ivChart, { data: [obj.iv_71_80], backgroundColor: 'orange', label: '71-80%' });
+    addDataset(ivChart, { data: [obj.iv_81_90], backgroundColor: 'green', label: '81-90%' });
+    addDataset(ivChart, { data: [obj.iv_91_99], backgroundColor: 'green', label: '91-99%' });
+    addDataset(ivChart, { data: [obj.iv100], backgroundColor: 'purple', label: '100% IV' });
+	
     $("#pkmn-title").text(pokedex[pokemonId] + " Scans");
-    $("#total-seen").text(numberWithCommas(obj.total || 0) + " seen");
-    $("#total-scanned").text(numberWithCommas(obj.with_iv || 0) + " scanned");
+    $("#total-seen").text(numberWithCommas(obj.total || 0) + " gesichtet");
+    $("#total-scanned").text(numberWithCommas(obj.with_iv || 0) + " gescannt");
     $("#iv100").text(obj.iv100 || 0);
     $("#iv90").text(obj.iv90 || 0);
     $("#iv0").text(obj.iv0 || 0);
@@ -345,7 +363,7 @@ var barOptions = {
     tooltips: true,
 	title: {
 		display: true,
-		text: 'IV Spread'
+		text: 'IV Graph'
 	},
   tooltips: { mode: "nearest", intersect: false, },
   hover: { mode: "nearest", intersect: true },
@@ -373,7 +391,7 @@ var donutOptions = {
 	},
 	title: {
 		display: true,
-		text: 'Level Spread'
+		text: 'Levelverteilung'
 	},
 	animation: {
 		animateScale: true,
@@ -386,8 +404,8 @@ var scanChart = new Chart('scanChart', {
   data: {
     datasets: [],
     labels: [
-      'Seen',
-      'Scanned'
+      'gesichtet',
+      'gescannt'
     ]
   },
    options: pieOptions
@@ -508,7 +526,7 @@ function updatePokemonChart(chart, dateFilter, pokeFilter) {
     });
 
     clearChartData(chart);
-    chart.data = createChartData("Seen", pokemon, amounts);
+    chart.data = createChartData("gesichtet", pokemon, amounts);
     chart.update();
     console.log("Pokemon chart updated");
   });
@@ -537,7 +555,7 @@ function updateRaidChart(chart, dateFilter, typeFilter) {
     });
 
     clearChartData(chart);
-    chart.data = createChartData("Seen", pokemon, amounts);
+    chart.data = createChartData("gesichtet", pokemon, amounts);
     chart.update();
     console.log("Raid chart updated");
   });
@@ -576,7 +594,7 @@ function updateQuestChart(chart, dateFilter, rewardFilter) {
     });
 
     clearChartData(chart);
-    chart.data = createChartData("Scanned", rewards, amounts);
+    chart.data = createChartData("gescannt", rewards, amounts);
     chart.update();
     console.log("Quest chart updated");
   });
@@ -648,31 +666,31 @@ function clearChartData(chart) {
 function get_item($item_id) {
     switch (parseInt($item_id)) {
         case 1://Poke_Ball
-            return "Poke Ball";
+            return "Pokeball";
         case 2://Great_Ball
-            return "Great Ball";
+            return "Superball";
         case 3://Ultra_Ball
-            return "Ultra Ball";
+            return "Hyperball";
         case 4://Master_Ball
-            return "Master Ball";
+            return "Meisterball";
         case 5://Premier_Ball
-            return "Premier Ball";
+            return "Premierball";
         case 101://Potion
-            return "Potion";
+            return "Trank";
         case 102://Super_Potion
-            return "Super Potion";
+            return "Supertrank";
         case 103://Hyper_Potion
-            return "Hyper Potion";
+            return "Hypertrank";
         case 104://Max_Potion
-            return "Max Potion";
+            return "Top Trank";
         case 201://Revive
-            return "Revive";
+            return "Beleber";
         case 202://Max_Revive
-            return "Max Revive";
+            return "Top Beleber";
         case 301://Lucky_Egg
-            return "Lucky Egg";
+            return "Glücksei";
         case 401://Incense_Ordinary
-            return "Incense";
+            return "Rauch";
         case 402://Incense_Spicy
             return "Incense Spicy";
         case 403://Incense_Cool
@@ -680,7 +698,7 @@ function get_item($item_id) {
         case 404://Incense_Floral
             return "Incense Floral";
         case 501://Troy_Disk
-            return "Troy Disk";
+            return "Lockmodul";
         case 602://X_Attack
             return "X Attack";
         case 603://X_Defense
@@ -688,41 +706,41 @@ function get_item($item_id) {
         case 604://X_Miracle
             return "X Miracle";
         case 701://Razz_Berry
-            return "Razz Berry";
+            return "Himmihbeere";
         case 702://Bluk_Berry
-            return "Bluk Berry";
+            return "Blukbeere";
         case 703://Nanab_Berry
-            return "Nanab Berry";
+            return "Nanabeere";
         case 704://Wepar_Berry
-            return "Wepar Berry";
+            return "Weparbeere";
         case 705://Pinap_Berry
-            return "Pinap Berry";
+            return "Sananabeere";
         case 706://Golden_Razz_Berry
-            return "Golden Razz Berry";
+            return "Goldene Himmihbeere";
         case 707://Golden_Nanab_Berry
             return "Golden Nanab Berry";
         case 708://Golden_Pinap_Berry
-            return "Golden Pinap Berry";
+            return "Silberne Sananabeere";
         case 701://Special_Camera
             return "Special Camera";
         case 901://Incubator_Basic_Unlimited
             return "Incubator (Unlimited)";
         case 902://Incubator_Basic
-            return "Incubator";
+            return "Brutmaschine";
         case 903://Incubator_Super
-            return "Super Incubator";
+            return "Superbrutmaschine";
         case 1001://Pokemon_Storage_Upgrade
-            return "Pokemon Storage Upgrade";
+            return "Pokemon Lager Upgrade";
         case 1002://Item_Storage_Upgrade
-            return "Item Storage Upgrade";
+            return "Item Lager Upgrade";
         case 1101://Sun_Stone
-            return "Sun Stone";
+            return "Sonnenstein";
         case 1102://Kings_Rock
-            return "Kings Rock";
+            return "Kingstein";
         case 1103://Metal_Coat
-            return "Metal Coat";
+            return "Metallmantel";
         case 1104://Dragon_Scale
-            return "Dragon Scale";
+            return "Drachenklaue";
         case 1105://Upgrade
             return "Upgrade";
         case 1201://Move_Reroll_Fast_Attack
@@ -730,19 +748,19 @@ function get_item($item_id) {
         case 1202://Move_Reroll_Special_Attack
             return "Move Reroll Special Attack";
         case 1301://Rare_Candy
-            return "Rare Candy";
+            return "Sonderbonbon";
         case 1401://Free_Raid_Ticket
-            return "Free Raid Ticket";
+            return "Raidpass(Free)";
         case 1402://Paid_Raid_Ticket
-            return "Paid Raid Ticket";
+            return "Raidpass(Paid)";
         case 1403://Legendary_Raid_Ticket
-            return "Legendary Raid Ticket";
+            return "Raidpass(Legendär)";
         case 1404://Star_Piece
-            return "Star Piece";
+            return "Sternenstück";
         case 1405://Friend_Gift_Box
-            return "Friend Gift Box";
+            return "Geschenkbox";
         default:
-            return "Unknown";
+            return "Sternenstaub";
     }
 }
 

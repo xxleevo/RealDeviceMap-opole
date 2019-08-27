@@ -30,17 +30,18 @@ if ($count == 0) {
 if ($mobile == '0') {
     echo "<table id='gym-table' class='table table-hover table-".$config['ui']['table']['style']." ".($config['ui']['table']['striped'] ? 'table-striped' : null)."' border='1'>";
     echo "<thead class='thead-".$config['ui']['table']['headerStyle']."'>";
+    //echo "<thead class='rmdo'>";
     echo "<tr class='text-nowrap'>";
         echo "<th>Remove</th>";
-        echo "<th class='starts' onclick='sort_table(\"gym-table\",1)' data-i18n='raids_column_raid_starts'>Raid Starts</th>";
-        echo "<th class='ends' onclick='sort_table(\"gym-table\",2)' data-i18n='raids_column_raid_ends'>Raid Ends</th>";
+        echo "<th class='starts' onclick='sort_table(\"gym-table\",1)' data-i18n='raids_column_raid_starts'>Raidstart</th>";
+        echo "<th class='ends' onclick='sort_table(\"gym-table\",2)' data-i18n='raids_column_raid_ends'>Raidende</th>";
         echo "<th class='level' onclick='sort_table(\"gym-table\",3)' data-i18n='raids_column_raid_level'>Raid Level</th>";
         echo "<th class='boss' onclick='sort_table(\"gym-table\",4)' data-i18n='raids_column_raid_boss'>Raid Boss</th>";
         //echo "<th class='moveset' onclick='sort_table(\"gym-table\",5)' data-i18n='raids_column_moveset'>Moveset</th>";
-        echo "<th class='gym' onclick='sort_table(\"gym-table\",5)' data-i18n='raids_column_gym'>Gym</th>";
-        echo "<th class='city' onclick='sort_table(\"gym-table\",6)' data-i18n='raids_column_city'>City</th>";
+        echo "<th class='gym' onclick='sort_table(\"gym-table\",5)' data-i18n='raids_column_gym'>Arena</th>";
+        echo "<th class='city' onclick='sort_table(\"gym-table\",6)' data-i18n='raids_column_city'>Stadt</th>";
         echo "<th class='team' onclick='sort_table(\"gym-table\",7)' data-i18n='raids_column_team'>Team</th>";
-        echo "<th class='ex' onclick='sort_table(\"gym-table\",8)' data-i18n='raids_column_ex'>Ex-Eligible</th>";
+        echo "<th class='ex' onclick='sort_table(\"gym-table\",8)' data-i18n='raids_column_ex'>Ex-Fähig</th>";
         //echo "<th class='updated' onclick='sort_table(\"gym-table\",10)' data-i18n='raids_column_updated'>Updated</th>";
     echo "</tr>";
     echo "</thead>";
@@ -121,7 +122,7 @@ for ($i = 0; $i < $count; $i++) {
                       <thead></thead>
                       <tbody>
                       <tr><td><span><b>Moveset:</b>&nbsp;$moveset</span></td></tr>
-                      <tr><td><span><b>Updated:</b>&nbsp;$updated</span></td></tr>
+                      <!--<tr><td><span><b>Updated:</b>&nbsp;$updated</span></td></tr>-->
                       </tbody>
                     </table>
                     </div>

@@ -43,6 +43,7 @@ $lured = $data["lured"];
 $quests = $data["quests"];
 ?>
 
+<link rel="stylesheet" href="./static/css/footerfix.css"/>
 <link rel="stylesheet" href="./static/css/dashboard.css"/>
 <script type='text/javascript'>
 var pokestops = "<?=$pokestops?>";

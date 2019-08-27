@@ -88,6 +88,18 @@ function get_table_count($table) {
     return $count;
 }
 
+function get_table_count_noId($table) {
+    global $config;
+    $db = new DbConnector($config['db']);
+    $pdo = $db->getConnection();
+    $sql = "SELECT count(*) FROM " . $config['db']['dbname'] . ".$table";
+    $count = $pdo->query($sql)->fetchColumn();
+    unset($pdo);
+    unset($db);
+    
+    return $count;
+}
+
 function get_pokestop_objects() {
     global $config;
     $db = new DbConnector($config['db']);
@@ -131,13 +143,18 @@ function get_pokemon_stats() {
     $pdo = $db->getConnection();
     $sql = "
 SELECT
-  COUNT(id) AS total,
-  SUM(expire_timestamp >= UNIX_TIMESTAMP()) AS active,
+  SUM(id is not null ) AS total,
+  SUM(expire_timestamp >= UNIX_TIMESTAMP() ) AS active,
   SUM(iv IS NOT NULL) AS iv_total,
-  SUM(iv IS NOT NULL && expire_timestamp >= UNIX_TIMESTAMP()) AS iv_active
+  SUM(iv IS NOT NULL && expire_timestamp >= UNIX_TIMESTAMP()) AS iv_active,
+  SUM(iv > 95 ) AS iv_95_total,
+  SUM(iv > 95 && expire_timestamp >= UNIX_TIMESTAMP() ) AS iv_95_active,
+  SUM(iv = 100 ) AS iv_100_total,
+  SUM(iv = 100 && expire_timestamp >= UNIX_TIMESTAMP()) AS iv_100_active
 FROM
   pokemon
-";
+  ";
+ #WHERE DATE(DATE_ADD(FROM_UNIXTIME(first_seen_timestamp), INTERVAL 2 HOUR) ) >= CURDATE()
     $result = $pdo->query($sql);
     if ($result->rowCount() > 0) {
         $data = $result->fetchAll()[0];
@@ -149,6 +166,7 @@ FROM
 }
 
 function get_top_pokemon($limit = 10) {
+#Select TODAY's Pokemon
     global $config;
     $db = new DbConnector($config['db']);
     $pdo = $db->getConnection();
@@ -163,6 +181,124 @@ GROUP BY
 ORDER BY
   2 DESC
 LIMIT
+  $limit;
+";
+#  WHERE DATE(DATE_ADD(FROM_UNIXTIME(first_seen_timestamp), INTERVAL 2 HOUR) ) >= CURDATE()
+    $result = $pdo->query($sql);
+    if ($result->rowCount() > 0) {
+        $data = $result->fetchAll();
+    }
+    unset($pdo);
+    unset($db);
+
+    return $data;
+}
+
+
+function get_top_pokemon_iv($limit = 10) {
+    global $config;
+    $db = new DbConnector($config['db']);
+    $pdo = $db->getConnection();
+    $sql = "
+SELECT
+  pokemon_id,
+  COUNT(pokemon_id) AS count
+FROM
+  pokemon
+WHERE 
+  iv is not null
+GROUP BY
+  pokemon_id
+ORDER BY
+  2 DESC
+LIMIT
+  $limit;
+";
+# (iv is not null) AND DATE(DATE_ADD(FROM_UNIXTIME(first_seen_timestamp), INTERVAL 2 HOUR) ) >= CURDATE()
+    $result = $pdo->query($sql);
+    if ($result->rowCount() > 0) {
+        $data = $result->fetchAll();
+    }
+    unset($pdo);
+    unset($db);
+
+    return $data;
+}
+
+function get_top_pokemon_iv95($limit = 10) {
+    global $config;
+    $db = new DbConnector($config['db']);
+    $pdo = $db->getConnection();
+    $sql = "
+SELECT
+  pokemon_id,
+  COUNT(pokemon_id) AS count
+FROM
+  pokemon
+WHERE 
+  iv > 95 
+GROUP BY
+  pokemon_id
+ORDER BY
+  2 DESC
+LIMIT
+  $limit;
+";
+# (iv>95) AND DATE(DATE_ADD(FROM_UNIXTIME(first_seen_timestamp), INTERVAL 2 HOUR) ) >= CURDATE()
+    $result = $pdo->query($sql);
+    if ($result->rowCount() > 0) {
+        $data = $result->fetchAll();
+    }
+    unset($pdo);
+    unset($db);
+
+    return $data;
+}
+
+function get_top_pokemon_iv100($limit = 10) {
+    global $config;
+    $db = new DbConnector($config['db']);
+    $pdo = $db->getConnection();
+    $sql = "
+SELECT
+  pokemon_id,
+  COUNT(pokemon_id) AS count
+FROM
+  pokemon
+WHERE 
+  iv = 100
+GROUP BY
+  pokemon_id
+ORDER BY
+  2 DESC
+LIMIT
+  $limit;
+";
+# AND DATE(DATE_ADD(FROM_UNIXTIME(first_seen_timestamp), INTERVAL 2 HOUR) ) >= CURDATE()*/
+    $result = $pdo->query($sql);
+    if ($result->rowCount() > 0) {
+        $data = $result->fetchAll();
+    }
+    unset($pdo);
+    unset($db);
+
+    return $data;
+}
+
+function get_top_pokemon_lifetime($limit = 10) {
+    global $config;
+    $db = new DbConnector($config['db']);
+    $pdo = $db->getConnection();
+    $sql = "
+SELECT
+ sum(count) AS count, 
+ pokemon_id AS pokemon_id
+ FROM pokemon_stats
+ GROUP BY
+ pokemon_id
+ ORDER BY
+ count DESC
+ LIMIT
   $limit;
 ";
     $result = $pdo->query($sql);
@@ -250,6 +386,7 @@ function hasDiscordRole($userRoles, $requiredRoles) {
     if (count($requiredRoles) == 0) {
         return true;
     }
+
     foreach ($userRoles as $role) {
         if (in_array($role, $requiredRoles)) {
             return true;

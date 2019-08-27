@@ -163,6 +163,7 @@ unset($db);
 </div>
 </center>
 
+<link rel="stylesheet" href="./static/css/footerfix.css"/>
 <script type='text/javascript' src='./static/js/jquery.countdown.min.js'></script>
 <script type='text/javascript' src='./static/js/pokedex.js'></script>
 <script type='text/javascript' src="https://cdn.jsdelivr.net/npm/@turf/turf@5/turf.min.js"></script>

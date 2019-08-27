@@ -46,13 +46,13 @@ if ($config['discord']['enabled'] && !isset($_SESSION['user'])) {
     <script type='text/javascript' src='./static/js/utils.js'></script>
 
     <title><?=$config['ui']['title']?></title>
+	
   </head>
   <body>
 
 <?php include_once('./templates/header.html'); ?>
 
 <br/><p class='lead'>&nbsp;</p>
-
 <?php
 $request_method = $_SERVER["REQUEST_METHOD"];
 switch($request_method) {
@@ -120,6 +120,7 @@ switch($request_method) {
         // Invalid Request Method
         header("HTTP/1.0 405 Method Not Allowed");
         break;
+
 }
 
 if (!empty($config['google']['analyticsId'])) {
@@ -148,6 +149,11 @@ if (!empty($config['google']['adSenseId'])) {
 if ($config['core']['showFooter']) {
     include_once('./templates/footer.html');
 }
+//DEBUGGING
+//echo "<script>console.log( 'Check if user got Dashboard permissions: ". json_encode(hasDiscordRole($_SESSION['user']['roles'], $config['ui']['pages']['dashboard']['discordRoles'])) ."' );</script>";
+//echo "<script>console.log( 'Display session user role: ". json_encode($_SESSION['user']['roles']) ."' );</script>";
+//echo "<script>console.log( 'Display needed user role: ". json_encode($config['ui']['pages']['dashboard']['discordRoles']) ."' );</script>";
+//echo "<script>console.log( 'Display session user role: ". json_encode($_SESSION['user']['roles']) ."' );</script>";
 ?>
 
   </body>

@@ -14,22 +14,22 @@ $filters = "
   <div class='row'>
     <div class='input-group mb-3'>
       <div class='input-group-prepend'>
-        <label class='input-group-text' for='search-input' data-i18n='raids_filter_pokemon'>Pokemon</label>
+        <label class='input-group-text' for='search-input' data-i18n='raids_filter_pokemon'>Monster</label>
       </div>
-      <input type='text' id='search-input' class='form-control input-lg' onkeyup='filter_raids($mobile)' placeholder='Search by name..' title='Type in a name'>
+      <input type='text' id='search-input' class='form-control input-lg' onkeyup='filter_raids($mobile)' placeholder='Search by name..' title='Namen Eingeben..'>
     </div>
     <div class='input-group mb-3'>
       <div class='input-group-prepend'>
-        <label class='input-group-text' for='filter-gym' data-i18n='raids_filter_gym'>Gym</label>
+        <label class='input-group-text' for='filter-gym' data-i18n='raids_filter_gym'>Arena</label>
       </div>
-      <input type='text' id='filter-gym' class='form-control input-lg' onkeyup='filter_raids($mobile)' placeholder='Search by gym..' title='Type in a gym name'>
+      <input type='text' id='filter-gym' class='form-control input-lg' onkeyup='filter_raids($mobile)' placeholder='Search by gym..' title='Namen Eingaben..'>
     </div>
     <div class='input-group mb-3'>
       <div class='input-group-prepend'>
-        <label class='input-group-text' for='filter-city' data-i18n='raids_filter_city'>City</label>
+        <label class='input-group-text' for='filter-city' data-i18n='raids_filter_city'>Stadt</label>
       </div>
       <select multiple id='filter-city' class='custom-select' onchange='filter_raids($mobile)'>
-        <option value='' selected>All</option>";
+        <option value='' selected>Alle</option>";
         $count = count($geofenceSrvc->geofences);
         for ($i = 0; $i < $count; $i++) {
             $geofence = $geofenceSrvc->geofences[$i];
@@ -69,9 +69,9 @@ $filters = "
         <label class='input-group-text' for='search-input' data-i18n='raids_filter_ex'>Ex-Eligible</label>
       </div>
       <select id='filter-ex' class='custom-select' onchange='filter_raids($mobile)'>
-        <option value='all' selected>All</option>
-        <option value='yes'>Yes</option>
-        <option value='no'>No</option>
+        <option value='all' selected>Alle</option>
+        <option value='yes'>Ja</option>
+        <option value='no'>Nein</option>
       </select>
     </div>
   </div>
@@ -79,7 +79,7 @@ $filters = "
 ";
 
 $modal = "
-<h2 class='page-header text-center' data-i18n='raids_title'>Ongoing raid battles</h2>
+<h2 class='page-header text-center' data-i18n='raids_title'>Aktuelle Raidkämpfe</h2>
 <div class='btn-group btn-group-sm float-right'>
   <button type='button' class='btn btn-dark' data-toggle='modal' data-target='#filtersModal'>
     <i class='fa fa-fw fa-filter' aria-hidden='true'></i>
@@ -93,15 +93,15 @@ $modal = "
   <div class='modal-dialog' role='document'>
     <div class='modal-content'>
       <div class='modal-header'>
-        <h5 class='modal-title' id='filtersModalLabel' data-i18n='raids_filters_title'>Raid Filters</h5>
+        <h5 class='modal-title' id='filtersModalLabel' data-i18n='raids_filters_title'>Raid Filter</h5>
         <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
           <span aria-hidden='true'>&times;</span>
         </button>
       </div>
       <div class='modal-body'>" . $filters . "</div>
       <div class='modal-footer'>
-        <button type='button' class='btn btn-danger' id='reset-filters' data-i18n='raids_modal_reset_filters'>Reset Filters</button>
-        <button type='button' class='btn btn-primary' data-dismiss='modal' data-i18n='raids_modal_close'>Close</button>
+        <button type='button' class='btn btn-danger' id='reset-filters' data-i18n='raids_modal_reset_filters'>Filter zurücksetzen</button>
+        <button type='button' class='btn btn-primary' data-dismiss='modal' data-i18n='raids_modal_close'>Schließen</button>
       </div>
     </div>
   </div>
@@ -110,26 +110,26 @@ $modal = "
   <div class='modal-dialog' role='document'>
     <div class='modal-content'>
       <div class='modal-header'>
-        <h5 class='modal-title' id='columnsModalLabel' data-i18n='raids_modal_show_columns'>Show Columns</h5>
+        <h5 class='modal-title' id='columnsModalLabel' data-i18n='raids_modal_show_columns'>Spaltenanzeige</h5>
         <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
           <span aria-hidden='true'>&times;</span>
         </button>
       </div>    
       <div class='modal-body'>
         <div id='chkColumns'>
-          <p><input type='checkbox' name='starts' data-i18n='raids_column_raid_starts' />&nbsp;Raid Starts</p>
-          <p><input type='checkbox' name='ends' data-i18n='raids_column_raid_ends' />&nbsp;Raid Ends</p>
+          <p><input type='checkbox' name='starts' data-i18n='raids_column_raid_starts' />&nbsp;Raidstart</p>
+          <p><input type='checkbox' name='ends' data-i18n='raids_column_raid_ends' />&nbsp;Raidende</p>
           <p><input type='checkbox' name='level' data-i18n='raids_column_raid_level' />&nbsp;Raid Level</p>
           <p><input type='checkbox' name='boss' data-i18n='raids_column_raid_boss' />&nbsp;Raid Boss</p>
-          <p><input type='checkbox' name='moveset' data-i18n='raids_column_moveset' />&nbsp;Moveset</p>
-          <p><input type='checkbox' name='city' data-i18n='raids_column_city' />&nbsp;City</p>
+          <!--<p><input type='checkbox' name='moveset' data-i18n='raids_column_moveset' />&nbsp;Moveset</p>-->
+          <p><input type='checkbox' name='city' data-i18n='raids_column_city' />&nbsp;Stadt</p>
           <p><input type='checkbox' name='team' data-i18n='raids_column_team' />&nbsp;Team</p>
-          <p><input type='checkbox' name='ex' data-i18n='raids_column_ex' />&nbsp;Ex-Eligible</p>
-          <p><input type='checkbox' name='updated' data-i18n='raids_column_updated' />&nbsp;Updated</p>
+          <p><input type='checkbox' name='ex' data-i18n='raids_column_ex' />&nbsp;Ex-Fähig</p>
+          <!--<p><input type='checkbox' name='updated' data-i18n='raids_column_updated' />&nbsp;Aktualisiert</p>-->
         </div>
       </div>
       <div class='modal-footer'>
-        <button type='button' class='btn btn-primary' data-dismiss='modal' data-i18n='raids_modal_close'>Close</button>
+        <button type='button' class='btn btn-primary' data-dismiss='modal' data-i18n='raids_modal_close'>Schließen</button>
       </div>
     </div>
   </div>
@@ -141,6 +141,7 @@ include_once("./includes/data_fetcher.php");
 echo "</div>";
 ?>
 
+<link rel="stylesheet" href="./static/css/footerfix.css"/>
 <script type="text/javascript">
 var refresh_rate = <?=$config['ui']['table']['refreshRateS']?>;
 var refresher = setInterval(filter_raids, refresh_rate * 1000);

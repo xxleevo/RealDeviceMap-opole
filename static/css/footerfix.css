@@ -1,0 +1,2 @@
+/* Fix every site for 80 px margin to have space for the footer */
+body { margin-bottom:80px; }

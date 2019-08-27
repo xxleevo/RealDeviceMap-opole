@@ -12,6 +12,53 @@ a.mystic i,.mystic h4.list-group-item-heading { color:#3b5998; }
 a.mystic:hover { background-color:#3b5998; }
 a.mystic:hover * { color:#FFF; }
 /* Instinct */
-a.instinct i,.instinct h4.list-group-item-heading { color:#FFF444; }
+a.instinct i,.instinct h4.list-group-item-heading { color:#FFCC00; }
 a.instinct:hover { background-color:#FFF444; }
-a.instinct:hover * { color:black; }
+a.instinct:hover * { color:#555; }
+a.link { color:#555; }
+a.link:hover { background-color:#000000; }
+a.link:hover * { color:#000000; }
+div.heading {background-image: linear-gradient(to top, #686868 0%, #121212 100%)}
+
+ /* Style the tab */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-image: linear-gradient(to top, #686868 0%, #121212 100%)
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button {
+  background-color: inherit;
+  outline: none;
+  border: none;
+  float: left;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  */
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-image: linear-gradient(to top, #575757 0%, #000000 100%)
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-image: linear-gradient(to top, #797979 0%, #232323 100%)
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+  animation: fadeEffect 1s; /* Fading effect takes 1 second */
+} 
+/* Go from zero to full opacity */
+@keyframes fadeEffect {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}

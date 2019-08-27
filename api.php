@@ -79,6 +79,9 @@ if (!(isset($data['type']) && !empty($data['type']))) {
                         "active_pokemon" => $pokemonStats["active"],
                         "iv_total" => $pokemonStats["iv_total"],
                         "iv_active" => $pokemonStats["iv_active"],
+                        "iv_95_total" => $pokemonStats["iv_95_total"],
+                        "iv_95_active" => $pokemonStats["iv_95_active"],
+                        "iv_100_total" => $pokemonStats["iv_100_total"]
                     ];
                     echo json_encode($obj);
                     break;
@@ -86,6 +89,19 @@ if (!(isset($data['type']) && !empty($data['type']))) {
                     $gymStats = get_gym_stats();
                     $gymCount = get_table_count("gym");
                     $raidCount = get_raid_stats();
+					
+					$gymWhiteActive = get_table_count("gym where updated > (UNIX_TIMESTAMP()-14400) AND team_id = 0");
+					$gymBlueActive = get_table_count("gym where updated > (UNIX_TIMESTAMP()-14400) AND team_id = 1");
+					$gymRedActive = get_table_count("gym where updated > (UNIX_TIMESTAMP()-14400) AND team_id = 2");
+					$gymYellowActive = get_table_count("gym where updated > (UNIX_TIMESTAMP()-14400) AND team_id = 3");
+					
+					$raidHatchedCountTotal = get_table_count("gym where raid_level >= 1 AND raid_level <= 5 AND raid_battle_timestamp < UNIX_TIMESTAMP() AND raid_end_timestamp > UNIX_TIMESTAMP()");
+					$raidHatchedCountNormal = get_table_count("gym where raid_level >= 1 AND raid_level < 5 AND raid_battle_timestamp < UNIX_TIMESTAMP() AND raid_end_timestamp > UNIX_TIMESTAMP()");
+					$raidHatchedCountLegendary = get_table_count("gym WHERE raid_level = 5 AND raid_battle_timestamp < UNIX_TIMESTAMP()  AND raid_end_timestamp > UNIX_TIMESTAMP()");
+					
+					$eggCountTotal = get_table_count("gym where raid_level >=1 AND raid_level <=5 AND raid_battle_timestamp > UNIX_TIMESTAMP()");
+					$eggCountNormal = get_table_count("gym where raid_level >= 1 AND raid_level < 5 AND raid_battle_timestamp > UNIX_TIMESTAMP()");
+					$eggCountLegendary = get_table_count("gym where raid_level = 5 AND raid_battle_timestamp > UNIX_TIMESTAMP()");
                     $obj = [
                         "gyms" => $gymCount,
                         "raids" => $raidCount,
@@ -93,6 +109,16 @@ if (!(isset($data['type']) && !empty($data['type']))) {
                         "mystic" => $gymStats === 0 ? 0 : $gymStats[1],
                         "valor" => $gymStats === 0 ? 0 : $gymStats[2],
                         "instinct" => $gymStats === 0 ? 0 : $gymStats[3],
+						"neutralactive" => $gymWhiteActive,
+						"mysticActive" => $gymBlueActive,
+						"valorActive" => $gymRedActive,
+						"instinctActive" => $gymYellowActive,
+						"hatchedRaids" => $raidHatchedCountTotal,
+						"hatchedNormalRaids" => $raidHatchedCountNormal,
+						"hatchedLegendaryRaids" => $raidHatchedCountLegendary,
+						"eggs" => $eggCountTotal,
+						"eggsNormal" => $eggCountNormal,
+						"eggsLegendary" => $eggCountLegendary,
                     ];
                     echo json_encode($obj);
                     break;
@@ -111,16 +137,24 @@ if (!(isset($data['type']) && !empty($data['type']))) {
                         "tth_total" => $spawnpointStats === 0 ? 0 : $spawnpointStats["total"],
                         "tth_found" => $spawnpointStats === 0 ? 0 : $spawnpointStats["found"],
                         "tth_missing" => $spawnpointStats === 0 ? 0 : $spawnpointStats["missing"],
-                        "tth_30min" => $spawnpointStats === 0 ? 0 : $spawnpointStats["min30"],
-                        "tth_60min" => $spawnpointStats === 0 ? 0 : $spawnpointStats["min60"]
+                        //"tth_30min" => $spawnpointStats === 0 ? 0 : $spawnpointStats["min30"],
+                        //"tth_60min" => $spawnpointStats === 0 ? 0 : $spawnpointStats["min60"]
                         //"tth_percentage" => $spawnpointStats === 0 ? 0 : $spawnpointStats["percentage"],
                     ];
                     echo json_encode($obj);
                     break;
                 case "top":
                     $top10Pokemon = get_top_pokemon(10);
+                    $top10PokemonIV = get_top_pokemon_iv(10);
+                    $top10PokemonLifetime = get_top_pokemon_lifetime(10);
+					$top10PokemonIV95 = get_top_pokemon_iv95(10);
+					$top10PokemonIV100 = get_top_pokemon_iv100(10);
                     $obj = [
-                        "top10_pokemon" => $top10Pokemon
+                        "top10_pokemon" => $top10Pokemon,
+                        "top10_pokemon_iv" => $top10PokemonIV,
+                        "top10_pokemon_lifetime" => $top10PokemonLifetime,
+                        "top10_pokemon_iv95" => $top10PokemonIV95,
+                        "top10_pokemon_iv100" => $top10PokemonIV100
                     ];
                     echo json_encode($obj);
                     break;
@@ -194,6 +228,16 @@ SELECT
   SUM(iv >= 50 AND iv < 80) AS iv_50_79,
   SUM(iv >= 80 AND iv < 90) AS iv_80_89,
   SUM(iv >= 90 AND iv < 100) AS iv_90_99,
+  SUM(iv >= 1 AND iv < 11) AS iv_1_10,
+  SUM(iv >= 11 AND iv < 21) AS iv_11_20,
+  SUM(iv >= 21 AND iv < 31) AS iv_21_30,
+  SUM(iv >= 31 AND iv < 41) AS iv_31_40,
+  SUM(iv >= 41 AND iv < 51) AS iv_41_50,
+  SUM(iv >= 51 AND iv < 61) AS iv_51_60,
+  SUM(iv >= 61 AND iv < 71) AS iv_61_70,
+  SUM(iv >= 71 AND iv < 81) AS iv_71_80,
+  SUM(iv >= 81 AND iv < 91) AS iv_81_90,
+  SUM(iv >= 91 AND iv < 100) AS iv_91_99,
   SUM(gender = 1) AS male,
   SUM(gender = 2) AS female,
   SUM(gender = 3) AS genderless,

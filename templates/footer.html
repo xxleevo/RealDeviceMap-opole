@@ -1,12 +1,15 @@
 <footer>
-  <div class='navbar fixed-bottom navbar-dark bg-dark justify-content-center align-items-center'>
+  <div class='navbar fixed-bottom navbar-dark bg-dark justify-content-center align-items-center' style='max-heigth:100%;background-image: linear-gradient(to top, #686868 0%, #121212 100%)'>
     <p class='text-muted text-center small'>
 <?php if ($config['core']['showCopyright']) { ?>
-      This website or the authors have no relationship with Niantic, Nintendo or other any Pokémon Go responsible.<br/><br/>
-
-      Pokémon Go is ©2016 Niantic, Inc. ©2016 Pokémon. ©1995–2016 Nintendo / Creatures Inc. / GAME FREAK inc.<br/><br/>
-      
-      Pokémon and Pokémon character names are trademarks of Nintendo. Other trademarks are the property of their respective owners.<br/>
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#cpbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span> Copyright Information <span class="navbar-toggler-icon"></span>
+	</button>
+	<div class="collapse navbar-collapse" id="cpbar" style='background-color: silver;'>
+      This website or the authors have no relationship with Niantic, Nintendo or other any Pokémon Go responsible.<br/>
+      Pokémon Go is ©2016 Niantic, Inc. ©2016 Pokémon. ©1995–2016 Nintendo / Creatures Inc. / GAME FREAK inc.<br/>
+      Pokémon and Pokémon character names are trademarks of Nintendo. Other trademarks are the property of their respective owners.
+	</div>
 <?php } ?>
     </p>
   </div>
