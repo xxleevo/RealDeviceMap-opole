@@ -1,7 +1,7 @@
 <?php
-$onlineDevices = get_table_count_noId("device where uuid LIKE '%SE%' OR uuid LIKE '%PL10%' AND last_seen > UNIX_TIMESTAMP()-120");
-$onlineDevicesQuests = get_table_count_noId("device where uuid LIKE '%SE%' AND instance_name LIKE 'Quests%' OR uuid LIKE '%PL10%' AND instance_name LIKE 'Quests%' and last_seen > UNIX_TIMESTAMP()-120");
-$maxDevices = get_table_count_noId("device where uuid LIKE '%SE%' OR uuid LIKE '%PL10%'");
+$onlineDevices = get_table_count_noId("device where uuid LIKE '%SE%' AND last_seen > UNIX_TIMESTAMP()-600 OR uuid LIKE '%PL%' AND last_seen > UNIX_TIMESTAMP()-600");
+$onlineDevicesQuests = get_table_count_noId("device where instance_name LIKE '%Quests%' AND last_seen > UNIX_TIMESTAMP()-600");
+$maxDevices = get_table_count_noId("device where uuid LIKE '%SE%' OR uuid LIKE '%PL%'");
 $maxDevicesQuests = $maxDevices;
 $percentOnline = (($onlineDevices/$maxDevices) *100);
 $percentOnlineQuests = (($onlineDevicesQuests/$maxDevicesQuests)*100);
@@ -366,11 +366,11 @@ $html .="
         <div class='col-md-4'>
           <a class='list-group-item'>";
             
-			if($onlineDevicesQuests >= $maxDevicesQuests){
+			if($onlineDevicesQuests >= ($maxDevicesQuests -1)){
 			$html .="
 					<h3 class='pull-right'><img src='./static/images/online.png' width='48' height='48'/></h3>
 					<h4 class='list-group-item-heading'>Aktiv</h4>";
-			}else if($onlineDevicesQuests >= 1 && $onlineDevicesQuests < $maxDevicesQuests){
+			}else if($onlineDevicesQuests >= 1 && $onlineDevicesQuests < ($maxDevicesQuests-1)){
 			$html .="
 					<h3 class='pull-right'><img src='./static/images/unstable.png' width='48' height='48'/></h3>
 					<h4 class='list-group-item-heading'>Unstable (". round($percentOnlineQuests) ."%)</h4>";
