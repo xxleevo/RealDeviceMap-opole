@@ -3,20 +3,23 @@ require_once './static/data/pokedex.php';
 
 $html = "
 <div class='container'>
-  <h2 class='page-header text-center' data-i18n='pokemon_title'>In der Wildnis gesichtete Pokemon !</h2>
+  <h2 class='page-header text-center' data-i18n='pokemon_title'>Pokemon found in the wild!</h2>
   <div class='row'>
     <div class='input-group mb-3'>
       <div class='input-group-prepend'>
-        <label class='input-group-text' for='filter-date' data-i18n='pokemon_filter_date'>Datum</label>
+        <label class='input-group-text' for='filter-date' data-i18n='pokemon_filter_date'>Date</label>
       </div>
       <input id='filter-date' type='text' class='form-control' data-toggle='datepicker'>
     </div>
     <div class='input-group mb-3'>
       <div class='input-group-prepend'>
-        <label class='input-group-text' for='search-input' data-i18n='pokemon_filter_pokemon'>Pokemon suchen</label>
+        <label class='input-group-text' for='search-input' data-i18n='pokemon_filter_pokemon'>Search Pokemon</label>
       </div>
-      <input type='text' id='filter-pokemon' class='form-control input-lg' onkeyup='filterPokemon()' placeholder='Search by name..' title='Namen suchen..'>
+      <input type='text' id='filter-pokemon' class='form-control input-lg' onkeyup='filterPokemon()' placeholder='Search by name..' title='Type in a name'>
     </div>
+    <!--<div class='input-group-text mb-3'>
+      <input id='foundOnly' for='filter-found' type='checkbox' aria-label='Checkbox for following text input'>&nbsp;Nur gefundene zeigen
+    </div>-->
   </div>";
 $count = 0;
 //<div class='row'>";
@@ -33,7 +36,7 @@ foreach ($pokedex as $id => $name) {
   <div class='card-body'>
     <span class='text-nowrap'><b>$name</b> #$id</span>
     <p class='card-text text-nowrap'>
-      gesichtet:
+      Seen:
       <span id='pkmn-seen-$id'>0</span>
     </p>
   </div>
@@ -46,10 +49,10 @@ foreach ($pokedex as $id => $name) {
     }
 }
 $html .= "</div>";
+$html .= "<div style='margin-bottom:70px;'></div>";
 echo $html;
 ?>
 
-<link rel="stylesheet" href="./static/css/footerfix.css"/>
 <script type='text/javascript' src='./static/js/datepicker.js'></script>
 <script type='text/javascript' src='./static/js/pokedex.js'></script>
 <script type="text/javascript" src="./static/js/utils.js"></script>
@@ -90,10 +93,11 @@ function filterPokemon() {
   }
 }
 
+
 function filterPokemonElements(elements, dateFilter, pokeFilter) {
   elements.map(stat => {
     if (stat.date === dateFilter) {
-      $("#pkmn-seen-" + stat.pokemon_id).text(numberWithCommas(stat.count));
+		$("#pkmn-seen-" + stat.pokemon_id).text(numberWithCommas(stat.count));
       if (pokeFilter === "") {
         $("#pkmn-" + stat.pokemon_id).show();
       } else {
