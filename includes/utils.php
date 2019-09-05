@@ -32,7 +32,60 @@ GROUP BY
  
     return $data;
 }
-  
+
+function get_shiny_rates() {
+    global $config;
+    $db = new DbConnector($config['db']);
+    $pdo = $db->getConnection();
+    $where = " WHERE shiny = 1 ";
+    $sql = "
+SELECT
+  pokemon_id as pokeid,
+  COUNT(pokemon_id) AS count,
+  (SELECT count(pokemon_id) FROM pokemon p where p.pokemon_id=pokeid AND shiny is not null) as total,
+  ((SELECT count(pokemon_id) FROM pokemon p where p.pokemon_id=pokeid AND shiny is not null)/COUNT(pokemon_id)) as rate
+FROM
+  pokemon
+$where
+GROUP BY
+  pokemon_id
+ORDER BY
+  rate ASC
+";
+    $result = $pdo->query($sql);
+    $data = null;
+    if ($result->rowCount() > 0) {
+        $data = $result->fetchAll();
+    }
+    unset($pdo);
+    unset($db);
+    return $data;
+}
+function get_shiny_rates_total() {
+    global $config;
+    $db = new DbConnector($config['db']);
+    $pdo = $db->getConnection();
+    $sql = "
+SELECT
+	pokemon_id AS pokeid,
+	SUM(count_shiny) as count,
+	SUM(count) as total,
+	(SUM(count)/SUM(count_shiny)) as rate
+FROM shiny_stats
+GROUP BY pokemon_id
+HAVING SUM(count_shiny) > 0
+ORDER BY rate ASC;
+";
+    $result = $pdo->query($sql);
+    $data = null;
+    if ($result->rowCount() > 0) {
+        $data = $result->fetchAll();
+    }
+    unset($pdo);
+    unset($db);
+    return $data;
+}
+
 function get_pokestop_stats() {
     global $config;
     $db = new DbConnector($config['db']);
@@ -41,7 +94,8 @@ function get_pokestop_stats() {
 SELECT 
   COUNT(id) total,
   SUM(CASE WHEN lure_expire_timestamp > UNIX_TIMESTAMP() THEN 1 ELSE 0 END) lured,
-  SUM(CASE WHEN quest_reward_type THEN 1 ELSE 0 END) quests
+  SUM(CASE WHEN quest_reward_type THEN 1 ELSE 0 END) quests,
+  SUM(CASE WHEN incident_expire_timestamp > UNIX_TIMESTAMP() THEN 1 ELSE 0 END) invasions
 FROM
   pokestop
 ";

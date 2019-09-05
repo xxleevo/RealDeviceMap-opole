@@ -128,6 +128,7 @@ if (!(isset($data['type']) && !empty($data['type']))) {
                         "pokestops" => $stopStats === 0 ? 0 : $stopStats["total"],
                         "lured" => $stopStats === 0 ? 0 : $stopStats["lured"],
                         "quests" => $stopStats === 0 ? 0 : $stopStats["quests"],
+                        "invasions" => $stopStats === 0 ? 0 : $stopStats["invasions"],
                     ];
                     echo json_encode($obj);
                     break;
@@ -155,6 +156,15 @@ if (!(isset($data['type']) && !empty($data['type']))) {
                         "top10_pokemon_lifetime" => $top10PokemonLifetime,
                         "top10_pokemon_iv95" => $top10PokemonIV95,
                         "top10_pokemon_iv100" => $top10PokemonIV100
+                    ];
+                    echo json_encode($obj);
+                    break;
+                case "shiny":
+                    $shinyRates = get_shiny_rates();
+					$shinyRatesTotal = get_shiny_rates_total();
+                    $obj = [
+                        "shiny_rates" => $shinyRates,
+						"shiny_rates_total" => $shinyRatesTotal
                     ];
                     echo json_encode($obj);
                     break;

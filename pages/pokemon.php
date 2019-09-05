@@ -17,9 +17,9 @@ $html = "
       </div>
       <input type='text' id='filter-pokemon' class='form-control input-lg' onkeyup='filterPokemon()' placeholder='Search by name..' title='Type in a name'>
     </div>
-    <!--<div class='input-group-text mb-3'>
-      <input id='foundOnly' for='filter-found' type='checkbox' aria-label='Checkbox for following text input'>&nbsp;Nur gefundene zeigen
-    </div>-->
+    <div class='input-group-text mb-3' style ='display:none'>
+      <input id='foundOnly' for='filter-found' type='checkbox' onclick='foundOnly()'aria-label='Checkbox for following text input'>&nbsp;Nur gefundene zeigen
+    </div>
   </div>";
 $count = 0;
 //<div class='row'>";
@@ -72,10 +72,11 @@ var obj = [];
 function filterPokemon() {
   var dateFilter = document.getElementById("filter-date").value;
   var pokeFilter = document.getElementById("filter-pokemon").value;
-  console.log("Date:", dateFilter, "Pokemon:", pokeFilter);
+  var checkbox = document.getElementById("foundOnly");
+  //console.log("Date:", dateFilter, "Pokemon:", pokeFilter, "Checkbox:", checkbox.checked);
   
   if (obj != null && obj.length > 0) {
-    filterPokemonElements(obj, dateFilter, pokeFilter);
+    filterPokemonElements(obj, dateFilter, pokeFilter, checkbox.checked);
   } else {
     var tmp = createToken();
     sendRequest({ "table": "pokemon_stats", "token": tmp }, function(data, status) {
@@ -88,29 +89,40 @@ function filterPokemon() {
         }
       }
       obj = JSON.parse(data);
-      filterPokemonElements(obj, dateFilter, pokeFilter);
+      filterPokemonElements(obj, dateFilter, pokeFilter, checkbox.checked);
     });
   }
 }
+function foundOnly(){
+	filterPokemon();
+}
 
-
-function filterPokemonElements(elements, dateFilter, pokeFilter) {
+function filterPokemonElements(elements, dateFilter, pokeFilter, checkboxChecked) {
+	//console.log("Filter elements, checkbox:", checkboxChecked);
   elements.map(stat => {
     if (stat.date === dateFilter) {
 		$("#pkmn-seen-" + stat.pokemon_id).text(numberWithCommas(stat.count));
-      if (pokeFilter === "") {
+      if (pokeFilter === "" && !checkboxChecked) {
         $("#pkmn-" + stat.pokemon_id).show();
-      } else {
+	  }
+       else {
         var maxPokemon = <?=$config['core']['maxPokemon']?>;
         for (var i = 0; i <= maxPokemon; i++) {
           var pokemonId = (i + 1);
-          //TODO: VVV Fix console error spam
-          if (pokedex[pokemonId].toLowerCase().includes(pokeFilter.toLowerCase())) {
-            $("#pkmn-" + pokemonId).show();
-          } else {
-            $("#pkmn-" + pokemonId).hide();
-          }
+		  if(pokeFilter !== ""){ // For Poke Filter
+			if (pokedex[pokemonId].toLowerCase().includes(pokeFilter.toLowerCase())) {
+				$("#pkmn-" + pokemonId).show();
+			} else {
+				$("#pkmn-" + pokemonId).hide();
+			}
+		  }
+		  //if(checkboxChecked){
+		  //  $("#pkmn-" + pokemonId).hide();
+		  //}
         }
+		//if(checkboxChecked){
+		//	$("#pkmn-" + stat.pokemon_id).show();
+		//}
       }
     }
   });

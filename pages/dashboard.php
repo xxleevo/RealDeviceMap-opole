@@ -113,6 +113,8 @@ Auf dieser Seite findest du eine Übersicht darüber, welche Daten auf unserer M
 		<button class='tablinks heading text-light' onclick='openCity(event,\"Top10MonIV\")'><b>Top 10 IV Heute</b></button>
 		<button class='tablinks heading text-light' onclick='openCity(event,\"Top10MonIV95\")'><b>96+ Heute</b></button>
 		<button class='tablinks heading text-light' onclick='openCity(event,\"Top10MonIV100\")'><b>100er Heute</b></button>
+		<button class='tablinks heading text-light' onclick='openCity(event,\"TopShinys\")'><b>Shinys Heute</b></button>
+		<button class='tablinks heading text-light' onclick='openCity(event,\"ShinysTotal\")'><b>Shinys Gesamt</b></button>
 	</div>
 	
 
@@ -131,6 +133,17 @@ Auf dieser Seite findest du eine Übersicht darüber, welche Daten auf unserer M
 	<div id='Top10MonIV' class='tabcontent'>
 		<div class='container'>
 			<div id='top-10-pokemon-iv' class='row justify-content-center'></div>
+		</div>
+	</div>
+	<div id='TopShinys' class='tabcontent'>
+		<div class='container'>
+			<div id='shiny-rates' class=''></div>
+		</div>
+	</div>
+	
+	<div id='ShinysTotal' class='tabcontent'>
+		<div class='container'>
+			<div id='shiny-rates-total' class=''></div>
 		</div>
 	</div>
 	
@@ -236,6 +249,13 @@ Auf dieser Seite findest du eine Übersicht darüber, welche Daten auf unserer M
             <h3 class='pull-right'><img src='./static/images/stop.png' width='48' height='48'/></h3>
             <h4 class='list-group-item-heading pokestop-count'>0</h4>
             <p class='list-group-item-text' data-i18n='dashboard_pokestops_total'>Stops</p>
+          </a>
+        </div>
+        <div class='col-md-3'>
+          <a class='list-group-item'>
+            <h3 class='pull-right'><img src='./static/images/rocket-invasion.png' width='48' height='48'/></h3>
+            <h4 class='list-group-item-heading invasions-pokestop-count'>0</h4>
+            <p class='list-group-item-text' data-i18n='dashboard_pokestops_invasions'>Rocket Invasionen</p>
           </a>
         </div>
         <div class='col-md-3'>
@@ -511,6 +531,7 @@ function getStats() {
     updateCounter(".pokestop-count", obj.pokestops);
     updateCounter(".lured-pokestop-count", obj.lured);
     updateCounter(".quest-pokestop-count", obj.quests);
+    updateCounter(".invasions-pokestop-count", obj.invasions);
   });
 
   tmp = createToken();
@@ -648,60 +669,76 @@ function getStats() {
     });
     $('#top-10-pokemon-lifetime').html(html);
   });
+  
+  tmp = createToken();
+  sendRequest({ "type": "dashboard", "stat": "shiny", "token": tmp }, function(data, status) {
+    tmp = null;
+    if (debug) {
+      if (data === 0) {
+        console.log("Failed to get data for dashboard.");
+        return;
+      } else {
+        console.log("Dashboard:", data);
+      }
+    }
+    var obj = JSON.parse(data);
+    var html = "";
+    var count = 0;
+    $.each(obj.shiny_rates, function(key, value) {
+      if (count == 0) {
+        html += "<div class='row justify-content-center'>";
+      }
+      var name = pokedex[value.pokeid];
+      var pkmnImage = sprintf("<?=$config['urls']['images']['pokemon']?>", value.pokeid);
+      html += "<div class='col-md-2" + (count == 0 ? " col-md-offset-1" : "") + "'>";
+      html += "<img src='" + pkmnImage + "' width='64' height='64'><p><span class='text-nowrap'>" + name + ": " + numberWithCommas(value.count) + "</span>";
+      html += "<span class='text-nowrap'><br>(1:" + Math.round(value.total/value.count) + ")</span></p></br>";
+      html += "</div>";
+      if (count == 4) {
+        html += "</div>";
+        count = 0;
+      } else {
+        count++;
+      }
+    });
+    $('#shiny-rates').html(html);
+  });
+  
+  tmp = createToken();
+  sendRequest({ "type": "dashboard", "stat": "shiny", "token": tmp }, function(data, status) {
+    tmp = null;
+    if (debug) {
+      if (data === 0) {
+        console.log("Failed to get data for dashboard.");
+        return;
+      } else {
+        console.log("Dashboard:", data);
+      }
+    }
+    var obj = JSON.parse(data);
+    var html = "";
+    var count = 0;
+    $.each(obj.shiny_rates_total, function(key, value) {
+      if (count == 0) {
+        html += "<div class='row justify-content-center'>";
+      }
+      var name = pokedex[value.pokeid];
+      var pkmnImage = sprintf("<?=$config['urls']['images']['pokemon']?>", value.pokeid);
+      html += "<div class='col-md-2" + (count == 0 ? " col-md-offset-1" : "") + "'>";
+      html += "<img src='" + pkmnImage + "' width='64' height='64'><p><span class='text-nowrap'>" + name + ": " + numberWithCommas(value.count) + "</span>";
+      html += "<span class='text-nowrap'><br>(1:" + Math.round(value.total/value.count) + ")</span></p></br>";
+      html += "</div>";
+      if (count == 4) {
+        html += "</div>";
+        count = 0;
+      } else {
+        count++;
+      }
+    });
+    $('#shiny-rates-total').html(html);
+  });
 }
 
-/*
-var tmp = createToken();
-sendRequest({ "type": "dashboard", "token": tmp }, function(data, status) {
-  tmp = null;
-  if (debug) {
-    if (data === 0) {
-      console.log("Failed to get data for dashboard.");
-      return;
-    } else {
-      console.log("Dashboard:", data);
-    }
-  }
-  var obj = JSON.parse(data);
-  updateCounter(".pokemon-count", obj.active_pokemon);
-  updateCounter(".gym-count", obj.gyms);
-  updateCounter(".raids-count", obj.raids);
-  updateCounter(".total-pokemon-count", obj.pokemon);
-  updateCounter(".total-iv-count", obj.iv_total);
-  updateCounter(".active-iv-count", obj.iv_active);
-  updateCounter(".neutral-gyms-count", obj.neutral);
-  updateCounter(".valor-gyms-count", obj.valor);
-  updateCounter(".mystic-gyms-count", obj.mystic);
-  updateCounter(".instinct-gyms-count", obj.instinct);
-  updateCounter(".pokestop-count", obj.pokestops);
-  updateCounter(".lured-pokestop-count", obj.lured);
-  updateCounter(".quest-pokestop-count", obj.quests);
-  updateCounter(".spawnpoint-count", obj.tth_total);
-  updateCounter(".found-spawnpoint-count", obj.tth_found);
-  updateCounter(".missing-spawnpoint-count", obj.tth_missing);
-  updateCounter(".percentage-spawnpoint-count", obj.tth_percentage);
-
-  var html = "";
-  var count = 0;
-  $.each(obj.top10_pokemon, function(key, value) {
-    if (count == 0) {
-      html += "<div class='row justify-content-center'>";
-    }
-    var name = pokedex[value.pokemon_id];
-    var pkmnImage = sprintf("<?=$config['urls']['images']['pokemon']?>", value.pokemon_id);
-    html += "<div class='col-md-2" + (count == 0 ? " col-md-offset-1" : "") + "'>";
-    html += "<img src='" + pkmnImage + "' width='48' height='48'><span class='text-nowrap'>" + name + ": " + numberWithCommas(value.count) + "</span></br>";
-    html += "</div>";
-    if (count == 4) {
-      html += "</div>";
-      count = 0;
-    } else {
-      count++;
-    }
-  });
-  $('#top-10-pokemon').html(html);
-});
-*/
 
 function createToken() {
   //TODO: Secure
