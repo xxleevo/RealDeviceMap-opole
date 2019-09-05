@@ -72,6 +72,7 @@ SELECT
 	SUM(count) as total,
 	(SUM(count)/SUM(count_shiny)) as rate
 FROM shiny_stats
+WHERE count_shiny > 0
 GROUP BY pokemon_id
 HAVING SUM(count_shiny) > 0
 ORDER BY rate ASC;
