@@ -5,7 +5,7 @@ require_once './static/data/pokedex.php';
 $osm = $config['ui']['pages']['nests']['type'] === 'osm';
 ?>
 
-<h2 class='page-header text-center' data-i18n='nests_title'>Neighborhood nests</h2>
+<h2 class='page-header text-center' data-i18n='nests_title'>Nesterliste</h2>
 <p id="migration" class='text-center'></p>
 <ul class='nav nav-pills mb-3 justify-content-center' role='tablist'>
 <?php if ($osm) { ?>
@@ -38,7 +38,7 @@ $osm = $config['ui']['pages']['nests']['type'] === 'osm';
                 <thead class='thead-<?=$config['ui']['table']['headerStyle']?>'>
                   <tr>
                     <th scope="col" data-i18n='nests_column_pokemon'>Pokemon</th>
-                    <th scope="col" data-i18n='nests_column_count'>Count</th>
+                    <th scope="col" data-i18n='nests_column_count'>Spawns/h</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -73,7 +73,7 @@ $osm = $config['ui']['pages']['nests']['type'] === 'osm';
           <tr>
             <th scope="col" data-i18n='nests_column_park'>Park</th>
             <th scope="col" data-i18n='nests_column_pokemon'>Pokemon</th>
-            <th scope="col" data-i18n='nests_column_count'>Count</th>
+            <th scope="col" data-i18n='nests_column_count'>Spawns/h</th>
           </tr>
         </thead>
         <tbody>
@@ -99,7 +99,6 @@ SELECT
   lon,
   name,
   pokemon_id,
-  pokemon_count,
   ROUND(pokemon_avg) AS avg,
   updated
 FROM
@@ -108,7 +107,7 @@ WHERE
   name IS NOT NULL
   AND pokemon_count > 1
 ORDER BY
-  pokemon_count DESC;
+  avg DESC;
 ";
 
     $result = $pdo->query($sql);
@@ -119,9 +118,8 @@ ORDER BY
         echo "<tr class='text-nowrap'>";
             echo "<th class='park' data-i18n='nests_column_park'>Park</th>";
             echo "<th class='pokemon' data-i18n='nests_column_pokemon'>Pokemon</th>";
-            echo "<th class='count' data-i18n='nests_column_count'>Count</th>";
-            echo "<th class='average' data-i18n='nests_column_average'>Average</th>";
-            echo "<th class='city' data-i18n='nests_column_city'>City</th>";
+            echo "<th class='average' data-i18n='nests_column_average'>Spawns/h</th>";
+            echo "<th class='city' data-i18n='nests_column_city'>Stadt</th>";
         echo "</tr>";
         echo "</thead>";
         while ($row = $result->fetch()) {	
@@ -137,7 +135,6 @@ ORDER BY
             echo "<tr class='text-nowrap'>";
                 echo "<td data-title='Park'><a href='" . $map_link . "' target='_blank'>" . $row['name'] . "</a></td>";
                 echo "<td data-title='Pokemon'><img src='" . sprintf($config['urls']['images']['pokemon'], $pokemon_id) . "' height=32 width=32 />&nbsp;" . $pokemon . "</td>";
-                echo "<td data-title='Count'>" . $row['pokemon_count'] . "</td>";
                 echo "<td data-title='Average'>" . $row['avg'] . "</td>";
                 echo "<td data-title='City'>" . $city . "</td>";
             echo "</tr>";
@@ -202,9 +199,9 @@ while (migrationDate < new Date()) {
 }
 
 $("#migration").countdown(migrationDate, function(event) {
-  var msg = "The next <b>nest migration</b> occurs in<br/> ";
-  var time = event.strftime("%w %!w:<span>week</span>,<span>weeks</span>;, %d %!d:<span>day</span>,<span>days</span>;, %H %!H:<span>hour</span>,<span>hours</span>;, %M %!M:<span>minute</span>,<span>minutes</span>;, and %S %!S:<span>second</span>,<span>seconds</span>;");
-  $(this).html(msg + time + "<br/>on<br/><span>" + moment(migrationDate).format("dddd MMMM Do YYYY, h:mm:ss A") + "</span>");
+  var msg = "Die nächste <b>Nestmigration</b> findet in<br/> ";
+  var time = event.strftime("%w %!w:<span>Woche</span>,<span>Wochen</span>;, %d %!d:<span>Tag</span>,<span>Tagen</span>;, %H %!H:<span>Stunde</span>,<span>Stunden</span>;, %M %!M:<span>Minuten</span>,<span>Minuten</span>;, and %S %!S:<span>Sekunde</span>,<span>Sekunden</span>;");
+  $(this).html(msg + time + "<br/>statt.<br/><span>(" + moment(migrationDate).locale('de').format("LL") + " um " + moment(migrationDate).locale('de').format("LT") +"Uhr)</span>");
 });
 
 var mymap = L.map('mapid').setView(<?=json_encode($config['core']['startupLocation'])?>, <?=$config['core']['startupZoom']?>);

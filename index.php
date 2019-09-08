@@ -20,7 +20,7 @@ if ($config['discord']['enabled'] && !isset($_SESSION['user'])) {
     <meta charset='utf-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0, shrink-to-fit=no'>
 
-    <link rel='shortcut icon' type='image/x-icon' href='./static/favicon.ico' />
+    <link rel='shortcut icon' type='image/x-icon' href='<?=$config['ui']['favicon']?>' />
     <link rel='stylesheet' type='text/css' href='https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css' integrity='sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS' crossorigin='anonymous'>
     <link rel='stylesheet' type='text/css' href='https://unpkg.com/leaflet@1.4.0/dist/leaflet.css' integrity='sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==' crossorigin=''/>
     <link rel='stylesheet' type='text/css' href='./static/css/font-awesome.min.css'>
@@ -41,7 +41,8 @@ if ($config['discord']['enabled'] && !isset($_SESSION['user'])) {
     <script type='text/javascript' src='./static/js/jquery.i18n.js'></script>
     <script type='text/javascript' src='./static/js/jquery.i18n.messagestore.js'></script>
     <script type='text/javascript' src='./static/js/jquery.countdown.min.js'></script>
-    <script type='text/javascript' src='./static/js/moment.js'></script>
+	<script type='text/javascript' src="./static/js/moment.js"></script>
+	<script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/locale/de.js"></script>
     <script type='text/javascript' src='./static/js/table.sorter.js'></script>
     <script type='text/javascript' src='./static/js/utils.js'></script>
 

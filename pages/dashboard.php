@@ -1,23 +1,13 @@
 <?php
-$onlineDevices = get_table_count_noId("device where uuid LIKE '%SE%' AND last_seen > UNIX_TIMESTAMP()-600 OR uuid LIKE '%PL%' AND last_seen > UNIX_TIMESTAMP()-600");
-$onlineDevicesQuests = get_table_count_noId("device where instance_name LIKE '%Quests%' AND last_seen > UNIX_TIMESTAMP()-600");
-$maxDevices = get_table_count_noId("device where uuid LIKE '%SE%' OR uuid LIKE '%PL%'");
-$maxDevicesQuests = $maxDevices;
+
+$maxDevices = get_devices_count();
+$maxDevicesQuests = get_quest_devices_count($config['ui']['pages']['dashboard']['QuestInstance']);
+
+$onlineDevices = get_online_devices($config['ui']['pages']['dashboard']['deviceResponseLimit']);
+$onlineDevicesQuests = get_online_quest_devices(($config['ui']['pages']['dashboard']['QuestInstance']),($config['ui']['pages']['dashboard']['deviceResponseLimit']));
+    echo "<script>console.log('count of online devices questing: " . $onlineDevicesQuests . "' );</script>";
 $percentOnline = (($onlineDevices/$maxDevices) *100);
 $percentOnlineQuests = (($onlineDevicesQuests/$maxDevicesQuests)*100);
-
-$activeWhite = get_table_count("gym where updated > (UNIX_TIMESTAMP()-14400) AND team_id = 0");
-$activeBlue = get_table_count("gym where updated > (UNIX_TIMESTAMP()-14400) AND team_id = 1");
-$activeRed = get_table_count("gym where updated > (UNIX_TIMESTAMP()-14400) AND team_id = 2");
-$activeYellow = get_table_count("gym where updated > (UNIX_TIMESTAMP()-14400) AND team_id = 3");
-$activeTotal = ($activeWhite + $activeBlue + $activeRed + $activeYellow);
-
-$activeWhitePercent = (($activeWhite/$activeTotal)*100);
-$activeBluePercent = (($activeBlue/$activeTotal)*100);
-$activeRedPercent = (($activeRed/$activeTotal)*100);
-$activeYellowPercent = (($activeYellow/$activeTotal)*100); 
-
-$totalhundos = get_table_count_noId("pokemon where iv > 95");
 
 $html = "
 <div style='max-width:1280px;margin: 0 auto !important;float: none !important;'>
@@ -26,7 +16,7 @@ $html = "
 <div class='card p-1 m-3'>
 Willkommen auf unserer Seite!<br>
 Finde Monster ,Raids, Stops ,Arenen, Monster mit IV, Quests und vieles mehr!<br>
-Auf dieser Seite findest du eine Übersicht darüber, welche Daten auf unserer Map zu finden sind.<br>
+Auf dieser Seite findest du eine Übersicht darüber, welche Daten auf unserer Map zu finden sind.
 </div>
 <div class='card text-center p-1 m-3'>
 	<div class='card-header heading text-light'><b>Allgemein</b></div>
@@ -36,7 +26,7 @@ Auf dieser Seite findest du eine Übersicht darüber, welche Daten auf unserer M
 				<div class='col-md-4'>
 					<div class='list-group'>
 						<a class='list-group-item'>
-							<h3 class='pull-right'><img src='./static/images/quests/1.png' width='48' height='48'/></h3>
+							<h3 class='pull-right'><img src='./static/images/encounter.png' width='48' height='48'/></h3>
 							<h4 class='list-group-item-heading pokemon-count'>0</h4>
 							<p class='list-group-item-text'>Aktive Monster</p>
 						</a>
@@ -54,7 +44,7 @@ Auf dieser Seite findest du eine Übersicht darüber, welche Daten auf unserer M
 				<div class='col-md-4'>
 					<div class='list-group'>
 						<a class='list-group-item'>
-							<h3 class='pull-right'><img src='./static/images/battle.png'  width='48' height='48'/></h3>
+							<h3 class='pull-right'><img src='./static/egg-icons/raids_hatched.png' width='auto' height='48'/></h3>
 							<h4 class='list-group-item-heading raids-count'>0</h4>
 							<p class='list-group-item-text'>Aktive Raids & Eier</p>
 						</a>
@@ -63,7 +53,7 @@ Auf dieser Seite findest du eine Übersicht darüber, welche Daten auf unserer M
 				<div class='col-md-4'>
 					<div class='list-group'>
 						<a class='list-group-item'>
-							<h3 class='pull-right'><img src='./static/images/quests/1.png' width='48' height='48'/></h3>
+							<h3 class='pull-right'><img src='./static/images/encounter.png' width='48' height='48'/></h3>
 							<h4 class='list-group-item-heading total-pokemon-count'>0</h4>
 							<p class='list-group-item-text'>Monster heute Gesamt</p>
 						</a>
@@ -112,9 +102,18 @@ Auf dieser Seite findest du eine Übersicht darüber, welche Daten auf unserer M
 		<button class='tablinks heading text-light' onclick='openCity(event,\"Top10MonLife\")'><b>Top 10 Gesamt</b></button>
 		<button class='tablinks heading text-light' onclick='openCity(event,\"Top10MonIV\")'><b>Top 10 IV Heute</b></button>
 		<button class='tablinks heading text-light' onclick='openCity(event,\"Top10MonIV95\")'><b>96+ Heute</b></button>
-		<button class='tablinks heading text-light' onclick='openCity(event,\"Top10MonIV100\")'><b>100er Heute</b></button>
-		<button class='tablinks heading text-light' onclick='openCity(event,\"TopShinys\")'><b>Shinys Heute</b></button>
-		<button class='tablinks heading text-light' onclick='openCity(event,\"ShinysTotal\")'><b>Shinys Gesamt</b></button>
+		<button class='tablinks heading text-light' onclick='openCity(event,\"Top10MonIV100\")'><b>100er Heute</b></button>";
+		if ($config['ui']['pages']['dashboard']['shinyStatsToday'] !== false) {
+			$html .="
+			<button class='tablinks heading text-light' onclick='openCity(event,\"TopShinys\")'><b>Shinys Heute</b></button>";
+		}
+		if ($config['ui']['pages']['dashboard']['shinyStatsAlltime'] !== false) {
+			$html .="
+			<button class='tablinks heading text-light' onclick='openCity(event,\"ShinysTotal\")'><b>Shinys Gesamt</b></button>";
+		}
+		
+
+	$html .="
 	</div>
 	
 
@@ -134,26 +133,32 @@ Auf dieser Seite findest du eine Übersicht darüber, welche Daten auf unserer M
 		<div class='container'>
 			<div id='top-10-pokemon-iv' class='row justify-content-center'></div>
 		</div>
-	</div>
-	<div id='TopShinys' class='tabcontent'>
-		<div class='container'>
-			<div id='shiny-rates' class=''></div>
-		</div>
-	</div>
+	</div>";
+	if ($config['ui']['pages']['dashboard']['shinyStatsToday'] !== false) {
+		$html .="
+		<div id='TopShinys' class='tabcontent'>
+			<div class='container'>
+				<div id='shiny-rates' class=''></div>
+			</div>
+		</div>";
+	}
+	if ($config['ui']['pages']['dashboard']['shinyStatsToday'] !== false) {
+		$html .="
+		<div id='ShinysTotal' class='tabcontent'>
 	
-	<div id='ShinysTotal' class='tabcontent'>
-
-		<div class='container'>
-		<center>
-		<div style='max-width:850px;padding-bottom:10px;text-align:left;'>
-			Bei dieser Statistik fließen nur Daten von Tagen ein, bei denen von der jeweiligen Spezies mindestens ein Shiny gefunden wurde. Dies verringert die Ungenauigkeit durch neuere Shiny-Releases<br>
-			(Bei einer zu geringeren gefunden Shiny-Anzahl kann die Rate sehr von der tatsächlichen Shiny-Rate abweichen)
-		</div>
-		</center>
-			<div id='shiny-rates-total' class=''></div>
-		</div>
-	</div>
+			<div class='container'>
+			<center>
+			<div style='max-width:850px;padding-bottom:10px;text-align:left;'>
+				Bei dieser Statistik fließen nur Daten von Tagen ein, bei denen von der jeweiligen Spezies mindestens ein Shiny gefunden wurde. Dies verringert die Ungenauigkeit durch neuere Shiny-Releases<br>
+				(Bei einer zu geringeren gefunden Shiny-Anzahl kann die Rate sehr von der tatsächlichen Shiny-Rate abweichen)
+			</div>
+			</center>
+				<div id='shiny-rates-total' class=''></div>
+			</div>
+		</div>";
+	}
 	
+	$html .="
 	<div id='Top10MonIV95' class='tabcontent'>
 		<div class='container'>
 			<div id='top-10-pokemon-iv95' class='row justify-content-center'></div>
@@ -210,7 +215,7 @@ Auf dieser Seite findest du eine Übersicht darüber, welche Daten auf unserer M
             <a class='list-group-item neutral'>
               <h3 class='pull-right'><img src='./static/images/teams/neutral.png' width='64' height='64'/></h3>
               <h4 class='list-group-item-heading gym-white-active'>0</h4>
-              <p class='list-group-item-text'>Neutral (". round($activeWhitePercent,1) ."%) </p>
+              <p class='list-group-item-text'>Neutral (<span class='gym-white-active-percent'>0</span>%) </p>
             </a>
           </div>
         </div>
@@ -219,7 +224,7 @@ Auf dieser Seite findest du eine Übersicht darüber, welche Daten auf unserer M
             <a class='list-group-item valor'>
               <h3 class='pull-right'><img src='./static/images/teams/valor.png' width='64' height='64'/></h3>
               <h4 class='list-group-item-heading gym-red-active'>0</h4>
-              <p class='list-group-item-text'>Valor (". round($activeRedPercent,1) ."%) </p>
+              <p class='list-group-item-text'>Valor (<span class='gym-red-active-percent'>0</span>%) </p>
             </a>
           </div>
         </div>
@@ -228,7 +233,7 @@ Auf dieser Seite findest du eine Übersicht darüber, welche Daten auf unserer M
             <a class='list-group-item mystic'>
               <h3 class='pull-right'><img src='./static/images/teams/mystic.png' width='64' height='64'/></h3>
               <h4 class='list-group-item-heading gym-blue-active'>0</h4>
-              <p class='list-group-item-text'>Mystic (". round($activeBluePercent,1) ."%) </p>
+              <p class='list-group-item-text'>Mystic (<span class='gym-blue-active-percent'>0</span>%) </p>
             </a>
           </div>
         </div>
@@ -237,7 +242,7 @@ Auf dieser Seite findest du eine Übersicht darüber, welche Daten auf unserer M
             <a class='list-group-item instinct'>
               <h3 class='pull-right'><img src='./static/images/teams/instinct.png' width='64' height='64'/></h3>
               <h4 class='list-group-item-heading gym-yellow-active'>0</h4>
-              <p class='list-group-item-text'>Instinct (". round($activeYellowPercent,1) ."%) </p>
+              <p class='list-group-item-text'>Instinct (<span class='gym-yellow-active-percent'>0</span>%) </p>
             </a>
           </div>
         </div>
@@ -362,62 +367,74 @@ $html .="
   </div>
 </div>";
 }
+
+if (($config['ui']['pages']['dashboard']['deviceStatus'] !== false) || ($config['ui']['pages']['dashboard']['deviceStatusQuests'] !== false)) {
+	$html .="
+	<div class='card text-center p-1 m-3'>
+		<div class='card-header heading text-light'><b>Status</b></div>
+		<div class='card-body'>
+			<div class='container'>
+			      <div class='row'>";
+}
+if ($config['ui']['pages']['dashboard']['deviceStatus'] !== false) {
+	$html .="
+					<div class='col-md-4'>
+						<a class='list-group-item'>";
+            
+							if($onlineDevices >= $maxDevices){
+							$html .="
+									<h3 class='pull-right'><img src='./static/images/online.png' width='48' height='48'/></h3>
+									<h4 class='list-group-item-heading'>Aktiv</h4>";
+							}else if($onlineDevices > 0 && $onlineDevices < $maxDevices){
+							$html .="
+									<h3 class='pull-right'><img src='./static/images/unstable.png' width='48' height='48'/></h3>
+									<h4 class='list-group-item-heading'>Unstable (". round($percentOnline) ."%)</h4>";
+							}else{
+							$html .="
+									<h3 class='pull-right'><img src='./static/images/offline.png' width='48' height='48'/></h3>
+									<h4 class='list-group-item-heading'>Inaktiv</h4>";
+							}
+							$html .="
+							<p class='list-group-item-text'>Scan</p>
+						</a>
+					</div>";
+}
+if ($config['ui']['pages']['dashboard']['deviceStatusQuests'] !== false) {
+	$html .="
+					<div class='col-md-4'>
+					<a class='list-group-item'>";
+						
+						if($onlineDevicesQuests == $maxDevicesQuests ){
+						$html .="
+								<h3 class='pull-right'><img src='./static/images/online.png' width='48' height='48'/></h3>
+								<h4 class='list-group-item-heading'>Aktiv</h4>";
+						}else if($onlineDevicesQuests > 0 && $onlineDevicesQuests < $maxDevicesQuests){
+						$html .="
+								<h3 class='pull-right'><img src='./static/images/unstable.png' width='48' height='48'/></h3>
+								<h4 class='list-group-item-heading'>Unstable (". round($percentOnlineQuests) ."%)</h4>";
+						}else{
+						$html .="
+								<h3 class='pull-right'><img src='./static/images/offline.png' width='48' height='48'/></h3>
+								<h4 class='list-group-item-heading'>Inaktiv</h4>";
+						}
+						$html .="
+						<p class='list-group-item-text'>Questscan</p>
+					</a>
+					</div>";
+}
+if (($config['ui']['pages']['dashboard']['deviceStatus'] !== false) || ($config['ui']['pages']['dashboard']['deviceStatusQuests'] !== false)) {
+	$html .="
+				</div>
+			</div>
+		</div>
+	</div>";
+}
 $html .="
 
-
-<div class='card text-center p-1 m-3'>
-  <div class='card-header heading text-light'><b>Status</b></div>
-  <div class='card-body'>
-    <div class='container'>
-      <div class='row'>
-        <div class='col-md-4'>
-          <a class='list-group-item'>";
-            
-			if($onlineDevices >= $maxDevices){
-			$html .="
-					<h3 class='pull-right'><img src='./static/images/online.png' width='48' height='48'/></h3>
-					<h4 class='list-group-item-heading'>Aktiv</h4>";
-			}else if($onlineDevices > 0 && $onlineDevices < $maxDevices){
-			$html .="
-					<h3 class='pull-right'><img src='./static/images/unstable.png' width='48' height='48'/></h3>
-					<h4 class='list-group-item-heading'>Unstable (". round($percentOnline) ."%)</h4>";
-			}else{
-			$html .="
-					<h3 class='pull-right'><img src='./static/images/offline.png' width='48' height='48'/></h3>
-					<h4 class='list-group-item-heading'>Inaktiv</h4>";
-			}
-			$html .="
-            <p class='list-group-item-text'>Scan</p>
-          </a>
-        </div>
-        <div class='col-md-4'>
-          <a class='list-group-item'>";
-            
-			if($onlineDevicesQuests >= ($maxDevicesQuests -1)){
-			$html .="
-					<h3 class='pull-right'><img src='./static/images/online.png' width='48' height='48'/></h3>
-					<h4 class='list-group-item-heading'>Aktiv</h4>";
-			}else if($onlineDevicesQuests >= 1 && $onlineDevicesQuests < ($maxDevicesQuests-1)){
-			$html .="
-					<h3 class='pull-right'><img src='./static/images/unstable.png' width='48' height='48'/></h3>
-					<h4 class='list-group-item-heading'>Unstable (". round($percentOnlineQuests) ."%)</h4>";
-			}else{
-			$html .="
-					<h3 class='pull-right'><img src='./static/images/offline.png' width='48' height='48'/></h3>
-					<h4 class='list-group-item-heading'>Inaktiv</h4>";
-			}
-			$html .="
-            <p class='list-group-item-text'>Questscan</p>
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class ='p-1 m-3'>
-<div class='row'>
-<div class='card text-center p-1 m-3 col-md-3'>
+<div class ='p-1 m-2'>
+<div class='row'>";
+if (!empty($config['urls']['map'])) {
+$html .="<div class='card text-center p-1 m-2 col-md-3'>
 	<div class='card-header heading text-light'><b>Map</b></div>
 	<div class='card-body'>
 		<div class='container'>
@@ -429,12 +446,14 @@ $html .="
           </a>
 		</div>
 	</div>
-</div>
-<div class='card text-center p-1 m-3 col-md-3'>
+</div>";
+}
+if (!empty($config['discord']['inviteLink'])) {
+$html .="<div class='card text-center p-1 m-2 col-md-3'>
 	<div class='card-header heading text-light'><b>Discord</b></div>
 	<div class='card-body'>
 		<div class='container'>
-          <a href='https://discord.gg/zwsGCUS' class='link'>
+          <a href='". $config['discord']['inviteLink'] ."' class='link'>
 			<center>
 			<img src='./static/images/discord.png' width='128' height='auto'/></h3>
             <p> > Zum Discord Server < </p>
@@ -442,12 +461,14 @@ $html .="
           </a>
 		</div>
 	</div>
-</div>
-<div class='card text-center p-1 m-3 col-md-3'>
+</div>";
+}
+if (!empty($config['urls']['patreon'])) {
+$html .="<div class='card text-center p-1 m-2 col-md-3'>
 	<div class='card-header heading text-light'><b>Patreon</b></div>
 	<div class='card-body'>
 		<div class='container'>
-          <a href='https://www.patreon.com/rocketmapdo' class='link'>
+          <a href='". $config['urls']['patreon'] ."' class='link'>
 			<center>
 			<img src='./static/images/patreon.png' width='128' height='auto'/></h3>
             <p> > Zu Patreon (Spenden) < </p>
@@ -455,10 +476,40 @@ $html .="
           </a>
 		</div>
 	</div>
-</div>
+</div>";
+}
+if (!empty($config['urls']['paypal'])) {
+$html .="<div class='card text-center p-1 m-2 col-md-3'>
+	<div class='card-header heading text-light'><b>Paypal</b></div>
+	<div class='card-body'>
+		<div class='container'>
+          <a href='". $config['urls']['paypal'] ."' class='link'>
+			<center>
+			<img src='./static/images/paypal.png' width='128' height='auto'/></h3>
+            <p> > Zu Paypal (Spenden) < </p>
+			</center>
+          </a>
+		</div>
+	</div>
+</div>";
+}
+if (!empty($config['urls']['venmo'])) {
+$html .="<div class='card text-center p-1 m-2 col-md-3'>
+	<div class='card-header heading text-light'><b>Venmo</b></div>
+	<div class='card-body'>
+		<div class='container'>
+          <a href='". $config['urls']['venmo'] ."' class='link'>
+			<center>
+			<img src='./static/images/venmo.png' width='128' height='auto'/></h3>
+            <p> > Zu Venmo (Spenden) < </p>
+			</center>
+          </a>
+		</div>
+	</div>
+</div>";
+}
 
-</div>
-";
+$html .="</div>";
 echo $html;
 ?>
 <link rel="stylesheet" href="./static/css/dashboard.css"/>
@@ -468,6 +519,24 @@ echo $html;
 <script type="text/javascript" src="static/js/dashboard.js"></script>
 <script type="text/javascript">
 var debug = <?=$config['core']['showDebug'] !== false ? '1' : '0'?>;
+var shinyStats = <?=$config['ui']['pages']['dashboard']['shinyStatsToday'] !== false ? '1' : '0'?>;
+var shinyStatsAlltime = <?=$config['ui']['pages']['dashboard']['shinyStatsAlltime'] !== false ? '1' : '0'?>;
+var deviceStats = <?=$config['ui']['pages']['dashboard']['deviceStatus'] !== false ? '1' : '0'?>;
+var deviceStatsQuests = <?=$config['ui']['pages']['dashboard']['deviceStatusQuests'] !== false ? '1' : '0'?>;
+var timeout = <?=!empty($config['ui']['pages']['dashboard']['deviceResponseLimit']) ? $config['ui']['pages']['dashboard']['deviceResponseLimit'] : 600 ?>;
+
+var maxDevices = <?=$maxDevices?>;
+var maxDevicesQuests = <?=$maxDevicesQuests?>;
+var onlineDevices = <?=$onlineDevices?>;
+var Questing = <?=$onlineDevicesQuests?>;
+var percentOnline = <?=$percentOnline?>;
+
+var percentOnlineQuests = <?=$percentOnlineQuests?>;
+
+if(debug){
+	console.log('deviceStats: '+ deviceStats + ', deviceStatsQuests: ' + deviceStatsQuests + ', timeout: '+ timeout);
+	console.log('Devices: '+ onlineDevices + '/' + maxDevices + '(' + percentOnline + '%) -- QuestDevices: ' + Questing + '/' + maxDevicesQuests + '(' + percentOnlineQuests + '%)');
+}
 getStats();
 
 function getStats() {
@@ -515,6 +584,10 @@ function getStats() {
     updateCounter(".gym-blue-active", obj.mysticActive);
     updateCounter(".gym-red-active", obj.valorActive);
     updateCounter(".gym-yellow-active", obj.instinctActive);
+    updateCounter(".gym-white-active-percent", obj.neutralActivePercent);
+    updateCounter(".gym-blue-active-percent", obj.mysticActivePercent);
+    updateCounter(".gym-red-active-percent", obj.valorActivePercent);
+    updateCounter(".gym-yellow-active-percent", obj.instinctActivePercent);
     updateCounter(".raids-hatched-total", obj.hatchedRaids);
     updateCounter(".raids-hatched-normal", obj.hatchedNormalRaids);
     updateCounter(".raids-hatched-legendary", obj.hatchedLegendaryRaids);
@@ -677,73 +750,77 @@ function getStats() {
     $('#top-10-pokemon-lifetime').html(html);
   });
   
-  tmp = createToken();
-  sendRequest({ "type": "dashboard", "stat": "shiny", "token": tmp }, function(data, status) {
-    tmp = null;
-    if (debug) {
-      if (data === 0) {
-        console.log("Failed to get data for dashboard.");
-        return;
-      } else {
-        console.log("Dashboard:", data);
-      }
-    }
-    var obj = JSON.parse(data);
-    var html = "";
-    var count = 0;
-    $.each(obj.shiny_rates, function(key, value) {
-      if (count == 0) {
-        html += "<div class='row justify-content-center'>";
-      }
-      var name = pokedex[value.pokeid];
-      var pkmnImage = sprintf("<?=$config['urls']['images']['pokemon']?>", value.pokeid);
-      html += "<div class='col-md-2" + (count == 0 ? " col-md-offset-1" : "") + "'>";
-      html += "<img src='" + pkmnImage + "' width='64' height='64'><p><span class='text-nowrap'>" + name + ": " + numberWithCommas(value.count) + "</span>";
-      html += "<span class='text-nowrap'><br>(1:" + Math.round(value.total/value.count) + ")</span></p></br>";
-      html += "</div>";
-      if (count == 4) {
-        html += "</div>";
-        count = 0;
-      } else {
-        count++;
-      }
-    });
-    $('#shiny-rates').html(html);
-  });
+  if(shinyStats){
+	tmp = createToken();
+	sendRequest({ "type": "dashboard", "stat": "shiny", "token": tmp }, function(data, status) {
+		tmp = null;
+		if (debug) {
+		if (data === 0) {
+			console.log("Failed to get data for dashboard.");
+			return;
+		} else {
+			console.log("Dashboard:", data);
+		}
+		}
+		var obj = JSON.parse(data);
+		var html = "";
+		var count = 0;
+		$.each(obj.shiny_rates, function(key, value) {
+		if (count == 0) {
+			html += "<div class='row justify-content-center'>";
+		}
+		var name = pokedex[value.pokeid];
+		var pkmnImage = sprintf("<?=$config['urls']['images']['pokemon']?>", value.pokeid);
+		html += "<div class='col-md-2" + (count == 0 ? " col-md-offset-1" : "") + "'>";
+		html += "<img src='" + pkmnImage + "' width='64' height='64'><p><span class='text-nowrap'>" + name + ": " + numberWithCommas(value.count) + "</span>";
+		html += "<span class='text-nowrap'><br>(1:" + Math.round(value.total/value.count) + ")</span></p></br>";
+		html += "</div>";
+		if (count == 4) {
+			html += "</div>";
+			count = 0;
+		} else {
+			count++;
+		}
+		});
+		$('#shiny-rates').html(html);
+	});
+  }
   
-  tmp = createToken();
-  sendRequest({ "type": "dashboard", "stat": "shiny", "token": tmp }, function(data, status) {
-    tmp = null;
-    if (debug) {
-      if (data === 0) {
-        console.log("Failed to get data for dashboard.");
-        return;
-      } else {
-        console.log("Dashboard:", data);
-      }
-    }
-    var obj = JSON.parse(data);
-    var html = "";
-    var count = 0;
-    $.each(obj.shiny_rates_total, function(key, value) {
-      if (count == 0) {
-        html += "<div class='row justify-content-center'>";
-      }
-      var name = pokedex[value.pokeid];
-      var pkmnImage = sprintf("<?=$config['urls']['images']['pokemon']?>", value.pokeid);
-      html += "<div class='col-md-2" + (count == 0 ? " col-md-offset-1" : "") + "'>";
-      html += "<img src='" + pkmnImage + "' width='64' height='64'><p><span class='text-nowrap'>" + name + ": " + numberWithCommas(value.count) + "</span>";
-      html += "<span class='text-nowrap'><br>(1:" + Math.round(value.total/value.count) + ")</span></p></br>";
-      html += "</div>";
-      if (count == 4) {
-        html += "</div>";
-        count = 0;
-      } else {
-        count++;
-      }
-    });
-    $('#shiny-rates-total').html(html);
-  });
+  if(shinyStatsAlltime){
+	tmp = createToken();
+	sendRequest({ "type": "dashboard", "stat": "shiny", "token": tmp }, function(data, status) {
+		tmp = null;
+		if (debug) {
+		if (data === 0) {
+			console.log("Failed to get data for dashboard.");
+			return;
+		} else {
+			console.log("Dashboard:", data);
+		}
+		}
+		var obj = JSON.parse(data);
+		var html = "";
+		var count = 0;
+		$.each(obj.shiny_rates_total, function(key, value) {
+		if (count == 0) {
+			html += "<div class='row justify-content-center'>";
+		}
+		var name = pokedex[value.pokeid];
+		var pkmnImage = sprintf("<?=$config['urls']['images']['pokemon']?>", value.pokeid);
+		html += "<div class='col-md-2" + (count == 0 ? " col-md-offset-1" : "") + "'>";
+		html += "<img src='" + pkmnImage + "' width='64' height='64'><p><span class='text-nowrap'>" + name + ": " + numberWithCommas(value.count) + "</span>";
+		html += "<span class='text-nowrap'><br>(1:" + Math.round(value.total/value.count) + ")</span></p></br>";
+		html += "</div>";
+		if (count == 4) {
+			html += "</div>";
+			count = 0;
+		} else {
+			count++;
+		}
+		});
+		$('#shiny-rates-total').html(html);
+	});
+  }
 }
 
 

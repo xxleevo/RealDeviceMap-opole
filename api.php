@@ -81,6 +81,7 @@ if (!(isset($data['type']) && !empty($data['type']))) {
                         "iv_active" => $pokemonStats["iv_active"],
                         "iv_95_total" => $pokemonStats["iv_95_total"],
                         "iv_95_active" => $pokemonStats["iv_95_active"],
+                        "iv_100_active" => $pokemonStats["iv_100_active"],
                         "iv_100_total" => $pokemonStats["iv_100_total"]
                     ];
                     echo json_encode($obj);
@@ -94,6 +95,12 @@ if (!(isset($data['type']) && !empty($data['type']))) {
 					$gymBlueActive = get_table_count("gym where updated > (UNIX_TIMESTAMP()-14400) AND team_id = 1");
 					$gymRedActive = get_table_count("gym where updated > (UNIX_TIMESTAMP()-14400) AND team_id = 2");
 					$gymYellowActive = get_table_count("gym where updated > (UNIX_TIMESTAMP()-14400) AND team_id = 3");
+					
+					$totalActive = ($gymWhiteActive + $gymBlueActive + $gymRedActive + $gymYellowActive);
+					$percentWhiteActive = (($gymWhiteActive/$totalActive)*100);
+					$percentBlueActive = (($gymBlueActive/$totalActive)*100);
+					$percentRedActive = (($gymRedActive/$totalActive)*100);
+					$percentYellowActive = (($gymYellowActive/$totalActive)*100);
 					
 					$raidHatchedCountTotal = get_table_count("gym where raid_level >= 1 AND raid_level <= 5 AND raid_battle_timestamp < UNIX_TIMESTAMP() AND raid_end_timestamp > UNIX_TIMESTAMP()");
 					$raidHatchedCountNormal = get_table_count("gym where raid_level >= 1 AND raid_level < 5 AND raid_battle_timestamp < UNIX_TIMESTAMP() AND raid_end_timestamp > UNIX_TIMESTAMP()");
@@ -109,7 +116,11 @@ if (!(isset($data['type']) && !empty($data['type']))) {
                         "mystic" => $gymStats === 0 ? 0 : $gymStats[1],
                         "valor" => $gymStats === 0 ? 0 : $gymStats[2],
                         "instinct" => $gymStats === 0 ? 0 : $gymStats[3],
-						"neutralactive" => $gymWhiteActive,
+						"neutralActive" => $gymWhiteActive,
+						"neutralActivePercent" => $percentWhiteActive,
+						"mysticActivePercent" => $percentBlueActive,
+						"valorActivePercent" => $percentRedActive,
+						"instinctActivePercent" => $percentYellowActive,
 						"mysticActive" => $gymBlueActive,
 						"valorActive" => $gymRedActive,
 						"instinctActive" => $gymYellowActive,

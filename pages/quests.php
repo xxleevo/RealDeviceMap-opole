@@ -41,7 +41,7 @@ $filters = "
 ";
 
 $modal = "
-<h2 class='page-header text-center' data-i18n='quests_title'>Field research quests</h2>
+<h2 class='page-header text-center' data-i18n='quests_title'>Feldforschungs-Übersicht</h2>
 <div class='btn-group btn-group-sm float-right'>
   <button type='button' class='btn btn-dark' data-toggle='modal' data-target='#filtersModal'>
     <i class='fa fa-fw fa-filter' aria-hidden='true'></i>

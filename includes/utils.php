@@ -37,7 +37,7 @@ function get_shiny_rates() {
     global $config;
     $db = new DbConnector($config['db']);
     $pdo = $db->getConnection();
-    $where = " WHERE shiny = 1 ";
+    $where = " WHERE shiny = 1 AND first_seen_timestamp >= UNIX_TIMESTAMP(CURDATE())";
     $sql = "
 SELECT
   pokemon_id as pokeid,
@@ -154,7 +154,49 @@ function get_table_count_noId($table) {
     
     return $count;
 }
-
+function get_online_devices($timeout) {
+    global $config;
+    $db = new DbConnector($config['db']);
+    $pdo = $db->getConnection();
+    $sql = "SELECT count(*) FROM " . $config['db']['dbname'] . ".device WHERE last_seen > UNIX_TIMESTAMP()-$timeout";
+    $count = $pdo->query($sql)->fetchColumn();
+    unset($pdo);
+    unset($db);
+    
+    return $count;
+}
+function get_online_quest_devices($questinstance,$timeout) {
+    global $config;
+    $db = new DbConnector($config['db']);
+    $pdo = $db->getConnection();
+    $sql = "SELECT count(*) FROM " . $config['db']['dbname'] . ".device WHERE instance_name LIKE '%" . $config['ui']['pages']['dashboard']['QuestInstance'] . "%' AND last_seen > UNIX_TIMESTAMP()-$timeout";
+    $count = $pdo->query($sql)->fetchColumn();
+    unset($pdo);
+    unset($db);
+    return $count;
+}
+function get_devices_count() {
+    global $config;
+    $db = new DbConnector($config['db']);
+    $pdo = $db->getConnection();
+    $sql = "SELECT count(*) FROM " . $config['db']['dbname'] . ".device";
+    $count = $pdo->query($sql)->fetchColumn();
+    unset($pdo);
+    unset($db);
+    
+    return $count;
+}
+function get_quest_devices_count($questinstance) {
+    global $config;
+    $db = new DbConnector($config['db']);
+    $pdo = $db->getConnection();
+    $sql = "SELECT count(*) FROM " . $config['db']['dbname'] . ".device WHERE instance_name LIKE '%" . $config['ui']['pages']['dashboard']['QuestInstance'] . "%'";
+    $count = $pdo->query($sql)->fetchColumn();
+    unset($pdo);
+    unset($db);
+    
+    return $count;
+}
 function get_pokestop_objects() {
     global $config;
     $db = new DbConnector($config['db']);
@@ -198,13 +240,13 @@ function get_pokemon_stats() {
     $pdo = $db->getConnection();
     $sql = "
 SELECT
-  SUM(id is not null ) AS total,
+  SUM(id is not null && first_seen_timestamp >= UNIX_TIMESTAMP(CURDATE())) AS total,
   SUM(expire_timestamp >= UNIX_TIMESTAMP() ) AS active,
-  SUM(iv IS NOT NULL) AS iv_total,
+  SUM(iv IS NOT NULL && first_seen_timestamp >= UNIX_TIMESTAMP(CURDATE())) AS iv_total,
   SUM(iv IS NOT NULL && expire_timestamp >= UNIX_TIMESTAMP()) AS iv_active,
-  SUM(iv > 95 ) AS iv_95_total,
+  SUM(iv > 95 && first_seen_timestamp >= UNIX_TIMESTAMP(CURDATE())) AS iv_95_total,
   SUM(iv > 95 && expire_timestamp >= UNIX_TIMESTAMP() ) AS iv_95_active,
-  SUM(iv = 100 ) AS iv_100_total,
+  SUM(iv = 100 && first_seen_timestamp >= UNIX_TIMESTAMP(CURDATE())) AS iv_100_total,
   SUM(iv = 100 && expire_timestamp >= UNIX_TIMESTAMP()) AS iv_100_active
 FROM
   pokemon
@@ -231,6 +273,8 @@ SELECT
   COUNT(pokemon_id) AS count
 FROM
   pokemon
+WHERE
+  first_seen_timestamp >= UNIX_TIMESTAMP(CURDATE())
 GROUP BY
   pokemon_id
 ORDER BY
@@ -261,7 +305,7 @@ SELECT
 FROM
   pokemon
 WHERE 
-  iv is not null
+  iv is not null AND first_seen_timestamp >= UNIX_TIMESTAMP(CURDATE())
 GROUP BY
   pokemon_id
 ORDER BY
@@ -291,7 +335,7 @@ SELECT
 FROM
   pokemon
 WHERE 
-  iv > 95 
+  iv > 95 AND first_seen_timestamp >= UNIX_TIMESTAMP(CURDATE())
 GROUP BY
   pokemon_id
 ORDER BY
@@ -321,7 +365,7 @@ SELECT
 FROM
   pokemon
 WHERE 
-  iv = 100
+  iv = 100 AND first_seen_timestamp >= UNIX_TIMESTAMP(CURDATE())
 GROUP BY
   pokemon_id
 ORDER BY
