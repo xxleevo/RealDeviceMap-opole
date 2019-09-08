@@ -1,4 +1,4 @@
-# RaidBillBoard  
+# RDM o Pole
 Billboard for a nice statistical view of all your data
 
 ## Requirements  
