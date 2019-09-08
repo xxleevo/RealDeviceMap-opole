@@ -7,7 +7,10 @@ $onlineDevices = get_online_devices($config['ui']['pages']['dashboard']['deviceR
 $onlineDevicesQuests = get_online_quest_devices(($config['ui']['pages']['dashboard']['QuestInstance']),($config['ui']['pages']['dashboard']['deviceResponseLimit']));
     echo "<script>console.log('count of online devices questing: " . $onlineDevicesQuests . "' );</script>";
 $percentOnline = (($onlineDevices/$maxDevices) *100);
-$percentOnlineQuests = (($onlineDevicesQuests/$maxDevicesQuests)*100);
+$percentOnlineQuests = 0;
+if ($onlineDevicesQuests > 0 && $maxDevicesQuests > 0){
+(($onlineDevicesQuests/$maxDevicesQuests)*100);
+}
 
 $html = "
 <div style='max-width:1280px;margin: 0 auto !important;float: none !important;'>
@@ -404,7 +407,7 @@ if ($config['ui']['pages']['dashboard']['deviceStatusQuests'] !== false) {
 					<div class='col-md-4'>
 					<a class='list-group-item'>";
 						
-						if($onlineDevicesQuests == $maxDevicesQuests ){
+						if($maxDevicesQuests > 0 && $onlineDevicesQuests == $maxDevicesQuests ){
 						$html .="
 								<h3 class='pull-right'><img src='./static/images/online.png' width='48' height='48'/></h3>
 								<h4 class='list-group-item-heading'>Aktiv</h4>";
