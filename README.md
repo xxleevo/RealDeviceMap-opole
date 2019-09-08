@@ -1,5 +1,5 @@
 # RaidBillBoard  
-Billboard to show active raids sorted by which raids will end first with raid boss, raid level, geofence city, team control, ex-eligible raid filters.  
+Billboard for a nice statistical view of all your data
 
 ## Requirements  
 * PHP >= 5.4+  
@@ -8,7 +8,7 @@ Billboard to show active raids sorted by which raids will end first with raid bo
 * Existing [RealDeviceMap](https://github.com/RealDeviceMap/RealDeviceMap) database.  
 
 ## Install  
-1.) Clone the repository: `git clone https://github.com/versx/RealDeviceMap-RaidBillBoard raids` (change `raids` to your liking)  
+1.) Clone the repository with the correct branch: `git clone -b do https://github.com/xxleevo/RealDeviceMap-opole RDMOPOLE` (change `RDMOPOLE` to your liking)  
 2.) Change directory to the newly cloned folder: `cd raids`  
 3.) Install Composer (https://getcomposer.org)  
 4.) In the clone folder install the composer components required for the project: `composer install`  
@@ -21,7 +21,7 @@ Execute the following on your SQL database to load the time zone tables in the m
 
 **config.php**  
 _Core_  
-1.) Set your time zone e.g. `America/New_York`  
+1.) Set your time zone e.g. `Europe/Berlin`  
 2.) Set a startup location for any map objects to start at.  
 
 _Database (db)_  
@@ -33,7 +33,8 @@ _Urls_
 1.) Set your pokemon images url including file extension and pokemon id placeholder in the url address.  
 e.g. `http://example.com/images/pokemon/%s.png`, `http://example2.com/images/pokemon/%03d_000.png`, etc  
 2.) Set your egg images url, same as pokemon, include the placeholder and file extension in the url address.  
-e.g. `http://example.com/images/egg/%s.png`  
+e.g. `http://example.com/images/egg/%s.png` 
+(For a Quick setup for images, just follow the line instruction in the config example) 
 
 All other configuration options are default and optional at your discession.  
 
@@ -49,3 +50,4 @@ Create or copy your existing geofences to the `geofences` folder. The following 
 
 ## Thanks  
 - Credit to Zyahko and his creditors for the base.  
+- Credit to versx and his creditors for the main repository of RDM-o-Pole
