@@ -441,7 +441,7 @@ $html .="<div class='card text-center p-1 m-2 col-md-3'>
 	<div class='card-header heading text-light'><b>Map</b></div>
 	<div class='card-body'>
 		<div class='container'>
-          <a href='https://map.rocketmapdo.de/' class='link'>
+          <a href='". $config['urls']['map'] ."' class='link'>
 			<center>
 			<img src='./static/images/map.png' width='128' height='auto'/></h3>
             <p> > Zur Map < </p>
