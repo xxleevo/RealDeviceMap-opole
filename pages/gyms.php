@@ -53,19 +53,17 @@ $filters = "
     </div>
     <div class='input-group mb-3'>
       <div class='input-group-prepend'>
-        <label class='input-group-text' for='filter-city' data-i18n='gyms_filter_city'>Stadt</label>
+        <label class='input-group-text' for='filter-city' data-i18n='gyms_filter_city'>City</label>
       </div>
       <select multiple id='filter-city' class='custom-select' onchange='filter_gyms()'>
-        <option value='' selected>Dortmund</option>";
-        /**
-		$count = count($geofenceSrvc->geofences);
+        <option value='' selected>All</option>";
+        $count = count($geofenceSrvc->geofences);
         for ($i = 0; $i < $count; $i++) {
             $geofence = $geofenceSrvc->geofences[$i];
             $filters .= "<option value='".$geofence->name."'>".$geofence->name."</option>";
         }
-		**/
         $filters .= "
-        <!--<option value='" . $config['ui']['unknownValue'] . "'>" . $config['ui']['unknownValue'] . "</option>-->
+        <option value='" . $config['ui']['unknownValue'] . "'>" . $config['ui']['unknownValue'] . "</option>
       </select>
     </div>
   </div>
