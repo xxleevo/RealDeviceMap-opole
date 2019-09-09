@@ -183,7 +183,7 @@ WHERE
                 echo "<td data-title='Team'><img src='./static/images/teams/" . strtolower($team) . ".png' height=32 width=32 />&nbsp;" . $team . "</td>";
                 echo "<td data-title='Available Slots'>" . ($available_slots == 0 ? "Full" : $available_slots) . "</td>";
                 echo "<td data-title='Guarding Pokemon'>" . $pokedex[$guarding_pokemon_id] . "</td>";
-                echo "<td data-title='In Battle'>" . ($in_battle ? "Angriff!" : "Sicher") . "</td>";
+                echo "<td data-title='In Battle'>" . ($in_battle ? "Angriff! <img src='static/images/swords.png' width='32' height='auto' />" : "Sicher") . "</td>";
                 echo "<td data-title='City'>" . $city . "</td>";
                 //echo "<td data-title='Updated'>" . date($config['core']['dateTimeFormat'], $row['updated']) . "</td>";
             echo "</tr>";
