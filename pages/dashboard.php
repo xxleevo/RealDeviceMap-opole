@@ -819,7 +819,7 @@ function getStats() {
 		html += "<div class='col-md-2" + (count == 0 ? " col-md-offset-1" : "") + "'>";
 
 		html += "<img src='" + pkmnImage + "' width='64' height='64'><p><span class='text-nowrap'>" + name + ": " + numberWithCommas(value.count) + "</span>";
-		html += "<span class='text-nowrap'><br>(" + value.count + ":" + value.total + ")<br><b>Ø 1:" + Math.round(value.total/value.count) + "</b></span></p></br>";
+		html += "<span class='text-nowrap'><br>(" + value.count + " : " + value.total + ")<br><b>Ø 1 : " + Math.round(value.total/value.count) + "</b></span></p></br>";
 		html += "</div>";
 		if (count == 4) {
 			html += "</div>";
