@@ -72,8 +72,18 @@ $config = [
       "dashboard" => [
         "enabled" => true, //Shows/hides dashboard page
 		"shinyStatsToday" => false, // Needs your RDM to detect shinys and write them to your db!
-		"shinyStatsAlltime" => false, // Needs your DB to have a shiny_stats table with the columns: date(date NOT NULL), pokemon_id(smallint(6) unsigned NOT NULL), count()mediumint(6) unsigned NOT NULL, count_shiny(smallint(6) unsigned NOT NULL), Primary key = date & pokemon_id
+		"shinyStatsAlltime" => false, // Needs your DB to have a shiny_stats table in the correct format(see above for the table creation) - you need to feed that table on your own.
 									 // If you dont have a shiny_stat table and dont know how to handle that, dont activate ShinyStatsAlltime
+		/*Shiny_stats table creation sql
+			CREATE TABLE `shiny_stats` (
+			`date` date NOT NULL,
+			`pokemon_id` smallint(6) unsigned NOT NULL,
+			`form` smallint(6) unsigned NOT NULL,
+			`count` mediumint(6) unsigned NOT NULL,
+			`count_shiny` smallint(6) unsigned NOT NULL,
+			PRIMARY KEY (`date`,`pokemon_id`,`form`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+		*/
         "deviceStatus" => true, // Shows the Online status of all devices which are connected to the db(displays online if all devices are up, unstable + % of devices if some devices' last_seen isnt updated, offline if 0 devices havent a proper last_seen)
 		"deviceStatusQuests" => false, // Checks the instance from devices and if the last_seen is good enough
 		"QuestInstance" => "Quest", // This is a string that your questinstance(s) name must contain to be considered as "questing device"
