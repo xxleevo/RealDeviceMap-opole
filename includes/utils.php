@@ -43,12 +43,13 @@ SELECT
   pokemon_id as pokeid,
   COUNT(pokemon_id) AS count,
   (SELECT count(pokemon_id) FROM pokemon p where p.pokemon_id=pokeid AND shiny is not null) as total,
-  ((SELECT count(pokemon_id) FROM pokemon p where p.pokemon_id=pokeid AND shiny is not null)/COUNT(pokemon_id)) as rate
+  ((SELECT count(pokemon_id) FROM pokemon p where p.pokemon_id=pokeid AND shiny is not null)/COUNT(pokemon_id)) as rate,
+  form
 FROM
   pokemon
 $where
 GROUP BY
-  pokemon_id
+  pokemon_id, form
 ORDER BY
   rate ASC
 ";
@@ -70,10 +71,11 @@ SELECT
 	pokemon_id AS pokeid,
 	SUM(count_shiny) as count,
 	SUM(count) as total,
-	(SUM(count)/SUM(count_shiny)) as rate
+	(SUM(count)/SUM(count_shiny)) as rate,
+	form
 FROM shiny_stats
 WHERE count_shiny > 0
-GROUP BY pokemon_id
+GROUP BY pokemon_id, form
 HAVING SUM(count_shiny) > 0
 ORDER BY rate ASC;
 ";

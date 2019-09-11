@@ -774,9 +774,12 @@ function getStats() {
 		}
 		var name = pokedex[value.pokeid];
 		var pkmnImage = sprintf("<?=$config['urls']['images']['pokemon']?>", value.pokeid);
+		if(value.form !== '0'){
+			pkmnImage = pkmnImage.toString().replace("00.png", value.form + ".png");
+		}
 		html += "<div class='col-md-2" + (count == 0 ? " col-md-offset-1" : "") + "'>";
 		html += "<img src='" + pkmnImage + "' width='64' height='64'><p><span class='text-nowrap'>" + name + ": " + numberWithCommas(value.count) + "</span>";
-		html += "<span class='text-nowrap'><br>(1:" + Math.round(value.total/value.count) + ")</span></p></br>";
+		html += "<span class='text-nowrap'><br>(" + numberWithCommas(value.count) + ":" + numberWithCommas(value.total) + ")<br><b>Ø 1:" + Math.round(value.total/value.count) + "</b></span></p></br>";
 		html += "</div>";
 		if (count == 4) {
 			html += "</div>";
@@ -810,9 +813,13 @@ function getStats() {
 		}
 		var name = pokedex[value.pokeid];
 		var pkmnImage = sprintf("<?=$config['urls']['images']['pokemon']?>", value.pokeid);
+		if(value.form !== '0'){
+			pkmnImage = pkmnImage.toString().replace("00.png", value.form + ".png");
+		}
 		html += "<div class='col-md-2" + (count == 0 ? " col-md-offset-1" : "") + "'>";
+
 		html += "<img src='" + pkmnImage + "' width='64' height='64'><p><span class='text-nowrap'>" + name + ": " + numberWithCommas(value.count) + "</span>";
-		html += "<span class='text-nowrap'><br>(1:" + Math.round(value.total/value.count) + ")</span></p></br>";
+		html += "<span class='text-nowrap'><br>(" + numberWithCommas(value.count) + ":" + numberWithCommas(value.total) + ")<br><b>Ø 1:" + Math.round(value.total/value.count) + "</b></span></p></br>";
 		html += "</div>";
 		if (count == 4) {
 			html += "</div>";

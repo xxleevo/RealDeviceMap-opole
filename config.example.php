@@ -132,7 +132,8 @@ $config = [
         e.g. http://map.example.com/static/img/pokemon/%s.png for RDM backend images
         e.g. http://map.example.com/static/img/pokemon/%03d.png for 3 digit file names
       */
-      "pokemon" => "https://domain.com/static/monster-icons/%03d.png", // for a quick setup, just replace domain.com with your stats-domain
+      "pokemon" => "https://domain.com/static/monster-icons/%03d.png", 
+	  // for a quick setup, just replace domain.com with your stats-domain(wont work for shiny stats images, shiny stats needs an icon set with %ID_%FORM (19_00) for example
       /* Raid egg images url
         Supports PHP format strings: %s, %d, etc.
         e.g. http://map.example.com/static/img/egg/%s.png for RDM backend images
