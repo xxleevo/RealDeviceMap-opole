@@ -141,6 +141,8 @@ $config = [
         Supports PHP format strings: %s, %d, etc.
         e.g. http://map.example.com/static/img/pokemon/%s.png for RDM backend images
         e.g. http://map.example.com/static/img/pokemon/%03d.png for 3 digit file names
+		
+		IMPORTANT: You need to keep the _00.png. The repository is designed to replace this string for form support.
       */
       "pokemon" => "https://domain.com/static/monster-icons/%03d.png", 
 	  // for a quick setup, just replace domain.com with your stats-domain(wont work for shiny stats images, shiny stats needs an icon set with %ID_%FORM (19_00) for example
