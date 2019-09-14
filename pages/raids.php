@@ -5,6 +5,7 @@ require_once './includes/GeofenceService.php';
 require_once './includes/utils.php';
 require_once './static/data/pokedex.php';
 require_once './static/data/movesets.php';
+require_once './static/data/forms.php';
 
 $geofenceSrvc = new GeofenceService();
 $mobile = ($config['ui']['table']['forceRaidCards'] || (!$config['ui']['table']['forceRaidCards'] && is_mobile())) !== false ? '1' : '0';

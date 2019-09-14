@@ -272,15 +272,16 @@ function get_top_pokemon($limit = 10) {
     $sql = "
 SELECT
   pokemon_id,
+  form,
   COUNT(pokemon_id) AS count
 FROM
   pokemon
 WHERE
   first_seen_timestamp >= UNIX_TIMESTAMP(CURDATE())
 GROUP BY
-  pokemon_id
+  pokemon_id,form
 ORDER BY
-  2 DESC
+  3 DESC
 LIMIT
   $limit;
 ";
@@ -303,15 +304,16 @@ function get_top_pokemon_iv($limit = 10) {
     $sql = "
 SELECT
   pokemon_id,
+  form,
   COUNT(pokemon_id) AS count
 FROM
   pokemon
 WHERE 
   iv is not null AND first_seen_timestamp >= UNIX_TIMESTAMP(CURDATE())
 GROUP BY
-  pokemon_id
+  pokemon_id,form
 ORDER BY
-  2 DESC
+  3 DESC
 LIMIT
   $limit;
 ";
@@ -333,15 +335,16 @@ function get_top_pokemon_iv95($limit = 10) {
     $sql = "
 SELECT
   pokemon_id,
+  form,
   COUNT(pokemon_id) AS count
 FROM
   pokemon
 WHERE 
   iv > 95 AND first_seen_timestamp >= UNIX_TIMESTAMP(CURDATE())
 GROUP BY
-  pokemon_id
+  pokemon_id,form
 ORDER BY
-  2 DESC
+  3 DESC
 LIMIT
   $limit;
 ";
@@ -363,15 +366,16 @@ function get_top_pokemon_iv100($limit = 10) {
     $sql = "
 SELECT
   pokemon_id,
+  form,
   COUNT(pokemon_id) AS count
 FROM
   pokemon
 WHERE 
   iv = 100 AND first_seen_timestamp >= UNIX_TIMESTAMP(CURDATE())
 GROUP BY
-  pokemon_id
+  pokemon_id,form
 ORDER BY
-  2 DESC
+  3 DESC
 LIMIT
   $limit;
 ";
@@ -433,7 +437,8 @@ SELECT
   name,
   team_id,
   ex_raid_eligible,
-  updated
+  updated,
+  raid_pokemon_form
 FROM
   gym
 WHERE
@@ -461,11 +466,13 @@ function execute($sql, $mode = PDO::FETCH_ASSOC) {
   return $data;
 }
 
-function get_raid_image($pokemonId, $raidLevel) {
+function get_raid_image($pokemonId, $raidLevel, $form) {
     global $config;
-    if ($pokemonId > 0) {
+    if ($pokemonId > 0 && $form == '0') {
         return sprintf($config['urls']['images']['pokemon'], $pokemonId);
-    }
+    } else if($pokemonId > 0 && $form > 0){
+		return str_replace('00.png', $form,(sprintf($config['urls']['images']['pokemon'] . '.png', $pokemonId)));
+	}
     return sprintf($config['urls']['images']['egg'], $raidLevel);
 }
 

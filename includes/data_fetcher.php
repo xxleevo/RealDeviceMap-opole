@@ -6,6 +6,7 @@ require_once './includes/GeofenceService.php';
 require_once './includes/utils.php';
 require_once './static/data/movesets.php';
 require_once './static/data/pokedex.php';
+require_once './static/data/forms.php';
 
 define('MAX_GYM_NAME_LENGTH', 20); //TODO: Add to config
 
@@ -65,9 +66,14 @@ for ($i = 0; $i < $count; $i++) {
     $city = ($geofence == null ? $config['ui']['unknownValue'] : $geofence->name);
     $map_link = sprintf($config['google']['maps'], $raid["lat"], $raid["lon"]);
     $pokemon_id = $raid['raid_pokemon_id'];
+	$pokemon_form = $forms[$raid['raid_pokemon_form']];
     $pokemon = $pokedex[$pokemon_id];
+	if($raid['raid_pokemon_form'] != '0'){
+		$pokemon .= '(' . $pokemon_form . ')';
+		
+	}
     $level = $raid['raid_level'];
-    $raid_image = get_raid_image($pokemon_id, $level);
+    $raid_image = get_raid_image($pokemon_id, $level,$raid['raid_pokemon_form']);
     $fast_move = $quick_moves[$raid['raid_pokemon_move_1']];
     $charge_move = $charge_moves[$raid['raid_pokemon_move_2']];
     $moveset = (($fast_move == $config['ui']['unknownValue'] && ($charge_move == $config['ui']['unknownValue'])) 
