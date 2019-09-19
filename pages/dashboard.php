@@ -290,31 +290,8 @@ Auf dieser Seite findest du eine Übersicht darüber, welche Daten auf unserer M
       </div>
     </div>
   </div>
-</div>
-
-<div class='card text-center p-1 m-3'>
-  <div class='card-header heading text-light'><b>Spawnpunkte</b></div>
-  <div class='card-body'>
-    <div class='container'>
-      <div class='row'>
-        <div class='col-md-3'>
-          <a class='list-group-item'>
-            <h3 class='pull-right'><img src='./static/images/spawns.png' width='64' height='64'/></h3>
-            <h4 class='list-group-item-heading spawnpoint-count'>0</h4>
-            <p class='list-group-item-text'>Spawnpunkte Gesamt</p>
-          </a>
-        </div>
-        <div class='col-md-3'>
-          <a class='list-group-item'>
-            <h3 class='pull-right'><img src='./static/images/spawns_verified.png' width='64' height='64'/></h3>
-            <h4 class='list-group-item-heading found-spawnpoint-count'>0</h4>
-            <p class='list-group-item-text'>Verifizierte Despawnzeiten</p>
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>";
+
 // Show this Raid Stats only from 4:00 to 23:00
 if (Date('H') >= 4 && Date('H') < 23) {
 $html .="
@@ -370,6 +347,114 @@ $html .="
   </div>
 </div>";
 }
+
+$html .= "
+<div class='card text-center p-1 m-3'>
+  <div class='card-header heading text-light'><b>Aktives Wetter</b></div>
+  <div class='card-body'>
+    <div class='container'>
+      <div class='row'>
+        <div class='col-md-3'>
+          <div class='list-group'>
+            <a class='list-group-item'>
+              <h3 class='pull-right'><img src='./static/images/weather/i-0.png' width='64' height='64'/></h3>
+              <h4 class='list-group-item-heading weather-pokemon-noBoost'>0</h4>
+              <p class='list-group-item-text'>Ohne Boost</p>
+            </a>
+          </div>
+        </div>
+        <div class='col-md-3'>
+          <div class='list-group'>
+            <a class='list-group-item'>
+              <h3 class='pull-right'><img src='./static/images/weather/i-1.png' width='64' height='64'/></h3>
+              <h4 class='list-group-item-heading weather-pokemon-sunny'>0</h4>
+              <p class='list-group-item-text'>Sonnig</p>
+            </a>
+          </div>
+        </div>
+        <div class='col-md-3'>
+          <div class='list-group'>
+            <a class='list-group-item'>
+              <h3 class='pull-right'><img src='./static/images/weather/i-2.png' width='64' height='64'/></h3>
+              <h4 class='list-group-item-heading weather-pokemon-rain'>0</h4>
+              <p class='list-group-item-text'>Regen</p>
+            </a>
+          </div>
+        </div>
+        <div class='col-md-3'>
+          <div class='list-group'>
+            <a class='list-group-item'>
+              <h3 class='pull-right'><img src='./static/images/weather/i-3.png' width='64' height='64'/></h3>
+              <h4 class='list-group-item-heading weather-pokemon-partlyCloudy'>0</h4>
+              <p class='list-group-item-text'>Teilw. Bewölkt</p>
+            </a>
+          </div>
+        </div>
+        <div class='col-md-3'>
+          <div class='list-group'>
+            <a class='list-group-item'>
+              <h3 class='pull-right'><img src='./static/images/weather/i-4.png' width='64' height='64'/></h3>
+              <h4 class='list-group-item-heading weather-pokemon-cloudy'>0</h4>
+              <p class='list-group-item-text'>Bewölkt</p>
+            </a>
+          </div>
+        </div>
+        <div class='col-md-3'>
+          <div class='list-group'>
+            <a class='list-group-item'>
+              <h3 class='pull-right'><img src='./static/images/weather/i-5.png' width='64' height='64'/></h3>
+              <h4 class='list-group-item-heading weather-pokemon-windy'>0</h4>
+              <p class='list-group-item-text'>Wind</p>
+            </a>
+          </div>
+        </div>
+        <div class='col-md-3'>
+          <div class='list-group'>
+            <a class='list-group-item'>
+              <h3 class='pull-right'><img src='./static/images/weather/i-6.png' width='64' height='64'/></h3>
+              <h4 class='list-group-item-heading weather-pokemon-snow'>0</h4>
+              <p class='list-group-item-text'>Schnee</p>
+            </a>
+          </div>
+        </div>
+        <div class='col-md-3'>
+          <div class='list-group'>
+            <a class='list-group-item'>
+              <h3 class='pull-right'><img src='./static/images/weather/i-7.png' width='64' height='64'/></h3>
+              <h4 class='list-group-item-heading weather-pokemon-fog'>0</h4>
+              <p class='list-group-item-text'>Nebel</p>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class='card text-center p-1 m-3'>
+  <div class='card-header heading text-light'><b>Spawnpunkte</b></div>
+  <div class='card-body'>
+    <div class='container'>
+      <div class='row'>
+        <div class='col-md-3'>
+          <a class='list-group-item'>
+            <h3 class='pull-right'><img src='./static/images/spawns.png' width='64' height='64'/></h3>
+            <h4 class='list-group-item-heading spawnpoint-count'>0</h4>
+            <p class='list-group-item-text'>Spawnpunkte Gesamt</p>
+          </a>
+        </div>
+        <div class='col-md-3'>
+          <a class='list-group-item'>
+            <h3 class='pull-right'><img src='./static/images/spawns_verified.png' width='64' height='64'/></h3>
+            <h4 class='list-group-item-heading found-spawnpoint-count'>0</h4>
+            <p class='list-group-item-text'>Verifizierte Despawnzeiten</p>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>";
 
 if (($config['ui']['pages']['dashboard']['deviceStatus'] !== false) || ($config['ui']['pages']['dashboard']['deviceStatusQuests'] !== false)) {
 	$html .="
@@ -615,6 +700,29 @@ function getStats() {
     updateCounter(".lured-pokestop-count", obj.lured);
     updateCounter(".quest-pokestop-count", obj.quests);
     updateCounter(".invasions-pokestop-count", obj.invasions);
+  });
+  
+  tmp = createToken();
+  sendRequest({ "type": "dashboard", "stat": "weather", "token": tmp }, function(data, status) {
+    tmp = null;
+    if (debug) {
+      if (data === 0) {
+        console.log("Failed to get data for dashboard.");
+        return;
+      } else {
+        console.log("Dashboard:", data);
+      }
+    }
+    var obj = JSON.parse(data);
+    updateCounter(".weather-pokemon-total", obj.total);
+    updateCounter(".weather-pokemon-noBoost", obj.noBoost);
+    updateCounter(".weather-pokemon-clear", obj.clear);
+    updateCounter(".weather-pokemon-rain", obj.rain);
+    updateCounter(".weather-pokemon-partlyCloudy", obj.partlyCloudy);
+    updateCounter(".weather-pokemon-cloudy", obj.cloudy);
+    updateCounter(".weather-pokemon-windy", obj.windy);
+    updateCounter(".weather-pokemon-snow", obj.snow);
+    updateCounter(".weather-pokemon-fog", obj.fog);
   });
 
   tmp = createToken();

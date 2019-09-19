@@ -132,6 +132,35 @@ WHERE
       
     return $count;
 }
+function get_weather_stats() {
+    global $config;
+    $db = new DbConnector($config['db']);
+    $pdo = $db->getConnection();
+    $sql = "
+SELECT 
+  COUNT(id) total,
+  SUM(CASE WHEN weather = 0 THEN 1 ELSE 0 END) noBoost,
+  SUM(CASE WHEN weather = 1 THEN 1 ELSE 0 END) clear,
+  SUM(CASE WHEN weather = 2 THEN 1 ELSE 0 END) rain,
+  SUM(CASE WHEN weather = 3 THEN 1 ELSE 0 END) partlyCloudy,
+  SUM(CASE WHEN weather = 4 THEN 1 ELSE 0 END) cloudy,
+  SUM(CASE WHEN weather = 5 THEN 1 ELSE 0 END) windy,
+  SUM(CASE WHEN weather = 6 THEN 1 ELSE 0 END) snow,
+  SUM(CASE WHEN weather = 7 THEN 1 ELSE 0 END) fog
+FROM
+  pokemon
+WHERE 
+expire_timestamp >= UNIX_TIMESTAMP()
+";
+    $result = $pdo->query($sql);
+    if ($result->rowCount() > 0) {
+        $data = $result->fetchAll()[0];
+    }
+    unset($pdo);
+    unset($db);
+  
+    return $data;
+}
   
 function get_table_count($table) {
     global $config;

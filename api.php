@@ -143,6 +143,21 @@ if (!(isset($data['type']) && !empty($data['type']))) {
                     ];
                     echo json_encode($obj);
                     break;
+                case "weather":
+                    $weatherStats = get_weather_stats();
+                    $obj = [
+                        "total" => $weatherStats === 0 ? 0 : $weatherStats["total"],
+                        "noBoost" => $weatherStats === 0 ? 0 : $weatherStats["noBoost"],
+                        "clear" => $weatherStats === 0 ? 0 : $weatherStats["clear"],
+                        "rain" => $weatherStats === 0 ? 0 : $weatherStats["rain"],
+                        "partlyCloudy" => $weatherStats === 0 ? 0 : $weatherStats["partlyCloudy"],
+                        "cloudy" => $weatherStats === 0 ? 0 : $weatherStats["cloudy"],
+                        "windy" => $weatherStats === 0 ? 0 : $weatherStats["windy"],
+                        "snow" => $weatherStats === 0 ? 0 : $weatherStats["snow"],
+                        "fog" => $weatherStats === 0 ? 0 : $weatherStats["fog"],
+                    ];
+                    echo json_encode($obj);
+                    break;
                 case "tth":
                     $spawnpointStats = get_spawnpoint_stats();
                     $obj = [
