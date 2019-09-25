@@ -71,6 +71,10 @@ $config = [
     "pages" => [
       "dashboard" => [
         "enabled" => true, //Shows/hides dashboard page
+		"enableNewStopsGyms" => true, // Enable the display of new stops/gyms. Date needs to be after the implementation from first_seen_timestamp for stops/gyms in rdm.
+		                             //If you dont know the time for the implementation, keep the defaults.
+		"newPokestopsMinDate" => [8,2019], // Month, Year for the "new pokestops" count statistic 
+		"newGymsMinDate" => [8,2019], // Month, Year for the "new gyms" count statistic 
 		"shinyStatsToday" => false, // Needs your RDM to detect shinys and write them to your db!
 		"shinyStatsAlltime" => false, // Needs your DB to have a shiny_stats table in the correct format(see above for the table creation) - you need to feed that table on your own.
 									 // If you dont have a shiny_stat table and dont know how to handle that, dont activate ShinyStatsAlltime
@@ -143,9 +147,10 @@ $config = [
         e.g. http://map.example.com/static/img/pokemon/%03d.png for 3 digit file names
 		
 		IMPORTANT: You need to keep the _00.png. The repository is designed to replace this string for form support.
+		IMPORTANT2: This Fork needs pmsf-styled icons!
       */
-      "pokemon" => "https://domain.com/static/monster-icons/%03d.png", 
-	  // for a quick setup, just replace domain.com with your stats-domain(wont work for shiny stats images, shiny stats needs an icon set with %ID_%FORM (19_00) for example
+      "pokemon" => "https://raw.githubusercontent.com/geekygreek7/pokedave_shuffle_icons_-PMSF-/master/pokemon_icon_%03d_00.png", 
+	  // for a quick setup, you can keep this setting.
       /* Raid egg images url
         Supports PHP format strings: %s, %d, etc.
         e.g. http://map.example.com/static/img/egg/%s.png for RDM backend images

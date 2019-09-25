@@ -1,11 +1,9 @@
 <?php
-
 $maxDevices = get_devices_count();
 $maxDevicesQuests = get_quest_devices_count($config['ui']['pages']['dashboard']['QuestInstance']);
 
 $onlineDevices = get_online_devices($config['ui']['pages']['dashboard']['deviceResponseLimit']);
 $onlineDevicesQuests = get_online_quest_devices(($config['ui']['pages']['dashboard']['QuestInstance']),($config['ui']['pages']['dashboard']['deviceResponseLimit']));
-    echo "<script>console.log('count of online devices questing: " . $onlineDevicesQuests . "' );</script>";
 $percentOnline = (($onlineDevices/$maxDevices) *100);
 $percentOnlineQuests = 0;
 if ($onlineDevicesQuests > 0 && $maxDevicesQuests > 0){
@@ -88,16 +86,6 @@ Auf dieser Seite findest du eine Übersicht darüber, welche Daten auf unserer M
 </div>
 </div>
 
-<!--
-<div class='card text-center p-1 m-3'>
-	<div class='card-header heading text-light'><b data-i18n='dashboard_pokemon_top10'>Top 10 Monster (Heute)</b></div>
-	<div class='card-body'>
-		<div class='container'>
-			<div id='top-10-pokemon' class='row justify-content-center'></div>
-		</div>
-	</div>
-</div>
--->
 
 <div class='card text-center p-1 m-3'>
 	<div class='tab'>
@@ -345,6 +333,28 @@ $html .="
       </div>
     </div>
   </div>
+</div>";
+}
+if (isset($config['ui']['pages']['dashboard']['enableNewStopsGyms']) && $config['ui']['pages']['dashboard']['enableNewStopsGyms'] !== false) {
+$html .= "
+<div class='card text-center p-1 m-3'>
+	<div class='tab'>
+		<button class='tablinks heading text-light active' onclick='openNew(event,\"NewStops\")'><b>Neue Stops</b><img src='./static/images/stop.png' width='28' height='28' class='ml-1'/></button>
+		<button class='tablinks heading text-light' onclick='openNew(event,\"NewGyms\")'><b>Neue Arenen</b><img src='./static/images/swords.png' width='28' height='28' class='ml-1'/></button>
+	</div>
+	
+	<div id='NewStops' class='tabcontent'>
+		<div class='container'>
+			<div id='new-pokestops' class='row justify-content-center active' ></div>
+		</div>
+	</div>
+	
+	<div id='NewGyms' class='tabcontent'>
+		<div class='container'>
+			<div id='new-gyms' class='row justify-content-center'></div>
+		</div>
+	</div>
+	
 </div>";
 }
 
@@ -607,6 +617,7 @@ echo $html;
 <script type="text/javascript" src="static/js/dashboard.js"></script>
 <script type="text/javascript">
 var debug = <?=$config['core']['showDebug'] !== false ? '1' : '0'?>;
+var newPokestopsGyms = <?=$config['ui']['pages']['dashboard']['enableNewStopsGyms'] !== false ? '1' : '0'?>;
 var shinyStats = <?=$config['ui']['pages']['dashboard']['shinyStatsToday'] !== false ? '1' : '0'?>;
 var shinyStatsAlltime = <?=$config['ui']['pages']['dashboard']['shinyStatsAlltime'] !== false ? '1' : '0'?>;
 var deviceStats = <?=$config['ui']['pages']['dashboard']['deviceStatus'] !== false ? '1' : '0'?>;
@@ -951,6 +962,56 @@ function getStats() {
 		$('#shiny-rates-total').html(html);
 	});
   }
+  if(newPokestopsGyms){
+	tmp = createToken();
+	sendRequest({ "type": "dashboard", "stat": "new", "token": tmp }, function(data, status) {
+		tmp = null;
+		if (debug) {
+			if (data === 0) {
+				console.log("Failed to get data for dashboard.");
+				return;
+			} else {
+				console.log("Dashboard:", data);
+			}
+		}
+		var obj = JSON.parse(data);
+		
+        var month = new Array();
+        month[1] = "January"; month[2] = "February"; month[3] = "March"; month[4] = "April"; month[5] = "May"; month[6] = "June"; month[7] = "July"; month[8] = "August"; month[9] = "September"; month[10] = "October"; month[11] = "November"; month[12] = "December";
+		
+		//Create Panel for new Stops
+		var html_stops = "";
+		html_stops += "<div><ul class='list-group list-group-flush'>";
+		html_stops += "<li class='list-group-item'><h4><img src='./static/images/stop.png' width='32' height='32' class='mx-1'/><b><u>Neue Pokestops im Gebiet</u></b><img src='./static/images/stop.png' width='32' height='32' class='mx-1'/></h4></li>";
+		$.each(obj.new_stops, function(key, value) {
+			var monthString = month[value.month];
+			var yearString = (value.year).toString().substring(2,4);
+		
+			html_stops += "<li class ='list-group-item'>";
+			html_stops += "<h5 class='list-group-item-heading'>" + monthString + " '" + yearString +": <b>" + numberWithCommas(value.new) + "</b></h5>";
+			html_stops += "</li>";
+		});
+		html_stops += "</ul></div>";
+		$('#new-pokestops').html(html_stops);
+		
+		//Create Panel for new Gyms
+		var html_gyms = "";
+		html_gyms += "<div><ul class='list-group list-group-flush'>";
+		html_gyms += "<li class='list-group-item'><h4><img src='./static/images/swords.png' width='32' height='32' class='mx-1'/><b><u>Neue Arenen im Gebiet</u></b><img src='./static/images/swords.png' width='32' height='32' class='mx-1'/></h4></li>";
+		$.each(obj.new_gyms, function(key, value) {
+			var monthString = month[value.month];
+			var yearString = (value.year).toString().substring(2,4);
+		
+			html_gyms += "<li class ='list-group-item'>";
+			html_gyms += "<h5 class='list-group-item-heading'>" + monthString + " '" + yearString +": <b>" + numberWithCommas(value.new) + "</b></h5>";
+			html_gyms += "</li>";
+		});
+		html_gyms += "</ul></div>";
+		$('#new-gyms').html(html_gyms);
+		
+	});
+  }
+  
 }
 
 
@@ -962,5 +1023,6 @@ function createToken() {
 
   //first tab should be auto-open
   document.getElementById('Top10MonTod').style.display = "block";
+  document.getElementById('NewStops').style.display = "block";
 
 </script>

@@ -445,6 +445,67 @@ SELECT
     return $data;
 }
 
+function get_new_pokestops($minDate) {
+	$minMonth = $minDate[0];
+	$minYear = $minDate[1];
+	
+    global $config;
+    $db = new DbConnector($config['db']);
+    $pdo = $db->getConnection();
+    $sql = "
+SELECT
+ count(id) AS new, 
+ MONTH(from_unixtime(first_seen_timestamp)) AS month,
+ YEAR(from_unixtime(first_seen_timestamp)) AS year
+ FROM pokestop
+ WHERE
+ MONTH(from_unixtime(first_seen_timestamp)) >= " . $minMonth . " AND 
+ YEAR(from_unixtime(first_seen_timestamp)) >= " . $minYear . "
+ GROUP BY
+ month,year
+ ORDER BY
+ year,month ASC;
+";
+    $result = $pdo->query($sql);
+    if ($result->rowCount() > 0) {
+        $data = $result->fetchAll();
+    }
+    unset($pdo);
+    unset($db);
+
+    return $data;
+}
+function get_new_gyms($minDate) {
+	$minMonth = $minDate[0];
+	$minYear = $minDate[1];
+	
+    global $config;
+    $db = new DbConnector($config['db']);
+    $pdo = $db->getConnection();
+    $sql = "
+SELECT
+ count(id) AS new, 
+ MONTH(from_unixtime(first_seen_timestamp)) AS month,
+ YEAR(from_unixtime(first_seen_timestamp)) AS year
+ FROM gym
+ WHERE
+ MONTH(from_unixtime(first_seen_timestamp)) >= " . $minMonth . " AND 
+ YEAR(from_unixtime(first_seen_timestamp)) >= " . $minYear . "
+ GROUP BY
+ month,year
+ ORDER BY
+ year,month ASC;
+";
+    $result = $pdo->query($sql);
+    if ($result->rowCount() > 0) {
+        $data = $result->fetchAll();
+    }
+    unset($pdo);
+    unset($db);
+
+    return $data;
+}
+
 function get_raids() {
     global $config;
 
