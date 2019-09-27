@@ -69,14 +69,14 @@ function get_shiny_rates_total() {
     $sql = "
 SELECT
 	pokemon_id AS pokeid,
-	SUM(count_shiny) as count,
+	SUM(shiny_count) as count,
 	SUM(count) as total,
-	(SUM(count)/SUM(count_shiny)) as rate,
+	(SUM(count)/SUM(shiny_count)) as rate,
 	form
 FROM shiny_stats
-WHERE count_shiny > 0
+WHERE shiny_count > 0
 GROUP BY pokemon_id, form
-HAVING SUM(count_shiny) > 0
+HAVING SUM(shiny_count) > 0
 ORDER BY rate ASC;
 ";
     $result = $pdo->query($sql);

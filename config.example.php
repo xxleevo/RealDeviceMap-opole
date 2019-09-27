@@ -83,8 +83,8 @@ $config = [
 			`date` date NOT NULL,
 			`pokemon_id` smallint(6) unsigned NOT NULL,
 			`form` smallint(6) unsigned NOT NULL,
-			`count` mediumint(6) unsigned NOT NULL,
-			`count_shiny` smallint(6) unsigned NOT NULL,
+			`count` mediumint(6) unsigned NOT NULL DEFAULT '0',
+			`shiny_count` smallint(6) unsigned NOT NULL DEFAULT '0',
 			PRIMARY KEY (`date`,`pokemon_id`,`form`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
 		*/
