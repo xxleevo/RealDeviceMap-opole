@@ -255,6 +255,9 @@ function get_quest_message($type, $target) {
         case 13://QuestType.UseBerryInEncounter:
             $msg = "Nutze %s Beeren bei Pokemon";
             break;
+        case 27://QuestType.completeCombat:
+            $msg = "Kämpfe %s mal";
+            break;
         default: //QuestType.Unknown:
             $msg = "Unbekannt";
             break;
@@ -278,6 +281,12 @@ function get_quest_conditions($conditions) {
                 break;
             case 5://DailySpinBonus
                 array_push($quest_conditions, "Täglicher Stop");
+                break;
+            case 22://NPCBattle
+                array_push($quest_conditions, "Teamleiter-Kampf");
+                break;
+            case 22://PvPBattle
+                array_push($quest_conditions, "PVP-Kampf");
                 break;
             case 20://DaysInARow
                 break;
