@@ -181,7 +181,7 @@ unset($pdo);
 function get_quest_message($type, $target) {
     switch ($type) {
         case 22://QuestType.AddFriend:
-            $msg = "Füge %s Freunde hinzu";
+            $msg = "Füge %s Freund(e) hinzu";
             break;
         case 12://QuestType.AutoComplete:
             $msg = "Autocomplete";
@@ -273,6 +273,9 @@ function get_quest_conditions($conditions) {
         switch ($condition->type) {
             case 16://BadgeType
                 break;
+            case 25://ThrowTypeInARow
+                array_push($quest_conditions, sprintf("%s km Entfernung", number_format($condition->info->distance,0,' ','.')));
+                break;
             case 15://CurveBall
                 array_push($quest_conditions, "Curveball");
                 break;
@@ -294,7 +297,6 @@ function get_quest_conditions($conditions) {
                 array_push($quest_conditions, "Benutze items");
                 break;
             case 19://NewFriend
-                array_push($quest_conditions, "Erhalte neue Freunde");
                 break;
             case 17://PlayerLevel
                 array_push($quest_conditions, "Erreiche Level");
@@ -311,6 +313,7 @@ function get_quest_conditions($conditions) {
                 foreach ($condition->info->pokemon_type_ids as $pokemon_type_id) {
                     array_push($types, get_pokemon_type($pokemon_type_id));
                 }
+                array_push($quest_conditions, "Typ: ");
                 array_push($quest_conditions, join(', ', $types));
                 break;
             case 0://QuestContext
