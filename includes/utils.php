@@ -42,8 +42,8 @@ function get_shiny_rates() {
 SELECT
   pokemon_id as pokeid,
   COUNT(pokemon_id) AS count,
-  (SELECT count(pokemon_id) FROM pokemon p where p.pokemon_id=pokeid AND shiny is not null) as total,
-  ((SELECT count(pokemon_id) FROM pokemon p where p.pokemon_id=pokeid AND shiny is not null)/COUNT(pokemon_id)) as rate,
+  (SELECT count(pokemon_id) FROM pokemon p where p.pokemon_id=pokeid AND shiny is not null AND first_seen_timestamp >= UNIX_TIMESTAMP(CURDATE())) as total,
+  ((SELECT count(pokemon_id) FROM pokemon p where p.pokemon_id=pokeid AND shiny is not null AND first_seen_timestamp >= UNIX_TIMESTAMP(CURDATE()))/COUNT(pokemon_id)) as rate,
   form
 FROM
   pokemon
