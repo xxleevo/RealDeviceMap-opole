@@ -288,13 +288,13 @@ function get_quest_conditions($conditions) {
             case 22://NPCBattle
                 array_push($quest_conditions, "Teamleiter-Kampf");
                 break;
-            case 22://PvPBattle
+            case 23://PvPBattle
                 array_push($quest_conditions, "PVP-Kampf");
                 break;
             case 20://DaysInARow
                 break;
             case 11://Item
-                array_push($quest_conditions, "Benutze items");
+                array_push($quest_conditions, "Benutze Items");
                 break;
             case 19://NewFriend
                 break;
