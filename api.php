@@ -185,11 +185,16 @@ if (!(isset($data['type']) && !empty($data['type']))) {
                     ];
                     echo json_encode($obj);
                     break;
-                case "shiny":
+                case "shinyToday":
                     $shinyRates = get_shiny_rates();
+                    $obj = [
+                        "shiny_rates" => $shinyRates
+                    ];
+                    echo json_encode($obj);
+                    break;
+                case "shinyAlltime":
 					$shinyRatesTotal = get_shiny_rates_total();
                     $obj = [
-                        "shiny_rates" => $shinyRates,
 						"shiny_rates_total" => $shinyRatesTotal
                     ];
                     echo json_encode($obj);

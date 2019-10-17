@@ -886,7 +886,7 @@ function getStats() {
   
   if(shinyStats){
 	tmp = createToken();
-	sendRequest({ "type": "dashboard", "stat": "shiny", "token": tmp }, function(data, status) {
+	sendRequest({ "type": "dashboard", "stat": "shinyToday", "token": tmp }, function(data, status) {
 		tmp = null;
 		if (debug) {
 		if (data === 0) {
@@ -925,7 +925,7 @@ function getStats() {
   
   if(shinyStatsAlltime){
 	tmp = createToken();
-	sendRequest({ "type": "dashboard", "stat": "shiny", "token": tmp }, function(data, status) {
+	sendRequest({ "type": "dashboard", "stat": "shinyAlltime", "token": tmp }, function(data, status) {
 		tmp = null;
 		if (debug) {
 		if (data === 0) {
