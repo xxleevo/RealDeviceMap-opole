@@ -96,7 +96,7 @@ function get_shiny_rates_total() {
 SELECT
 	pokemon_id AS pokeid,
 	SUM(count) as count
-FROM shiny_stats
+FROM pokemon_shiny_stats
 GROUP BY pokemon_id
 ORDER BY count;
 ";
