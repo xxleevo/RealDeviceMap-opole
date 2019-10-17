@@ -133,16 +133,20 @@ Auf dieser Seite findest du eine Übersicht darüber, welche Daten auf unserer M
 			</div>
 		</div>";
 	}
-	if (!empty($config['ui']['pages']['dashboard']['shinyStatsAlltime']) &&$config['ui']['pages']['dashboard']['shinyStatsAlltime'] !== false) {
+	if (!empty($config['ui']['pages']['dashboard']['shinyStatsAlltime']) && $config['ui']['pages']['dashboard']['shinyStatsAlltime'] !== false) {
 		$html .="
 		<div id='ShinysTotal' class='tabcontent'>
 	
 			<div class='container'>
-			<center>
-			<div style='max-width:850px;padding-bottom:10px;text-align:left;'>
-				Bei dieser Statistik fließen nur Daten von Tagen ein, bei denen von der jeweiligen Spezies mindestens ein Shiny gefunden wurde. Dies verringert die Ungenauigkeit durch neuere Shiny-Releases<br>
-				(Bei einer zu geringeren gefunden Shiny-Anzahl kann die Rate sehr von der tatsächlichen Shiny-Rate abweichen)
-			</div>
+			<center>";
+			if (!empty($config['ui']['pages']['dashboard']['shinyStatsAlltimeMode']) && $config['ui']['pages']['dashboard']['shinyStatsAlltimeMode'] !== false) {
+				$html .="
+				<div style='max-width:850px;padding-bottom:10px;text-align:left;'>
+					Bei dieser Statistik fließen nur Daten von Tagen ein, bei denen von der jeweiligen Spezies mindestens ein Shiny gefunden wurde. Dies verringert die Ungenauigkeit durch neuere Shiny-Releases<br>
+					(Bei einer zu geringeren gefunden Shiny-Anzahl kann die Rate sehr von der tatsächlichen Shiny-Rate abweichen)
+				</div>";
+			}
+			$html .="
 			</center>
 				<div id='shiny-rates-total' class=''></div>
 			</div>
