@@ -62,7 +62,7 @@ ORDER BY
     unset($db);
     return $data;
 }
-function get_shiny_rates_total() {
+function get_shiny_rates_total_custom() {
     global $config;
     $db = new DbConnector($config['db']);
     $pdo = $db->getConnection();
@@ -78,6 +78,27 @@ WHERE shiny_count > 0
 GROUP BY pokemon_id, form
 HAVING SUM(shiny_count) > 0
 ORDER BY rate ASC;
+";
+    $result = $pdo->query($sql);
+    $data = null;
+    if ($result->rowCount() > 0) {
+        $data = $result->fetchAll();
+    }
+    unset($pdo);
+    unset($db);
+    return $data;
+}
+function get_shiny_rates_total() {
+    global $config;
+    $db = new DbConnector($config['db']);
+    $pdo = $db->getConnection();
+    $sql = "
+SELECT
+	pokemon_id AS pokeid,
+	SUM(count) as count
+FROM shiny_stats
+GROUP BY pokemon_id
+ORDER BY count;
 ";
     $result = $pdo->query($sql);
     $data = null;

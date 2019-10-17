@@ -199,6 +199,13 @@ if (!(isset($data['type']) && !empty($data['type']))) {
                     ];
                     echo json_encode($obj);
                     break;
+                case "shinyAlltimeCustom":
+					$shinyRatesTotalCustom = get_shiny_rates_total_custom();
+                    $obj = [
+						"shiny_rates_total_custom" => $shinyRatesTotalCustom
+                    ];
+                    echo json_encode($obj);
+                    break;
                 case "new":
 					$dateStops = [8,2019];
 					if(isset($config['ui']['pages']['dashboard']['newPokestopsMinDate'])){

@@ -78,7 +78,9 @@ $config = [
 		"shinyStatsToday" => false, // Needs your RDM to detect shinys and write them to your db!
 		"shinyStatsAlltime" => false, // Needs your DB to have a shiny_stats table in the correct format(see above for the table creation) - you need to feed that table on your own.
 									 // If you dont have a shiny_stat table and dont know how to handle that, dont activate ShinyStatsAlltime
-		/*Shiny_stats table creation sql
+
+		"shinyStatsAlltimeMode" => false, // If you use a custom shinystat table, set to true. Keep it at false if you dont know what this is.
+		/*Shiny_stats table creation sql for custom shinystat table
 			CREATE TABLE `shiny_stats` (
 			`date` date NOT NULL,
 			`pokemon_id` smallint(6) unsigned NOT NULL,

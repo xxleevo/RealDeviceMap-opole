@@ -94,11 +94,11 @@ Auf dieser Seite findest du eine Übersicht darüber, welche Daten auf unserer M
 		<button class='tablinks heading text-light' onclick='openCity(event,\"Top10MonIV\")'><b>Top 10 IV Heute</b></button>
 		<button class='tablinks heading text-light' onclick='openCity(event,\"Top10MonIV95\")'><b>96+ Heute</b></button>
 		<button class='tablinks heading text-light' onclick='openCity(event,\"Top10MonIV100\")'><b>100er Heute</b></button>";
-		if ($config['ui']['pages']['dashboard']['shinyStatsToday'] !== false) {
+		if (!empty($config['ui']['pages']['dashboard']['shinyStatsToday']) && $config['ui']['pages']['dashboard']['shinyStatsToday'] !== false) {
 			$html .="
 			<button class='tablinks heading text-light' onclick='openCity(event,\"TopShinys\")'><b>Shinys Heute</b></button>";
 		}
-		if ($config['ui']['pages']['dashboard']['shinyStatsAlltime'] !== false) {
+		if (!empty ($config['ui']['pages']['dashboard']['shinyStatsAlltime']) && $config['ui']['pages']['dashboard']['shinyStatsAlltime'] !== false) {
 			$html .="
 			<button class='tablinks heading text-light' onclick='openCity(event,\"ShinysTotal\")'><b>Shinys Gesamt</b></button>";
 		}
@@ -125,7 +125,7 @@ Auf dieser Seite findest du eine Übersicht darüber, welche Daten auf unserer M
 			<div id='top-10-pokemon-iv' class='row justify-content-center'></div>
 		</div>
 	</div>";
-	if ($config['ui']['pages']['dashboard']['shinyStatsToday'] !== false) {
+	if (!empty($config['ui']['pages']['dashboard']['shinyStatsToday']) && $config['ui']['pages']['dashboard']['shinyStatsToday'] !== false) {
 		$html .="
 		<div id='TopShinys' class='tabcontent'>
 			<div class='container'>
@@ -133,7 +133,7 @@ Auf dieser Seite findest du eine Übersicht darüber, welche Daten auf unserer M
 			</div>
 		</div>";
 	}
-	if ($config['ui']['pages']['dashboard']['shinyStatsToday'] !== false) {
+	if (!empty($config['ui']['pages']['dashboard']['shinyStatsAlltime']) &&$config['ui']['pages']['dashboard']['shinyStatsAlltime'] !== false) {
 		$html .="
 		<div id='ShinysTotal' class='tabcontent'>
 	
@@ -617,11 +617,12 @@ echo $html;
 <script type="text/javascript" src="static/js/dashboard.js"></script>
 <script type="text/javascript">
 var debug = <?=$config['core']['showDebug'] !== false ? '1' : '0'?>;
-var newPokestopsGyms = <?=$config['ui']['pages']['dashboard']['enableNewStopsGyms'] !== false ? '1' : '0'?>;
-var shinyStats = <?=$config['ui']['pages']['dashboard']['shinyStatsToday'] !== false ? '1' : '0'?>;
-var shinyStatsAlltime = <?=$config['ui']['pages']['dashboard']['shinyStatsAlltime'] !== false ? '1' : '0'?>;
-var deviceStats = <?=$config['ui']['pages']['dashboard']['deviceStatus'] !== false ? '1' : '0'?>;
-var deviceStatsQuests = <?=$config['ui']['pages']['dashboard']['deviceStatusQuests'] !== false ? '1' : '0'?>;
+var newPokestopsGyms = <?=(!empty($config['ui']['pages']['dashboard']['enableNewStopsGyms']) && $config['ui']['pages']['dashboard']['enableNewStopsGyms'] !== false) ? '1' : '0'?>;
+var shinyStats = <?=(!empty($config['ui']['pages']['dashboard']['shinyStatsToday']) && $config['ui']['pages']['dashboard']['shinyStatsToday']) !== false ? '1' : '0'?>;
+var shinyStatsAlltime = <?= (!empty($config['ui']['pages']['dashboard']['shinyStatsAlltime']) && $config['ui']['pages']['dashboard']['shinyStatsAlltime'] !== false) ? '1' : '0'?>;
+var shinyStatsAlltimeMode = <?= (!empty($config['ui']['pages']['dashboard']['shinyStatsAlltimeMode']) && $config['ui']['pages']['dashboard']['shinyStatsAlltimeMode'] !== false) ? '1' : '0'?>;
+var deviceStats = <?=(!empty($config['ui']['pages']['dashboard']['deviceStatus']) && $config['ui']['pages']['dashboard']['deviceStatus']) !== false ? '1' : '0'?>;
+var deviceStatsQuests = <?=(!empty($config['ui']['pages']['dashboard']['deviceStatusQuests']) && $config['ui']['pages']['dashboard']['deviceStatusQuests']) !== false ? '1' : '0'?>;
 var timeout = <?=!empty($config['ui']['pages']['dashboard']['deviceResponseLimit']) ? $config['ui']['pages']['dashboard']['deviceResponseLimit'] : 600 ?>;
 
 var maxDevices = <?=$maxDevices?>;
@@ -925,42 +926,76 @@ function getStats() {
   
   if(shinyStatsAlltime){
 	tmp = createToken();
-	sendRequest({ "type": "dashboard", "stat": "shinyAlltime", "token": tmp }, function(data, status) {
-		tmp = null;
-		if (debug) {
-		if (data === 0) {
-			console.log("Failed to get data for dashboard.");
-			return;
-		} else {
-			console.log("Dashboard:", data);
-		}
-		}
-		var obj = JSON.parse(data);
-		var html = "";
-		var count = 0;
-		$.each(obj.shiny_rates_total, function(key, value) {
-		if (count == 0) {
-			html += "<div class='row justify-content-center'>";
-		}
-		var name = pokedex[value.pokeid];
-		var pkmnImage = sprintf("<?=$config['urls']['images']['pokemon']?>", value.pokeid);
-		if(value.form !== '0'){
-			pkmnImage = pkmnImage.toString().replace("00.png", value.form + ".png");
-		}
-		html += "<div class='col-md-2" + (count == 0 ? " col-md-offset-1" : "") + "'>";
-
-		html += "<img src='" + pkmnImage + "' width='64' height='64'><p><span class='text-nowrap'>" + name + ": " + numberWithCommas(value.count) + "</span>";
-		html += "<span class='text-nowrap'><br>(" + value.count + " : " + value.total + ")<br><b>Ø 1 : " + Math.round(value.total/value.count) + "</b></span></p></br>";
-		html += "</div>";
-		if (count == 4) {
+	if (shinyStatsAlltimeMode){
+		sendRequest({ "type": "dashboard", "stat": "shinyAlltimeCustom", "token": tmp }, function(data, status) {
+			tmp = null;
+			if (debug) {
+			if (data === 0) {
+				console.log("Failed to get data for dashboard.");
+				return;
+			} else {
+				console.log("Dashboard:", data);
+			}
+			}
+			var obj = JSON.parse(data);
+			var html = "";
+			var count = 0;
+			$.each(obj.shiny_rates_total_custom, function(key, value) {
+			if (count == 0) {
+				html += "<div class='row justify-content-center'>";
+			}
+			var name = pokedex[value.pokeid];
+			var pkmnImage = sprintf("<?=$config['urls']['images']['pokemon']?>", value.pokeid);
+			if(value.form !== '0'){
+				pkmnImage = pkmnImage.toString().replace("00.png", value.form + ".png");
+			}
+			html += "<div class='col-md-2" + (count == 0 ? " col-md-offset-1" : "") + "'>";
+	
+			html += "<img src='" + pkmnImage + "' width='64' height='64'><p><span class='text-nowrap'>" + name + ": " + numberWithCommas(value.count) + "</span>";
+			html += "<span class='text-nowrap'><br>(" + value.count + " : " + value.total + ")<br><b>Ø 1 : " + Math.round(value.total/value.count) + "</b></span></p></br>";
 			html += "</div>";
-			count = 0;
-		} else {
-			count++;
-		}
+			if (count == 4) {
+				html += "</div>";
+				count = 0;
+			} else {
+				count++;
+			}
+			});
+			$('#shiny-rates-total').html(html);
 		});
-		$('#shiny-rates-total').html(html);
-	});
+	}else{
+		sendRequest({ "type": "dashboard", "stat": "shinyAlltime", "token": tmp }, function(data, status) {
+			tmp = null;
+			if (debug) {
+			if (data === 0) {
+				console.log("Failed to get data for dashboard.");
+				return;
+			} else {
+				console.log("Dashboard:", data);
+			}
+			}
+			var obj = JSON.parse(data);
+			var html = "";
+			var count = 0;
+			$.each(obj.shiny_rates_total, function(key, value) {
+			if (count == 0) {
+				html += "<div class='row justify-content-center'>";
+			}
+			var name = pokedex[value.pokeid];
+			var pkmnImage = sprintf("<?=$config['urls']['images']['pokemon']?>", value.pokeid);
+			html += "<div class='col-md-2" + (count == 0 ? " col-md-offset-1" : "") + "'>";
+			html += "<img src='" + pkmnImage + "' width='64' height='64'><p><span class='text-nowrap'>" + name + ": " + numberWithCommas(value.count) + "</span>";
+			html += "</div>";
+			if (count == 4) {
+				html += "</div>";
+				count = 0;
+			} else {
+				count++;
+			}
+			});
+			$('#shiny-rates-total').html(html);
+		});
+	}
   }
   if(newPokestopsGyms){
 	tmp = createToken();
