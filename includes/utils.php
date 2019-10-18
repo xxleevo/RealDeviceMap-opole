@@ -93,12 +93,15 @@ function get_shiny_rates_total() {
     $db = new DbConnector($config['db']);
     $pdo = $db->getConnection();
     $sql = "
-SELECT
-	pokemon_id AS pokeid,
-	SUM(count) as count
-FROM pokemon_shiny_stats
-GROUP BY pokemon_id
-ORDER BY count;
+SELECT stats.pokemon_id as pokeid, 
+       IFNULL(SUM(shiny_stats.count), 0) as count, 
+       SUM(stats.count) as total, 
+       SUM(stats.count) / IFNULL(SUM(shiny_stats.count), 0) as rate
+FROM pokemon_iv_stats as stats
+LEFT JOIN pokemon_shiny_stats as shiny_stats on stats.pokemon_id = shiny_stats.pokemon_id AND stats.date = shiny_stats.date
+GROUP BY stats.pokemon_id
+HAVING SUM(shiny_stats.count) > 0
+ORDER BY rate ASC;
 ";
     $result = $pdo->query($sql);
     $data = null;
