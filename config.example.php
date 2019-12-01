@@ -119,6 +119,13 @@ $config = [
         "enabled" => false, //Shows/hides gyms page
         "discordRoles" => [] //Requires specific discord role, otherwise leave empty as []
       ],
+      "shinys" => [
+        "enabled" => true, //Shows/hides gyms page
+        "discordRoles" => [], //Requires specific discord role, otherwise leave empty as []
+		"today" => true, // Needs your RDM to detect shinys and write them to your db!
+		"alltime" => true,
+		"customMode" => false, // If you use a custom shinystat table, set to true. Keep it at false if you dont know what this is.
+      ],
       "nests" => [
         "enabled" => false, //Shows/hides gyms page
         "discordRoles" => [], //Requires specific discord role, otherwise leave empty as []

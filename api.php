@@ -225,6 +225,33 @@ if (!(isset($data['type']) && !empty($data['type']))) {
                     break;
             }
             break;
+        case "shinys":
+            $stat = filter_var($data["stat"], FILTER_SANITIZE_STRING);
+            switch ($stat) {
+                case "shinyToday":
+                    $shinyRates = get_shiny_rates();
+                    $obj = [
+                        "shiny_rates" => $shinyRates
+                    ];
+                    echo json_encode($obj);
+                    break;
+                case "shinyAlltime":
+					$shinyRatesTotal = get_shiny_rates_total();
+                    $obj = [
+						"shiny_rates_total" => $shinyRatesTotal
+                    ];
+                    echo json_encode($obj);
+                    break;
+                case "shinyAlltimeCustom":
+					$shinyRatesTotalCustom = get_shiny_rates_total_custom();
+                    $obj = [
+						"shiny_rates_total_custom" => $shinyRatesTotalCustom
+                    ];
+                    echo json_encode($obj);
+                    break;
+				}
+		break;
+			
         case "nests":
             $coords = $data["data"]["coordinates"];
             $spawnpoints = getSpawnpointNestData($coords);

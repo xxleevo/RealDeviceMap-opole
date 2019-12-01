@@ -91,6 +91,11 @@ switch($request_method) {
                         include_once('./pages/pokestops.php');
                     }
                     break;
+                case "shinys":
+                    if ($config['ui']['pages']['shinys']['enabled'] && (!$config['discord']['enabled'] || ($config['discord']['enabled'] && hasDiscordRole($_SESSION['user']['roles'], $config['ui']['pages']['shinys']['discordRoles'])))) {
+                        include_once('./pages/shinys.php');
+                    }
+                    break;
                 case "nests":
                     if ($config['ui']['pages']['nests']['enabled'] && (!$config['discord']['enabled'] || ($config['discord']['enabled'] && hasDiscordRole($_SESSION['user']['roles'], $config['ui']['pages']['nests']['discordRoles'])))) {
                         include_once('./pages/nests.php');

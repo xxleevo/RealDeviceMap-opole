@@ -60,6 +60,11 @@
         <a class="nav-link" href="/pokestops"><i class="fa fa-fw fa-glass" aria-hidden="true"></i>&nbsp;<span data-i18n='nav_pokestops'>Pokestops</span></a>
       </li>
 <?php } ?>
+<?php if ($config['ui']['pages']['shinys']['enabled'] && (!$config['discord']['enabled'] || ($config['discord']['enabled'] && hasDiscordRole($_SESSION['user']['roles'], $config['ui']['pages']['shinys']['discordRoles'])))) { ?>
+      <li class="nav-item <?=isset($_GET['page']) && $_GET['page']==='shinys' ? 'active' : '' ?>">
+        <a class="nav-link" href="/shinys"><i class="fa fa-fw fa-star" aria-hidden="true"></i>&nbsp;<span data-i18n='nav_shinys'>Shinys</span></a>
+      </li>
+<?php } ?>
 <?php if ($config['ui']['pages']['nests']['enabled'] && (!$config['discord']['enabled'] || ($config['discord']['enabled'] && hasDiscordRole($_SESSION['user']['roles'], $config['ui']['pages']['nests']['discordRoles'])))) { ?>
       <li class="nav-item <?=isset($_GET['page']) && $_GET['page']==='nests' ? 'active' : '' ?>">
         <a class="nav-link" href="/nests"><i class="fa fa-fw fa-connectdevelop" aria-hidden="true"></i>&nbsp;<span data-i18n='nav_nests'>Nests</span></a>

@@ -13,6 +13,7 @@ RewriteRule ^pokestops$ index.php?page=pokestops [QSA,NC,L]
 RewriteRule ^pokemon$ index.php?page=pokemon [QSA,NC,L]
 RewriteRule ^nests$ index.php?page=nests [QSA,NC,L]
 RewriteRule ^stats$ index.php?page=stats [QSA,NC,L]
+RewriteRule ^shinys$ index.php?page=shinys [QSA,NC,L]
 
 <IfModule mod_php5.c>
    php_value short_open_tag 1
