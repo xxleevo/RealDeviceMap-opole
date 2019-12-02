@@ -52,7 +52,53 @@ GROUP BY
   pokemon_id, form
 ORDER BY
   rate ASC
+LIMIT 10
 ";
+    $result = $pdo->query($sql);
+    $data = null;
+    if ($result->rowCount() > 0) {
+        $data = $result->fetchAll();
+    }
+    unset($pdo);
+    unset($db);
+    return $data;
+}
+
+function get_shiny_rates_shinypage($order) {
+    global $config;
+    $db = new DbConnector($config['db']);
+    $pdo = $db->getConnection();
+    $where = " WHERE shiny = 1 AND first_seen_timestamp >= UNIX_TIMESTAMP(CURDATE())";
+    $sql = "
+SELECT
+  pokemon_id as pokeid,
+  COUNT(pokemon_id) AS count,
+  (SELECT count(pokemon_id) FROM pokemon p where p.pokemon_id=pokeid AND shiny is not null AND first_seen_timestamp >= UNIX_TIMESTAMP(CURDATE())) as total,
+  ((SELECT count(pokemon_id) FROM pokemon p where p.pokemon_id=pokeid AND shiny is not null AND first_seen_timestamp >= UNIX_TIMESTAMP(CURDATE()))/COUNT(pokemon_id)) as rate,
+  form
+FROM
+  pokemon
+$where
+GROUP BY
+  pokemon_id, form
+";
+    // apply order
+    switch ($order) {
+        case 0:
+            $sql .= " ORDER BY pokemon_id ASC;";
+            break;
+        case 1:
+            $sql .= " ORDER BY pokemon_id DESC;";
+            break;
+        case 2:
+            $sql .= " ORDER BY rate ASC;
+            ";
+            break;
+        case 3:
+            $sql .= " ORDER BY rate DESC;";
+            break;
+    }
+	
     $result = $pdo->query($sql);
     $data = null;
     if ($result->rowCount() > 0) {
@@ -77,7 +123,8 @@ FROM shiny_stats
 WHERE shiny_count > 0
 GROUP BY pokemon_id, form
 HAVING SUM(shiny_count) > 0
-ORDER BY rate ASC;
+ORDER BY rate ASC
+LIMIT 10
 ";
     $result = $pdo->query($sql);
     $data = null;
@@ -88,6 +135,50 @@ ORDER BY rate ASC;
     unset($db);
     return $data;
 }
+
+function get_shiny_rates_total_custom_shinypage($order) {
+    global $config;
+    $db = new DbConnector($config['db']);
+    $pdo = $db->getConnection();
+    $sql = "
+SELECT
+	pokemon_id AS pokeid,
+	SUM(shiny_count) as count,
+	SUM(count) as total,
+	(SUM(count)/SUM(shiny_count)) as rate,
+	form
+FROM shiny_stats
+WHERE shiny_count > 0
+GROUP BY pokemon_id, form
+HAVING SUM(shiny_count) > 0
+";
+    // apply order
+    switch ($order) {
+        case 0:
+            $sql .= " ORDER BY pokemon_id ASC;";
+            break;
+        case 1:
+            $sql .= " ORDER BY pokemon_id DESC;";
+            break;
+        case 2:
+            $sql .= " ORDER BY rate ASC;
+            ";
+            break;
+        case 3:
+            $sql .= " ORDER BY rate DESC;";
+            break;
+    }
+	
+    $result = $pdo->query($sql);
+    $data = null;
+    if ($result->rowCount() > 0) {
+        $data = $result->fetchAll();
+    }
+    unset($pdo);
+    unset($db);
+    return $data;
+}
+
 function get_shiny_rates_total() {
     global $config;
     $db = new DbConnector($config['db']);
@@ -101,8 +192,50 @@ FROM pokemon_iv_stats as stats
 LEFT JOIN pokemon_shiny_stats as shiny_stats on stats.pokemon_id = shiny_stats.pokemon_id AND stats.date = shiny_stats.date
 GROUP BY stats.pokemon_id
 HAVING SUM(shiny_stats.count) > 0
-ORDER BY rate ASC;
+ORDER BY rate ASC
+LIMIT 10
 ";
+    $result = $pdo->query($sql);
+    $data = null;
+    if ($result->rowCount() > 0) {
+        $data = $result->fetchAll();
+    }
+    unset($pdo);
+    unset($db);
+    return $data;
+}
+
+function get_shiny_rates_total_shinypage($order) {
+    global $config;
+    $db = new DbConnector($config['db']);
+    $pdo = $db->getConnection();
+    $sql = "
+SELECT stats.pokemon_id as pokeid, 
+       IFNULL(SUM(shiny_stats.count), 0) as count, 
+       SUM(stats.count) as total, 
+       SUM(stats.count) / IFNULL(SUM(shiny_stats.count), 0) as rate
+FROM pokemon_iv_stats as stats
+LEFT JOIN pokemon_shiny_stats as shiny_stats on stats.pokemon_id = shiny_stats.pokemon_id AND stats.date = shiny_stats.date
+GROUP BY stats.pokemon_id
+HAVING SUM(shiny_stats.count) > 0
+";
+    // apply order
+    switch ($order) {
+        case 0:
+            $sql .= " ORDER BY pokeid ASC;";
+            break;
+        case 1:
+            $sql .= " ORDER BY pokeid DESC;";
+            break;
+        case 2:
+            $sql .= " ORDER BY rate ASC;
+            ";
+            break;
+        case 3:
+            $sql .= " ORDER BY rate DESC;";
+            break;
+    }
+
     $result = $pdo->query($sql);
     $data = null;
     if ($result->rowCount() > 0) {

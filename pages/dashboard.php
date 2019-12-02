@@ -96,11 +96,11 @@ Auf dieser Seite findest du eine Übersicht darüber, welche Daten auf unserer M
 		<button class='tablinks heading text-light' onclick='openCity(event,\"Top10MonIV100\")'><b>100er Heute</b></button>";
 		if (!empty($config['ui']['pages']['dashboard']['shinyStatsToday']) && $config['ui']['pages']['dashboard']['shinyStatsToday'] !== false) {
 			$html .="
-			<button class='tablinks heading text-light' onclick='openCity(event,\"TopShinys\")'><b>Shinys Heute</b></button>";
+			<button class='tablinks heading text-light' onclick='openCity(event,\"TopShinys\")'><b>Top Shinys Heute</b></button>";
 		}
 		if (!empty ($config['ui']['pages']['dashboard']['shinyStatsAlltime']) && $config['ui']['pages']['dashboard']['shinyStatsAlltime'] !== false) {
 			$html .="
-			<button class='tablinks heading text-light' onclick='openCity(event,\"ShinysTotal\")'><b>Shinys Gesamt</b></button>";
+			<button class='tablinks heading text-light' onclick='openCity(event,\"ShinysTotal\")'><b>Top Shinys Gesamt</b></button>";
 		}
 		
 

@@ -201,7 +201,7 @@ if (!(isset($data['type']) && !empty($data['type']))) {
                     break;
                 case "shinyAlltimeCustom":
 					
-					$shinyRatesTotalCustom = get_shiny_rates_total_custom_($order);
+					$shinyRatesTotalCustom = get_shiny_rates_total_custom();
                     $obj = [
 						"shiny_rates_total_custom" => $shinyRatesTotalCustom
                     ];
