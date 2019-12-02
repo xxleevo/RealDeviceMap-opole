@@ -200,7 +200,8 @@ if (!(isset($data['type']) && !empty($data['type']))) {
                     echo json_encode($obj);
                     break;
                 case "shinyAlltimeCustom":
-					$shinyRatesTotalCustom = get_shiny_rates_total_custom();
+					
+					$shinyRatesTotalCustom = get_shiny_rates_total_custom_($order);
                     $obj = [
 						"shiny_rates_total_custom" => $shinyRatesTotalCustom
                     ];
@@ -227,23 +228,24 @@ if (!(isset($data['type']) && !empty($data['type']))) {
             break;
         case "shinys":
             $stat = filter_var($data["stat"], FILTER_SANITIZE_STRING);
+            $order = filter_var($data["order"], FILTER_SANITIZE_STRING);
             switch ($stat) {
                 case "shinyToday":
-                    $shinyRates = get_shiny_rates();
+                    $shinyRates = get_shiny_rates_shinypage($order);
                     $obj = [
                         "shiny_rates" => $shinyRates
                     ];
                     echo json_encode($obj);
                     break;
                 case "shinyAlltime":
-					$shinyRatesTotal = get_shiny_rates_total();
+					$shinyRatesTotal = get_shiny_rates_total_shinypage($order);
                     $obj = [
 						"shiny_rates_total" => $shinyRatesTotal
                     ];
                     echo json_encode($obj);
                     break;
                 case "shinyAlltimeCustom":
-					$shinyRatesTotalCustom = get_shiny_rates_total_custom();
+					$shinyRatesTotalCustom = get_shiny_rates_total_custom_shinypage($order);
                     $obj = [
 						"shiny_rates_total_custom" => $shinyRatesTotalCustom
                     ];
