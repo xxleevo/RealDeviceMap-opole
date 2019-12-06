@@ -467,6 +467,10 @@ function get_item($item_id) {
             return "x Drachenklaue";
         case 1105://Upgrade
             return "x Upgrade";
+        case 1106://Sinnoh-Stone
+            return "Sinnoh-Stein";
+        case 1107://Unova-Stone
+            return "Unova-Stein";
         case 1201://Move_Reroll_Fast_Attack
             return "x Fast-TM";
         case 1202://Move_Reroll_Special_Attack
