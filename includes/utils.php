@@ -41,10 +41,10 @@ function get_shiny_rates() {
     $sql = "
 SELECT
   pokemon_id as pokeid,
+  form as pokeform,
   COUNT(pokemon_id) AS count,
-  (SELECT count(pokemon_id) FROM pokemon p where p.pokemon_id=pokeid AND shiny is not null AND first_seen_timestamp >= UNIX_TIMESTAMP(CURDATE())) as total,
-  ((SELECT count(pokemon_id) FROM pokemon p where p.pokemon_id=pokeid AND shiny is not null AND first_seen_timestamp >= UNIX_TIMESTAMP(CURDATE()))/COUNT(pokemon_id)) as rate,
-  form
+  (SELECT count(pokemon_id) FROM pokemon p where p.pokemon_id=pokeid AND p.form=pokeform AND shiny is not null AND first_seen_timestamp >= UNIX_TIMESTAMP(CURDATE())) as total,
+  ((SELECT count(pokemon_id) FROM pokemon p where p.pokemon_id=pokeid AND p.form=pokeform AND shiny is not null AND first_seen_timestamp >= UNIX_TIMESTAMP(CURDATE()))/COUNT(pokemon_id)) as rate
 FROM
   pokemon
 $where
@@ -52,7 +52,7 @@ GROUP BY
   pokemon_id, form
 ORDER BY
   rate ASC
-LIMIT 10
+LIMIT 100
 ";
     $result = $pdo->query($sql);
     $data = null;
@@ -73,9 +73,9 @@ function get_shiny_rates_shinypage($order) {
 SELECT
   pokemon_id as pokeid,
   COUNT(pokemon_id) AS count,
-  (SELECT count(pokemon_id) FROM pokemon p where p.pokemon_id=pokeid AND shiny is not null AND first_seen_timestamp >= UNIX_TIMESTAMP(CURDATE())) as total,
-  ((SELECT count(pokemon_id) FROM pokemon p where p.pokemon_id=pokeid AND shiny is not null AND first_seen_timestamp >= UNIX_TIMESTAMP(CURDATE()))/COUNT(pokemon_id)) as rate,
-  form
+  form as pokeform,
+  (SELECT count(pokemon_id) FROM pokemon p where p.pokemon_id=pokeid AND p.form=pokeform AND shiny is not null AND first_seen_timestamp >= UNIX_TIMESTAMP(CURDATE())) as total,
+  ((SELECT count(pokemon_id) FROM pokemon p where p.pokemon_id=pokeid AND p.form=pokeform AND shiny is not null AND first_seen_timestamp >= UNIX_TIMESTAMP(CURDATE()))/COUNT(pokemon_id)) as rate
 FROM
   pokemon
 $where
@@ -118,7 +118,7 @@ SELECT
 	SUM(shiny_count) as count,
 	SUM(count) as total,
 	(SUM(count)/SUM(shiny_count)) as rate,
-	form
+	form as pokeform
 FROM shiny_stats
 WHERE shiny_count > 0
 GROUP BY pokemon_id, form
@@ -146,7 +146,7 @@ SELECT
 	SUM(shiny_count) as count,
 	SUM(count) as total,
 	(SUM(count)/SUM(shiny_count)) as rate,
-	form
+	form as pokeform
 FROM shiny_stats
 WHERE shiny_count > 0
 GROUP BY pokemon_id, form
