@@ -637,6 +637,7 @@ if(debug){
 	console.log('deviceStats: '+ deviceStats + ', deviceStatsQuests: ' + deviceStatsQuests + ', timeout: '+ timeout);
 	console.log('Devices: '+ onlineDevices + '/' + maxDevices + '(' + percentOnline + '%) -- QuestDevices: ' + Questing + '/' + maxDevicesQuests + '(' + percentOnlineQuests + '%)');
 }
+  
 getStats();
 
 function getStats() {
@@ -662,9 +663,12 @@ function getStats() {
     updateCounter(".active-iv100", obj.iv_100_active);
   });
 
+  var startTimeTemp = new Date();
   tmp = createToken();
   sendRequest({ "type": "dashboard", "stat": "gyms", "token": tmp }, function(data, status) {
     tmp = null;
+	var endTimeTemp = new Date();
+	console.log('Elapsed: ' + (endTimeTemp - startTimeTemp) + 'ms')
     if (debug) {
       if (data === 0) {
         console.log("Failed to get data for dashboard.");
@@ -886,42 +890,76 @@ function getStats() {
   });
   
   if(shinyStats){
+  
 	tmp = createToken();
-	sendRequest({ "type": "dashboard", "stat": "shinyToday", "token": tmp }, function(data, status) {
-		tmp = null;
-		if (debug) {
-		if (data === 0) {
-			console.log("Failed to get data for dashboard.");
-			return;
-		} else {
-			console.log("Dashboard:", data);
-		}
-		}
-		var obj = JSON.parse(data);
-		var html = "";
-		var count = 0;
-		$.each(obj.shiny_rates, function(key, value) {
-		if (count == 0) {
-			html += "<div class='row justify-content-center'>";
-		}
-		var name = pokedex[value.pokeid];
-		var pkmnImage = sprintf("<?=$config['urls']['images']['pokemon']?>", value.pokeid);
-		if(value.pokeform !== '0'){
-			pkmnImage = pkmnImage.toString().replace("00.png", value.pokeform + ".png");
-		}
-		html += "<div class='col-md-2" + (count == 0 ? " col-md-offset-1" : "") + "'>";
-		html += "<img src='" + pkmnImage + "' width='64' height='64'><p><span class='text-nowrap'>" + name + ": " + numberWithCommas(value.count) + "</span>";
-		html += "<span class='text-nowrap'><br>(" + value.count + " : " + value.total + ")<br><b>Ø 1 : " + Math.round(value.total/value.count) + "</b></span></p></br>";
-		html += "</div>";
-		if (count == 4) {
+	if(shinyStatsAlltimeMode){
+		sendRequest({ "type": "dashboard", "stat": "shinyTodayMode", "token": tmp }, function(data, status) {
+			tmp = null;
+			if (debug) {
+			if (data === 0) {
+				console.log("Failed to get data for dashboard.");
+				return;
+			} else {
+				console.log("Dashboard:", data);
+			}
+			}
+			var obj = JSON.parse(data);
+			var html = "";
+			var count = 0;
+			$.each(obj.shiny_rates, function(key, value) {
+			if (count == 0) {
+				html += "<div class='row justify-content-center'>";
+			}
+			var name = pokedex[value.pokeid];
+			var pkmnImage = sprintf("<?=$config['urls']['images']['pokemon']?>", value.pokeid);
+			if(value.pokeform !== '0'){
+				pkmnImage = pkmnImage.toString().replace("00.png", value.pokeform + ".png");
+			}
+			html += "<div class='col-md-2" + (count == 0 ? " col-md-offset-1" : "") + "'>";
+			html += "<img src='" + pkmnImage + "' width='64' height='64'><p><span class='text-nowrap'>" + name + ": " + numberWithCommas(value.count) + "</span>";
 			html += "</div>";
-			count = 0;
-		} else {
-			count++;
-		}
+			if (count == 4) {
+				html += "</div>";
+				count = 0;
+			} else {
+				count++;
+			}
+			});
+			$('#shiny-rates').html(html);
 		});
-		$('#shiny-rates').html(html);
-	});
+	}else {
+		sendRequest({ "type": "dashboard", "stat": "shinyToday", "token": tmp }, function(data, status) {
+			tmp = null;
+			if (debug) {
+			if (data === 0) {
+				console.log("Failed to get data for dashboard.");
+				return;
+			} else {
+				console.log("Dashboard:", data);
+			}
+			}
+			var obj = JSON.parse(data);
+			var html = "";
+			var count = 0;
+			$.each(obj.shiny_rates, function(key, value) {
+			if (count == 0) {
+				html += "<div class='row justify-content-center'>";
+			}
+			var name = pokedex[value.pokeid];
+			var pkmnImage = sprintf("<?=$config['urls']['images']['pokemon']?>", value.pokeid);
+			html += "<div class='col-md-2" + (count == 0 ? " col-md-offset-1" : "") + "'>";
+			html += "<img src='" + pkmnImage + "' width='64' height='64'><p><span class='text-nowrap'>" + name + ": " + numberWithCommas(value.count) + "</span>";
+			html += "</div>";
+			if (count == 4) {
+				html += "</div>";
+				count = 0;
+			} else {
+				count++;
+			}
+			});
+			$('#shiny-rates').html(html);
+		});
+	}
   }
   
   if(shinyStatsAlltime){
@@ -1048,6 +1086,8 @@ function getStats() {
 	});
   }
   
+  
+
 }
 
 

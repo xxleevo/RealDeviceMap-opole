@@ -15,13 +15,9 @@ function get_gym_stats() {
     $db = new DbConnector($config['db']);
     $pdo = $db->getConnection();
     $sql = "
-SELECT
-  team_id AS team,
-  COUNT(id) AS count
-FROM
-  gym
-GROUP BY
-  team
+SELECT team_id AS team, COUNT(id) AS count
+FROM gym
+GROUP BY team
 ";
     $result = $pdo->query($sql);
     if ($result->rowcount() > 0) {
@@ -33,26 +29,44 @@ GROUP BY
     return $data;
 }
 
-function get_shiny_rates() {
+function get_shiny_rates_grouped($limit) {
     global $config;
     $db = new DbConnector($config['db']);
     $pdo = $db->getConnection();
-    $where = " WHERE shiny = 1 AND first_seen_timestamp >= UNIX_TIMESTAMP(CURDATE())";
+    $where = " ";
     $sql = "
-SELECT
-  pokemon_id as pokeid,
-  form as pokeform,
-  COUNT(pokemon_id) AS count,
-  (SELECT count(pokemon_id) FROM pokemon p where p.pokemon_id=pokeid AND p.form=pokeform AND shiny is not null AND first_seen_timestamp >= UNIX_TIMESTAMP(CURDATE())) as total,
-  ((SELECT count(pokemon_id) FROM pokemon p where p.pokemon_id=pokeid AND p.form=pokeform AND shiny is not null AND first_seen_timestamp >= UNIX_TIMESTAMP(CURDATE()))/COUNT(pokemon_id)) as rate
-FROM
-  pokemon
-$where
-GROUP BY
-  pokemon_id, form
-ORDER BY
-  rate ASC
-LIMIT 100
+SELECT * FROM (
+    SELECT pokemon_id as pokeid, count
+    FROM pokemon_shiny_stats
+	WHERE date = CURDATE()
+	ORDER BY 2 DESC
+    LIMIT $limit
+) AS A
+";
+    $result = $pdo->query($sql);
+    $data = null;
+    if ($result->rowCount() > 0) {
+        $data = $result->fetchAll();
+    }
+    unset($pdo);
+    unset($db);
+    return $data;
+}
+
+
+function get_shiny_rates_mode_grouped($limit = 10) {
+    global $config;
+    $db = new DbConnector($config['db']);
+    $pdo = $db->getConnection();
+    $where = " ";
+    $sql = "
+SELECT * FROM (
+    SELECT pokemon_id as pokeid, form as pokeform, shiny_count as count
+    FROM shiny_stats
+	WHERE date = CURDATE()
+	ORDER BY 3 DESC
+    LIMIT $limit
+) AS A
 ";
     $result = $pdo->query($sql);
     $data = null;
@@ -108,7 +122,8 @@ GROUP BY
     unset($db);
     return $data;
 }
-function get_shiny_rates_total_custom() {
+
+function get_shiny_rates_total_mode_custom($limit = 10) {
     global $config;
     $db = new DbConnector($config['db']);
     $pdo = $db->getConnection();
@@ -123,7 +138,7 @@ FROM shiny_stats
 WHERE shiny_count > 0
 GROUP BY pokemon_id, form
 HAVING SUM(shiny_count) > 0
-ORDER BY rate ASC
+ORDER BY count DESC
 LIMIT 10
 ";
     $result = $pdo->query($sql);
@@ -179,21 +194,18 @@ HAVING SUM(shiny_count) > 0
     return $data;
 }
 
-function get_shiny_rates_total() {
+function get_shiny_rates_total_grouped($limit = 10) {
     global $config;
     $db = new DbConnector($config['db']);
     $pdo = $db->getConnection();
     $sql = "
-SELECT stats.pokemon_id as pokeid, 
-       IFNULL(SUM(shiny_stats.count), 0) as count, 
-       SUM(stats.count) as total, 
-       SUM(stats.count) / IFNULL(SUM(shiny_stats.count), 0) as rate
+SELECT stats.pokemon_id as pokeid, IFNULL(SUM(shiny_stats.count), 0) as count, SUM(stats.count) as total, SUM(stats.count) / IFNULL(SUM(shiny_stats.count), 0) as rate
 FROM pokemon_iv_stats as stats
 LEFT JOIN pokemon_shiny_stats as shiny_stats on stats.pokemon_id = shiny_stats.pokemon_id AND stats.date = shiny_stats.date
 GROUP BY stats.pokemon_id
 HAVING SUM(shiny_stats.count) > 0
-ORDER BY rate ASC
-LIMIT 10
+ORDER BY count DESC
+LIMIT $limit
 ";
     $result = $pdo->query($sql);
     $data = null;
@@ -246,18 +258,15 @@ HAVING SUM(shiny_stats.count) > 0
     return $data;
 }
 
-function get_pokestop_stats() {
+function get_pokestop_stats_grouped() {
     global $config;
     $db = new DbConnector($config['db']);
     $pdo = $db->getConnection();
     $sql = "
-SELECT 
-  COUNT(id) total,
-  SUM(CASE WHEN lure_expire_timestamp > UNIX_TIMESTAMP() THEN 1 ELSE 0 END) lured,
-  SUM(CASE WHEN quest_reward_type THEN 1 ELSE 0 END) quests,
-  SUM(CASE WHEN incident_expire_timestamp > UNIX_TIMESTAMP() THEN 1 ELSE 0 END) invasions
-FROM
-  pokestop
+SELECT * FROM (
+    SELECT COUNT(*) as total_pokestops, SUM(lure_expire_timestamp > UNIX_TIMESTAMP()) as lured_pokestops, SUM(quest_reward_type) as quest_pokestops, SUM(incident_expire_timestamp > UNIX_TIMESTAMP()) as invasion_pokestops
+    FROM pokestop
+) AS A
 ";
     $result = $pdo->query($sql);
     if ($result->rowCount() > 0) {
@@ -289,25 +298,17 @@ WHERE
       
     return $count;
 }
-function get_weather_stats() {
+
+function get_weather_stats_grouped() {
     global $config;
     $db = new DbConnector($config['db']);
     $pdo = $db->getConnection();
     $sql = "
-SELECT 
-  COUNT(id) total,
-  SUM(CASE WHEN weather = 0 THEN 1 ELSE 0 END) noBoost,
-  SUM(CASE WHEN weather = 1 THEN 1 ELSE 0 END) clear,
-  SUM(CASE WHEN weather = 2 THEN 1 ELSE 0 END) rain,
-  SUM(CASE WHEN weather = 3 THEN 1 ELSE 0 END) partlyCloudy,
-  SUM(CASE WHEN weather = 4 THEN 1 ELSE 0 END) cloudy,
-  SUM(CASE WHEN weather = 5 THEN 1 ELSE 0 END) windy,
-  SUM(CASE WHEN weather = 6 THEN 1 ELSE 0 END) snow,
-  SUM(CASE WHEN weather = 7 THEN 1 ELSE 0 END) fog
-FROM
-  pokemon
-WHERE 
-expire_timestamp >= UNIX_TIMESTAMP()
+SELECT * FROM (
+    SELECT SUM(weather IS NOT NULL) as total_weatherboosted, SUM(weather = 0) as noBoost, SUM(weather = 1) as clear, SUM(weather = 2) as rain, SUM(weather = 3) as partlyCloudy, SUM(weather = 4) as cloudy, SUM(weather = 5) as windy, SUM(weather = 6) as snowy, SUM(weather = 7) as fog
+    FROM pokemon
+	WHERE expire_timestamp >= UNIX_TIMESTAMP()
+) AS A
 ";
     $result = $pdo->query($sql);
     if ($result->rowCount() > 0) {
@@ -397,21 +398,16 @@ function get_pokestop_objects() {
     return $result;
 }
 
-function get_spawnpoint_stats() {
+function get_spawnpoint_stats_grouped() {
     global $config;
     $db = new DbConnector($config['db']);
     $pdo = $db->getConnection();
     $sql = "
-SELECT 
-  COUNT(id) AS total,
-  SUM(despawn_sec IS NOT NULL) AS found,
-  SUM(despawn_sec IS NULL) AS missing,
-  SUM(despawn_sec <= 1800) AS min30,
-  SUM(despawn_sec > 1800) AS min60
-FROM
-  spawnpoint
+SELECT * FROM (
+    SELECT COUNT(*) as total_spawnpoints, SUM(despawn_sec IS NULL) as found_spawnpoints, SUM(despawn_sec IS NULL) as missing_spawnpoints
+    FROM spawnpoint
+) AS A
 ";
-//ROUND(((SELECT found)/(SELECT total) * 100 ), 2) AS percentage
     $result = $pdo->query($sql);
     if ($result->rowCount() > 0) {
         $data = $result->fetchAll()[0];
@@ -422,24 +418,77 @@ FROM
     return $data;
 }
 
-function get_pokemon_stats() {
+function get_gym_stats_grouped() {
     global $config;
     $db = new DbConnector($config['db']);
     $pdo = $db->getConnection();
     $sql = "
-SELECT
-  SUM(id is not null && first_seen_timestamp >= UNIX_TIMESTAMP(CURDATE())) AS total,
-  SUM(expire_timestamp >= UNIX_TIMESTAMP() ) AS active,
-  SUM(iv IS NOT NULL && first_seen_timestamp >= UNIX_TIMESTAMP(CURDATE())) AS iv_total,
-  SUM(iv IS NOT NULL && expire_timestamp >= UNIX_TIMESTAMP()) AS iv_active,
-  SUM(iv > 95 && first_seen_timestamp >= UNIX_TIMESTAMP(CURDATE())) AS iv_95_total,
-  SUM(iv > 95 && expire_timestamp >= UNIX_TIMESTAMP() ) AS iv_95_active,
-  SUM(iv = 100 && first_seen_timestamp >= UNIX_TIMESTAMP(CURDATE())) AS iv_100_total,
-  SUM(iv = 100 && expire_timestamp >= UNIX_TIMESTAMP()) AS iv_100_active
-FROM
-  pokemon
+SELECT * FROM (
+    SELECT COUNT(team_id) as active, SUM(team_id = 0) as white_active, SUM(team_id = 1) as blue_active, SUM(team_id = 2) as red_active, SUM(team_id = 2) as yellow_active, (SUM(team_id = 0)/count(team_id)) as white_perc, (SUM(team_id = 1)/count(team_id)*100) as blue_perc, (SUM(team_id = 2)/count(team_id)*100) as red_perc, (SUM(team_id = 3)/count(team_id)*100) as yellow_perc
+    FROM gym
+	WHERE updated > UNIX_TIMESTAMP()-14400
+) AS A
+JOIN (
+    SELECT count(raid_level) as hatched_total, SUM(raid_level >= 1 AND raid_level < 5) as hatched_normal_total, SUM(raid_level = 5) as hatched_level5_total
+    FROM gym
+	WHERE raid_battle_timestamp < UNIX_TIMESTAMP() AND raid_end_timestamp > UNIX_TIMESTAMP()
+) AS B
+JOIN (
+    SELECT count(raid_level) as eggs_total, SUM(raid_level >= 1 AND raid_level < 5) as eggs_normal, SUM(raid_level = 5) as eggs_level5
+    FROM gym
+	WHERE raid_battle_timestamp > UNIX_TIMESTAMP()
+) AS C
+JOIN (
+    SELECT COUNT(id) as raids_total
+    FROM gym
+    WHERE raid_pokemon_id IS NOT NULL AND raid_end_timestamp > UNIX_TIMESTAMP()
+) AS D
+JOIN (
+    SELECT COUNT(*) as gyms_total, SUM(team_id = 0) as white, SUM(team_id = 1) as blue, SUM(team_id = 2) as red, SUM(team_id = 3) as yellow
+    FROM gym
+) AS E
   ";
- #WHERE DATE(DATE_ADD(FROM_UNIXTIME(first_seen_timestamp), INTERVAL 2 HOUR) ) >= CURDATE()
+    $result = $pdo->query($sql);
+    if ($result->rowCount() > 0) {
+        $data = $result->fetchAll()[0];
+    }
+    unset($pdo);
+    unset($db);
+
+    return $data;
+}
+
+function get_pokemon_stats_total() {
+    global $config;
+    $db = new DbConnector($config['db']);
+    $pdo = $db->getConnection();
+    $sql = "
+SELECT * FROM (
+    SELECT SUM(count) AS total_today
+    FROM pokemon_stats
+	WHERE date = CURDATE()
+) AS A 
+JOIN (
+    SELECT SUM(count) AS iv_total_today
+    FROM pokemon_iv_stats
+	WHERE date = CURDATE()
+) AS B
+JOIN (
+    SELECT SUM(count) AS total_shiny_today
+    FROM pokemon_shiny_stats
+	WHERE date = CURDATE()
+) AS C
+JOIN (
+    SELECT COUNT(id) AS active, COUNT(iv) AS iv_active, SUM(iv = 100) AS iv_100_active, SUM(iv >= 95 AND iv < 100) AS iv_95_active, SUM(iv = 0) AS iv_0_active, SUM(shiny = 1) AS shiny_active
+    FROM pokemon
+    WHERE expire_timestamp >= UNIX_TIMESTAMP()
+) AS D
+JOIN (
+    SELECT count(iv) AS iv_total_today, SUM(iv = 100) AS iv_100_total_today, SUM(iv > 95) AS iv_95_total_today, SUM(iv = 0) AS iv_0_total_today
+    FROM pokemon
+    WHERE first_seen_timestamp >= CURDATE()
+) AS E
+  ";
     $result = $pdo->query($sql);
     if ($result->rowCount() > 0) {
         $data = $result->fetchAll()[0];
@@ -481,7 +530,6 @@ LIMIT
 
     return $data;
 }
-
 
 function get_top_pokemon_iv($limit = 10) {
     global $config;

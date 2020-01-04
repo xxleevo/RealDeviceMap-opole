@@ -71,102 +71,84 @@ if (!(isset($data['type']) && !empty($data['type']))) {
     switch ($type) {
         case "dashboard":
             $stat = filter_var($data["stat"], FILTER_SANITIZE_STRING);
+			$limit = 10;
             switch ($stat) {
                 case "pokemon":
-                    $pokemonStats = get_pokemon_stats();
+					//New, Faster
+                    $pokemonStats = get_pokemon_stats_total();
                     $obj = [
-                        "pokemon" => $pokemonStats["total"],
+                        "pokemon" => $pokemonStats["total_today"],
+                        "iv_total" => $pokemonStats["iv_total_today"],
+                        "iv_95_total" => $pokemonStats["iv_95_total_today"],
+                        "iv_100_total" => $pokemonStats["iv_100_total_today"],
                         "active_pokemon" => $pokemonStats["active"],
-                        "iv_total" => $pokemonStats["iv_total"],
                         "iv_active" => $pokemonStats["iv_active"],
-                        "iv_95_total" => $pokemonStats["iv_95_total"],
                         "iv_95_active" => $pokemonStats["iv_95_active"],
-                        "iv_100_active" => $pokemonStats["iv_100_active"],
-                        "iv_100_total" => $pokemonStats["iv_100_total"]
+                        "iv_100_active" => $pokemonStats["iv_100_active"]
                     ];
                     echo json_encode($obj);
                     break;
                 case "gyms":
-                    $gymStats = get_gym_stats();
-                    $gymCount = get_table_count("gym");
-                    $raidCount = get_raid_stats();
-					
-					$gymWhiteActive = get_table_count("gym where updated > (UNIX_TIMESTAMP()-14400) AND team_id = 0");
-					$gymBlueActive = get_table_count("gym where updated > (UNIX_TIMESTAMP()-14400) AND team_id = 1");
-					$gymRedActive = get_table_count("gym where updated > (UNIX_TIMESTAMP()-14400) AND team_id = 2");
-					$gymYellowActive = get_table_count("gym where updated > (UNIX_TIMESTAMP()-14400) AND team_id = 3");
-					
-					$totalActive = ($gymWhiteActive + $gymBlueActive + $gymRedActive + $gymYellowActive);
-					$percentWhiteActive = (($gymWhiteActive/$totalActive)*100);
-					$percentBlueActive = (($gymBlueActive/$totalActive)*100);
-					$percentRedActive = (($gymRedActive/$totalActive)*100);
-					$percentYellowActive = (($gymYellowActive/$totalActive)*100);
-					
-					$raidHatchedCountTotal = get_table_count("gym where raid_level >= 1 AND raid_level <= 5 AND raid_battle_timestamp < UNIX_TIMESTAMP() AND raid_end_timestamp > UNIX_TIMESTAMP()");
-					$raidHatchedCountNormal = get_table_count("gym where raid_level >= 1 AND raid_level < 5 AND raid_battle_timestamp < UNIX_TIMESTAMP() AND raid_end_timestamp > UNIX_TIMESTAMP()");
-					$raidHatchedCountLegendary = get_table_count("gym WHERE raid_level = 5 AND raid_battle_timestamp < UNIX_TIMESTAMP()  AND raid_end_timestamp > UNIX_TIMESTAMP()");
-					
-					$eggCountTotal = get_table_count("gym where raid_level >=1 AND raid_level <=5 AND raid_battle_timestamp > UNIX_TIMESTAMP()");
-					$eggCountNormal = get_table_count("gym where raid_level >= 1 AND raid_level < 5 AND raid_battle_timestamp > UNIX_TIMESTAMP()");
-					$eggCountLegendary = get_table_count("gym where raid_level = 5 AND raid_battle_timestamp > UNIX_TIMESTAMP()");
-                    $obj = [
-                        "gyms" => $gymCount,
-                        "raids" => $raidCount,
-                        "neutral" => $gymStats === 0 ? 0 : count($gymStats) < 4 ? 0 : $gymStats[0],
-                        "mystic" => $gymStats === 0 ? 0 : $gymStats[1],
-                        "valor" => $gymStats === 0 ? 0 : $gymStats[2],
-                        "instinct" => $gymStats === 0 ? 0 : $gymStats[3],
-						"neutralActive" => $gymWhiteActive,
-						"neutralActivePercent" => $percentWhiteActive,
-						"mysticActivePercent" => $percentBlueActive,
-						"valorActivePercent" => $percentRedActive,
-						"instinctActivePercent" => $percentYellowActive,
-						"mysticActive" => $gymBlueActive,
-						"valorActive" => $gymRedActive,
-						"instinctActive" => $gymYellowActive,
-						"hatchedRaids" => $raidHatchedCountTotal,
-						"hatchedNormalRaids" => $raidHatchedCountNormal,
-						"hatchedLegendaryRaids" => $raidHatchedCountLegendary,
-						"eggs" => $eggCountTotal,
-						"eggsNormal" => $eggCountNormal,
-						"eggsLegendary" => $eggCountLegendary,
+					//New, Faster
+					$gymStats = get_gym_stats_grouped();
+					$obj = [
+                        "gyms" => $gymStats["gyms_total"],
+                        "raids" => $gymStats["raids_total"],
+                        "neutral" => $gymStats["white"],
+                        "mystic" => $gymStats["blue"],
+                        "valor" => $gymStats["red"],
+                        "instinct" => $gymStats["yellow"],
+						"neutralActive" => $gymStats["white_active"],
+						"mysticActive" => $gymStats["blue_active"],
+						"valorActive" => $gymStats["red_active"],
+						"instinctActive" => $gymStats["yellow_active"],
+						"neutralActivePercent" => $gymStats["white_perc"],
+						"mysticActivePercent" => $gymStats["blue_perc"],
+						"valorActivePercent" => $gymStats["red_perc"],
+						"instinctActivePercent" => $gymStats["yellow_perc"],
+						"hatchedRaids" => $gymStats["hatched_total"],
+						"hatchedNormalRaids" => $gymStats["hatched_normal_total"],
+						"hatchedLegendaryRaids" => $gymStats["hatched_level5_total"],
+						"eggs" => $gymStats["eggs_total"],
+						"eggsNormal" => $gymStats["eggs_normal"],
+						"eggsLegendary" => $gymStats["eggs_level5"]
                     ];
                     echo json_encode($obj);
                     break;
                 case "pokestops":
-                    $stopStats = get_pokestop_stats();
+					//New, Faster
+					$stopStats = get_pokestop_stats_grouped();
                     $obj = [
-                        "pokestops" => $stopStats === 0 ? 0 : $stopStats["total"],
-                        "lured" => $stopStats === 0 ? 0 : $stopStats["lured"],
-                        "quests" => $stopStats === 0 ? 0 : $stopStats["quests"],
-                        "invasions" => $stopStats === 0 ? 0 : $stopStats["invasions"],
+                        "pokestops" => $stopStats === 0 ? 0 : $stopStats["total_pokestops"],
+                        "lured" => $stopStats === 0 ? 0 : $stopStats["lured_pokestops"],
+                        "quests" => $stopStats === 0 ? 0 : $stopStats["quest_pokestops"],
+                        "invasions" => $stopStats === 0 ? 0 : $stopStats["invasion_pokestops"]
                     ];
                     echo json_encode($obj);
                     break;
                 case "weather":
-                    $weatherStats = get_weather_stats();
+					// New, Fast
+                    $weatherStats = get_weather_stats_grouped();
                     $obj = [
-                        "total" => $weatherStats === 0 ? 0 : $weatherStats["total"],
-                        "noBoost" => $weatherStats === 0 ? 0 : $weatherStats["noBoost"],
-                        "clear" => $weatherStats === 0 ? 0 : $weatherStats["clear"],
-                        "rain" => $weatherStats === 0 ? 0 : $weatherStats["rain"],
-                        "partlyCloudy" => $weatherStats === 0 ? 0 : $weatherStats["partlyCloudy"],
-                        "cloudy" => $weatherStats === 0 ? 0 : $weatherStats["cloudy"],
-                        "windy" => $weatherStats === 0 ? 0 : $weatherStats["windy"],
-                        "snow" => $weatherStats === 0 ? 0 : $weatherStats["snow"],
-                        "fog" => $weatherStats === 0 ? 0 : $weatherStats["fog"],
+                        "total" => $weatherStats["total_weatherboosted"],
+                        "noBoost" => $weatherStats["noBoost"],
+                        "clear" => $weatherStats["clear"],
+                        "rain" => $weatherStats["rain"],
+                        "partlyCloudy" => $weatherStats["partlyCloudy"],
+                        "cloudy" => $weatherStats["cloudy"],
+                        "windy" => $weatherStats["windy"],
+                        "snow" => $weatherStats["snowy"],
+                        "fog" => $weatherStats["fog"]
                     ];
                     echo json_encode($obj);
                     break;
                 case "tth":
-                    $spawnpointStats = get_spawnpoint_stats();
+					//New, Faster
+                    $spawnpointStats = get_spawnpoint_stats_grouped();
                     $obj = [
-                        "tth_total" => $spawnpointStats === 0 ? 0 : $spawnpointStats["total"],
-                        "tth_found" => $spawnpointStats === 0 ? 0 : $spawnpointStats["found"],
-                        "tth_missing" => $spawnpointStats === 0 ? 0 : $spawnpointStats["missing"],
-                        //"tth_30min" => $spawnpointStats === 0 ? 0 : $spawnpointStats["min30"],
-                        //"tth_60min" => $spawnpointStats === 0 ? 0 : $spawnpointStats["min60"]
-                        //"tth_percentage" => $spawnpointStats === 0 ? 0 : $spawnpointStats["percentage"],
+                        "tth_total" => $spawnpointStats["total_spawnpoints"],
+                        "tth_found" => $spawnpointStats["found_spawnpoints"],
+                        "tth_missing" => $spawnpointStats["missing_spawnpoints"]
                     ];
                     echo json_encode($obj);
                     break;
@@ -186,22 +168,32 @@ if (!(isset($data['type']) && !empty($data['type']))) {
                     echo json_encode($obj);
                     break;
                 case "shinyToday":
-                    $shinyRates = get_shiny_rates();
+					// New, Faster
+                    $shinyRates = get_shiny_rates_grouped($limit);
+                    $obj = [
+                        "shiny_rates" => $shinyRates
+                    ];
+                    echo json_encode($obj);
+                    break;
+                case "shinyTodayMode":
+					// New, Faster
+                    $shinyRates = get_shiny_rates_mode_grouped($limit);
                     $obj = [
                         "shiny_rates" => $shinyRates
                     ];
                     echo json_encode($obj);
                     break;
                 case "shinyAlltime":
-					$shinyRatesTotal = get_shiny_rates_total();
+					//Fast, New
+					$shinyRatesTotal = get_shiny_rates_total_grouped($limit);
                     $obj = [
 						"shiny_rates_total" => $shinyRatesTotal
                     ];
                     echo json_encode($obj);
                     break;
                 case "shinyAlltimeCustom":
-					
-					$shinyRatesTotalCustom = get_shiny_rates_total_custom();
+					// Fast, New
+					$shinyRatesTotalCustom = get_shiny_rates_total_mode_custom($limit);
                     $obj = [
 						"shiny_rates_total_custom" => $shinyRatesTotalCustom
                     ];
