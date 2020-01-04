@@ -664,8 +664,8 @@ SELECT
  YEAR(from_unixtime(first_seen_timestamp)) AS year
  FROM pokestop
  WHERE
- MONTH(from_unixtime(first_seen_timestamp)) >= " . $minMonth . " AND 
- YEAR(from_unixtime(first_seen_timestamp)) >= " . $minYear . "
+ (MONTH(from_unixtime(first_seen_timestamp)) >= " . $minMonth . " AND YEAR(from_unixtime(first_seen_timestamp)) = " . $minYear . ") OR
+ (YEAR(from_unixtime(first_seen_timestamp)) > " . $minYear . ") 
  GROUP BY
  month,year
  ORDER BY
