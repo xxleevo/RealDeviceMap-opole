@@ -264,7 +264,7 @@ function get_pokestop_stats_grouped() {
     $pdo = $db->getConnection();
     $sql = "
 SELECT * FROM (
-    SELECT COUNT(*) as total_pokestops, SUM(lure_expire_timestamp > UNIX_TIMESTAMP()) as lured_pokestops, SUM(quest_reward_type) as quest_pokestops, SUM(incident_expire_timestamp > UNIX_TIMESTAMP()) as invasion_pokestops
+    SELECT COUNT(*) as total_pokestops, SUM(lure_expire_timestamp > UNIX_TIMESTAMP()) as lured_pokestops, COUNT(quest_reward_type) as quest_pokestops, SUM(incident_expire_timestamp > UNIX_TIMESTAMP()) as invasion_pokestops
     FROM pokestop
 ) AS A
 ";
