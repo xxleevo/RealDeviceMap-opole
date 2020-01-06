@@ -199,10 +199,10 @@ function get_quest_message($type, $target) {
             $msg = "Schließe %s Arenenämpfe ab";
             break;
         case 9://QuestType.CompleteQuest:
-            $msg = "Schließe %s Quests ab";
+            $msg = "Schließe %s Quest(s) ab";
             break;
         case 8://QuestType.CompleteRaidBattle:
-            $msg = "Schließe %s Raids ab";
+            $msg = "Schließe %s Raid(s) ab";
             break;
         case 25://QuestType.EvolveIntoPokemon:
             $msg = "Entwickle %s in bestimmte Pokemon";
@@ -238,10 +238,10 @@ function get_quest_message($type, $target) {
             $msg = "Werde Level %s"; ;
             break;
         case 24://QuestType.SendGift:
-            $msg = "Verschicke %s Geschenke";
+            $msg = "Verschicke %s Geschenk(e)";
             break;
         case 5://QuestType.SpinPokestop:
-            $msg = "Drehe %s Pokestops";
+            $msg = "Drehe %s Pokestop(s)";
             break;
         case 23://QuestType.TradePokemon:
             $msg = "Tausche %s Pokemon";
@@ -257,6 +257,15 @@ function get_quest_message($type, $target) {
             break;
         case 27://QuestType.completeCombat:
             $msg = "Kämpfe %s mal";
+            break;
+        case 28://QuestType.QUEST_TAKE_SNAPSHOT:
+            $msg = "Mache %s Schnappschüsse";
+            break;
+        case 29://QuestType.BATTLE_TEAM_ROCKET:
+            $msg = "Besiege %s Team Go Mitglied(er)";
+            break;
+        case 34://QuestType.BUDDY_EARN_AFFECTION_POINTS:
+            $msg = "Verdiene %s Herz(en) mit deinem Kumpel";
             break;
         default: //QuestType.Unknown:
             $msg = "Unbekannt";
@@ -315,6 +324,17 @@ function get_quest_conditions($conditions) {
                 }
                 array_push($quest_conditions, "Typ: ");
                 array_push($quest_conditions, join(', ', $types));
+                break;
+            case 28://PlayerLevel
+                array_push($quest_conditions, "Schnappschuss vom Kumpel");
+                break;
+            case 27://PokemonType
+                $chars = [];
+                foreach ($condition->info->character_category_ids as $character_category_id) {
+                    array_push($chars, get_grunt_character($character_category_id));
+                }
+                array_push($quest_conditions, "Mitglied: ");
+                array_push($quest_conditions, join(', ', $chars));
                 break;
             case 0://QuestContext
                 break;
@@ -559,6 +579,25 @@ function get_pokemon_type($type) {
             return "Fee";
         default:
             return "Keins";
+    }
+}
+
+function get_grunt_character($char) {
+    switch ($char) {
+        case 1:
+            return "Teamleiter";
+        case 2:
+            return "Rüpel";
+        case 3:
+            return "Arlo";
+        case 4:
+            return "Cliff";
+        case 5:
+            return "Sierra";
+        case 6:
+            return "Giovanni";
+        default:
+            return "Unbekannt";
     }
 }
 ?>
