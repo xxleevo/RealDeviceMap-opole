@@ -424,7 +424,7 @@ function get_gym_stats_grouped() {
     $pdo = $db->getConnection();
     $sql = "
 SELECT * FROM (
-    SELECT COUNT(team_id) as active, SUM(team_id = 0) as white_active, SUM(team_id = 1) as blue_active, SUM(team_id = 2) as red_active, SUM(team_id = 2) as yellow_active, (SUM(team_id = 0)/count(team_id)) as white_perc, (SUM(team_id = 1)/count(team_id)*100) as blue_perc, (SUM(team_id = 2)/count(team_id)*100) as red_perc, (SUM(team_id = 3)/count(team_id)*100) as yellow_perc
+    SELECT COUNT(team_id) as active, SUM(team_id = 0) as white_active, SUM(team_id = 1) as blue_active, SUM(team_id = 2) as red_active, SUM(team_id = 3) as yellow_active, (SUM(team_id = 0)/count(team_id)) as white_perc, (SUM(team_id = 1)/count(team_id)*100) as blue_perc, (SUM(team_id = 2)/count(team_id)*100) as red_perc, (SUM(team_id = 3)/count(team_id)*100) as yellow_perc
     FROM gym
 	WHERE updated > UNIX_TIMESTAMP()-14400
 ) AS A
