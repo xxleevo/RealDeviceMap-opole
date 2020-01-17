@@ -55,11 +55,6 @@
         <a class="nav-link" href="/quests"><i class="fa fa-fw fa-search-plus" aria-hidden="true"></i>&nbsp;<span data-i18n='nav_quests'>Quests</span></a>
       </li>
 <?php } ?>
-<?php if ($config['ui']['pages']['pokestops']['enabled'] && (!$config['discord']['enabled'] || ($config['discord']['enabled'] && hasDiscordRole($_SESSION['user']['roles'], $config['ui']['pages']['pokestops']['discordRoles'])))) { ?>
-      <li class="nav-item <?=isset($_GET['page']) && $_GET['page']==='pokestops' ? 'active' : '' ?>">
-        <a class="nav-link" href="/pokestops"><i class="fa fa-fw fa-glass" aria-hidden="true"></i>&nbsp;<span data-i18n='nav_pokestops'>Pokestops</span></a>
-      </li>
-<?php } ?>
 <?php if ($config['ui']['pages']['shinys']['enabled'] && (!$config['discord']['enabled'] || ($config['discord']['enabled'] && hasDiscordRole($_SESSION['user']['roles'], $config['ui']['pages']['shinys']['discordRoles'])))) { ?>
       <li class="nav-item <?=isset($_GET['page']) && $_GET['page']==='shinys' ? 'active' : '' ?>">
         <a class="nav-link" href="/shinys"><i class="fa fa-fw fa-star" aria-hidden="true"></i>&nbsp;<span data-i18n='nav_shinys'>Shinys</span></a>
@@ -73,6 +68,11 @@
 <?php if ($config['ui']['pages']['stats']['enabled'] && (!$config['discord']['enabled'] || ($config['discord']['enabled'] && hasDiscordRole($_SESSION['user']['roles'], $config['ui']['pages']['stats']['discordRoles'])))) { ?>
       <li class="nav-item <?=isset($_GET['page']) && $_GET['page']==='stats' ? 'active' : '' ?>">
         <a class="nav-link" href="/stats"><i class="fa fa-fw fa-bar-chart" aria-hidden="true"></i>&nbsp;<span data-i18n='nav_stats'>Stats</span></a>
+      </li>
+<?php } ?>
+<?php if ($config['ui']['pages']['graphs']['enabled'] && (!$config['discord']['enabled'] || ($config['discord']['enabled'] && hasDiscordRole($_SESSION['user']['roles'], $config['ui']['pages']['graphs']['discordRoles'])))) { ?>
+      <li class="nav-item <?=isset($_GET['page']) && $_GET['page']==='graphs' ? 'active' : '' ?>">
+        <a class="nav-link" href="/graphs"><i class="fa fa-fw fa-bar-chart" aria-hidden="true"></i>&nbsp;<span data-i18n='nav_graphs'>Graphs</span></a>
       </li>
 <?php } ?>
 <?php if ($config['discord']['enabled'] && !empty($_SESSION['user'])) { ?>

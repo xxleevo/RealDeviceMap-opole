@@ -3,7 +3,7 @@ require_once './static/data/pokedex.php';
 
 $html = "
 
-<div class='card text-center p-1 m-3'>
+<div class='card text-center p-1 m-3 " . $config['ui']['style'] . "'>
 	<div class='tab'>";
 		if (!empty($config['ui']['pages']['shinys']['today']) && $config['ui']['pages']['shinys']['today'] !== false) {
 			$html .="
@@ -22,17 +22,17 @@ $html = "
 			<div id='Today-Loading' class='loading'>
 				<img src='static/images/loading.gif' Alt='Loading...' width='150' height='150'/>
 			</div>
-			<div id='Today-Info' class='container' style='height: 150px;'>
+			<div id='Today-Info' class='container " . $config['ui']['style'] . "' style='height: 150px;'>
 				<p>
 					<u>Sortieren:</u>
 					<form id='sort-order' method='POST'>
 						<div>
-							<button type='submit' onclick='javascript:setOrder(0, \"shinyToday\", \"shiny-rates\", 0);return false;' class='btn btn-dark mx-3 my-1'>Pokemon ID (↑)</button>
-							<button type='submit' onclick='javascript:setOrder(2, \"shinyToday\", \"shiny-rates\", 0);return false;' class='btn btn-dark mx-3 my-1'>Shiny Rate (↑)</button>
+							<button type='submit' onclick='javascript:setOrder(0, \"shinyToday\", \"shiny-rates\", 0);return false;' class='btn mx-3 my-1 sortButton'>Pokemon ID (↑)</button>
+							<button type='submit' onclick='javascript:setOrder(2, \"shinyToday\", \"shiny-rates\", 0);return false;' class='btn mx-3 my-1 sortButton'>Shiny Rate (↑)</button>
 						</div>
 						<div>
-							<button type='submit' onclick='javascript:setOrder(1, \"shinyToday\", \"shiny-rates\", 0);return false;' class='btn btn-dark mx-3 my-1'>Pokemon ID (↓)</button>
-							<button type='submit' onclick='javascript:setOrder(3, \"shinyToday\", \"shiny-rates\", 0);return false;' class='btn btn-dark mx-3 my-1'>Shiny Rate (↓)</button>
+							<button type='submit' onclick='javascript:setOrder(1, \"shinyToday\", \"shiny-rates\", 0);return false;' class='btn mx-3 my-1 sortButton'>Pokemon ID (↓)</button>
+							<button type='submit' onclick='javascript:setOrder(3, \"shinyToday\", \"shiny-rates\", 0);return false;' class='btn mx-3 my-1 sortButton'>Shiny Rate (↓)</button>
 						</div>
 					</form>
 				</p>
@@ -45,7 +45,7 @@ $html = "
 	if (!empty($config['ui']['pages']['shinys']['alltime']) && $config['ui']['pages']['shinys']['alltime'] !== false) {
 		$html .="
 		<div id='ShinysTotal' class='tabcontent'>
-			<div id='Alltime-Info' class='container'>
+			<div id='Alltime-Info' class='container " . $config['ui']['style'] . "'>
 				<center>
 					<div style='max-width:1000px;padding-bottom:10px;text-align:left;'>
 						Bei dieser Statistik fließen nur Daten von Tagen ein, bei denen von der jeweiligen Spezies mindestens ein Shiny gefunden wurde. Dies verringert die Ungenauigkeit durch neuere Shiny-Releases<br>
@@ -57,12 +57,12 @@ $html = "
 						<u>Sortieren:</u>
 						<form id='sort-order' method='POST'>
 							<div>
-								<button type='submit' onclick='javascript:setOrder(0, \"shinyAlltime\", \"shiny-rates-total\", 2);return false;' class='btn btn-dark mx-3 my-1'>Pokemon ID (↑)</button>
-								<button type='submit' onclick='javascript:setOrder(2, \"shinyAlltime\", \"shiny-rates-total\", 2);return false;' class='btn btn-dark mx-3 my-1'>Shiny Rate (↑)</button>
+								<button type='submit' onclick='javascript:setOrder(0, \"shinyAlltime\", \"shiny-rates-total\", 2);return false;' class='btn mx-3 my-1 sortButton'>Pokemon ID (↑)</button>
+								<button type='submit' onclick='javascript:setOrder(2, \"shinyAlltime\", \"shiny-rates-total\", 2);return false;' class='btn mx-3 my-1 sortButton'>Shiny Rate (↑)</button>
 							</div>
 							<div>
-								<button type='submit' onclick='javascript:setOrder(1, \"shinyAlltime\", \"shiny-rates-total\", 2);return false;' class='btn btn-dark mx-3 my-1'>Pokemon ID (↓)</button>
-								<button type='submit' onclick='javascript:setOrder(3, \"shinyAlltime\", \"shiny-rates-total\", 2);return false;' class='btn btn-dark mx-3 my-1'>Shiny Rate (↓)</button>
+								<button type='submit' onclick='javascript:setOrder(1, \"shinyAlltime\", \"shiny-rates-total\", 2);return false;' class='btn mx-3 my-1 sortButton'>Pokemon ID (↓)</button>
+								<button type='submit' onclick='javascript:setOrder(3, \"shinyAlltime\", \"shiny-rates-total\", 2);return false;' class='btn mx-3 my-1 sortButton'>Shiny Rate (↓)</button>
 							</div>
 						</form>
 					</p>
@@ -81,6 +81,8 @@ $html = "
 echo $html;
 ?>
 <link rel="stylesheet" href="./static/css/dashboard.css"/>
+<link rel="stylesheet" href="./static/css/themes.css"/>
+<link rel="stylesheet" href="./static/css/shinys.css"/>
 <link rel="stylesheet" href="./static/css/footerfix.css"/>
 <script type="text/javascript" src="static/js/dashboard.js"></script>
 <script type='text/javascript' src='./static/js/datepicker.js'></script>
@@ -173,8 +175,8 @@ function getContent(order, stat, container, dataset) {
 				pkmnImage = pkmnImage.toString().replace("00.png", value.pokeform + ".png");
 			}
 			html += "<div class='col-md-2" + (count == 0 ? " col-md-offset-1" : "") + "'>";
-			html += "<img src='" + pkmnImage + "' width='64' height='64'><p><span class='text-nowrap'>" + name + ": " + numberWithCommas(value.count) + "</span>";
-			html += "<span class='text-nowrap'><br>(" + value.count + " : " + value.total + ")<br><b>Ø 1 : " + Math.round(value.total/value.count) + "</b></span></p></br>";
+			html += "<img src='" + pkmnImage + "' width='64' height='64'><p><span class='text-nowrap <?php echo $config['ui']['style']?>'>" + name + ": " + numberWithCommas(value.count) + "</span>";
+			html += "<span class='text-nowrap <?php echo $config['ui']['style']?>'><br>(" + value.count + " : " + value.total + ")<br><b>Ø 1 : " + Math.round(value.total/value.count) + "</b></span></p></br>";
 			html += "</div>";
 			if (count == 4) {
 				html += "</div>";

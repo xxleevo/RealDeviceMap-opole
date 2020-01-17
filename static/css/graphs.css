@@ -1,0 +1,87 @@
+body.dark{
+background-color: #0b0c0d;
+}
+.header{
+	font-size: 30px;
+	background-image: linear-gradient(to top, #686868 0%, #121212 100%);
+	color: white;
+	border: 1px solid black;
+	border-radius: 5px;
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+}
+.heading{
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+}
+.heading.light{
+	color: white;
+	font-size: 20px;
+	border: 1px solid black;
+	border-radius: 5px 5px 0px 0px;
+	border-bottom: none;
+	background-image: linear-gradient(to top, #686868 0%, #121212 100%);
+}
+.heading.dark{
+	font-size: 20px;
+	border-radius: 5px 5px 0px 0px;
+	border-bottom: none;
+	background-image: linear-gradient(to top, #686868 0%, #121212 100%);
+	color: white;
+}
+.chartContainer{
+border-radius: 5px;
+}
+.chartContainer.light{
+background-color: white;
+border: 1px solid #0b0c0d;
+}
+.chartContainer.dark{
+background-color: #2a2a2a;
+border: 1px solid white;
+}
+.chartHeader{
+border-bottom: none;
+margin-left: 25%;
+margin-right: 25%;
+margin-top: 1.25em;
+
+}
+.navbar-dark.fixedtop{
+border-top: none;
+border-bottom: 1px solid white;
+}
+.navbar-dark.fixedbottom{
+border-top: 1px solid white;
+border-bottom: none;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  animation: fadeEffect 1s; /* Fading effect takes 1 second */
+} 
+
+/* Style the tab */
+/* Create an active/current tablink class */
+/* Style the buttons that are used to open the tab content */
+
+.tab {
+  overflow: hidden;
+}
+.tab button {
+	color:white;
+	border-radius:10px;
+	background-color: inherit;
+	outline: none;
+	border: none;
+	cursor: pointer;
+	padding: 10px 16px;
+	transition: 0.3s;
+	font-size:16px;
+}
+.tab button.active {
+	border-radius:10px;
+	background-color:#686868;
+}
+

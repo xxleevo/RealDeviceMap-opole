@@ -1,0 +1,32 @@
+/*Dark & Light Themes */
+.card-body.dark{
+	color: white;
+}
+.input-group-text.dark{
+	background-color: #404040;
+	color:white;
+}
+#filter-date.dark, #filter-pokemon.dark, #filter-raid-date.dark, #filter-quest-date.dark, #filter-reward.dark, #filter-pokemon-comday.dark{
+	background-color: #2a2a2a;
+	color:white;
+}
+.flatpickr.dark{
+	background-color: #2a2a2a;
+	color:white;
+}
+a.nav-link.dark.active{
+	background-color: #404040;
+}
+a.nav-link.dark{
+	color:white;
+}
+a.nav-link.dark:hover{
+	color:white;
+}
+.container.dark{
+background-color: #2a2a2a;
+color: #d0d0d0;
+border: 1px solid white;
+padding: 5px;
+border-radius:5px;
+}

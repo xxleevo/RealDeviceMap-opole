@@ -45,6 +45,8 @@ $config = [
   "ui" => [
     "title" => "Tabname-Map", //Title for the Tabname
     "title-short" => "Titlename", //Title for the header
+	"projectname" => "Supermap", // Name of your Project (used for some texts on pages)
+	"style" => "dark", // light/dark - applies for all Pages
 	"icon" => "static/logo-default.png", // Logo for the site
 	"favicon" => "static/favicon-default.ico", // Favicon for the site
     "locale" => "de", //Set the language (e.g. `en` for English)
@@ -68,6 +70,7 @@ $config = [
       ]
     ],
     "noRaidsAvailableMessage" => "<b>Raids nicht gefunden</b>, komm morgen wieder sobald die Raids gestartet sind.", //Notice message that's shown when no raids are available for the day.
+    "noQuestsAvailableMessage" => "<b>Aktuell keine Quests</b>, komm morgen wieder sobald die Quests gescannt wurden.", //Notice message that's shown when no raids are available for the day.
     "pages" => [
       "dashboard" => [
         "enabled" => true, //Shows/hides dashboard page
@@ -115,10 +118,6 @@ $config = [
         "discordRoles" => [], //Requires specific discord role, otherwise leave empty as []
         "ignoreUnknown" => false
       ],
-      "pokestops" => [
-        "enabled" => false, //Shows/hides gyms page
-        "discordRoles" => [] //Requires specific discord role, otherwise leave empty as []
-      ],
       "shinys" => [
         "enabled" => true, //Shows/hides gyms page
         "discordRoles" => [], //Requires specific discord role, otherwise leave empty as []
@@ -142,6 +141,10 @@ $config = [
       ],
       "stats" => [
         "enabled" => true, //Shows/hides gyms page
+        "discordRoles" => [] //Requires specific discord role, otherwise leave empty as []
+      ],
+      "graphs" => [
+        "enabled" => true, //Shows/hides graphs page
         "discordRoles" => [] //Requires specific discord role, otherwise leave empty as []
       ]
     ],

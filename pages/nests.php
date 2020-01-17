@@ -5,8 +5,8 @@ require_once './static/data/pokedex.php';
 $osm = $config['ui']['pages']['nests']['type'] === 'osm';
 ?>
 
-<h2 class='page-header text-center' data-i18n='nests_title'>Nesterliste</h2>
-<p id="migration" class='text-center'></p>
+<h2 class='page-header text-center <?php echo $config['ui']['style']?>' data-i18n='nests_title'>Nesterliste</h2>
+<p id="migration" class='text-center <?php echo $config['ui']['style']?>'></p>
 <ul class='nav nav-pills mb-3 justify-content-center' role='tablist'>
 <?php if ($osm) { ?>
   <li class='nav-item'><a class='nav-link <?=!$osm ? '' : 'active'?>' role='tab' aria-controls='visual' aria-selected='true' data-toggle='pill' href='#visual' data-i18n='nests_tab_map'>Map</a></li>
@@ -161,6 +161,7 @@ unset($db);
 </center>
 
 <link rel="stylesheet" href="./static/css/footerfix.css"/>
+<link rel="stylesheet" href="./static/css/themes.css"/>
 <script type='text/javascript' src='./static/js/jquery.countdown.min.js'></script>
 <script type='text/javascript' src='./static/js/pokedex.js'></script>
 <script type='text/javascript' src="https://cdn.jsdelivr.net/npm/@turf/turf@5/turf.min.js"></script>

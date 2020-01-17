@@ -3,28 +3,28 @@ require_once './config.php';
 include_once './static/data/pokedex.php';
 
 $html = "
-<h2 class='page-header text-center' data-i18n='stats_title'>Statistiken</h2>
+<h2 class='page-header text-center " . $config['ui']['style'] . "' data-i18n='stats_title'>Statistiken</h2>
 <ul class='nav nav-pills mb-3 justify-content-center' role='tablist'>
-  <li class='nav-item'><a class='nav-link active' role='tab' aria-controls='pokemon' aria-selected='true' data-toggle='pill' href='#pokemon' data-i18n='stats_tab_pokemon'>Pokemon</a></li>
-  <li class='nav-item'><a class='nav-link' role='tab' aria-controls='raids' aria-selected='false' data-toggle='pill' href='#raids' data-i18n='stats_tab_raids'>Raids</a></li>
-  <li class='nav-item'><a class='nav-link' role='tab' aria-controls='quests' aria-selected='false' data-toggle='pill' href='#quests' data-i18n='stats_tab_quests'>Quests</a></li>
-  <li class='nav-item'><a class='nav-link' role='tab' aria-controls='comday' aria-selected='false' data-toggle='pill' href='#comday' data-i18n='stats_tab_comday'>Comm. Day</a></li>
+  <li class='nav-item'><a class='nav-link active " . $config['ui']['style'] . "' role='tab' aria-controls='pokemon' aria-selected='true' data-toggle='pill' href='#pokemon' data-i18n='stats_tab_pokemon'>Pokemon</a></li>
+  <li class='nav-item'><a class='nav-link " . $config['ui']['style'] . "' role='tab' aria-controls='raids' aria-selected='false' data-toggle='pill' href='#raids' data-i18n='stats_tab_raids'>Raids</a></li>
+  <li class='nav-item'><a class='nav-link " . $config['ui']['style'] . "' role='tab' aria-controls='quests' aria-selected='false' data-toggle='pill' href='#quests' data-i18n='stats_tab_quests'>Quests</a></li>
+  <li class='nav-item'><a class='nav-link " . $config['ui']['style'] . "' role='tab' aria-controls='comday' aria-selected='false' data-toggle='pill' href='#comday' data-i18n='stats_tab_comday'>Comm. Day</a></li>
 </ul>
 
-<div class='container'>
+<div class='container " . $config['ui']['style'] . "'>
   <div class='tab-content'>
     <div id='pokemon' class='tab-pane fade show active' role='tabpanel'>
       <div class='container'>
         <div class='row'>
           <div class='input-group mb-3'>
             <div class='input-group-prepend'>
-              <label class='input-group-text' for='filter-date' data-i18n='stats_filter_date'>Datum</label>
+              <label class='input-group-text " . $config['ui']['style'] . "' for='filter-date' data-i18n='stats_filter_date'>Datum</label>
             </div>
-            <input id='filter-date' type='text' class='form-control' data-toggle='datepicker'>
+            <input id='filter-date' type='text' class='form-control " . $config['ui']['style'] . "' data-toggle='datepicker'>
             <div class='input-group-prepend'>
-              <label class='input-group-text' for='filter-pokemon' data-i18n='stats_filter_pokemon'>Pokemon</label>
+              <label class='input-group-text " . $config['ui']['style'] . "' for='filter-pokemon' data-i18n='stats_filter_pokemon'>Pokemon</label>
             </div>
-            <select id='filter-pokemon' class='custom-select'>
+            <select id='filter-pokemon' class='custom-select " . $config['ui']['style'] . "'>
               <option disabled selected>Auswahl..</option>
               <option value='all'>All</option>";
               foreach ($pokedex as $pokemon_id => $name) {
@@ -45,12 +45,12 @@ $html = "
         <div class='row'>
           <div class='input-group mb-3'>
             <div class='input-group-prepend'>
-              <label class='input-group-text' for='filter-raid-date' data-i18n='stats_filter_date'>Datum</label>
+              <label class='input-group-text " . $config['ui']['style'] . "' for='filter-raid-date' data-i18n='stats_filter_date'>Datum</label>
             </div>
-            <input id='filter-raid-date' type='text' class='form-control' data-toggle='datepicker'>
+            <input id='filter-raid-date' type='text' class='form-control " . $config['ui']['style'] . "' data-toggle='datepicker'>
             <!--
 			<div class='input-group-prepend'>
-              <label class='input-group-text' for='filter-raid-type' data-i18n='stats_filter_by'>Filter By</label>
+              <label class='input-group-text " . $config['ui']['style'] . "' for='filter-raid-type' data-i18n='stats_filter_by'>Filter By</label>
             </div>
             <label class='radio-inline'><input type='radio' class='btn' name='filter-raid-type' value='0' data-i18n='stats_filter_by_pokemon' checked>Pokemon</label>
             <label class='radio-inline'><input type='radio' class='btn' name='filter-raid-type' value='1' data-i18n='stats_filter_by_level'>Level</label>
@@ -66,14 +66,14 @@ $html = "
         <div class='row'>
           <div class='input-group mb-3'>
             <div class='input-group-prepend'>
-              <label class='input-group-text' for='filter-quest-date' data-i18n='stats_filter_date'>Datum</label>
+              <label class='input-group-text " . $config['ui']['style'] . "' for='filter-quest-date' data-i18n='stats_filter_date'>Datum</label>
             </div>
-            <input id='filter-quest-date' type='text' class='form-control' data-toggle='datepicker'>
+            <input id='filter-quest-date' type='text' class='form-control " . $config['ui']['style'] . "' data-toggle='datepicker'>
 			
             <div class='input-group-prepend'>
-              <label class='input-group-text' for='filter-reward' data-i18n='stats_filter_reward'>Reward</label>
+              <label class='input-group-text " . $config['ui']['style'] . "' for='filter-reward' data-i18n='stats_filter_reward'>Reward</label>
             </div>
-            <select id='filter-reward' class='custom-select' disabled>
+            <select id='filter-reward' class='custom-select " . $config['ui']['style'] . "' disabled>
               <option disabled selected>Select</option>
               <option value='all'>All</option>";
               foreach ($pokedex as $pokemon_id => $name) {
@@ -95,19 +95,19 @@ $html = "
         <div class='row'>
           <div class='input-group mb-3'>
             <div class='input-group-prepend'>
-              <label class='input-group-text' for='filter-date' data-i18n='stats_filter_date_start'>Startdatum</label>
+              <label class='input-group-text " . $config['ui']['style'] . "' for='filter-date' data-i18n='stats_filter_date_start'>Startdatum</label>
             </div>
-            <input id='filter-date-start' class='flatpickr' placeholder='Datum & Zeit angeben..' data-toggle='datetimepicker'>
+            <input id='filter-date-start' class='flatpickr " . $config['ui']['style'] . "' placeholder='Datum & Zeit angeben..' data-toggle='datetimepicker'>
 
             <div class='input-group-prepend'>
-              <label class='input-group-text' for='filter-date' data-i18n='stats_filter_date_end'>Enddatum</label>
+              <label class='input-group-text " . $config['ui']['style'] . "' for='filter-date' data-i18n='stats_filter_date_end'>Enddatum</label>
             </div>
-            <input id='filter-date-end' class='flatpickr' placeholder='Datum & Zeit angeben..' data-toggle='datetimepicker'>
+            <input id='filter-date-end' class='flatpickr " . $config['ui']['style'] . "' placeholder='Datum & Zeit angeben..' data-toggle='datetimepicker'>
 
             <div class='input-group-prepend'>
-              <label class='input-group-text' for='filter-pokemon-comday' data-i18n='stats_filter_pokemon'>Pokemon</label>
+              <label class='input-group-text " . $config['ui']['style'] . "' for='filter-pokemon-comday' data-i18n='stats_filter_pokemon'>Pokemon</label>
             </div>
-            <select id='filter-pokemon-comday' class='custom-select'>
+            <select id='filter-pokemon-comday' class='custom-select " . $config['ui']['style'] . "'>
               <option disabled selected>Select</option>";
               foreach ($pokedex as $pokemon_id => $name) {
   	  	        if ($pokemon_id <= 0)
@@ -185,6 +185,8 @@ echo $html;
 ?>
 
 <link rel="stylesheet" href="./static/css/footerfix.css"/>
+<link rel="stylesheet" href="./static/css/themes.css"/>
+<link rel="stylesheet" href="./static/css/stats.css"/>
 <script type='text/javascript' src='https://www.chartjs.org/dist/latest/Chart.bundle.js'></script>
 <script type='text/javascript' src='./static/js/datepicker.js'></script>
 <script type='text/javascript' src='./static/js/pokedex.js'></script>

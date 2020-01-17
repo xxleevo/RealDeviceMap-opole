@@ -41,7 +41,7 @@ $filters = "
 ";
 
 $modal = "
-<h2 class='page-header text-center' data-i18n='quests_title'>Feldforschungs-Übersicht</h2>
+<h2 class='page-header text-center " . $config['ui']['style'] . "' data-i18n='quests_title'>Feldforschungs-Übersicht</h2>
 <div class='btn-group btn-group-sm float-right'>
   <button type='button' class='btn btn-dark' data-toggle='modal' data-target='#filtersModal'>
     <i class='fa fa-fw fa-filter' aria-hidden='true'></i>
@@ -150,19 +150,21 @@ WHERE
             $quest_conditions_object = json_decode($row['quest_conditions']);
             $quest_rewards_object = json_decode($row['quest_rewards']);
             $quest_message = get_quest_message($row['quest_type'], $row['quest_target']);
-	          $quest_reward = get_quest_reward($quest_rewards_object);
-	          $quest_conditions_message = get_quest_conditions($quest_conditions_object);
-	          $quest_icon = get_quest_icon($quest_rewards_object);
-
-            echo "<tr class='text-nowrap'>";
-                echo "<td scope='row' class='text-center' data-title='Remove'><a title='Remove' data-toggle='tooltip' class='delete'><i class='fa fa-times'></i></a></td>";
-                echo "<td data-title='Reward'><img src='$quest_icon' height=32 width=32 />&nbsp;" . $quest_reward . "</td>";
-                echo "<td data-title='Quest'>" . $quest_message . "</td>";
-                echo "<td data-title='Condition(s)'>" . (empty($quest_conditions_message) ? "&nbsp;" : $quest_conditions_message) . "</td>";
-                echo "<td data-title='City'>" . $city . "</td>";
-                echo "<td data-title='Gym'><a href='" . $map_link . "' target='_blank'>" . $row['name'] . "</a></td>";
-                //echo "<td data-title='Updated'>" . date($config['core']['dateTimeFormat'], $row['updated']) . "</td>";
-            echo "</tr>";
+	        $quest_reward = get_quest_reward($quest_rewards_object);
+	        $quest_conditions_message = get_quest_conditions($quest_conditions_object);
+	        $quest_icon = get_quest_icon($quest_rewards_object);
+			
+			if(is_pokemon_reward($quest_rewards_object)){
+				echo "<tr class='text-nowrap'>";
+					echo "<td scope='row' class='text-center' data-title='Remove'><a title='Remove' data-toggle='tooltip' class='delete'><i class='fa fa-times'></i></a></td>";
+					echo "<td data-title='Reward'><img src='$quest_icon' height=32 width=32 />&nbsp;" . $quest_reward . "</td>";
+					echo "<td data-title='Quest'>" . $quest_message . "</td>";
+					echo "<td data-title='Condition(s)'>" . (empty($quest_conditions_message) ? "&nbsp;" : $quest_conditions_message) . "</td>";
+					echo "<td data-title='City'>" . $city . "</td>";
+					echo "<td data-title='Gym'><a href='" . $map_link . "' target='_blank'>" . $row['name'] . "</a></td>";
+					//echo "<td data-title='Updated'>" . date($config['core']['dateTimeFormat'], $row['updated']) . "</td>";
+				echo "</tr>";
+			}
         }
         echo "</table>";
         echo "</div>";
@@ -170,7 +172,10 @@ WHERE
         // Free result set
         unset($result);
     } else {
-        echo "<p data-i18n='quests_none_available'>Derzeit sind keine Quests verfügbar.</p>";
+        echo "
+		<div class='alert alert-primary' role='alert'>
+			<i class='fa fa-info'>&nbsp;" . $config['ui']['noQuestsAvailableMessage'] . "</i>
+		</div>";
     }
 } catch (PDOException $e) {
     die("ERROR: Could not able to execute $sql. " . $e->getMessage());
@@ -391,6 +396,16 @@ function get_quest_reward($rewards) {
             return "Unknown";
     }
 }
+function is_pokemon_reward($rewards) {
+    $reward = $rewards[0];
+    switch ($reward->type) {
+        case 7: //PokemonEncounter
+            return true;
+        default:
+            return false;
+    }
+}
+
 function get_throw_name($throw_type_id) {
     switch ($throw_type_id) {
         case 13: //CatchCurveThrow
@@ -603,6 +618,7 @@ function get_grunt_character($char) {
 ?>
 
 <link rel="stylesheet" href="./static/css/footerfix.css"/>
+<link rel="stylesheet" href="./static/css/themes.css"/>
 <script type="text/javascript">
 $(document).on("click", ".delete", function(){
   $(this).parents("tr").remove();

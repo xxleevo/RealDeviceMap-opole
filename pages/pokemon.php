@@ -3,21 +3,21 @@ require_once './static/data/pokedex.php';
 
 $html = "
 <div class='container'>
-  <h2 class='page-header text-center' data-i18n='pokemon_title'>Gesichtete wilde Pokemon!</h2>
+  <h2 class='page-header text-center " . $config['ui']['style'] . "' data-i18n='pokemon_title'>Gesichtete wilde Pokemon!</h2>
   <div class='row'>
     <div class='input-group mb-3'>
       <div class='input-group-prepend'>
-        <label class='input-group-text' for='filter-date' data-i18n='pokemon_filter_date'>Date</label>
+        <label class='input-group-text " . $config['ui']['style'] . "' for='filter-date' data-i18n='pokemon_filter_date'>Date</label>
       </div>
-      <input id='filter-date' type='text' class='form-control' data-toggle='datepicker'>
+      <input id='filter-date' type='text' class='form-control " . $config['ui']['style'] . "' data-toggle='datepicker'>
     </div>
     <div class='input-group mb-3'>
       <div class='input-group-prepend'>
-        <label class='input-group-text' for='search-input' data-i18n='pokemon_filter_pokemon'>Search Pokemon</label>
+        <label class='input-group-text " . $config['ui']['style'] . "' for='search-input' data-i18n='pokemon_filter_pokemon'>Search Pokemon</label>
       </div>
-      <input type='text' id='filter-pokemon' class='form-control input-lg' onkeyup='filterPokemon()' placeholder='Search by name..' title='Type in a name'>
+      <input type='text' id='filter-pokemon' class='form-control input-lg " . $config['ui']['style'] . "' onkeyup='filterPokemon()' placeholder='Search by name..' title='Type in a name'>
     </div>
-    <div class='input-group-text mb-3' style ='display:none'>
+    <div class='input-group-text mb-3 " . $config['ui']['style'] . "' style ='display:none'>
       <input id='foundOnly' for='filter-found' type='checkbox' onclick='foundOnly()'aria-label='Checkbox for following text input'>&nbsp;Nur gefundene zeigen
     </div>
   </div>";
@@ -33,7 +33,7 @@ foreach ($pokedex as $id => $name) {
     $html .= "
 <div id='pkmn-$id' class='col-sm-2" . ($count == 0 ? " col-sd-offset-1" : "") . " text-center'>
   <img src='" . sprintf($config['urls']['images']['pokemon'], $id) . "' width='48' height='48'>
-  <div class='card-body'>
+  <div class='card-body " . $config['ui']['style'] . "'>
     <span class='text-nowrap'><b>$name</b> #$id</span>
     <p class='card-text text-nowrap'>
       Seen:
@@ -53,6 +53,8 @@ $html .= "<div style='margin-bottom:70px;'></div>";
 echo $html;
 ?>
 
+<link rel="stylesheet" href="./static/css/themes.css"/>
+<link rel="stylesheet" href="./static/css/pokemon.css"/>
 <script type='text/javascript' src='./static/js/datepicker.js'></script>
 <script type='text/javascript' src='./static/js/pokedex.js'></script>
 <script type="text/javascript" src="./static/js/utils.js"></script>

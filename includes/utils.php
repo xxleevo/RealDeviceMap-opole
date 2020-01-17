@@ -806,74 +806,74 @@ function getRedirectPage() {
         !$config['ui']['pages']['raids']['enabled'] &&
         !$config['ui']['pages']['gyms']['enabled'] &&
         !$config['ui']['pages']['quests']['enabled'] &&
-        !$config['ui']['pages']['pokestops']['enabled'] &&
         !$config['ui']['pages']['nests']['enabled'] &&
-        !$config['ui']['pages']['stats']['enabled']) {
+        !$config['ui']['pages']['stats']['enabled']&&
+        !$config['ui']['pages']['graphs']['enabled']) {
         return 'dashboard';
     } else if (!$config['ui']['pages']['dashboard']['enabled'] &&
         $config['ui']['pages']['pokemon']['enabled'] &&
         !$config['ui']['pages']['raids']['enabled'] &&
         !$config['ui']['pages']['gyms']['enabled'] &&
         !$config['ui']['pages']['quests']['enabled'] &&
-        !$config['ui']['pages']['pokestops']['enabled'] &&
         !$config['ui']['pages']['nests']['enabled'] &&
-        !$config['ui']['pages']['stats']['enabled']) {
+        !$config['ui']['pages']['stats']['enabled']&&
+        !$config['ui']['pages']['graphs']['enabled']) {
         return 'pokemon';
     } else if (!$config['ui']['pages']['dashboard']['enabled'] &&
         !$config['ui']['pages']['pokemon']['enabled'] &&
         $config['ui']['pages']['raids']['enabled'] &&
         !$config['ui']['pages']['gyms']['enabled'] &&
         !$config['ui']['pages']['quests']['enabled'] &&
-        !$config['ui']['pages']['pokestops']['enabled'] &&
         !$config['ui']['pages']['nests']['enabled'] &&
-        !$config['ui']['pages']['stats']['enabled']) {
+        !$config['ui']['pages']['stats']['enabled']&&
+        !$config['ui']['pages']['graphs']['enabled']) {
         return 'raids';
     } else if (!$config['ui']['pages']['dashboard']['enabled'] &&
         !$config['ui']['pages']['pokemon']['enabled'] &&
         !$config['ui']['pages']['raids']['enabled'] &&
         $config['ui']['pages']['gyms']['enabled'] &&
         !$config['ui']['pages']['quests']['enabled'] &&
-        !$config['ui']['pages']['pokestops']['enabled'] &&
         !$config['ui']['pages']['nests']['enabled'] &&
-        !$config['ui']['pages']['stats']['enabled']) {
+        !$config['ui']['pages']['stats']['enabled']&&
+        !$config['ui']['pages']['graphs']['enabled']) {
         return 'gyms';
     } else if (!$config['ui']['pages']['dashboard']['enabled'] &&
         !$config['ui']['pages']['pokemon']['enabled'] &&
         !$config['ui']['pages']['raids']['enabled'] &&
         !$config['ui']['pages']['gyms']['enabled'] &&
         $config['ui']['pages']['quests']['enabled'] &&
-        !$config['ui']['pages']['pokestops']['enabled'] &&
         !$config['ui']['pages']['nests']['enabled'] &&
-        !$config['ui']['pages']['stats']['enabled']) {
+        !$config['ui']['pages']['stats']['enabled']&&
+        !$config['ui']['pages']['graphs']['enabled']) {
         return 'quests';
     } else if (!$config['ui']['pages']['dashboard']['enabled'] &&
         !$config['ui']['pages']['pokemon']['enabled'] &&
         !$config['ui']['pages']['raids']['enabled'] &&
         !$config['ui']['pages']['gyms']['enabled'] &&
         !$config['ui']['pages']['quests']['enabled'] &&
-        $config['ui']['pages']['pokestops']['enabled'] &&
-        !$config['ui']['pages']['nests']['enabled'] &&
-        !$config['ui']['pages']['stats']['enabled']) {
-        return 'pokestops';
-    } else if (!$config['ui']['pages']['dashboard']['enabled'] &&
-        !$config['ui']['pages']['pokemon']['enabled'] &&
-        !$config['ui']['pages']['raids']['enabled'] &&
-        !$config['ui']['pages']['gyms']['enabled'] &&
-        !$config['ui']['pages']['quests']['enabled'] &&
-        !$config['ui']['pages']['pokestops']['enabled'] &&
         $config['ui']['pages']['nests']['enabled'] &&
-        !$config['ui']['pages']['stats']['enabled']) {
+        !$config['ui']['pages']['stats']['enabled']&&
+        !$config['ui']['pages']['graphs']['enabled']) {
         return 'nests';
     } else if (!$config['ui']['pages']['dashboard']['enabled'] &&
         !$config['ui']['pages']['pokemon']['enabled'] &&
         !$config['ui']['pages']['raids']['enabled'] &&
         !$config['ui']['pages']['gyms']['enabled'] &&
         !$config['ui']['pages']['quests']['enabled'] &&
-        !$config['ui']['pages']['pokestops']['enabled'] &&
         !$config['ui']['pages']['nests']['enabled'] &&
-        !$config['ui']['pages']['stats']['enabled']) {
+        !$config['ui']['pages']['stats']['enabled']&&
+        !$config['ui']['pages']['graphs']['enabled']) {
         return 'stats';
-    } else {
+    } else if (!$config['ui']['pages']['dashboard']['enabled'] &&
+        !$config['ui']['pages']['pokemon']['enabled'] &&
+        !$config['ui']['pages']['raids']['enabled'] &&
+        !$config['ui']['pages']['gyms']['enabled'] &&
+        !$config['ui']['pages']['quests']['enabled'] &&
+        !$config['ui']['pages']['nests']['enabled'] &&
+        !$config['ui']['pages']['stats']['enabled']&&
+        !$config['ui']['pages']['graphs']['enabled']) {
+        return 'graphs';
+	} else {
         return '404';
     }
 }

@@ -1,4 +1,5 @@
 function openCity(evt, cityName) {
+	console.log('Running...')
   // Declare all variables
   var i, tabcontent, tablinks;
 
@@ -18,6 +19,7 @@ function openCity(evt, cityName) {
   evt.currentTarget.className += " active";
 }
 function openNew(evt, tabName) {
+	console.log('Running.2..')
   // Declare all variables
   var i, tabcontent, tablinks;
 

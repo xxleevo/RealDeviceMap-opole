@@ -71,7 +71,7 @@ $filters = "
 ";
 
 $modal = "
-<h2 class='page-header text-center' data-i18n='gyms_title'>Arenenübersicht</h2>
+<h2 class='page-header text-center " . $config['ui']['style'] . "' data-i18n='gyms_title'>Arenenübersicht</h2>
 <div class='btn-group btn-group-sm float-right'>
   <button type='button' class='btn btn-dark' data-toggle='modal' data-target='#filtersModal'>
     <i class='fa fa-fw fa-filter' aria-hidden='true'></i>
@@ -205,6 +205,7 @@ unset($db);
 ?>
 
 <link rel="stylesheet" href="./static/css/footerfix.css"/>
+<link rel="stylesheet" href="./static/css/themes.css"/>
 <script type="text/javascript">
 /*
 $("#gym-table").DataTable({

@@ -1,0 +1,11 @@
+
+/*Dark & Light Themes */
+body.dark{
+	background-color: #0b0c0d;
+}
+.page-header.dark{
+	color: white;
+}
+#migration.dark{
+	color: white;
+}

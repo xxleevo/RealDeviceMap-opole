@@ -80,7 +80,7 @@ $filters = "
 ";
 
 $modal = "
-<h2 class='page-header text-center' data-i18n='raids_title'>Aktuelle Raidkämpfe</h2>
+<h2 class='page-header text-center " . $config['ui']['style'] . "' data-i18n='raids_title'>Aktuelle Raidkämpfe</h2>
 <div class='btn-group btn-group-sm float-right'>
   <button type='button' class='btn btn-dark' data-toggle='modal' data-target='#filtersModal'>
     <i class='fa fa-fw fa-filter' aria-hidden='true'></i>
@@ -143,6 +143,7 @@ echo "</div>";
 ?>
 
 <link rel="stylesheet" href="./static/css/footerfix.css"/>
+<link rel="stylesheet" href="./static/css/themes.css"/>
 <script type="text/javascript">
 var refresh_rate = <?=$config['ui']['table']['refreshRateS']?>;
 var refresher = setInterval(filter_raids, refresh_rate * 1000);

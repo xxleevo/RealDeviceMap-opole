@@ -1,0 +1,15 @@
+
+/*Dark & Light Themes */
+.sortButton{
+color:white;
+background-color: #404040;
+border: 1px solid white;
+}
+.sortButton:hover {
+	color: white;
+	background-color: #797979;
+	border: 1px solid white;
+}
+.container.dark{
+	color: #d0d0d0;
+}

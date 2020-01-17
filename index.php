@@ -49,7 +49,7 @@ if ($config['discord']['enabled'] && !isset($_SESSION['user'])) {
     <title><?=$config['ui']['title']?></title>
 	
   </head>
-  <body>
+  <body class='<?php echo $config['ui']['style']?>'>
 
 <?php include_once('./templates/header.html'); ?>
 
@@ -86,11 +86,6 @@ switch($request_method) {
                         include_once('./pages/quests.php');
                     }
                     break;
-                case "pokestops":
-                    if ($config['ui']['pages']['pokestops']['enabled'] && (!$config['discord']['enabled'] || ($config['discord']['enabled'] && hasDiscordRole($_SESSION['user']['roles'], $config['ui']['pages']['pokestops']['discordRoles'])))) {
-                        include_once('./pages/pokestops.php');
-                    }
-                    break;
                 case "shinys":
                     if ($config['ui']['pages']['shinys']['enabled'] && (!$config['discord']['enabled'] || ($config['discord']['enabled'] && hasDiscordRole($_SESSION['user']['roles'], $config['ui']['pages']['shinys']['discordRoles'])))) {
                         include_once('./pages/shinys.php');
@@ -105,7 +100,12 @@ switch($request_method) {
                     if ($config['ui']['pages']['stats']['enabled'] && (!$config['discord']['enabled'] || ($config['discord']['enabled'] && hasDiscordRole($_SESSION['user']['roles'], $config['ui']['pages']['stats']['discordRoles'])))) {
                         include_once('./pages/stats.php');
                     }
-                    break;          
+                    break;
+                case "graphs":
+                    if ($config['ui']['pages']['graphs']['enabled'] && (!$config['discord']['enabled'] || ($config['discord']['enabled'] && hasDiscordRole($_SESSION['user']['roles'], $config['ui']['pages']['graphs']['discordRoles'])))) {
+                        include_once('./pages/graphs.php');
+                    }
+                    break;
             }
         } else {
             $p = getRedirectPage();

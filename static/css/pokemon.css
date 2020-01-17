@@ -1,0 +1,13 @@
+/*Dark & Light Themes */
+.card-body.dark{
+	color: white;
+}
+
+.input-group-text.dark{
+	background-color: #404040;
+	color:white;
+}
+#filter-date.dark, #filter-pokemon.dark{
+	background-color: #2a2a2a;
+	color:white;
+}
