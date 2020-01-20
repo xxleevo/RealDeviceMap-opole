@@ -486,7 +486,7 @@ JOIN (
 JOIN (
     SELECT count(iv) AS iv_total_today, SUM(iv = 100) AS iv_100_total_today, SUM(iv > 95) AS iv_95_total_today, SUM(iv = 0) AS iv_0_total_today
     FROM pokemon
-    WHERE first_seen_timestamp >= CURDATE()
+    WHERE first_seen_timestamp >= UNIX_TIMESTAMP(CURDATE())
 ) AS E
   ";
     $result = $pdo->query($sql);
