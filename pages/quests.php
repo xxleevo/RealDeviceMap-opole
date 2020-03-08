@@ -154,7 +154,7 @@ WHERE
 	        $quest_conditions_message = get_quest_conditions($quest_conditions_object);
 	        $quest_icon = get_quest_icon($quest_rewards_object);
 			
-			if(is_pokemon_reward($quest_rewards_object)){
+			//if(is_pokemon_reward($quest_rewards_object)){
 				echo "<tr class='text-nowrap'>";
 					echo "<td scope='row' class='text-center' data-title='Remove'><a title='Remove' data-toggle='tooltip' class='delete'><i class='fa fa-times'></i></a></td>";
 					echo "<td data-title='Reward'><img src='$quest_icon' height=32 width=32 />&nbsp;" . $quest_reward . "</td>";
@@ -164,7 +164,7 @@ WHERE
 					echo "<td data-title='Gym'><a href='" . $map_link . "' target='_blank'>" . $row['name'] . "</a></td>";
 					//echo "<td data-title='Updated'>" . date($config['core']['dateTimeFormat'], $row['updated']) . "</td>";
 				echo "</tr>";
-			}
+			//}
         }
         echo "</table>";
         echo "</div>";
@@ -458,6 +458,12 @@ function get_item($item_id) {
             return "Incense Floral";
         case 501://Troy_Disk
             return "x Lockmodul";
+        case 502://Troy_Disk
+            return "x Lockmodul(Gletscher)";
+        case 503://Troy_Disk
+            return "x Lockmodul(Moos)";
+        case 504://Troy_Disk
+            return "x Lockmodul(Magnet)";
         case 602://X_Attack
             return "x X Attack";
         case 603://X_Defense
