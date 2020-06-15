@@ -404,7 +404,7 @@ function get_spawnpoint_stats_grouped() {
     $pdo = $db->getConnection();
     $sql = "
 SELECT * FROM (
-    SELECT COUNT(*) as total_spawnpoints, SUM(despawn_sec IS NULL) as found_spawnpoints, SUM(despawn_sec IS NULL) as missing_spawnpoints
+    SELECT COUNT(*) as total_spawnpoints, SUM(despawn_sec IS NOT NULL) as found_spawnpoints, SUM(despawn_sec IS NULL) as missing_spawnpoints
     FROM spawnpoint
 ) AS A
 ";
