@@ -24,7 +24,7 @@ $html = "
 $count = 0;
 //<div class='row'>";
 foreach ($pokedex as $id => $name) {
-    if ($id <= 0 || $id > 807) {
+    if ($id <= 0 || $id > 890) {
         continue;
     }
     if ($count == 0) {
