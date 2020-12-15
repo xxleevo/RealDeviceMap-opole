@@ -619,6 +619,7 @@ echo $html;
 var debug = <?=$config['core']['showDebug'] !== false ? '1' : '0'?>;
 var newPokestopsGyms = <?=(!empty($config['ui']['pages']['dashboard']['enableNewStopsGyms']) && $config['ui']['pages']['dashboard']['enableNewStopsGyms'] !== false) ? '1' : '0'?>;
 var shinyStats = <?=(!empty($config['ui']['pages']['dashboard']['shinyStatsToday']) && $config['ui']['pages']['dashboard']['shinyStatsToday']) !== false ? '1' : '0'?>;
+console.log('1: Shiny stats: ' + shinyStats)
 var shinyStatsAlltime = <?= (!empty($config['ui']['pages']['dashboard']['shinyStatsAlltime']) && $config['ui']['pages']['dashboard']['shinyStatsAlltime'] !== false) ? '1' : '0'?>;
 var shinyStatsAlltimeMode = <?= (!empty($config['ui']['pages']['dashboard']['shinyStatsAlltimeMode']) && $config['ui']['pages']['dashboard']['shinyStatsAlltimeMode'] !== false) ? '1' : '0'?>;
 var deviceStats = <?=(!empty($config['ui']['pages']['dashboard']['deviceStatus']) && $config['ui']['pages']['dashboard']['deviceStatus']) !== false ? '1' : '0'?>;
@@ -896,12 +897,13 @@ function getStats() {
 		sendRequest({ "type": "dashboard", "stat": "shinyTodayMode", "token": tmp }, function(data, status) {
 			tmp = null;
 			if (debug) {
-			if (data === 0) {
-				console.log("Failed to get data for dashboard.");
-				return;
-			} else {
-				console.log("Dashboard:", data);
-			}
+				console.log("2: Debug data: " + data)
+				if (data === 0) {
+					console.log("Failed to get data for dashboard.");
+					return;
+				} else {
+					console.log("Dashboard:", data);
+				}
 			}
 			var obj = JSON.parse(data);
 			var html = "";
@@ -912,7 +914,7 @@ function getStats() {
 			}
 			var name = pokedex[value.pokeid];
 			var pkmnImage = sprintf("<?=$config['urls']['images']['pokemon']?>", value.pokeid);
-			if(value.pokeform !== '0'){
+			if(value.pokeform !== '0' && value.pokeform !== null && value.pokeform !== undefined){
 				pkmnImage = pkmnImage.toString().replace("00.png", value.pokeform + ".png");
 			}
 			html += "<div class='col-md-2" + (count == 0 ? " col-md-offset-1" : "") + "'>";

@@ -29,7 +29,7 @@ GROUP BY team
     return $data;
 }
 
-function get_shiny_rates_grouped($limit) {
+function get_shiny_rates_grouped($limit = 10) {
     global $config;
     $db = new DbConnector($config['db']);
     $pdo = $db->getConnection();
@@ -61,13 +61,23 @@ function get_shiny_rates_mode_grouped($limit = 10) {
     $where = " ";
     $sql = "
 SELECT * FROM (
-    SELECT pokemon_id as pokeid, form as pokeform, shiny_count as count
-    FROM shiny_stats
+    SELECT pokemon_id as pokeid, count
+    FROM pokemon_shiny_stats
 	WHERE date = CURDATE()
-	ORDER BY 3 DESC
+	ORDER BY 2 DESC
     LIMIT $limit
 ) AS A
 ";
+	
+//    $sql = "
+//SELECT * FROM (
+//    SELECT pokemon_id as pokeid, form as pokeform, shiny_count as count
+//    FROM shiny_stats
+//	WHERE date = CURDATE()
+//	ORDER BY 3 DESC
+//    LIMIT $limit
+//) AS A
+//";
     $result = $pdo->query($sql);
     $data = null;
     if ($result->rowCount() > 0) {
